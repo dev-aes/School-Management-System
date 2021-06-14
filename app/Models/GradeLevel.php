@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Fee;
+use App\Models\Section;
 use App\Models\Teacher;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GradeLevel extends Model
 {
@@ -44,6 +45,11 @@ class GradeLevel extends Model
     public function fees()
     {
         return $this->hasMany(Fee::class);
+    }
+
+    public function section()
+    {
+        return $this->hasMany(Section::class);
     }
 
     // public function getCreatedAtAttribute($value) {

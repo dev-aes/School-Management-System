@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
  
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\FeeController;
+use App\Http\Controllers\Admin\GradeController;
 use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\StudentController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Admin\ParentPaymentController;
 use App\Http\Controllers\Admin\PaymentModeController;
 use App\Http\Controllers\Admin\StudentFeeController;
 use App\Http\Controllers\Admin\PaymentReportController;
+use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\User;
 
@@ -63,7 +65,13 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::resource('/admin/user', UserController::class);
     Route::resource('/admin/parent', ParentController::class);
     Route::resource('/admin/payment_mode', PaymentModeController::class);
+    Route::resource('/admin/section', SectionController::class);
 
+
+    // Section add Teacher
+
+    Route::get('/admin/home/createTeacher', [SectionController::class, 'section_create_teacher'])->name('section.section_create_teacher');
+    Route::post('/admin/home/createTeacher', [SectionController::class, 'section_store_teacher'])->name('section.section_store_teacher');
 
         
     // teacher add subject2

@@ -111,6 +111,18 @@
 					</li>
 
 					<li class="sidebar-item">
+						<a href="#section" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="hexagon"></i> <span class="align-middle">Section</span>
+                        </a>
+						<ul id="section" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('section.index') }}">Manage Section</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="section_add_teacher" href="javascript:void(0)">Assign Teacher</a></li>
+
+						</ul>
+					</li>
+
+
+					<li class="sidebar-item">
 						<a href="#billing" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Billing</span>
                         </a>
@@ -133,8 +145,8 @@
 							<i class="align-middle" data-feather="award"></i> <span class="align-middle">Grading System</span>
                         </a>
 						<ul id="grading" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" href="javascript:void(0)">Assign Grade</a></li>
 							{{-- <li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li> --}}
 						</ul>

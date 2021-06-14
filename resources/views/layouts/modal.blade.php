@@ -663,6 +663,102 @@
 {{-- END Grade Level Modal --}}
 
 
+    
+{{--Start Section Modal--}}
+
+    <div class="modal fade" id="section_modal" tabindex="-1" role="dialog" aria-labelledby="section_modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="section_modal_header">
+            <h5 class="modal-title text-primary" id="section_modal_label">{{--Modal Title--}}</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="section_div_err" role="alert" style="display:none">
+                <ul id="section_err"></ul>
+            </div>
+            
+            <div class="modal-body">
+            <form id="section_form" autocomplete="off" >
+                @csrf
+                <div class="form-group">
+                    <label class='form-label'>Select Grade Level</label>
+                    <select class="form-select" id="section_grade_level" name="grade_level_id">
+                        {{--Display all grade levels--}}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class='form-label'>Section Name </label>
+                    <input class="form-control " name="name" type="text" id="section_name" value="">
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Description </label>
+                    <input class="form-control " name="description" type="text" id="section_description" value="">
+                </div>
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_section" onclick="createSection()">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_section" style="display:none" onclick="updateSection()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    {{--Section Add Teacher Modal--}}
+        <div class="modal fade" id="section_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="section_teacher_modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="section_teacher_modal_header">
+                <h5 class="modal-title text-primary" id="section_teacher_modal_label">{{--Modal Title--}}</h5>
+                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                </button>
+                </div>
+
+                {{--Alert--}}
+                <div class="alert alert-warning fade show" id="section_teacher_div_err" role="alert" style="display:none">
+                    <ul id="section_teacher_err"></ul>
+                </div>
+                
+                <div class="modal-body">
+                <form id="section_teacher_form" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    
+                    <div class="form-group">
+                        <label class='form-label'>Select Section</label>
+                        <select class="" id="section_section_id" name="section_id" style="width: 100%">
+                            {{--Select Section--}}
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class='form-label'>Select Teacher</label>
+                        <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
+                            {{--Select Teacher--}}
+                        </select>
+                    </div>
+                </form>
+                </div>
+        
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  onclick=" section_store_teacher()">Submit</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    {{--End Section Add Teacher Modal--}}
+
+
+
+
+{{--End Section Modal--}}
+
 {{--Start Student Modal--}}
 
   <div class="modal fade" id="student_modal" tabindex="-1" role="dialog" aria-labelledby="student_modal_label" aria-hidden="true">
@@ -1618,7 +1714,7 @@
     </div>
 
 
-    {{-- TEACHER ADD STUDENT II --}}
+    {{-- Parent ADD STUDENT II --}}
       
         <div class="modal fade" id="parent_student_modal" tabindex="-1" role="dialog" aria-labelledby="parent_student_modal" aria-hidden="true">
             <div class="modal-dialog " role="document">
@@ -1661,7 +1757,7 @@
             </div>
         </div>
         
-    {{--End Teacher Add STUDENT II--}}
+    {{--End Parent Add STUDENT II--}}
 
 
     {{--Show Parent --}}

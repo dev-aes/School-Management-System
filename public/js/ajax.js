@@ -25,6 +25,10 @@ $(()=> {
     {
         displayGradeLevels();  // after loading the grade level page ; load the grade level data
     }
+    if(window.location.href == route('section.index'))
+    {
+        displaySection(); // after loading the section page ; load the section data
+    }
     if(window.location.href == route('student.index')) 
     {
         displayStudents();  // after loading the student Information page ; load the Student Information data
@@ -1733,6 +1737,258 @@ function deleteGradeLevel(id) {
    End Grade Level Management --------------->
 */
 
+
+// <------------ Start Section Management
+
+function displaySection()
+{
+    $('#section_DT').DataTable({
+        processing: false,
+        serverSide: true,
+        retrieve: true,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                        // test
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+            }
+        },
+        autoWidth: false,
+        ajax: route('section.index'),
+        columns: [
+            {data: 'name'},
+            {data: 'description'},
+            {data: 'created_at', render(data) {
+                const date =  new Date(data);
+                return date.toLocaleString();
+            }},
+            {data: 'updated_at', render(data) {
+                const date =  new Date(data);
+                return date.toLocaleString();
+            }},
+            {data: 'actions', orderable: false, searchable: false},
+        ]
+    });
+}
+
+$('#add_section').on('click', ()=> {
+    $('#section_modal').modal('show');
+    $('#section_modal_label').html(`<h4 class='text-white'> Add Section </h4>`);
+    $('#section_modal_header').removeClass('bg-success').addClass('bg-primary');
+    $('#section_grade_level').html(``);
+    $('#section_form')[0].reset();
+
+    $.ajax({
+        url: route('section.create'),
+        dataType:'json',
+        success: grade_levels => {
+            let output = `<option> </option>`;
+            
+            grade_levels.forEach(grade_level => {
+                output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
+            });
+
+            $('#section_grade_level').html(output);
+        },
+        error: err => {
+            console.log(err);
+        }
+    })
+
+});
+
+function createSection()
+{
+    let section_form = $('#section_form');
+    let name = $('#section_name');
+    let description = $('#description');
+
+    if(isNotEmpty(name) && isNotEmpty(description))
+    {
+        $.ajax({
+            method: 'POST',
+            url: route('section.store'),
+            dataType:'json',
+            data:section_form.serialize(),
+            success: response => {
+                if(response == 'success')
+                {   
+                    $('#section_DT').DataTable().draw();
+                    return toastSuccess("Section Added");
+                }
+            },
+            error: err => {
+                console.log(err);
+            }
+        })
+    }
+}
+
+function editSection(id)
+{
+    let section_form = $('#section_form');
+    let name = $('#section_name');
+    let description = $('#section_description');
+
+    $('#section_modal').modal('show');
+    $('#section_modal_label').html(`<h4 class='text-white'> Edit Section </h4>`);
+    $('#section_modal_header').removeClass('bg-success').addClass('bg-primary');
+
+    $.ajax({
+        url: route('section.edit', id),
+        success : section => {
+            // console.log(section);
+            $('#btn_add_section').css('display', 'none');
+            $('#btn_update_section').css('display', 'block').attr('data-id', section[0].id);
+            name.attr('value', section[0].name);
+            description.attr('value', section[0].description);
+            $('#section_grade_level').attr('value', section[0].grade_level_id);
+
+            let output = `<option value='${section[0].grade_level_id}'> Current [${section[2]}] </option>`;
+
+            section[1].forEach(grade_level => {
+                output += `<option value='${grade_level.id}'> ${grade_level.name}</option>`;
+            }); 
+
+            $('#section_grade_level').html(output);
+        },
+        error: err => {
+            console.log(err);
+        }
+    })
+}
+
+function updateSection()
+{
+    let section_form = $('#section_form');
+    let name = $('#section_name');
+    let description = $('#section_description');
+    let id = $('#btn_update_section').attr('data-id');
+
+    if(isNotEmpty(name) && isNotEmpty(description))
+    {
+        $.ajax({
+            method: 'PUT',
+            url: route('section.update', id),
+            dataType:'json',
+            data:section_form.serialize(),
+            success: response => {
+                if(response == 'success')
+                {   
+                    $('#section_DT').DataTable().draw();
+                    return toastSuccess("Section Updated");
+                }
+            },
+            error: err => {
+                console.log(err);
+            }
+        })
+    }
+
+}
+
+function deleteSection(id)
+{
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method:'DELETE',
+                url:route('section.destroy', id),
+                data:{id:id},
+                success: response => {
+                    toastSuccess('Section Deleted')
+                    $('#section_DT').DataTable().draw();
+                },
+                error: err => {
+                    toastDanger();
+                    console.log(err);
+                }
+
+            })
+        }
+      })
+}
+
+
+// Section Add Teacher (Assign Teacher by Section)
+
+$('#section_add_teacher').on('click', ()=> {
+    $('#section_teacher_modal').modal('show');
+    $('#section_teacher_modal_label').html(`<h4 class='text-white'> Assign Section to Teacher <i class="fas fa-chalkboard-teacher"></i> </h4>`);
+    $('#section_teacher_modal_header').removeClass('bg-success').addClass('bg-primary');
+
+    $.ajax({
+        url: route('section.section_create_teacher'),
+        dataType:'json',
+        success: data => {
+            let output_section = `<option> </option>`;
+            let output_teacher = `<option> </option>`;
+
+            data[0].forEach(section => {
+                output_section += `<option value='${section.id}'> ${section.name} </option>`;
+            });
+
+            data[1].forEach(teacher => {
+                output_teacher += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
+            });
+
+            $('#section_section_id').html(output_section);
+            $('#section_teacher_id').html(output_teacher);
+        },
+        error: err => {
+            console.log(err);
+        }
+    });
+
+});
+
+function section_store_teacher()
+{
+    let section_id =  $('#section_section_id').val();
+    let teacher_id = $('#section_teacher_id').val();
+
+    if(section_id > 0 && teacher_id > 0)
+    {
+        $.ajax({
+            method: 'POST',
+            url: route('section.section_store_teacher'),
+            dataType:'json',
+            data:{
+                section_id: section_id,
+                teacher_id: teacher_id
+            },
+            success: response => {
+                if(response == "success")
+                {
+                   return toastSuccess("Teacher Assigned");
+                }
+                if(response == "error")
+                {
+                    return toastr.warning("Teacher is already assigned to this section");
+                }
+            },
+            error: err => {
+                console.log(err);
+            }
+        })
+    }
+    else
+    {
+        toastr.warning("Please select a section/teacher");
+    }
+}
+
+
+// ------------> End Section()
 
 /**
  * <----------- START STUDENT INFORMATION 
