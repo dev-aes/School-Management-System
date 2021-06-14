@@ -266,14 +266,14 @@ function parent_store_payment_to_student() {
             }
         })
     }
-}
+}   
 
 function parent_create_down_payment_to_student(id)
 {
     $('#show_parent_payment_ledger_modal').modal('hide');
     $('#parent_add_student_down_payment_modal').modal('show');
     $('#parent_add_student_down_payment_modal_label').html(`<h3 class='text-primary text-white'> Add Down Payment </h3>`);
-    $('#parent_add_student_down_payment_form')[0].reset();
+    $('#parent_add_student_down_payment_form');
     $('#parent_add_student_down_payment_modal_header').removeClass('bg-success').addClass('bg-primary');
 
 
