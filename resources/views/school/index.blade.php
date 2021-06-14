@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         <h1 class="text-center text-primary update" id="school_info">School Information <i class="fas fa-info-circle"></i> </h1>
@@ -19,6 +19,23 @@
                             {{-- School Details--}}
                             </ul>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-muted">Select Academic Year</h3>
+                        <form>
+                            <div class="form-group">
+                                    <select class="form-select" name="ay" id="school_ay">
+                                        {{----}}
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary form-control mt-2">Activate</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
