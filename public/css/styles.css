@@ -1,0 +1,207 @@
+html {
+    --scrollbarBG: #CFD8DC;
+    --thumbBG: #90A4AE;
+  }
+  body::-webkit-scrollbar {
+    width: 15px;
+  }
+  body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  }
+  body::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG) ;
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+  }
+
+  /*BOX*/
+  .box-0,.box-1 , .box-2, .box-00, .box-11, .box-22{
+    width: 15px;
+    height: 15px;
+    border-radius: 20%;
+  }
+  .box-0 {
+    background-color: #e9ecef;
+  }
+  .box-1 {
+    background-color: #28a745;
+
+  }
+  .box-2 {
+    background-color: #6297e4;
+  }
+
+  .box-00 {
+    background-color: #e9ecef;
+  }
+  .box-11 {
+    background-color: #28a745;
+
+  }
+  .box-22 {
+    background-color: #6297e4;
+  }
+
+  .boxes {
+    display: flex;
+    justify-content: center;
+  }
+
+.buttons {
+  position: relative !important;
+}
+.add_sub_fee {
+  position: absolute !important;
+  top: 0 !important;
+  right: 8px !important;
+}
+.dataTables_length {
+  padding-bottom: 1.5rem !important;
+}
+
+.payment_active {
+  background-color: green !important;
+}
+.payment_paid {
+  background-color: blue !important;
+}
+/* select2
+.select2-results__option--selectable {
+  background-color: green !important;
+}
+*/
+
+.select2-results__option--highlighted {
+  background-color: #495057 !important;
+}
+
+  /* .minus_sub_fee {
+    position: absolute !important;
+    top: 15.5px !important;
+    right: 25px !important;
+  } */
+
+
+  /* @media print {
+    body * {
+      visibility: hidden;
+    }
+    #print-content * {
+      visibility: visible;
+      overflow: visible;
+    }
+    
+    .modal {
+      position: relative;
+      left: 0;
+      top: 0;
+      margin: 0;
+      padding: 0;
+      min-height: 550px;
+      visibility: visible;
+      overflow: visible !important;
+    }
+    .modal-dialog {
+      visibility: visible !important;
+      overflow: visible !important;
+    }
+    li {
+      page-break-after: auto;
+    }
+  }
+  */
+  
+  @media print {
+    body {
+      visibility: hidden;
+    }
+    #print {
+      visibility: visible;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+
+    .col-md-1,.col-md-2,.col-md-3,.col-md-4,
+    .col-md-5,.col-md-6,.col-md-7,.col-md-8, 
+    .col-md-9,.col-md-10,.col-md-11,.col-md-12 {
+      float: left;
+    }
+  
+    .col-md-1 {
+      width: 8%;
+    }
+    .col-md-2 {
+      width: 16%;
+    }
+    .col-md-3 {
+      width: 25%;
+    }
+    .col-md-4 {
+      width: 33%;
+    }
+    .col-md-5 {
+      width: 42%;
+    }
+    .col-md-6 {
+      width: 50%;
+    }
+    .col-md-7 {
+      width: 58%;
+    }
+    .col-md-8 {
+      width: 66%;
+    }
+    .col-md-9 {
+      width: 75%;
+    }
+    .col-md-10 {
+      width: 83%;
+    }
+    .col-md-11 {
+      width: 92%;
+    }
+    .col-md-12 {
+      width: 100%;
+    }
+
+  }
+
+
+ /* @media print {
+  .modal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 0;
+      padding: 0;
+      overflow: visible!important;
+  }
+} */
+
+/*Pre loader*/
+@keyframes page-load {
+  from {
+      background-color: #06D;
+  }
+  to {
+      background-color: #c0392b;
+  }
+}
+.page-loading::before {
+  content:" ";
+  display:block;
+  position:fixed;
+  z-index:10;
+  height:5px;
+  width:100%;
+  top:0;
+  left:0;
+  background-color:#06D;
+  animation: page-load infinite ease-out 2s;
+  box-shadow:0 2px 2px rgba(0,0,0,.2);
+}
