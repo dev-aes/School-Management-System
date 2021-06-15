@@ -49,6 +49,8 @@ class FeeController extends Controller
 
             ]);
 
+           // return response()->json($data)
+
             foreach (array_combine(request('fee_description'), request('fee_amount')) as $description => $amount):
             
                   $fee = DB::table('fees')

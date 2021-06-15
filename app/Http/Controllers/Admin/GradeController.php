@@ -7,6 +7,8 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Grade;
+
 
 class GradeController extends Controller
 {
@@ -26,6 +28,35 @@ class GradeController extends Controller
             return response()->json(Student::all());
         }
     }
+
+    public function store(){
+        if(request()->ajax()) {
+            $data = request()->validate([
+                'student_id' => 'required',
+                'subject_id' => 'required|array',
+                'subject_id .*' => 'required|string',
+                'grade' => 'required|array',
+                'grade .*' => 'required|float',
+
+            ]);
+
+
+            
+            foreach (array_combine(request('subject_id'), request('grade')) as $subject_id => $grade):
+
+                $inputs = ['student_id' => $data['student_id'],
+                                    'subject_id' => $subject_id,
+                                    'grades' => $grade];
+
+                Grade::create($inputs);
+
+            endforeach;
+
+
+            return response()->json('success');
+            }
+
+    } 
 
     public function grade_display_subjects_by_student_id()
     {

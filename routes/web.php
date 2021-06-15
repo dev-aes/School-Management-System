@@ -74,6 +74,10 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     //Grade()  Assign Grade to Subject 
 
     Route::get('/admin/home/createGrade', [GradeController::class, 'grade_display_subjects_by_student_id'])->name('grade.grade_display_subjects_by_student_id');
+    
+    Route::post('/admin/home/createGrade', [GradeController::class, 'store'])->name('grade.grade_store_subject');
+
+
 
     // Section add Teacher
 

@@ -795,8 +795,8 @@
         </div>
 
         <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn_add_grade_level" onclick="createGradeLevel()">Submit</button>
-        <button type="button" class="btn btn-success" id="btn_update_grade_level" style="display:none" onclick="updateGradeLevel()">Save</button>
+        <button type="button" class="btn btn-primary" id="btn_add_grade" onclick="createGrade()">Submit</button>
+        <button type="button" class="btn btn-success" id="btn_update_grade" style="display:none" onclick="updateGrade()">Save</button>
         </div>
     </div>
     </div>

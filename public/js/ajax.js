@@ -2046,12 +2046,12 @@ function grade_display_subjects_by_student_id()
                         output += `<div class='row mt-3'>
                                      <div class='col-md-6 mb-2'>
                                         <div class='form-group'>
-                                         <input class='form-control' type='text' name='subject_id' value='${subject.name}' readonly>
+                                         <input class='form-control' type='text' name='subject_id[]' data-id='${subject.id}' value='${subject.id}' readonly>
                                         </div>
                                      </div>
                                      <div class='col-md-6 mb-2'>
                                         <div class='form-group'>
-                                         <input class='form-control' type='text' name='grade' value=''>
+                                         <input class='form-control' type='number' name='grade[]' value=''>
                                         </div>
                                      </div>
                                    </div>`
@@ -2075,6 +2075,36 @@ function grade_display_subjects_by_student_id()
 }
 
 
+// Store
+
+function createGrade()
+{
+    let student_id = $('#grade_student_id').val();
+    
+    let grade_form = $('#grade_form');
+   
+
+
+
+    $.ajax({
+        method: 'POST',
+        url: route('grade.grade_store_subject'),
+         dataType:'json',
+        data:grade_form.serialize(),
+        success: response => {
+            if(response == 'success')
+            {
+                toastSuccess('Grade Added');
+                return;
+            }
+        },
+        error: err => {
+            console.log(err);
+            toastDanger();
+        }
+    })
+    
+}
 
 
 
