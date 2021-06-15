@@ -2,21 +2,21 @@
 
 // Global Facades
 
-use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 // Admin Restful Controllers
  
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeeController;
-use App\Http\Controllers\Admin\GradeController;
 use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\GradeLevelController;
+use App\Http\Controllers\Admin\GradeController;
 use App\Http\Controllers\Admin\ParentController;
 use App\Http\Controllers\Admin\ParentPaymentController;
 use App\Http\Controllers\Admin\PaymentModeController;
@@ -30,6 +30,7 @@ use App\Models\User;
 
 use App\Http\Controllers\User\ParentController as UserParentController;
 use App\Http\Controllers\User\StudentController as UserStudentController;
+use App\Models\Grade;
 
 // Route::get('/testlink', function() {
 
@@ -66,7 +67,13 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::resource('/admin/parent', ParentController::class);
     Route::resource('/admin/payment_mode', PaymentModeController::class);
     Route::resource('/admin/section', SectionController::class);
+    Route::resource('/admin/grade', GradeController::class);
 
+
+
+    //Grade()  Assign Grade to Subject 
+
+    Route::get('/admin/home/createGrade', [GradeController::class, 'grade_display_subjects_by_student_id'])->name('grade.grade_display_subjects_by_student_id');
 
     // Section add Teacher
 
