@@ -1204,8 +1204,6 @@ function teacher_student2_store_teacher_subject() {
 }
 
 
-
-
 //  END TEACHER MANAGEMENT --------------->
 
 
@@ -1511,10 +1509,10 @@ function import_subject()
       })
 }
 
-
-
  /*END SUBJECT MANAGEMENT ------------------->
 */
+
+
 
 /** <--------------Start Grade Level Management
  *  Display Grade Level */
@@ -1736,6 +1734,7 @@ function deleteGradeLevel(id) {
 /* End Delete GradeLevel()
    End Grade Level Management --------------->
 */
+
 
 
 // <------------ Start Section Management
@@ -1990,8 +1989,106 @@ function section_store_teacher()
 
 // ------------> End Section()
 
+
+
+// <-------- Start Grading ()
+
+
+// create ()
+$('#assign_grade_to_subject').on('click', ()=> {
+    $('#grade_modal').modal('show');
+    $('#grade_modal_label').html(`<h4 class='text-white'> Add Grade </h4>`);
+    $('#grade_modal_header').removeClass('bg-success').addClass('bg-primary');
+
+    $.ajax({
+        url: route('grade.create'),
+        dataType:'json',
+        success: students => {
+           let output = `<option> </option>`;
+
+           students.forEach(student => {
+                output += `<option value='${student.id}'> ${student.first_name} ${student.last_name} </option>`;
+           });
+
+           $('#grade_student_id').html(output);
+        },
+        error: err => {
+            console.log(err);
+            toastDanger();
+        }
+    })
+});
+
+// Display Subjects by Grade Level ID()
+
+function grade_display_subjects_by_student_id()
+{
+    let student_id = $('#grade_student_id').val();
+
+    if(student_id > 0)
+    {
+        $.ajax({
+            url: route('grade.grade_display_subjects_by_student_id'),
+            dataType:'json',
+            data:{student_id: student_id},
+            success: subjects => {
+                let output = ``;
+
+                // check if the teacher has already a subject if it does then do something ..
+                 if(subjects[0] == undefined)
+                 {
+                    $('#grade_display_subjects').html('');
+                     return alert('no data');
+                 }
+                 else
+                 {
+                    subjects[0].forEach(subject => {
+                        output += `<div class='row mt-3'>
+                                     <div class='col-md-6 mb-2'>
+                                        <div class='form-group'>
+                                         <input class='form-control' type='text' name='subject_id' value='${subject.name}' readonly>
+                                        </div>
+                                     </div>
+                                     <div class='col-md-6 mb-2'>
+                                        <div class='form-group'>
+                                         <input class='form-control' type='text' name='grade' value=''>
+                                        </div>
+                                     </div>
+                                   </div>`
+                    }); 
+                 }
+                    
+
+                // display subjects
+                $('#grade_display_subjects').html(output);
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
+    }
+    else
+    {
+        $('#grade_display_subjects').html('');
+    }
+}
+
+
+
+
+
+
+
+
+
+// ----------- > End Grading ()
+
+
+
+
 /**
- * <----------- START STUDENT INFORMATION 
+ * <----------- START STUDENT Management () 
  * Display Student()
  */
 
@@ -2561,6 +2658,8 @@ $('#delete_all_student').on('click', ()=> {
 /** 
  *  END Student ----------------->
  */
+
+
 
 /** <------------------ Start Fee Management */
 
