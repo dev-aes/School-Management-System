@@ -28,7 +28,7 @@ class CreateSchoolsTable extends Migration
             $table->string('school_logo');
             $table->bigInteger('months_no');
             $table->date('date_started');
-            $table->foreignId('academic_year_id')->constrained('academic_years');
+            //$table->foreignId('academic_year_id')->constrained('academic_years');
             $table->timestamps();
         });
     }

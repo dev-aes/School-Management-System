@@ -1204,6 +1204,89 @@ function teacher_student2_store_teacher_subject() {
 }
 
 
+// teacher assign subject to student
+
+$('#teacher_assign_subject_to_student').on('click', ()=> {
+    $('#teacher_assign_subject_to_student_modal').modal('show');
+    $('#teacher_assign_subject_to_student_label').html(`<h3 class='text-white'> Assign Subject - Student </h1>`);
+    $('#teacher_assign_subject_to_student_header').removeClass('bg-success').addClass('bg-primary');
+    $('#teacher_assign_subject_to_student_modal').modal('show');
+
+    $.ajax({
+        url: route('teacher.teacher_assign_subject_to_student_display_teachers'),
+        dataType:'json',
+        success: teachers => {
+            let output = `<option> </option>`;
+            teachers.forEach(teacher => {
+                output += `<option value ='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
+            });
+
+            // append all fetch teachers information
+            $('#teacher_assign_subject_to_student_teacher_id').html(output);
+        },
+        error: err => {
+            console.log(err);
+            toastDanger();
+        }
+    })
+});
+
+// display all section by teacher's id
+function teacher_assign_subject_to_student_display_section()
+{
+    let teacher_id =  $('#teacher_assign_subject_to_student_teacher_id').val();
+
+    if(teacher_id > 0)
+    {
+        $.ajax({
+            url: route('teacher.teacher_assign_subject_to_student_display_sections',teacher_id),
+            dataType:'json',
+            success: data => {
+                
+                // display sections
+                let section_output = `<option> </option>`;
+                data[0].forEach(section => {
+                    section_output += `<option value='${section.id}'> ${section.name}</option>`;
+                });
+                $('#teacher_assign_subject_to_student_section_id').html(section_output);
+
+                // display students
+                let student_output = `<option> </option>`;
+                data[1].forEach(student => {
+                    student_output += `<option value='${student.id}'> ${student.first_name} ${student.last_name}</option>`;
+                });
+                $('#teacher_assign_subject_to_student_student_id').html(student_output);
+
+                  // display subjects
+                  let subject_output = `<h5 class='mt-3'> Select Subject </h5>`;
+                  data[2].forEach(subject => {
+                      subject_output +=`<div class='form-check form-check-inline mt-2'>
+                                            <input class="form-check-input" type="checkbox" name='subject_id[]' value="${subject.id}" id="subject_id-${subject.id}">
+                                            <h4 class="form-check-label text-muted" for="flexCheckDefault">
+                                            ${subject.name}
+                                            </h4>
+                                        </div>`;
+                  });
+                  $('#teacher_assign_subject_to_student_display_subjects').html(subject_output);
+
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
+    }
+    else
+    {
+        // if there is no selected teacher then do not display its related subject
+        $('#teacher_assign_subject_to_student_section_id').html('');
+        $('#teacher_assign_subject_to_student_display_subjects').html('');
+        $('#teacher_assign_subject_to_student_student_id').html('');
+    }
+}
+
+
+
 //  END TEACHER MANAGEMENT --------------->
 
 

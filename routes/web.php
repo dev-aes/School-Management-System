@@ -84,7 +84,20 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::get('/admin/home/createTeacher', [SectionController::class, 'section_create_teacher'])->name('section.section_create_teacher');
     Route::post('/admin/home/createTeacher', [SectionController::class, 'section_store_teacher'])->name('section.section_store_teacher');
 
-        
+    
+    // teacher assign subject to student 
+
+        //( Display all Teachers)
+        Route::get('/admin/home/teacher/display_teachers', [TeacherController::class, 'teacher_assign_subject_to_student_display_teachers'])->name('teacher.teacher_assign_subject_to_student_display_teachers');
+
+        // (Display all Section by Teachers ID)
+        Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
+
+    // End
+
+
+
+
     // teacher add subject2
     Route::get('/admin/home/createSubject',[TeacherController::class, 'teacher_create_subject_2'])->name('teacher.teacher_create_subject_2');
     Route::get('/admin/home/createSubject/{teacher}',[TeacherController::class, 'teacher_display_by_teacher_id'])->name('teacher.teacher_display_by_teacher_id');
@@ -104,6 +117,10 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::post('/admin/teacher/createStudent', [TeacherController::class, 'teacher_store_student'])->name('teacher.teacher_store_student');
     // teacher delete student
     Route::delete('/admin/teacher/deleteStudent/{teacher}/{student}', [TeacherController::class, 'teacher_destroy_student'])->name('teacher.teacher_destroy_student');
+
+
+
+
 
     // student truncate all records
     Route::post('/admin/student/truncateStudent', [StudentController::class , 'truncate'])->name('student.truncate');

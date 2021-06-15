@@ -40,8 +40,6 @@ class GradeController extends Controller
 
             ]);
 
-
-            
             foreach (array_combine(request('subject_id'), request('grade')) as $subject_id => $grade):
 
                 $inputs = ['student_id' => $data['student_id'],
@@ -75,13 +73,12 @@ class GradeController extends Controller
                 $teacher = Teacher::where('id', $student_teacher->teacher_id)->first();
 
                 // get the assigned subjects by teacher id
-                $subject =  $teacher->subject;
+                $subject =  $teacher::with('subject')->get();
 
                 // push the subjects to the array[]
                 array_push($subjects, $subject);
             }
             
-
             return response()->json($subjects);
         }
     }

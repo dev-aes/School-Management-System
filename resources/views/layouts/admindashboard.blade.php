@@ -78,6 +78,7 @@
 						<ul id="teacher" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
 							<li class="sidebar-item"><a class="sidebar-link" id="teacher_add_subject2" href="javascript:void(0)">Add Subject</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" id="teacher_add_student2" href="javascript:void(0)">Add Student</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_subject_to_student" href="javascript:void(0)">Assign Subject</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('teacher.index') }}">Manage Teacher</a></li>
 						</ul>
 					</li>

@@ -65,12 +65,12 @@ class StudentController extends Controller
     {
         $student_form_data = request()->validate([
             'first_name' => 'required|alpha',
-            'middle_name' => 'required|alpha',
+            'middle_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha',
             'birth_date' => 'required|string',
             'gender' => 'required|alpha',
             'grade_level_id' => 'required|string',
-            'nationality' => 'required|alpha',
+            'nationality' => 'required|alpha_spaces',
             'city' => 'required|alpha_spaces',
             'province' => 'required|alpha_spaces',
             'country' => 'required|alpha',
@@ -122,12 +122,12 @@ class StudentController extends Controller
         $student_form_data = request()->validate([
            
             'first_name' => 'required|alpha',
-            'middle_name' => 'required|alpha',
+            'middle_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha',
             'birth_date' => 'required|string',
             'gender' => 'required|alpha',
             'grade_level_id' => 'required|string',
-            'nationality' => 'required|alpha',
+            'nationality' => 'required|alpha_spaces',
             'city' => 'required|alpha_spaces',
             'province' => 'required|alpha_spaces',
             'country' => 'required|alpha',

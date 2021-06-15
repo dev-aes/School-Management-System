@@ -15,9 +15,8 @@ class CreateAcademicYearsTable extends Migration
     {
         Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
-            $table->year('from');
-            $table->year('to');
-            $table->string('status')->default('inactive');
+            $table->string('academic_year');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

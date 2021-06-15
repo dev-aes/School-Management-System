@@ -64,11 +64,11 @@ class TeacherController extends Controller
     {
         $teacher_form_data = request()->validate([
             'first_name' => 'required|alpha',
-            'middle_name' => 'required|alpha',
+            'middle_name' => 'required',
             'last_name' => 'required|alpha',
             'birth_date' => 'required|string',
             'gender' => 'required|alpha',
-            'city' => 'required|alpha',
+            'city' => 'required|alpha_spaces',
             'province' => 'required|alpha_spaces',
             'country' => 'required|alpha',
             'address' => 'required|string',
@@ -112,11 +112,11 @@ class TeacherController extends Controller
     {
         $teacher_form_data = request()->validate([
             'first_name' => 'required|alpha',
-            'middle_name' => 'required|alpha',
+            'middle_name' => 'required',
             'last_name' => 'required|alpha',
             'birth_date' => 'required|string',
             'gender' => 'required|alpha',
-            'city' => 'required|alpha',
+            'city' => 'required|alpha_spaces',
             'province' => 'required|alpha_spaces',
             'country' => 'required|alpha',
             'address' => 'required|string',
@@ -290,6 +290,34 @@ public function teacher_destroy_student()
             return response()->json($gradeLevel->student);
         }
     }
+
+    public function teacher_assign_subject_to_student_display_teachers()
+    {
+        if(request()->ajax())
+        {
+            return response()->json(Teacher::all());
+        }
+    }
+
+    public function teacher_assign_subject_to_student_display_sections(Teacher $teacher)
+    {
+        if(request()->ajax())
+        {
+            return response()->json([$teacher->section, $teacher->student, $teacher->subject]);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function import(Request $request)
     {

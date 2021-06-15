@@ -16,6 +16,7 @@ class CreateGradesTable extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('teacher_id')->constrained('teachers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('academic_year_id')->nullable()->constrained('academic_years')->onDelete('cascade')->onUpdate('cascade');
             $table->string('grades')->default('0');
