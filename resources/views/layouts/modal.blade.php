@@ -759,6 +759,58 @@
 
 {{--End Section Modal--}}
 
+
+
+{{-- Start Grading  Modal --}}
+
+<div class="modal fade" id="grade_modal" tabindex="-1" role="dialog" aria-labelledby="grade_modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header" id="grade_modal_header">
+        <h5 class="modal-title text-primary" id="grade_modal_label">{{--Modal Title--}}</h5>
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+        </button>
+        </div>
+
+        {{--Alert--}}
+        <div class="alert alert-danger p-3 fade show" id="grade_div_err" role="alert" style="display:none">
+            <ul id="grade_err"></ul>
+        </div>
+
+        <div class="modal-body">
+        <form id="grade_form" autocomplete="off" enctype="multipart/form-data">
+            @csrf
+
+            <div class="form-group">
+                <label class='form-label'>Select Student</label>
+                <select class="form-select" id="grade_student_id" name="student_id" onchange="grade_display_subjects_by_student_id()">
+                    {{--Display all Students --}}
+                </select>
+            </div>
+            
+            <div id="grade_display_subjects">
+                {{--Display all the subjects by student ID --}}
+            </div>
+        </form>
+        </div>
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btn_add_grade_level" onclick="createGradeLevel()">Submit</button>
+        <button type="button" class="btn btn-success" id="btn_update_grade_level" style="display:none" onclick="updateGradeLevel()">Save</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+ 
+
+{{-- END Grading Modal --}}
+
+
+
+
+
+
 {{--Start Student Modal--}}
 
   <div class="modal fade" id="student_modal" tabindex="-1" role="dialog" aria-labelledby="student_modal_label" aria-hidden="true">

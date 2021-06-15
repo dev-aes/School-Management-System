@@ -109,6 +109,7 @@
                             <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Grade Level</span>
                         </a>
 					</li>
+					
 
 					<li class="sidebar-item">
 						<a href="#section" data-bs-toggle="collapse" class="sidebar-link collapsed">
@@ -120,6 +121,20 @@
 
 						</ul>
 					</li>
+
+					<li class="sidebar-item">
+						<a href="#grading" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="award"></i> <span class="align-middle">Grading System</span>
+                        </a>
+						<ul id="grading" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" id="assign_grade_to_subject" href="javascript:void(0)">Assign Grade</a></li>
+							{{-- <li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li> --}}
+						</ul>
+					</li>
+
+					
 
 
 					<li class="sidebar-item">
@@ -140,19 +155,6 @@
                         </a>
 					</li>
 
-					<li class="sidebar-item">
-						<a href="#grading" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="award"></i> <span class="align-middle">Grading System</span>
-                        </a>
-						<ul id="grading" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="javascript:void(0)">Assign Grade</a></li>
-							{{-- <li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li> --}}
-						</ul>
-					</li>
-
-					
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="javascript:void(0)" title="coming soon">
