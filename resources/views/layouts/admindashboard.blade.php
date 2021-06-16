@@ -178,7 +178,7 @@
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('user.index')}}">Manage User</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('parent.index')}}">Parent Registration</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}">Mode of Payment</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}">Academic Year</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{{route('academic_year.index')}}">Academic Year</a></li>
 
 						</ul>
 					</li>

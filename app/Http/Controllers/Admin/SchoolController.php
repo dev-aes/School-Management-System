@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\AcademicYear;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +19,7 @@ class SchoolController extends Controller
     public function index() 
     {
         if(request()->ajax()) {
-           return response()->json(School::findOrFail(1));
+           return response()->json([School::latest()->take(1)->first(), AcademicYear::all()]);
         }
         return view('school.index');
     }
@@ -109,4 +109,6 @@ class SchoolController extends Controller
             $school->delete();
         }
     }
+
+   
 }
