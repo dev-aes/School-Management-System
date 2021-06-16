@@ -99,24 +99,20 @@ class SubjectController extends Controller
 
         ]);
 
-        //dd(subject_form_data['grade_level_id']);
         if(request()->ajax()) {
             
 
-           // return response()->json(['subject_id' => $subject->id,
-             //                         'grade_level_id' => $subject->grade_level[0]->id]);
-          //Grade Level Subject
-             $sub =  DB::table('grade_level_subject')
+            $sub =  DB::table('grade_level_subject')
                   ->where('grade_level_id', $subject->grade_level[0]->id)
                   ->where('subject_id',$subject->id)
                   ->update(['grade_level_id' => request('grade_level_id')]);
                
-              //Subject Update    
-           $subject->update($subject_form_data); 
+            //Subject Update    
+            $subject->update($subject_form_data); 
 
              // DB::update("UPDATE grade_level_subject set grade_level_id = $grade_level_id where ID = $sub->id");
 
-           return response()->json();
+           return response()->json('success');
         
         
         }

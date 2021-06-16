@@ -1102,7 +1102,7 @@ function teacher_subject2_display_grade_level() {
           url: route('teacher.teacher_display_by_teacher_id', teacher_id),
           dataType:'json',
           success: teacher => {
-              $('#teacher_subject2_grade_level_id').attr('value', teacher);
+              $('#teacher_subject2_grade_level_id').attr('value', teacher);//Grade Level ID
 
               teacher_subject2_display_subjects_by_teacher_grade_level_id( $('#teacher_subject2_grade_level_id').attr('value') );
           },
