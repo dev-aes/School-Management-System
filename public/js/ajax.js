@@ -6319,8 +6319,6 @@ function deletePaymentMode(id) {
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;
            })
 
-
-           
             $('#grade_level_assign_subject_subject_id').html(output); 
         }
     })
@@ -6330,20 +6328,21 @@ function deletePaymentMode(id) {
 
 
 
-
 function grade_level_assign_subject_fetch_subjects(){
+
         let subject_id = $('#grade_level_assign_subject_subject_id').val();
         let subject_name = $('#grade_level_assign_subject_subject_id').find(':selected').text();
-  
-        $('#grade_level_assign_subject_fetch_subject_name').val(subject_name).tagsinput();
 
-        $('#grade_level_assign_subject_fetch_subject_id').val(subject_id).tagsinput();
+        // let b = [];
+       let a = [];
+       a.push(subject_id);
+
+       $('#grade_level_assign_subject_fetch_subject_id').val(aa).tagsinput();
+
+       console.log(a.push(subject_id));
 
 }
 
-function loop(){
-    
-}
 
 
 // End Assign Subject
