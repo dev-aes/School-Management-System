@@ -6329,15 +6329,25 @@ function deletePaymentMode(id) {
 }
 
 
-
-
+var arr=[];
+var add = 0;
 function grade_level_assign_subject_fetch_subjects(){
         let subject_id = $('#grade_level_assign_subject_subject_id').val();
         let subject_name = $('#grade_level_assign_subject_subject_id').find(':selected').text();
-  
-        $('#grade_level_assign_subject_fetch_subject_name').val(subject_name).tagsinput();
+      
+            
+            arr.push(subject_name);
 
-        $('#grade_level_assign_subject_fetch_subject_id').val(subject_id).tagsinput();
+alert(arr);
+
+       
+            $('#grade_level_assign_subject_fetch_subject_name').removeAttr('value');
+            $('#grade_level_assign_subject_fetch_subject_name').val(arr).tagsinput();
+        
+            
+        
+        
+        //$('#grade_level_assign_subject_fetch_subject_id').val(subject_id).tagsinput();
 
 }
 
