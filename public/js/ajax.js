@@ -24,7 +24,12 @@ $(()=> {
      if(window.location.href == route('grade_level.index')) 
     {
         displayGradeLevels();  // after loading the grade level page ; load the grade level data
+       // $('#grade_level_assign_subject_fetch_subject_id').tagsinput();
+        //$('#grade_level_assign_subject_fetch_subject_name').tagsinput();
     }
+
+
+
     if(window.location.href == route('section.index'))
     {
         displaySection(); // after loading the section page ; load the section data
@@ -730,95 +735,95 @@ function createTeacher()  {
 
 // teacher student 
 
-function teacher_createStudent(id) {
-    $('#show_teacher_modal').modal('hide');
-    $('#teacher_addStudent_modal').modal('show');
+    function teacher_createStudent(id) {
+        $('#show_teacher_modal').modal('hide');
+        $('#teacher_addStudent_modal').modal('show');
 
-    $.ajax({
-        url: route('teacher.show', id),
-        data: {id:id},
-        dataType:'json',
-        success: students => {
-            let output= ` `;
-            students[4].forEach(student => {
-                output += ` 
-                        <div class='form-check'>
-                        <input class="form-check-input" type="checkbox" name='student_id[]' value="${student.id}" id="student_id-${student.id}">
-                        <h4 class="form-check-label text-muted" for="flexCheckDefault">
-                         ${student.first_name} ${student.last_name}
-                        </h4>
-                        </div>`;
-                $('#_teacher_id').attr('value', id);
-                $('#teacher_student').html(output);
-            })
-        },
-        error: err => {
-            console.log(err);
-            toastDanger();
-        }
-    })
-}
-
-// Teacher Store Student
-
-function teacher_storeStudent(event) {
-    event.preventDefault();
-    let add_student_form = $('#teacher_add_student_form');
-
-    $.ajax({
-        method: 'POST',
-        url : route('teacher.teacher_store_student'),
-        data: add_student_form.serialize(),
-        success: response => {
-            console.log(response);
-            if(response == 'success') 
-            {
-              return toastSuccess('Student Added');
-            }
-
-            if(response == 'error') {
-              return  toastr.warning('Some of the student is already assigned to your class');
-                
-            }
-
-            if(response == 'not enrolled') {
-                return  toastr.warning('Some of the student/s are not yet enrolled');
-                  
-              }
-
-         
-        },
-        error: err => {
-            toastDanger();
-            console.log(err);
-        }
-    }) 
-}
-
-// Teacher Delete Student
-
-function teacher_destroyStudent(id, teacher_id) {
-    if(confirm("Do you want to delete?"))
-    {
         $.ajax({
-            method: 'DELETE',
-            url: route('teacher.teacher_destroy_student',[ id, teacher_id]),
-            data: {
-                student_id: id,
-                teacher_id : teacher_id
+            url: route('teacher.show', id),
+            data: {id:id},
+            dataType:'json',
+            success: students => {
+                let output= ` `;
+                students[4].forEach(student => {
+                    output += ` 
+                            <div class='form-check'>
+                            <input class="form-check-input" type="checkbox" name='student_id[]' value="${student.id}" id="student_id-${student.id}">
+                            <h4 class="form-check-label text-muted" for="flexCheckDefault">
+                            ${student.first_name} ${student.last_name}
+                            </h4>
+                            </div>`;
+                    $('#_teacher_id').attr('value', id);
+                    $('#teacher_student').html(output);
+                })
             },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
+    }
+
+    // Teacher Store Student
+
+    function teacher_storeStudent(event) {
+        event.preventDefault();
+        let add_student_form = $('#teacher_add_student_form');
+
+        $.ajax({
+            method: 'POST',
+            url : route('teacher.teacher_store_student'),
+            data: add_student_form.serialize(),
             success: response => {
                 console.log(response);
-                  toastSuccess('Student Deleted')
-                  showTeacher(teacher_id);
+                if(response == 'success') 
+                {
+                return toastSuccess('Student Added');
+                }
+
+                if(response == 'error') {
+                return  toastr.warning('Some of the student is already assigned to your class');
+                    
+                }
+
+                if(response == 'not enrolled') {
+                    return  toastr.warning('Some of the student/s are not yet enrolled');
+                    
+                }
+
+            
             },
             error: err => {
                 toastDanger();
                 console.log(err);
             }
-        })
+        }) 
     }
-}
+
+// Teacher Delete Student
+
+    function teacher_destroyStudent(id, teacher_id) {
+        if(confirm("Do you want to delete?"))
+        {
+            $.ajax({
+                method: 'DELETE',
+                url: route('teacher.teacher_destroy_student',[ id, teacher_id]),
+                data: {
+                    student_id: id,
+                    teacher_id : teacher_id
+                },
+                success: response => {
+                    console.log(response);
+                    toastSuccess('Student Deleted')
+                    showTeacher(teacher_id);
+                },
+                error: err => {
+                    toastDanger();
+                    console.log(err);
+                }
+            })
+        }
+    }
 // Teacher Subject
 function teacher_createSubject(id) 
 {
@@ -6302,33 +6307,47 @@ function deletePaymentMode(id) {
 
     function assign_subject() {
     
-    $('#assign_subject').modal('show');
+    $('#grade_level_assign_subject').modal('show');
 
 
     $.ajax({
         url: route('grade_level.display_subjects_for_grade_level'),
         dataType:'json',
         success: subjects => {
-            //return console.log(subjects);
+           let output = `<option></option>`;
+           subjects.forEach(subject=>{
+               output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;
+           })
 
-            let output = `<option> </option>`;
-            subjects.forEach(subject => {
-                output += `<value ='${subject.id}'> ${subject.name} </option>`;
-            });
 
-            // append all fetch subjects information
-            $('#assign_subjects_to_teachers').html(output);
-        },
-        error: err => {
-            console.log(err);
-            toastDanger();
+           
+            $('#grade_level_assign_subject_subject_id').html(output); 
         }
     })
 
     
 }
 
-// End ShowSubject()
+
+
+
+function grade_level_assign_subject_fetch_subjects(){
+        let subject_id = $('#grade_level_assign_subject_subject_id').val();
+        let subject_name = $('#grade_level_assign_subject_subject_id').find(':selected').text();
+  
+        $('#grade_level_assign_subject_fetch_subject_name').val(subject_name).tagsinput();
+
+        $('#grade_level_assign_subject_fetch_subject_id').val(subject_id).tagsinput();
+
+}
+
+function loop(){
+    
+}
+
+
+// End Assign Subject
+
 
 
 

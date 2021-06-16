@@ -2010,40 +2010,51 @@
 
 {{--End Payment Mode--}}
 
-{{--Assign Subjects--}}
 
-<div class="modal fade " id="assign_subject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payment_mode" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header" id="payment_mode_modal_header">
-        <h5 class="modal-title text-primary" id="payment_mode_label">Assign Subjects</h5>
-        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-        </button>
-        </div>
 
-        {{--Alert--}}
-        <div class="alert alert-danger p-3 fade show" id="payment_mode_div_err" role="alert" style="display:none">
-            <ul id="payment_mode_err"></ul>
-        </div>
+{{-- Start Assign Subjects --}}
 
-        <div class="modal-body">
-        <form id="payment_mode_form" autocomplete="off" enctype="multipart/form-data">
-            @csrf
-            <div>
-                <span id="assign_subjects_to_teachers"></span>
-               
+    <div class="modal fade " id="grade_level_assign_subject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="grade_level_assign_subject" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="grade_level_modal_header">
+            <h5 class="modal-title text-primary" id="grade_level_label">Assign Subjects</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
             </div>
-            
-        </form>
-        </div>
 
-        <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn_add_payment_mode" onclick="">Submit</button>
-        <button type="button" class="btn btn-success" id="btn_update_payment_mode" style="display:none" onclick="">Save</button>
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="grade_level_assign_subject_div_err" role="alert" style="display:none">
+                <ul id="grade_level_assign_subject_err"></ul>
+            </div>
+
+            <div class="modal-body">
+            <form id="grade_level_assign_subject_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    
+                    <select  class="form-select" id="grade_level_assign_subject_subject_id" onchange="grade_level_assign_subject_fetch_subjects()">
+                    {{-- Display Subjects to be added on grade level--}}
+                    </select>
+                    
+                </div>
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_name" name="subject_name">
+                    {{-- Fetch id here this must be hidden--}}
+                    <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_id" name="subject_id">
+                </div>
+                
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_grade_level_assign_subject" onclick="">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_grade_level_assign_subject" style="display:none" onclick="">Save</button>
+            </div>
+        </div>
         </div>
     </div>
-    </div>
-</div>
 
 
 {{--End Assign Subjects--}}
