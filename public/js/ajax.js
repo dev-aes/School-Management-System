@@ -82,28 +82,15 @@ $(()=> {
         displayPaymentMode(); // after loading the  payment mode ; load the payment mode data
     }
 
+    if(window.location.href == route('academic_year.index'))
+    {
+        displayAccademicYears(); // after loading the  Academic Year  ; load the  Academic Year data
+        // let tagsValue = '2020-2021';
+        // $('#accademic_year').val(tagsValue).tagsinput();
+         $('#accademic_year').tagsinput();
 
+    }
 
-    
-     AdminDashBoardDisplayUser()
-
-    // setInterval(()=> {
-    //     AdminDashBoardDisplayUser()
-
-    // }, 5000);
-
-    //     $('#parent_student_id').select2({
-    //     dropdownParent: $('#parent_student_modal')
-    // });
-
-    // $('#parent_parent_id').select2({
-    //     dropdownParent: $('#parent_student_modal')
-    // });
-
-    // if(window.location.href == route('home.index'))
-    // {
-       
-    // }
 
     if(navigator.onLine)
     {
@@ -124,11 +111,184 @@ $(()=> {
         e.preventDefault();
         document.body.className = "page-loading";
     },false);
+   
 
 
 
     
+     AdminDashBoardDisplayUser()
+
+    // setInterval(()=> {
+    //     AdminDashBoardDisplayUser()
+
+    // }, 5000);
+
+
+
+    //     $('#parent_student_id').select2({
+    //     dropdownParent: $('#parent_student_modal')
+    // });
+
+    // $('#parent_parent_id').select2({
+    //     dropdownParent: $('#parent_student_modal')
+    // });
+
+    // if(window.location.href == route('home.index'))
+    // {
+       
+    // }
+
+    // TAGS
+
+   
+
+    
 });
+
+// <------------ Start Academic Year
+
+
+// create
+$('#add_accademic_year').on('click', ()=> {
+    $('#accademic_year_modal').modal('show');
+    $('#accademic_year_modal_label').html(`<h3 class='text-white'> Add Academic Year </h3>`);
+    $('#accademic_year_modal_header').removeClass('bg-primary').addClass('bg-success');
+    $('#accademic_year').val('');
+
+
+});
+//index
+function displayAccademicYears()
+{
+    $('#academic_year_DT').DataTable({
+        processing: false,
+        serverSide: true,
+        retrieve: true,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                        // test
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+            }
+        },
+        autoWidth: false,
+        ajax: route('academic_year.index'),
+        columns: [
+            {data: 'id'},
+            {data: 'academic_year'},
+            {data: 'status', render(data){
+                return (data ==1)? data = `<span class='badge bg-success'>active</span>` : data = `<span class='badge bg-warning'>inactive</span>`;
+            }},
+            // {data: 'created_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
+            {data: 'actions', orderable: false, searchable: false}
+
+        ]
+    });
+}
+//store
+function createAY()
+{
+    if(isNotEmpty($('#accademic_year')))
+    {
+        $.ajax({
+            method: 'POST',
+            url: route('academic_year.store'),
+            dataType:'json',
+            data: {academic_year:$('#accademic_year').val()},
+            success: response => {
+                console.log(response);
+                if(response == 'success')
+                {
+                    toastSuccess("Academic Year Added");
+                    $('#academic_year_DT').DataTable().draw();
+                    //$('#accademic_year_modal').modal('hide');
+                }
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
+    }
+}
+//delete
+function deleteAY(id)
+{
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method: 'DELETE',
+                url: route('academic_year.destroy', id),
+                success: response => {
+                      if(response == 'success')
+                      {
+                        $('#academic_year_DT').DataTable().draw();
+                        toastSuccess('Academic Year Deleted');
+                      }
+                  
+                },
+                error: err => { 
+                    toastDanger();
+                    console.log(err);
+                }
+            })
+        }
+      })
+}
+
+// academic year activation
+function activateAY(e)
+{
+    let ay_id = $('#school_ay').val();
+
+    e.preventDefault();
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Please double check before activating",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#95a5a6',
+        confirmButtonText: 'Yes, activate it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method: 'PUT',
+                url: route('academic_year.update', ay_id),
+                success: response => {
+                      if(response == 'success')
+                      {
+                        toastSuccess('Academic Activated');
+                      }
+                },
+                error: err => { 
+                    toastDanger();
+                    console.log(err);
+                }
+            })
+        }
+      })
+}
+
+
+
+
+
+
+
+// ---------------> End Academic Year
 /** <------------------ START SCHOOL MANAGEMENT
  * Display School Data
  */
@@ -138,22 +298,29 @@ function displaySchools() {
         url:route('school.index'),
         dataType: 'json',
         success: school => {
-            let output = `  <li class='list-group-item'> <span class='badge bg-primary'> Name:</span> ${school.school_name} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'>DepEd No:</span> ${school.depEd_no} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> City:</span> ${school.city} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Province:</span> ${school.province} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Country:</span> ${school.country} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Address:</span> ${school.address} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Contact:</span> ${school.contact} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Email:</span> ${school.email} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Website:</span> ${school.website} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Facebook:</span> ${school.facebook} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'>No of Months:</span> ${school.months_no} </li>
+            // display school's information
+            let output = `  <li class='list-group-item'> <span class='badge bg-primary'> Name:</span> ${school[0].school_name} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'>DepEd No:</span> ${school[0].depEd_no} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> City:</span> ${school[0].city} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Province:</span> ${school[0].province} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Country:</span> ${school[0].country} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Address:</span> ${school[0].address} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Contact:</span> ${school[0].contact} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Email:</span> ${school[0].email} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Website:</span> ${school[0].website} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'> Facebook:</span> ${school[0].facebook} </li>
+                            <li class='list-group-item'> <span class='badge bg-primary'>No of Months:</span> ${school[0].months_no} </li>
                          `
 
-            $('#school_img').attr('src', '/storage/uploads/school/' + school.school_logo);
+            $('#school_img').attr('src', '/storage/uploads/school/' + school[0].school_logo);
             $('#school_details').html(output);
 
+            //display all available academic year
+            let ay_output = `<option> </option>`;
+            school[1].forEach(ay => {
+                ay_output+= `<option value='${ay.id}'>${ay.academic_year} </option>`;
+            });
+            $('#school_ay').html(ay_output);
         },
         error : err => {
             console.log(err);

@@ -25,15 +25,15 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="text-muted">Select Academic Year</h3>
-                        <form>
+                        <h3 class="text-muted">Select Academic Year <i class="far fa-calendar"></i></h3>
+                        <form onsubmit="false">
                             <div class="form-group">
                                     <select class="form-select" name="ay" id="school_ay">
                                         {{----}}
                                     </select>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-lg btn-primary form-control mt-2">Activate</button>
+                                <button class="btn btn-lg btn-primary form-control mt-2" onclick="activateAY(event)">Activate</button>
                             </div>
                         </form>
                     </div>
