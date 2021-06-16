@@ -18,6 +18,8 @@ class CreateSubjectStudentTable extends Migration
             $table->foreignId('teacher_id')->constrained('teachers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
