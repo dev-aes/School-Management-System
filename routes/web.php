@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 
 // Admin Restful Controllers
  
+use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeeController;
 use App\Http\Controllers\Admin\SchoolController;
@@ -69,6 +70,7 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::resource('/admin/payment_mode', PaymentModeController::class);
     Route::resource('/admin/section', SectionController::class);
     Route::resource('/admin/grade', GradeController::class);
+    Route::resource('/admin/academic_year', AcademicYearController::class);
 
 
 
