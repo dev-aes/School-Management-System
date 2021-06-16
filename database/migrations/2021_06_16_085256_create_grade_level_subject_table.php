@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubjectsTable extends Migration
+class CreateGradeLevelSubjectTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSubjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('grade_level_subject', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->string('name');
-            $table->string('description');
-            $table->boolean('isAssigned');
+            $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subjects')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSubjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('grade_level_subject');
     }
 }
