@@ -12,7 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, LogsActivity;
+    // use HasFactory, Notifiable, LogsActivity;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,14 +39,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['name', 'email'])
-        ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} user")
-        ->useLogName('user');
-        // Chain fluent methods for configuration options
-    }
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()
+    //     ->logOnly(['name', 'email'])
+    //     ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} user")
+    //     ->useLogName('user');
+    //     // Chain fluent methods for configuration options
+    // }
 
     /**
      * The attributes that should be cast to native types.
