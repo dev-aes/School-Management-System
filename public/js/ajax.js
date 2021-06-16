@@ -24,8 +24,8 @@ $(()=> {
      if(window.location.href == route('grade_level.index')) 
     {
         displayGradeLevels();  // after loading the grade level page ; load the grade level data
-       // $('#grade_level_assign_subject_fetch_subject_id').tagsinput();
-        //$('#grade_level_assign_subject_fetch_subject_name').tagsinput();
+       $('#grade_level_assign_subject_fetch_subject_id').tagsinput();
+        $('#grade_level_assign_subject_fetch_subject_name').tagsinput();
     }
 
 
@@ -6327,28 +6327,22 @@ function deletePaymentMode(id) {
 }
 
 
-
-var arr=[];
-var add = 0;
 function grade_level_assign_subject_fetch_subjects(){
 
         let subject_id = $('#grade_level_assign_subject_subject_id').val();
         let subject_name = $('#grade_level_assign_subject_subject_id').find(':selected').text();
 
-            arr.push(subject_name);
-
-alert(arr);
-
-       
-            $('#grade_level_assign_subject_fetch_subject_name').removeAttr('value');
-            $('#grade_level_assign_subject_fetch_subject_name').val(arr).tagsinput();
-        
-        //$('#grade_level_assign_subject_fetch_subject_id').val(subject_id).tagsinput();
-
-       $('#grade_level_assign_subject_fetch_subject_id').val(aa).tagsinput();
-
-       console.log(a.push(subject_id));
-
+        if(subject_id > 0)
+        {
+            $('.bootstrap-tagsinput').append(`
+            <span class="tag label label-info"> ${subject_name}<span data-role="remove"></span></span>
+                     `);
+        }
+        else
+        {
+            $('.bootstrap-tagsinput span').remove();
+        }
+      
 }
 
 
