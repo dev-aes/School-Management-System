@@ -35,7 +35,20 @@ class PaymentModeController extends Controller
     {
         if(request()->ajax())
         {
-            PaymentMode::create(['title' => request('title')]);
+            // payment modes
+            $pm = request('title');
+
+            //extract payment modes
+           $payment_modes = explode(',', $pm);
+
+           // loop payment modes and get individual payment mode
+            foreach($payment_modes as $payment_mode):
+
+                // store each payment mode
+                PaymentMode::create(['title' => $payment_mode ]);
+
+            endforeach;
+         
             return response()->json('success');
         }
     }

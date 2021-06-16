@@ -922,9 +922,6 @@
 
 
 
-
-
-
 {{--Start Student Modal--}}
 
   <div class="modal fade" id="student_modal" tabindex="-1" role="dialog" aria-labelledby="student_modal_label" aria-hidden="true">
@@ -1221,7 +1218,7 @@
                                 </div>
                             </form>
                             <table class="table table-hover">
-                                <thead>
+                                <thead style="background: none">
                                     <tr>
                                         <th>Type</th>
                                         <th>Amount</th>
@@ -2049,7 +2046,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_name" name="subject_name">
                     {{-- Fetch id here this must be hidden--}}
-                    <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_id" name="subject_id">
+                    <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_id" name="subject_id" style="display:none">
                 </div>
                 
             </form>

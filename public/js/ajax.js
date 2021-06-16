@@ -28,8 +28,6 @@ $(()=> {
         $('#grade_level_assign_subject_fetch_subject_name').tagsinput();
     }
 
-
-
     if(window.location.href == route('section.index'))
     {
         displaySection(); // after loading the section page ; load the section data
@@ -85,6 +83,7 @@ $(()=> {
     if(window.location.href == route('payment_mode.index'))
     {
         displayPaymentMode(); // after loading the  payment mode ; load the payment mode data
+        $('#payment_mode_title').tagsinput();
     }
 
     if(window.location.href == route('academic_year.index'))
@@ -6187,9 +6186,14 @@ function displayPaymentMode() {
 }
 
 $('#add_payment_mode').on('click', () => {
+    $('.bootstrap-tagsinput').show();
+    $('#payment_mode_title').hide();
+
     $('#payment_mode').modal('show');
     $('#payment_mode_label').html(`<h4 class='text-white'> Add Payment Mode </h4>`);
     $('#payment_mode_title').attr('value', ``);
+    $('#payment_mode_title').val('');
+
     $('#btn_add_payment_mode').css('display', 'block');
     $('#btn_update_payment_mode').css('display', 'none');
     $('#payment_mode_modal_header').removeClass('bg-success').addClass('bg-primary');
@@ -6209,6 +6213,7 @@ function createPaymentMode()
             dataType:'json',
             data:{title:payment_mode.val()},
             success: response => {
+                console.log(response);
                 if(response == 'success')
                 {
                     toastSuccess("Payment Mode Added");
@@ -6226,6 +6231,8 @@ function createPaymentMode()
 
 function editPaymentMode(id) {
 
+    $('.bootstrap-tagsinput').hide();
+    $('#payment_mode_title').show();
     $('#btn_add_payment_mode').css('display', 'none');
     $('#btn_update_payment_mode').css('display', 'block');
     $('#payment_mode').modal('show');
@@ -6238,7 +6245,10 @@ function editPaymentMode(id) {
         success: payment_mode => {
             // console.log(payment_mode);
          $('#btn_update_payment_mode').attr('data-id', payment_mode.id);
-         $('#payment_mode_title').attr('value', payment_mode.title);
+         $('#payment_mode_title').val( payment_mode.title);
+
+         //$('#payment_mode_title').attr('value', payment_mode.title);
+
         },
         error: err => {
             console.log(err);
@@ -6338,8 +6348,9 @@ function grade_level_assign_subject_fetch_subjects(){
 
         if(subject_id > 0)
         {
-            $('.bootstrap-tagsinput').append(`
+            $('.bootstrap-tagsinput').prepend(`
             <span class="tag label label-info"> ${subject_name}<span data-role="remove"></span></span>
+            <span class="tag label label-info"> ${subject_id}<span data-role="remove"></span></span>
                      `);
         }
         else
