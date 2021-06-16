@@ -105,12 +105,15 @@
                         </a>
 					</li>
 
-                    <li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('grade_level.index') }}">
-                            <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Grade Level</span>
+					<li class="sidebar-item">
+						<a href="#grade_level" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Grade Level</span>
                         </a>
+						<ul id="grade_level" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('grade_level.index') }}">Manage Grade Level</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="grade_level_assign_subject" href="javascript:void(0)">Assign Subject</a></li>
+						</ul>
 					</li>
-					
 
 					<li class="sidebar-item">
 						<a href="#section" data-bs-toggle="collapse" class="sidebar-link collapsed">
