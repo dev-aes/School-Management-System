@@ -191,6 +191,9 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
     // Display all Declined Parent Payment Request
     Route::get('/admin/payment_request/declined', [ParentPaymentController::class, 'get_payment_declined_payment_request'])->name('parent_payment_request.get_payment_declined_payment_request');
+    Route::get('/admin/payment_request/declined', [ParentPaymentController::class, 'get_payment_declined_payment_request'])->name('parent_payment_request.get_payment_declined_payment_request');
+    
+    
 
 
 
@@ -199,6 +202,10 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::post('/admin/subject/importSubject', [SubjectController::class, 'import'])->name('subject.import');
     Route::post('/admin/teacher/importTeacher', [TeacherController::class, 'import'])->name('teacher.import');
 
+
+
+    //Grade Level Assign Subjects
+    Route::get('/admin/gradeLevel/addSubjects', [SubjectController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
 
 
 });

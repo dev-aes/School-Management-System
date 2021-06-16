@@ -6131,6 +6131,38 @@ function deletePaymentMode(id) {
 
 // ------------- > End Mode of Payment ()
 
+//Assign Subject
+
+    function assign_subject() {
+    
+    $('#assign_subject').modal('show');
+
+
+    $.ajax({
+        url: route('grade_level.display_subjects_for_grade_level'),
+        dataType:'json',
+        success: subjects => {
+            //return console.log(subjects);
+
+            let output = `<option> </option>`;
+            subjects.forEach(subject => {
+                output += `<value ='${subject.id}'> ${subject.name} </option>`;
+            });
+
+            // append all fetch subjects information
+            $('#assign_subjects_to_teachers').html(output);
+        },
+        error: err => {
+            console.log(err);
+            toastDanger();
+        }
+    })
+
+    
+}
+
+// End ShowSubject()
+
 
 
 

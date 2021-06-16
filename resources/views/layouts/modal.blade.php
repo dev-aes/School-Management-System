@@ -589,12 +589,12 @@
             <div class="modal-body">
               <form id="subject_form" autocomplete="off" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class='form-label'>Select Grade Level</label>
                     <select class="form-select" id="subject_grade_level" name="grade_level_id">
                    
                     </select>
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                     <label class='form-label'>Subject Name </label>
@@ -1968,3 +1968,41 @@
 
 
 {{--End Payment Mode--}}
+
+{{--Assign Subjects--}}
+
+<div class="modal fade " id="assign_subject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payment_mode" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header" id="payment_mode_modal_header">
+        <h5 class="modal-title text-primary" id="payment_mode_label">Assign Subjects</h5>
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+        </button>
+        </div>
+
+        {{--Alert--}}
+        <div class="alert alert-danger p-3 fade show" id="payment_mode_div_err" role="alert" style="display:none">
+            <ul id="payment_mode_err"></ul>
+        </div>
+
+        <div class="modal-body">
+        <form id="payment_mode_form" autocomplete="off" enctype="multipart/form-data">
+            @csrf
+            <div>
+                <span id="assign_subjects_to_teachers"></span>
+               
+            </div>
+            
+        </form>
+        </div>
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btn_add_payment_mode" onclick="">Submit</button>
+        <button type="button" class="btn btn-success" id="btn_update_payment_mode" style="display:none" onclick="">Save</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+{{--End Assign Subjects--}}

@@ -52,7 +52,7 @@ class SubjectController extends Controller
         $subject_form_data = request()->validate([
             'name' => 'required|string',
             'description'=>'required|string',
-            'grade_level_id'=>'required|string'
+            // 'grade_level_id'=>'required|string' removed
         ]);
 
         if(request()->ajax()) {
@@ -108,6 +108,12 @@ class SubjectController extends Controller
             $file = $request->file('subjects');
             Excel::import(new SubjectImport, $file);
             return response()->json('success');
+        }
+    }
+
+    public function display_subjects_for_grade_level(){
+        if(request()->ajax()){
+            return response()->json(Subject::all());
         }
     }
 }

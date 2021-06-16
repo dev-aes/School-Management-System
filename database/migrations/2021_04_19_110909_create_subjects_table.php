@@ -15,10 +15,10 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('CASCADE')->onDelete('CASCADE');
+          //  $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('name');
             $table->string('description');
-            $table->boolean('isAssigned');
+            $table->boolean('isAssigned')->default(0);
             $table->timestamps();
         });
     }
