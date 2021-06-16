@@ -6328,14 +6328,22 @@ function deletePaymentMode(id) {
 
 
 
+var arr=[];
+var add = 0;
 function grade_level_assign_subject_fetch_subjects(){
 
         let subject_id = $('#grade_level_assign_subject_subject_id').val();
         let subject_name = $('#grade_level_assign_subject_subject_id').find(':selected').text();
 
-        // let b = [];
-       let a = [];
-       a.push(subject_id);
+            arr.push(subject_name);
+
+alert(arr);
+
+       
+            $('#grade_level_assign_subject_fetch_subject_name').removeAttr('value');
+            $('#grade_level_assign_subject_fetch_subject_name').val(arr).tagsinput();
+        
+        //$('#grade_level_assign_subject_fetch_subject_id').val(subject_id).tagsinput();
 
        $('#grade_level_assign_subject_fetch_subject_id').val(aa).tagsinput();
 
