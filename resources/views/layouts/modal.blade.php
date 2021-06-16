@@ -605,6 +605,13 @@
                     <label class='form-label'>Description </label>
                     <input class="form-control " name="description" type="text" id="subject_description" value="">
                 </div>
+
+                <div class="form-group">
+                    <label class='form-label'>Select Grade Level </label>
+                    <select class="form-select " name="grade_level_id" type="text" id="subject_grade_level" value=""> 
+                    </select>    
+                </div>
+
               </form>
             </div>
     

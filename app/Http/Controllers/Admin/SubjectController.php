@@ -6,6 +6,8 @@ use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use App\Imports\SubjectImport;
 use Yajra\DataTables\DataTables;
+
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -52,12 +54,20 @@ class SubjectController extends Controller
         $subject_form_data = request()->validate([
             'name' => 'required|string',
             'description'=>'required|string',
+
             // 'grade_level_id'=>'required|string' removed
         ]);
 
         if(request()->ajax()) {
 
-            return response()->json(Subject::create($subject_form_data));
+            $subject = Subject::create($subject_form_data);
+            DB::table('grade_level_subject')->insert([
+               'grade_level_id' => request('grade_level_id'),
+               'subject_id' => $subject->id,
+               'created_at' => now()
+            ]);
+
+            return response()->json('success');
         }
     }
 
@@ -73,7 +83,10 @@ class SubjectController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json([$subject,GradeLevel::all(), $subject->grade_level->name]);
+            $recent_subject = $subject->grade_level->first();
+            $grades = GradeLevel::all();
+
+            return response()->json([$subject,$grades, $recent_subject]);
         }
     }
 
@@ -82,13 +95,30 @@ class SubjectController extends Controller
         $subject_form_data = request()->validate([
             'name' => 'required|string',
             'description'=>'required|string',
-            'grade_level_id'=>'required|string'
+           
 
         ]);
 
+        //dd(subject_form_data['grade_level_id']);
         if(request()->ajax()) {
+            
 
-            return response()->json($subject->update($subject_form_data));
+           // return response()->json(['subject_id' => $subject->id,
+             //                         'grade_level_id' => $subject->grade_level[0]->id]);
+          //Grade Level Subject
+             $sub =  DB::table('grade_level_subject')
+                  ->where('grade_level_id', $subject->grade_level[0]->id)
+                  ->where('subject_id',$subject->id)
+                  ->update(['grade_level_id' => request('grade_level_id')]);
+               
+              //Subject Update    
+           $subject->update($subject_form_data); 
+
+             // DB::update("UPDATE grade_level_subject set grade_level_id = $grade_level_id where ID = $sub->id");
+
+           return response()->json();
+        
+        
         }
     }
 

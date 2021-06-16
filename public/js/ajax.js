@@ -1575,6 +1575,7 @@ function createSubject() {
             url: route('subject.store'),
             data: subject_form.serialize(),
             success: response => {
+                console.log(response);
                 toastSuccess('Subject Added');
                 $('#subject_DT').DataTable().draw();
                 subject_form[0].reset();
@@ -1639,17 +1640,19 @@ function showSubject(id)
         cache: false,
         success: subject => {
            $('#subject_modal').modal('show');
-        //    console.log(subject.id);
 
            $('#subject_modal_header').removeClass('bg-primary').addClass('bg-success');
 
+           // display subject by ID
            $('#subject_modal_label').html(`<h4 class='text-white'> Edit Subject <i class="fas fa-edit"></i> </h4> `);
            $('#subject_name').attr('value', subject[0].name);
            $('#subject_description').attr('value', subject[0].description);
            $('#student_grade_level').attr('value', subject[0].grade_level_id);
            $('#btn_add_subject').css('display', 'none');
            $('#btn_update_subject').css('display', 'block').attr('data-id', subject[0].id);
-           let output=`<option value='${subject[0].grade_level_id}'>Current [${subject[0].grade_level.name}]</option>`;
+
+           // display all fetch Grade levels
+           let output=`<option value='${subject[2].id}'>Current [${subject[2].name}]</option>`;
            subject[1].forEach(grade_level => {
                  output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
                  $('#subject_grade_level').html(output);
@@ -1680,6 +1683,7 @@ function updateSubject()
             url: route('subject.update', id),
             data: subject_form.serialize(),
             success: response => {
+                console.log(response);
                 toastSuccess('Subject Updated')
                 $('#subject_DT').DataTable().draw();
                 subject_form[0].reset();

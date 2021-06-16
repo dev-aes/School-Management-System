@@ -33,9 +33,10 @@ class GradeLevel extends Model
         return $this->hasMany(Student::class);
     }
 
-    public function subjects()
+    public function subject()
     {
-        return $this->hasMany(Subject::class);
+        //return $this->hasMany(Subject::class);
+        return $this->belongsToMany(Subject::class);
     }
 
     public function teachers()

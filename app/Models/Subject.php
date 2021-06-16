@@ -14,9 +14,9 @@ class Subject extends Model
 {
     use HasFactory, LogsActivity;
 
-    // protected $guarded = [];
+     protected $guarded = [];
 
-    protected $fillable = ['name', 'description', 'grade_level_id'];
+    //protected $fillable = ['name', 'description', 'grade_level_id'];
 
     // protected static $logAttributes = ['name', 'description'];
 
@@ -52,6 +52,7 @@ class Subject extends Model
 
     public function grade_level()
     {
-        return $this->belongsTo(GradeLevel::class, 'grade_level_id');
+        //return $this->belongsTo(GradeLevel::class, 'grade_level_id');
+        return $this->belongsToMany(GradeLevel::class);
     }
 }
