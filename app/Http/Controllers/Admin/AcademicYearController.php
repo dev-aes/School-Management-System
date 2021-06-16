@@ -33,8 +33,17 @@ class AcademicYearController extends Controller
     {
         if(request()->ajax())
         {
-            AcademicYear::create(['academic_year' => request('academic_year')]);
+            $ay = request('academic_year');
 
+           $academic_years = explode(',', $ay);
+
+
+           foreach($academic_years as $academic_year):
+
+            AcademicYear::create(['academic_year' => $academic_year ]);
+
+           endforeach;
+         
             return response()->json('success');
         }
     }

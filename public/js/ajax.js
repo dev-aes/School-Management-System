@@ -85,32 +85,12 @@ $(()=> {
     if(window.location.href == route('academic_year.index'))
     {
         displayAccademicYears(); // after loading the  Academic Year  ; load the  Academic Year data
+        // let tagsValue = '2020-2021';
+        // $('#accademic_year').val(tagsValue).tagsinput();
+         $('#accademic_year').tagsinput();
+
     }
 
-   
-
-
-
-    
-     AdminDashBoardDisplayUser()
-
-    // setInterval(()=> {
-    //     AdminDashBoardDisplayUser()
-
-    // }, 5000);
-
-    //     $('#parent_student_id').select2({
-    //     dropdownParent: $('#parent_student_modal')
-    // });
-
-    // $('#parent_parent_id').select2({
-    //     dropdownParent: $('#parent_student_modal')
-    // });
-
-    // if(window.location.href == route('home.index'))
-    // {
-       
-    // }
 
     if(navigator.onLine)
     {
@@ -131,6 +111,36 @@ $(()=> {
         e.preventDefault();
         document.body.className = "page-loading";
     },false);
+   
+
+
+
+    
+     AdminDashBoardDisplayUser()
+
+    // setInterval(()=> {
+    //     AdminDashBoardDisplayUser()
+
+    // }, 5000);
+
+
+
+    //     $('#parent_student_id').select2({
+    //     dropdownParent: $('#parent_student_modal')
+    // });
+
+    // $('#parent_parent_id').select2({
+    //     dropdownParent: $('#parent_student_modal')
+    // });
+
+    // if(window.location.href == route('home.index'))
+    // {
+       
+    // }
+
+    // TAGS
+
+   
 
     
 });
@@ -190,11 +200,12 @@ function createAY()
             dataType:'json',
             data: {academic_year:$('#accademic_year').val()},
             success: response => {
+                console.log(response);
                 if(response == 'success')
                 {
                     toastSuccess("Academic Year Added");
                     $('#academic_year_DT').DataTable().draw();
-                    $('#accademic_year_modal').modal('hide');
+                    //$('#accademic_year_modal').modal('hide');
                 }
             },
             error: err => {

@@ -654,38 +654,38 @@
 
 
 {{--Start Accademic Year Modal--}}
-<div class="modal fade" id="accademic_year_modal" tabindex="-1" role="dialog" aria-labelledby="accademic_year_modal_label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header" id="accademic_year_modal_header">
-        <h5 class="modal-title text-primary" id="accademic_year_modal_label">{{--Modal Title--}}</h5>
-        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-        </button>
-        </div>
-
-        {{--Alert--}}
-        <div class="alert alert-danger p-3 fade show" id="accademic_year_div_err" role="alert" style="display:none">
-            <ul id="accademic_year_err"></ul>
-        </div>
-
-        <div class="modal-body">
-        <form id="accademic_year_form" autocomplete="off" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label class='form-label'>Add Year *</label>
-                <input class="form-control" name="name" type="text" id="accademic_year" value="" placeholder="2020-2021">
-                <span id="accademic_year_err"></span>
+    <div class="modal fade" id="accademic_year_modal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="accademic_year_modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="accademic_year_modal_header">
+            <h5 class="modal-title text-primary" id="accademic_year_modal_label">{{--Modal Title--}}</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
             </div>
-        </form>
-        </div>
 
-        <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn_add_accademic_year" onclick="createAY()">Submit</button>
-        <button type="button" class="btn btn-success" id="btn_update_accademic_year" style="display:none" onclick="updateAY()">Save</button>
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="accademic_year_div_err" role="alert" style="display:none">
+                <ul id="accademic_year_err"></ul>
+            </div>
+
+            <div class="modal-body">
+            <form id="accademic_year_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label class='form-label'>Add Year *</label>
+                    <input class="form-control" name="name" type="text" id="accademic_year" value="" >
+                    <span id="accademic_year_err"></span>
+                </div>
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_accademic_year" onclick="createAY()">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_accademic_year" style="display:none" onclick="updateAY()">Save</button>
+            </div>
+        </div>
         </div>
     </div>
-    </div>
-</div>
 
 
 {{--End Accademic Year Modal--}}
