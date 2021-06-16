@@ -171,7 +171,7 @@
                 </div>
                 <table class="table table-hover my-0 caption-top p-5" id="dashboard_user_DT">
                     <caption class="p-3">List of users</caption>
-                    <thead>
+                    <thead style="background: none">
                         <tr>
                             <th>#</th>
                             <th>Name</th>

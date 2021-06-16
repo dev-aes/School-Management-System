@@ -11,7 +11,6 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="text-center text-primary update text-uppercase" id="teacher_info">Teacher Information <i class="fas fa-info-circle"></i></h1>
                         <a class=" float-end btn btn-sm btn-info me-3" href="javascript:void(0)" id="add_teacher"><i class="fas fa-user-plus"></i> Add Teacher</a><br>
                         <div class="card-body">
                             <div class="table-responsive">
