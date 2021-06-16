@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\StudentFeeController;
 use App\Http\Controllers\Admin\PaymentReportController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SubjectStudentController;
 use App\Models\User;
 
 // User Restful Controllers
@@ -94,7 +95,12 @@ Route::middleware(['auth' , 'admin'])->group(function() {
         Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
 
     // End
+    
+    //Assign Subject Student
+    Route::post('/admin/home/teacher/storeSubjectStudent', [SubjectStudentController::class, 'store'])->name('subjectstudent.subjectstudentstore');
 
+    
+    //End
 
 
 

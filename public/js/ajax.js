@@ -1285,6 +1285,26 @@ function teacher_assign_subject_to_student_display_section()
     }
 }
 
+//Assign Subject to student
+
+function teacher_assign_subject_to_student(){
+
+    let teacher_assign_subject_to_student_form = $('#teacher_assign_subject_to_student_form');
+
+    $.ajax({
+        method: 'POST',
+        url: route('subjectstudent.subjectstudentstore'),
+        data: teacher_assign_subject_to_student_form.serialize(),
+        success: response => {
+           console.log('success');
+        },
+        error: err => {
+           
+        }
+    })
+
+
+}
 
 
 //  END TEACHER MANAGEMENT --------------->
