@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Fee;
 use App\Models\Section;
+use App\Models\Subject;
 use App\Models\Teacher;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;

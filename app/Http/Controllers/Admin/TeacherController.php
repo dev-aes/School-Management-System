@@ -1,16 +1,17 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Models\Section;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
+use App\Imports\TeacherImport;
+use App\Models\SubjectStudent;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Imports\TeacherImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
@@ -210,38 +211,28 @@ public function teacher_destroy_student()
 
 // end
 
-/** TODO  Subject Teacher */
+/** TODO  Assign subjects to teacher */
     public function teacher_store_subject()
     {
         if(request()->ajax())
         {
-            $subject = DB::table('subject_teacher')
-                           ->where('subject_id', request('subject_id'))
-                           ->where('teacher_id', request('teacher_id'))
-                           ->get();
+           
 
-            if(!$subject->count()>0)
-            {
-                $data = request()->validate([
-                    'teacher_id' => 'required',
-                    'subject_id' => 'required'
-                ]);
-
-                foreach(request('subject_id') as $subject_id) {
-
-                    $data['subject_id'] = $subject_id;
-                    DB::table('subject_teacher')->insert($data);
-                    
-                   }
-       
-    
-               // DB::table('subject_teacher')->insert($data);
-    
-                return response()->json('success');
+            $input = request()->all(); // subject ids array()
+          // return response()->json($input['subject_id']);
+            foreach($input['subject_id'] as $subject_id){
+                
+                DB::table('subject_teacher')->insert([
+                    'teacher_id' => $input['teacher_id'],
+                    'subject_id' => $subject_id,
+                    'created_at' => now()
+                 ]);
             }
 
-            return response()->json('error');
            
+            
+
+           return response()->json('success');
         }
     } //end
 
@@ -264,7 +255,8 @@ public function teacher_destroy_student()
     {
         if(request()->ajax())
         {
-            return response()->json(Teacher::all());
+
+            return response()->json([Teacher::all(),GradeLevel::all()]);
         }
     }
 
@@ -280,7 +272,7 @@ public function teacher_destroy_student()
     {
         if(request()->ajax())
         {
-            return response()->json($gradeLevel->subjects);
+            return response()->json($gradeLevel->subject);
         }
     }
 
@@ -328,8 +320,24 @@ public function teacher_destroy_student()
             // 'grade_level_id'=>'required|string' removed
         ]);
 
+
+
         if(request()->ajax()) {
- 
+
+            $teacher_section = DB::table('section_teacher') //check if teacher already assigned to a section
+                ->where('section_id',$assign_teacher_section['section_id'])
+                ->where('teacher_id',$assign_teacher_section['teacher_id'])
+                ->first();
+
+//            return response()->json($id);
+
+            if($teacher_section)
+            {
+                return response()->json('error');
+            }
+
+
+           
             DB::table('section_teacher')->insert([
                'teacher_id' => $assign_teacher_section['teacher_id'],
                'section_id' => $assign_teacher_section['section_id'],

@@ -1075,15 +1075,27 @@ $('#teacher_add_subject2').on('click', ()=> {
     $('#teacher_add_subject2_modal_header').removeClass('bg-success').addClass('bg-primary');
 
 
+  //  
     $.ajax({
         url: route('teacher.teacher_create_subject_2'),
         dataType:'json',
         success: teachers => {
+           // return console.log(teachers);
+
+           //display teachers
             let output = `<option> </option>`;
-                teachers.forEach(teacher => {
+                teachers[0].forEach(teacher => {
                     output += `<option value='${teacher.id}'> ${teacher.id} - ${teacher.first_name} ${teacher.last_name} </option>`
                 });
                 $('#teacher_subject2_teacher').html(output);
+
+             //Display grade levels
+             let gl = `<option> </option>`;
+                teachers[1].forEach(grade_level => {
+                    gl += `<option value='${grade_level.id}'> ${grade_level.name} </option>`
+                });
+                $('#teacher_subject2_grade_level').html(gl);
+
         },
         error: err => {
             console.log(err);
@@ -1092,36 +1104,14 @@ $('#teacher_add_subject2').on('click', ()=> {
     })
 
 }); 
-    //display all subject by teacher's grade_level
-function teacher_subject2_display_grade_level() {
-  let teacher_id = $('#teacher_subject2_teacher').val();
 
-  if(parseInt(teacher_id) > 0)
-  {
-      $.ajax({
-          url: route('teacher.teacher_display_by_teacher_id', teacher_id),
-          dataType:'json',
-          success: teacher => {
-              $('#teacher_subject2_grade_level_id').attr('value', teacher);//Grade Level ID
-
-              teacher_subject2_display_subjects_by_teacher_grade_level_id( $('#teacher_subject2_grade_level_id').attr('value') );
-          },
-          error: err => {
-              console.log(err);
-              toastDanger();
-          }
-      })
-  }
-  else
-  {
-    $('#teacher_subject2_teacher').attr('value', "");
-    $('#teacher_subject2_grade_level_id').attr('value', "");
-    $('#teacher_subject2_subject').html("");
-  }
-  
+//Display subjects by grade level
+function teacher_subject2_display_subjects_by_grade_level(){
+  let gl =  $('#teacher_subject2_grade_level').val();
+    teacher_subject2_display_subjects_by_teacher_grade_level_id(gl);
 }
 
-
+// display subjects by grade level id
 function teacher_subject2_display_subjects_by_teacher_grade_level_id(id) {
 
     if(id > 0)
@@ -1130,6 +1120,7 @@ function teacher_subject2_display_subjects_by_teacher_grade_level_id(id) {
             url: route('teacher.teacher_subject2_display_subjects_by_teacher_grade_level_id', id),
             dataType:'json',
             success: subjects => {
+               // return console.log(subjects);
                 let output= ` `;
                 subjects.forEach(subject => {
                     output += ` 
@@ -1156,6 +1147,36 @@ function teacher_subject2_display_subjects_by_teacher_grade_level_id(id) {
 
 }
 
+    //display all subject by teacher's grade_level
+    function teacher_subject2_display_grade_level() {
+        let teacher_id = $('#teacher_subject2_teacher').val();
+      
+        if(parseInt(teacher_id) > 0)
+        {
+            $.ajax({
+                url: route('teacher.teacher_display_by_teacher_id', teacher_id),
+                dataType:'json',
+                success: teacher => {
+                    $('#teacher_subject2_grade_level_id').attr('value', teacher);//Grade Level ID
+      
+                    teacher_subject2_display_subjects_by_teacher_grade_level_id( $('#teacher_subject2_grade_level_id').attr('value') );
+                },
+                error: err => {
+                    console.log(err);
+                    toastDanger();
+                }
+            })
+        }
+        else
+        {
+          $('#teacher_subject2_teacher').attr('value', "");
+          $('#teacher_subject2_grade_level_id').attr('value', "");
+          $('#teacher_subject2_subject').html("");
+        }
+        
+      }
+      
+
 
 
 function teacher_subject_2_store_teacher_subject() {
@@ -1166,6 +1187,7 @@ function teacher_subject_2_store_teacher_subject() {
        dataType:'json',
        data:teacher_subject2_form.serialize(),
        success: response => {
+           return console.log(response);
             if(response == 'success')
             {
                 toastSuccess('Subject Added');
@@ -1479,7 +1501,12 @@ function teacher_assign_section(){
             section_id: section_id
         },
         success: response => {
-           console.log(response);
+            if(response == 'success'){
+                return toastSuccess("Teacher Assigned");
+            }
+            if(response == 'error'){
+                return toastr.warning("Section already assigned");
+            }    
         },
         error: err => {
            
@@ -2280,6 +2307,23 @@ function section_store_teacher()
     }
 }
 
+
+//Displays Students in a Sections
+
+function show_students_and_teacher_in_section(id){
+    $.ajax({
+        url:route('section.show_students_and_teacher_in_section',id),
+        dataType:'json',
+
+        success: response => {
+            console.log(response);
+        },
+        error: err => {
+            console.log(err);
+        }
+        
+    })
+}
 
 // ------------> End Section()
 

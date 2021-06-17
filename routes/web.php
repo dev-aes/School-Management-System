@@ -87,6 +87,9 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::get('/admin/home/createTeacher', [SectionController::class, 'section_create_teacher'])->name('section.section_create_teacher');
     Route::post('/admin/home/createTeacher', [SectionController::class, 'section_store_teacher'])->name('section.section_store_teacher');
 
+
+    //Section Route for students with section
+    Route::get('/admin/section/{section}', [SectionController::class, 'show_students_and_teacher_in_section'])->name('section.show_students_and_teacher_in_section');
     
     // teacher assign subject to student 
 

@@ -423,7 +423,7 @@
                     
                     <div class="form-group">
                         <label class='form-label'>Select Teacher</label>
-                        <select class="form-select" id="teacher_subject2_teacher" name="teacher_id" onchange="teacher_subject2_display_grade_level()">
+                        <select class="form-select" id="teacher_subject2_teacher" name="teacher_id">
                             {{--Select Teacher--}}
                         </select>
                     </div>
@@ -431,11 +431,16 @@
 
                     <div class="form-group">
                         <label class="form-label">Grade Level</label>
-                        <input class="form-control" type="text" id="teacher_subject2_grade_level_id" name="teacher_subject2_grade_level_id" readonly>
+                        {{-- <input class="form-control" type="text" id="teacher_subject2_grade_level_id" name="teacher_subject2_grade_level_id" readonly> --}}
+                        
+                        <select class="form-select" id="teacher_subject2_grade_level" name="grade_level_id" onchange="teacher_subject2_display_subjects_by_grade_level()">
+                            {{--Select Teacher--}}
+                        </select>
+                        
                     </div>
                     <br>
                     <label class='form-label'>Select Subject</label>
-                    <div id="teacher_subject2_subject">
+                    <div id="teacher_subject2_subject" name="teacher_subject2_subject">
                         {{--Display Available Subject by Teacher's grade Level--}}
                     </div>
                 </form>

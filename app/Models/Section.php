@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Section;
+use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\GradeLevel;
 use Illuminate\Database\Eloquent\Model;
@@ -22,4 +24,9 @@ class Section extends Model
     {
         return $this->belongsToMany(Teacher::class);
     }
+
+    public function student(){
+        return $this->hasMany(Student::class);
+    }
+
 }

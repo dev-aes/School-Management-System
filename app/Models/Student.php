@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Fee;
+use App\Models\Section;
+use App\Models\Student;
 use App\Models\ParentModel;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -49,6 +51,10 @@ class Student extends Model
     {
         return $this->belongsToMany(ParentModel::class, 'parent_student', 'parent_id', 'student_id');
     }
+
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }   
 
     public function getCreatedAtAttribute($value) {
         //return Carbon::parse($value)->format('m-d-Y h:iA');

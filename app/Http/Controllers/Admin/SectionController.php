@@ -22,6 +22,7 @@ class SectionController extends Controller
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showSection" onclick="showSection('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editSection" onclick="editSection('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteSection" onclick="deleteSection('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteSection" onclick="showStudentsAndTeacherInASection('.$row->id.')"><i class="fas fa-trash"></i> View Students</a>';
 
                     return $btn;
            })
@@ -129,4 +130,12 @@ class SectionController extends Controller
         
         }
     }
+
+    public function show_students_and_teacher_in_section(Section $section){
+        if(request()->ajax())
+        {
+            return response()->json($section->student);
+        }
+    }
+
 }
