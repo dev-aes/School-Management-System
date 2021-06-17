@@ -43,7 +43,8 @@ class GradeLevelController extends Controller
         {
             $grade_level_form_data = request()->validate([
                 'name' => 'string',
-                'description'=>'string'
+                'description'=>'string',
+                'grade_val' => 'integer'
             ]);
             
             $months_no = School::all('months_no')->first();
@@ -77,7 +78,9 @@ class GradeLevelController extends Controller
     {
          $grade_level_form_data = request()->validate([
             'name' => 'required|string',
-            'description'=>'required|string'
+            'description'=>'required|string',
+            'grade_val' => 'integer'
+
         ]);
 
         if(request()->ajax()) {

@@ -590,28 +590,23 @@
             <div class="modal-body">
               <form id="subject_form" autocomplete="off" enctype="multipart/form-data">
                 @csrf
-                {{-- <div class="form-group">
-                    <label class='form-label'>Select Grade Level</label>
-                    <select class="form-select" id="subject_grade_level" name="grade_level_id">
-                   
-                    </select>
-                </div> --}}
-
-                <div class="form-group">
-                    <label class='form-label'>Subject Name </label>
-                    <input class="form-control " name="name" type="text" id="subject_name" value="">
-                </div>
-                <div class="form-group">
-                    <label class='form-label'>Description </label>
-                    <input class="form-control " name="description" type="text" id="subject_description" value="">
-                </div>
 
                 <div class="form-group">
                     <label class='form-label'>Select Grade Level </label>
-                    <select class="form-select " name="grade_level_id" type="text" id="subject_grade_level" value=""> 
+                    <select class="form-select " name="grade_level_id" type="text" id="subject_grade_level" > 
+                        {{--Display Grade Levels--}}
                     </select>    
                 </div>
+                <div class="form-group">
+                    <label class='form-label'>Subject Name </label>
+                    <input class="form-control " name="name" type="text" id="subject_name" >
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Description </label>
+                    <input class="form-control " name="description" type="text" id="subject_description">
+                </div>
 
+            
               </form>
             </div>
     
@@ -722,6 +717,11 @@
                 <div class="form-group">
                     <label class='form-label'>Grade Name </label>
                     <input class="form-control" name="name" type="text" id="grade_level_name" value="">
+                    <span id="grade_level_name_err"></span>
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Grade Level </label>
+                    <input class="form-control" name="grade_val" type="number" min="0" max="12" id="grade_level_grade_val" value="">
                     <span id="grade_level_name_err"></span>
                 </div>
                 <div class="form-group">

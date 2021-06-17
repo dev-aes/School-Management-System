@@ -24,8 +24,8 @@ $(()=> {
      if(window.location.href == route('grade_level.index')) 
     {
         displayGradeLevels();  // after loading the grade level page ; load the grade level data
-       $('#grade_level_assign_subject_fetch_subject_id').tagsinput();
-        $('#grade_level_assign_subject_fetch_subject_name').tagsinput();
+    //    $('#grade_level_assign_subject_fetch_subject_id').tagsinput();
+    //     $('#grade_level_assign_subject_fetch_subject_name').tagsinput();
     }
 
     if(window.location.href == route('section.index'))
@@ -1851,8 +1851,9 @@ function createGradeLevel() {
 
     let name = $('#grade_level_name');
     let description = $('#grade_level_description');
+    let grade_val = $('#grade_level_grade_val');
 
-    if(isNotEmpty(name) && isNotEmpty(description)) 
+    if(isNotEmpty(name) && isNotEmpty(description) && isNotEmpty(grade_val)) 
     {
         $.ajax({
             method: 'POST',
@@ -1926,6 +1927,7 @@ function createGradeLevel() {
            $('#grade_level_modal_label').html(`<h4 class='text-white'> Edit Grade Level <i class="fas fa-edit"></i> </h4> `);
            $('#grade_level_name').attr('value', grade_level.name);
            $('#grade_level_description').attr('value', grade_level.description);
+           $('#grade_level_grade_val').attr('value', grade_level.grade_val);
            $('#btn_add_grade_level').css('display', 'none');
            $('#btn_update_grade_level').css('display', 'block').attr('data-id', grade_level.id);
            $('#grade_level_modal_header').removeClass('bg-primary').addClass('bg-success');
@@ -1947,6 +1949,8 @@ function updateGradeLevel() {
     let name = $('#grade_level_name');
     let description = $('#grade_level_description');
     let id = $('#btn_update_grade_level').attr('data-id');
+    let grade_val = $('#grade_level_grade_val');
+
 
     if(isNotEmpty(name) && isNotEmpty(description)) 
     {

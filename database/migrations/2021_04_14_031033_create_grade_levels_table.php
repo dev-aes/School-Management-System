@@ -15,6 +15,7 @@ class CreateGradeLevelsTable extends Migration
     {
         Schema::create('grade_levels', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('grade_val');
             $table->string('name');
             $table->string('description');
             $table->float('total_amount')->default(0);
