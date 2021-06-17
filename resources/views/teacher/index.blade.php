@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a class=" float-end btn btn-sm btn-info me-3" href="javascript:void(0)" id="add_teacher"><i class="fas fa-user-plus"></i> Add Teacher</a><br>
+                        <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_teacher">Add Teacher <i class="ms-1 fas fa-user-plus"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover" id="teacher_DT">

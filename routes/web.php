@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ParentPaymentController;
 use App\Http\Controllers\Admin\PaymentModeController;
 use App\Http\Controllers\Admin\StudentFeeController;
 use App\Http\Controllers\Admin\PaymentReportController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SubjectStudentController;
@@ -71,6 +72,7 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::resource('/admin/section', SectionController::class);
     Route::resource('/admin/grade', GradeController::class);
     Route::resource('/admin/academic_year', AcademicYearController::class);
+    Route::resource('/admin/role', RoleController::class);
 
 
 
