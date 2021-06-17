@@ -2612,6 +2612,7 @@ function createStudent() {
             processData: false,
             contentType: false,
             success: response => {
+                console.log(response);
                 toastSuccess('Student Added');
                 $('#student_DT').DataTable().draw();
                 student_form.reset();
