@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h1 class="text-center text-primary update text-uppercase" id="subject_info">User Management <i class="fas fa-user-cog"></i></h1>
-                        <a class=" float-end btn btn-sm btn-info me-3" href="javascript:void(0)" id="add_user">Add User +</a><br>
+                        <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_user">Add User <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover" id="user_DT">
