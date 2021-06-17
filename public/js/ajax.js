@@ -2351,8 +2351,6 @@ function section_store_teacher()
 }
 
 
-<<<<<<< HEAD
-//Displays Students in a Sections
 
 function show_students_and_teacher_in_section(id){
     $.ajax({
@@ -2369,11 +2367,8 @@ function show_students_and_teacher_in_section(id){
     })
 }
 
-// ------------> End Section()
 
-=======
-//* ------------> End Section()
->>>>>>> staging
+
 
 
 
