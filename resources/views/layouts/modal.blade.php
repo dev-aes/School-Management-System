@@ -1303,8 +1303,9 @@
                 </div>
                 <div class="form-group">
                     <label class='form-label'>Grade Level</label>
-                    {{-- If the user selected the student it will automatically populate its grade level in this input--}}
-                    <input class="form-control" name="student_fee_grade_level_id" type="text" id="student_fee_grade_level_id" value="" readonly>
+                    {{-- If the user selected the student it will automatically populate its grade level (by grade_level_id) in this input--}}
+                    <input class="form-control d-none" name="student_fee_grade_level_id" type="text" id="student_fee_grade_level_id" value="" readonly>
+                    <input class="form-control" id="student_fee_grade_level_val" type="text" readonly>
                 </div>
                 <div class="form-group">
                     <label class='form-label'>Add Discount <small class="text-muted">(Optional)</small> </label>
@@ -1926,9 +1927,9 @@
     {{--Show Parent --}}
 
     <div class="modal fade" id="show_parent_modal" tabindex="-1" role="dialog" aria-labelledby="show_parent_modal" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen " role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="show_parent_modal_header">
                     <h5 class="modal-title text-primary" id="show_parent_modal_label">{{--Modal Title--}}</h5>
                     <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -1949,7 +1950,7 @@
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <caption>List of students</caption>
-                                    <thead>
+                                    <thead style="background:none">
                                         <tr>
                                             <th>Name</th>
                                             <th>Grade Level</th>
@@ -1975,44 +1976,6 @@
 
 {{--End Parent Modal--}}
 
-
-{{--Payment Mode--}}
-
-    <div class="modal fade " id="payment_mode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payment_mode" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" id="payment_mode_modal_header">
-            <h5 class="modal-title text-primary" id="payment_mode_label">{{--Modal Title--}}</h5>
-            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-            </button>
-            </div>
-
-            {{--Alert--}}
-            <div class="alert alert-danger p-3 fade show" id="payment_mode_div_err" role="alert" style="display:none">
-                <ul id="payment_mode_err"></ul>
-            </div>
-
-            <div class="modal-body">
-            <form id="payment_mode_form" autocomplete="off" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label class='form-label'>Payment Mode:</label>
-                    <input class="form-control" name="title" type="text" id="payment_mode_title" value="">
-                </div>
-                
-            </form>
-            </div>
-
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="btn_add_payment_mode" onclick="createPaymentMode()">Submit</button>
-            <button type="button" class="btn btn-success" id="btn_update_payment_mode" style="display:none" onclick="updatePaymentMode()">Save</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-
-{{--End Payment Mode--}}
 
 
 
@@ -2062,3 +2025,81 @@
 
 
 {{--End Assign Subjects--}}
+
+
+
+{{--Payment Mode--}}
+
+    <div class="modal fade " id="payment_mode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payment_mode" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="payment_mode_modal_header">
+            <h5 class="modal-title text-primary" id="payment_mode_label">{{--Modal Title--}}</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="payment_mode_div_err" role="alert" style="display:none">
+                <ul id="payment_mode_err"></ul>
+            </div>
+
+            <div class="modal-body">
+            <form id="payment_mode_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label class='form-label'>Payment Mode:</label>
+                    <input class="form-control" name="title" type="text" id="payment_mode_title" value="">
+                </div>
+                
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_payment_mode" onclick="createPaymentMode()">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_payment_mode" style="display:none" onclick="updatePaymentMode()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+{{--End Payment Mode--}}
+
+
+{{--Start Roles ()--}}
+
+    <div class="modal fade " id="role_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="role" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="role_modal_header">
+            <h5 class="modal-title text-primary" id="role_modal_label">{{--Modal Title--}}</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="role_div_err" role="alert" style="display:none">
+                <ul id="role_err"></ul>
+            </div>
+
+            <div class="modal-body">
+            <form id="role_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label class='form-label'>Role :</label>
+                    <input class="form-control" name="name" type="text" id="role_title" value="">
+                </div>
+                
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_role" onclick="createRole()">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_role" style="display:none" onclick="updateRole()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{{--End Role--}}

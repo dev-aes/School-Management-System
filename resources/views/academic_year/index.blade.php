@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h1 class="text-center text-primary update text-uppercase" id="payment_mode_info">Academic Year <i class="fas fa-info-circle"></i></h1>
-                        <a class=" float-end btn btn-sm btn-info me-3" href="javascript:void(0)" id="add_accademic_year">Academic Year +</a><br>
+                        <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_accademic_year">Academic Year <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover" id="academic_year_DT">

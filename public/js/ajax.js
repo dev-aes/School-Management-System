@@ -1,7 +1,7 @@
 
 $(()=> {
 
-    // Cross Site Protection
+    //* Cross Site Protection
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -31,6 +31,12 @@ $(()=> {
     if(window.location.href == route('section.index'))
     {
         displaySection(); // after loading the section page ; load the section data
+        $('#section_section_id').select2({
+            dropdownParent: $('#section_teacher_modal')
+        });
+        $('#section_teacher_id').select2({
+            dropdownParent: $('#section_teacher_modal')
+        });
     }
     if(window.location.href == route('student.index')) 
     {
@@ -95,6 +101,12 @@ $(()=> {
 
     }
 
+    if(window.location.href == route('role.index'))
+    {
+        displayRoles(); // after loading the Role ; load the Role data
+        $('#role_title').tagsinput(); 
+    }
+
 
     if(navigator.onLine)
     {
@@ -149,8 +161,10 @@ $(()=> {
     
 });
 
-// <------------ Start Academic Year
-
+/** 
+ * * <------------ Start Academic Year
+ * TODO CRUD Academic Year (Completed)
+ */
 
 // create
 $('#add_accademic_year').on('click', ()=> {
@@ -286,16 +300,16 @@ function activateAY(e)
       })
 }
 
+//* ---------------> End Academic Year
 
 
-
-
-
-
-// ---------------> End Academic Year
-/** <------------------ START SCHOOL MANAGEMENT
- * Display School Data
+/** 
+ * * <------------------ START SCHOOL MANAGEMENT
+ * TODO CRUD School (Completed)
  */
+
+
+// index
 function displaySchools() {
 
     $.ajax({
@@ -303,18 +317,118 @@ function displaySchools() {
         dataType: 'json',
         success: school => {
             // display school's information
-            let output = `  <li class='list-group-item'> <span class='badge bg-primary'> Name:</span> ${school[0].school_name} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'>DepEd No:</span> ${school[0].depEd_no} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> City:</span> ${school[0].city} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Province:</span> ${school[0].province} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Country:</span> ${school[0].country} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Address:</span> ${school[0].address} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Contact:</span> ${school[0].contact} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Email:</span> ${school[0].email} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Website:</span> ${school[0].website} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'> Facebook:</span> ${school[0].facebook} </li>
-                            <li class='list-group-item'> <span class='badge bg-primary'>No of Months:</span> ${school[0].months_no} </li>
-                         `
+           
+            // let output = `  <div id='stud' class="d-flex justify-content-between border border-sm-border-5 p-5">
+            //                     <div class="school_key">
+            //                         <h4 class=''>Name:</h4>
+            //                         <h4 class=''>DepEd No:</h4>
+            //                         <h4 class=''>City:</h4>
+            //                         <h4 class=''>Province:</h4>
+            //                         <h4 class=''>Country:</h4>
+            //                         <h4 class=''>Address:</h4>
+            //                         <h4 class=''>Contact:</h4>
+            //                         <h4 class=''>Email:</h4>
+            //                         <h4 class=''>Website:</h4>
+            //                         <h4 class=''>Facebook:</h4>
+            //                         <h4 class=''>No of Months:</h4>
+            //                     </div>
+            //                     <div class="school_value">
+            //                         <h4 class=''>${school[0].school_name}</h4>
+            //                         <h4 class=''>${school[0].depEd_no}</h4>
+            //                         <h4 class=''>${school[0].city}</h4>
+            //                         <h4 class=''>${school[0].province}</h4>
+            //                         <h4 class=''>${school[0].country}</h4>
+            //                         <h4 class=''>${school[0].address}</h4>
+            //                         <h4 class=''>${school[0].contact}</h4>
+            //                         <h4 class=''>${school[0].email}</h4>
+            //                         <h4 class=''> ${school[0].website}</h4>
+            //                         <h4 class=''>${school[0].facebook}</h4>
+            //                         <h4 class=''>${school[0].months_no}</h4>
+            //                     </div>
+            //                 </div>`;
+
+            let output = `<table class="table table-borderless" style='width:65%;margin-left:auto;'>
+                                <tbody>
+                                <tr>
+                                    <th></th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>School</th>
+                                    <td>${school[0].school_name}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>DepEd No</th>
+                                    <td>${school[0].depEd_no}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>City</th>
+                                    <td>${school[0].city}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Province</th>
+                                    <td>${school[0].province}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Country</th>
+                                    <td>${school[0].country}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td>${school[0].address}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Contact</th>
+                                    <td>${school[0].contact}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>${school[0].email}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Website</th>
+                                    <td>${school[0].website}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Facebook</th>
+                                    <td>${school[0].facebook}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <th>No of Months</th>
+                                    <td>${school[0].months_no}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            
+                                </tbody>
+                            </table>`;
+
+
 
             $('#school_img').attr('src', '/storage/uploads/school/' + school[0].school_logo);
             $('#school_details').html(output);
@@ -325,6 +439,10 @@ function displaySchools() {
                 ay_output+= `<option value='${ay.id}'>${ay.academic_year} </option>`;
             });
             $('#school_ay').html(ay_output);
+
+            // display current academic year
+
+            $('#school_display_ay').text(school[2].academic_year);
         },
         error : err => {
             console.log(err);
@@ -334,42 +452,32 @@ function displaySchools() {
 }
 
 
-/** END DISPLAY FUNCTION */
+// create
+$('#add_school').on('click', ()=> {
 
-/*displaying modal 
-    CREATE SCHOOL MODAL
-*/
+    // const school_modal =  new bootstrap.Modal(document.getElementById('school_modal'));
+    // school_modal.show();
+    $('#school_modal').modal('show');
+    $('#school_modal').show();
+    $('#school_modal_label').html(`Add School <i class="fas fa-school"></i> `);
+    $('#school_name').attr('value', '');
+    $('#depEd_no').attr('value', '');
+    $('#city').attr('value', '');
+    $('#province').attr('value', '');
+    $('#country').attr('value', '');
+    $('#address').attr('value', '');
+    $('#contact').attr('value', '');
+    $('#email').attr('value', '');
+    $('#website').attr('value', '');
+    $('#facebook').attr('value', '');
+    $('#school_logo').attr('value', '');
+    $('#btn_add_school').css('display', 'block');
+    $('#btn_update_school').css('display', 'none');
+    $('#preview_img').css('display','none');
+});
+    
 
-    $('#add_school').on('click', ()=> {
-
-        // const school_modal =  new bootstrap.Modal(document.getElementById('school_modal'));
-        // school_modal.show();
-        $('#school_modal').modal('show');
-        $('#school_modal').show();
-        $('#school_modal_label').html(`Add School <i class="fas fa-school"></i> `);
-        $('#school_name').attr('value', '');
-        $('#depEd_no').attr('value', '');
-        $('#city').attr('value', '');
-        $('#province').attr('value', '');
-        $('#country').attr('value', '');
-        $('#address').attr('value', '');
-        $('#contact').attr('value', '');
-        $('#email').attr('value', '');
-        $('#website').attr('value', '');
-        $('#facebook').attr('value', '');
-        $('#school_logo').attr('value', '');
-        $('#btn_add_school').css('display', 'block');
-        $('#btn_update_school').css('display', 'none');
-        $('#preview_img').css('display','none');
-    });
-    // end SCHOOL MODAL
-        
-
-/**
- * 
- * Edit School by ID
- * @param {id}
- */
+// edit
 function editSchool(id) {
     $.ajax({
         url: route('school.edit', id),
@@ -378,7 +486,7 @@ function editSchool(id) {
         cache: false,
         success: school => {
            $('#school_modal').modal('show');
-           $('#school_modal_label').html(`<h4 class='text-white'> Edit School <i class="fas fa-school"></i> </h4> `);
+           $('#school_modal_label').html(`<h4 class='text-white'> Edit School <i class="fas fa-edit"></i> </h4> `);
            $('#months_no').attr('value', school.months_no);
            $('#date_started').attr('value', school.date_started);
            $('#school_name').attr('value', school.school_name);
@@ -404,13 +512,9 @@ function editSchool(id) {
         }
     })
 }
-/** END Edit FUNCTION */
 
 
-
-/**
- * Update School
- */
+// update
 function updateSchool() {
 
 
@@ -460,22 +564,16 @@ function updateSchool() {
         })
     }
 }
-/** END Update FUNCTION */
 
-
-
+// * --------> End School()
 
 
 /** 
- * END SCHOOL MANAGEMENT ------------------>
-*/
+ * * <------------ Start Teacher
+ * TODO CRUD Teacher (Completed)
+ */
 
-
-
-/** <---------------- START TEACHER MANAGEMENT 
- * 
- *  display teacher
-*/
+// index
 function displayTeachers() {
   
     $('#teacher_DT').DataTable({
@@ -510,10 +608,8 @@ function displayTeachers() {
     });
 }
 
-// END Displayteacher()
 
-
-/** CREATE Teacher Modal */
+// create
 $('#add_teacher').on('click', ()=> {
     $('#teacher_modal').modal('show');
     $('#teacher_modal_label').html(`<h4 class='text-white'> Add Teacher <i class="fas fa-user-plus"></i> </h4>`);
@@ -554,7 +650,7 @@ $('#add_teacher').on('click', ()=> {
     // end teacher Modal
 
 
-// STORE TEACHER()
+// store
 function createTeacher()  {
 
     let form = $('#teacher_form')[0];
@@ -605,12 +701,9 @@ function createTeacher()  {
         })
     }
 }
-// END CREATE TEACHER
 
-/**
- * Display Teacher
- * @param {id}
- */
+
+// show 
  function showTeacher(id) {
     $('#teacher_addSubject_modal').modal('hide');
     $('#teacher_addStudent_modal').modal('hide');
@@ -728,9 +821,6 @@ function createTeacher()  {
         }
     })
 }
-
-
-// END SHOW Teacher()
 
 // teacher student 
 
@@ -921,11 +1011,9 @@ function back() {
 }
  
 // end teacher subject
-/**
- * 
- * Edit Teacher by ID
- * @param {id}
- */
+
+
+// edit
  function editTeacher(id) {
     $.ajax({
         url: route('teacher.edit', id),
@@ -965,12 +1053,10 @@ function back() {
         }
     })
 }
-/** END EditTeacher() */
 
 
-/**
- * Update Teacher
- */
+
+// update
  function updateTeacher() {
 
     //form data
@@ -1021,15 +1107,9 @@ function back() {
         })
     }
 }
-/** END Update Teacher() */
 
 
-/**
- * DELETE SCHOOL ()
- * @param {id} 
- * @returns 
- */
-
+// delete
  function deleteTeacher(id) {
     
     Swal.fire({
@@ -1060,9 +1140,6 @@ function back() {
       })
 
 }
-/** END delete FUNCTION 
- * END SCHOOL MANAGEMENT
-*/
 
 
 // Teacher Add subject II
@@ -1478,16 +1555,18 @@ function teacher_assign_subject_to_student(){
 }
 
 
-//  END TEACHER MANAGEMENT --------------->
+//* ---------> END TEACHER MANAGEMENT 
 
 
 
 
 
-/** <------------------ START SUBJECT MANAGEMENT
- * Display Subject Data
+/** 
+ * * <------------ Start Subject
+ * TODO CRUD Subject (Completed)
  */
 
+// index
 function displaySubjects() {
     $('#subject_DT').DataTable({
         processing: false,
@@ -1520,12 +1599,7 @@ function displaySubjects() {
 }
 
 
-/** END DISPLAY FUNCTION */
-
-
-
-/**CREATE Subject Modal */
-
+// create
 $('#add_subject').on('click', ()=> {
 $('#subject_modal').modal('show');
 $('#subject_modal_label').html(`<h4 class='text-white'> Add Subject <i class="fas fa-book-reader"></i> </h4> `);
@@ -1553,13 +1627,9 @@ $('#subject_modal_header').removeClass('bg-success').addClass('bg-primary');
 
 });
 
-//end Subject Modal
 
 
-/**
- * STORE Subject()
- */
-
+// store
 function createSubject() {
 
     let subject_form = $('#subject_form');
@@ -1594,12 +1664,8 @@ function createSubject() {
     }
 }
 
-// End Create Subject()
 
-/**
- * ShowSubject()
- * @param {id} 
- */
+// show
 function showSubject(id) 
 {
     $.ajax({
@@ -1623,14 +1689,9 @@ function showSubject(id)
         }
     })
 }
-// End ShowSubject()
 
 
-/**
- * 
- * Edit Teacher by ID
- * @param {id}
- */
+// edit
  function editSubject(id) {
     $.ajax({
         url: route('subject.edit', id),
@@ -1662,11 +1723,9 @@ function showSubject(id)
         }
     })
 }
-/** END EditTeacher() */
 
 
-// Update Subject()
-
+// update
 function updateSubject()
 {
     let subject_form = $('#subject_form');
@@ -1700,10 +1759,7 @@ function updateSubject()
     }
 }
 
-// End Update Subject()
-
-
-// Delete Subject by ID
+// delete
 function deleteSubject(id)
 {
 
@@ -1735,7 +1791,6 @@ function deleteSubject(id)
       })
 }
 
-// End Delete Subject() 
 
 $('#imp_subject').on('click', () => {
     $('#subject_file').click();
@@ -1787,14 +1842,16 @@ function import_subject()
       })
 }
 
- /*END SUBJECT MANAGEMENT ------------------->
-*/
+//* -------> END SUBJECT MANAGEMENT
 
 
 
-/** <--------------Start Grade Level Management
- *  Display Grade Level */
+/** 
+ * * <------------ Start Grade Level
+ * TODO CRUD Grade Level (Completed)
+ */
 
+// index
 function displayGradeLevels() {
     $('#grade_level_DT').DataTable({
         processing: false,
@@ -1826,11 +1883,7 @@ function displayGradeLevels() {
     });
 }
 
-// End display Grade Level()
-
-
-
-/** CREATE Grade Level Modal */
+// create
 $('#add_grade_level').on('click', ()=> {
 $('#grade_level_modal').modal('show');
 $('#grade_level_modal_label').html(`<h4 class='text-white'> Add Grade Level <i class="fas fa-book-reader"></i> </h4> `);
@@ -1842,10 +1895,9 @@ $('#grade_level_modal_header').removeClass('bg-success').addClass('bg-primary');
 
 });
 
-// end Grade Level Modal
 
 
-/** STOREGradeLevel() */
+// store
 function createGradeLevel() {
     let grade_level_form = $('#grade_level_form');
 
@@ -1879,12 +1931,9 @@ function createGradeLevel() {
         })
     }
 }
-// End CreateGradeLevel()
 
-/**
- * ShowSubject()
- * @param {id} 
- */
+
+// show
  function showGradeLevel(id) 
  {
      $.ajax({
@@ -1909,13 +1958,8 @@ function createGradeLevel() {
          }
      })
  }
- // End ShowSubject()
 
-
- /**
-  * Edit grade level
-  * @param{id}
-  */
+// edit
  function editGradeLevel(id) {
     $.ajax({
         url: route('grade_level.edit', id),
@@ -1938,11 +1982,8 @@ function createGradeLevel() {
         }
     })
  }
-// End Edit Grade Level()
 
-/**
- * Update Grade Level()
- */
+ // update
 function updateGradeLevel() {
     let grade_level_form = $('#grade_level_form');
 
@@ -1978,12 +2019,7 @@ function updateGradeLevel() {
     }
 }
 
-//end Update Grade Level()
-
-/**
- * Delete Grade Level
- * @param {id} 
- */
+// delete
 function deleteGradeLevel(id) {
   
     Swal.fire({
@@ -2013,14 +2049,16 @@ function deleteGradeLevel(id) {
         }
       })
 }
-/* End Delete GradeLevel()
-   End Grade Level Management --------------->
-*/
+
+//* <-------- END Grade Level
 
 
+/** 
+ * * <------------ Start Section
+ * TODO CRUD Section (Completed)
+ */
 
-// <------------ Start Section Management
-
+// index
 function displaySection()
 {
     $('#section_DT').DataTable({
@@ -2053,6 +2091,7 @@ function displaySection()
     });
 }
 
+// create
 $('#add_section').on('click', ()=> {
     $('#section_modal').modal('show');
     $('#section_modal_label').html(`<h4 class='text-white'> Add Section </h4>`);
@@ -2079,6 +2118,7 @@ $('#add_section').on('click', ()=> {
 
 });
 
+// store
 function createSection()
 {
     let section_form = $('#section_form');
@@ -2106,6 +2146,7 @@ function createSection()
     }
 }
 
+// edit
 function editSection(id)
 {
     let section_form = $('#section_form');
@@ -2140,6 +2181,7 @@ function editSection(id)
     })
 }
 
+// update
 function updateSection()
 {
     let section_form = $('#section_form');
@@ -2169,6 +2211,7 @@ function updateSection()
 
 }
 
+// delete
 function deleteSection(id)
 {
     Swal.fire({
@@ -2269,12 +2312,14 @@ function section_store_teacher()
 }
 
 
-// ------------> End Section()
+//* ------------> End Section()
 
 
 
-// <-------- Start Grading ()
-
+/** 
+ * * <------------ Start Grades
+ * TODO CRUD Grades (Completed)
+ */
 
 // create ()
 $('#assign_grade_to_subject').on('click', ()=> {
@@ -2389,21 +2434,14 @@ function createGrade()
 }
 
 
+//* ----------- > End Grading ()
 
-
-
-
-
-// ----------- > End Grading ()
-
-
-
-
-/**
- * <----------- START STUDENT Management () 
- * Display Student()
+/** 
+ * * <------------ Start Student
+ * TODO CRUD Student (Completed)
  */
 
+// index
 function displayStudents() {
     $('#student_DT').DataTable({
         responsive: true,
@@ -2441,10 +2479,7 @@ function displayStudents() {
     });
 }
 
-
-// End Display Student()
-
-/** CREATE Student Modal */
+// create
 $('#add_student').on('click', ()=> {
 $('#student_modal').modal('show');
 $('#student_modal_label').html(`<h4 class='text-white'> Add Student <i class="fas fa-user-plus"></i> </h4>`);
@@ -2488,12 +2523,8 @@ $('#student_modal_header').removeClass('bg-success').addClass('bg-primary');
     })
 });
 
-// end Student Modal
 
-
-
-/**STORE Student() */
-
+// store
 function createStudent() {
    let student_form = $('#student_form')[0];
    let student_form_data = new FormData(student_form);
@@ -2544,10 +2575,8 @@ function createStudent() {
    }
 }
 
-/**
- * Display Student
- * @param {id}
- */
+
+// show
  function showStudent(id) {
     $.ajax({
         url: route('student.show', id),
@@ -2623,10 +2652,9 @@ function createStudent() {
         }
     })
 }
-// END SHOW Student()
+
 
 // display_student_teacher_subject
-
 $('.display_student_teacher_subject').change(function () {
         
     let student_teacher_subject_id = $(this).val();
@@ -2652,7 +2680,6 @@ $('.display_student_teacher_subject').change(function () {
     })
 })
 
-// end display_student_teacher_subject()
 
 // store student_subject
 
@@ -2701,10 +2728,9 @@ function create_student_subject(event) {
         });
     }
 
-} // end store student_subject
+} 
 
 // delete student_subject
-
 function delete_student_teacher_subject(student_teacher_subject_id, student_id)
 {
     
@@ -2728,14 +2754,8 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
     }
 }
 
-//end delete student_subject
 
-
-/**
- * 
- * Edit Student by ID
- * @param {id}
- */
+// edit
  function editStudent(id) {
     $.ajax({
         url: route('student.edit', id),
@@ -2781,12 +2801,11 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
         }
     })
 }
-/** END EditStudent() */
 
 
-/**
- * Update Student
- */
+
+
+// update
  function updateStudent() {
 
    let student_form = $('#student_form')[0];
@@ -2840,9 +2859,9 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
         })
     }
 }
-/** END Update Student() */
 
-// DeleteStudent()
+
+// delete
 function deleteStudent(id)
 {
     Swal.fire({
@@ -2872,7 +2891,7 @@ function deleteStudent(id)
         }
       })
 }
-// End Delete Student()
+
 
 // import students
 
@@ -2967,15 +2986,17 @@ $('#delete_all_student').on('click', ()=> {
 
 
 });
+
+//* ---------> END Student
+
+
+
 /** 
- *  END Student ----------------->
+ * * <------------ Start Fee management
+ * TODO CRUD Fee management (Completed)
  */
 
-
-
-/** <------------------ Start Fee Management */
-
-/** CREATE Fee Modal */
+// create
 $('#add_fee').on('click', ()=> {
     $('#fee_modal').modal('show');
     $('#fee_modal_label').html(`<h4 class='text-white'>Add Fee Entry <i class="fas fa-book-reader"></i></h4> `);
@@ -3005,7 +3026,7 @@ $('#add_fee').on('click', ()=> {
 
 });
     
-// end Fee Modal
+
 
 // display all fees
 function displayGradeLevelsOnFeePage() {
@@ -3043,7 +3064,7 @@ function displayGradeLevelsOnFeePage() {
     });
 }
 
-
+// display sub fee by grade level id
 function displaySubFeeByGradeLevelID() {
     let grade_level_id = $('#display_fee_grade_levels').val();
 
@@ -3088,6 +3109,7 @@ function displaySubFeeByGradeLevelID() {
     $('#display_total_sub_fees').html("") //clear
 }
 
+// edit
 function editFee(id) {
     $.ajax({
         url: route('fee.edit', id),
@@ -3110,7 +3132,7 @@ function editFee(id) {
 
 // add extra sub fee form 
 
-
+// store sub fee
 function add_extra_sub_fee(event) {
     event.preventDefault();
     let sub_fee_forms = `
@@ -3140,13 +3162,10 @@ $(document).on('click', '#minus_sub_fee', function(e) {
     $(this).parents('div#input_fee_row').remove();
 });
 
-
-
 // end
 
 
-// addfee()
-
+// store
 function addFee() {
     let fee_amount = $('#fee_amount');
     let fee_description = $('#fee_description');
@@ -3186,12 +3205,8 @@ function addFee() {
     }
 }
 
-//end addfee()
 
-
-// delete fee()
-
-
+// delete
 function deleteFee(id) {
         $.ajax({
             method:'DELETE',
@@ -3214,16 +3229,17 @@ function deleteFee(id) {
 }
 
 
-// end delete fee()
 
-
-// ---------------------> End Fee Management
+//* ---------------------> End Fee Management
 
 
 
-/** <----------------- START STUDENT ENROLMENT FEE  */
+/** 
+ * * <------------ Start Student Enrolment Fee / Student Fee
+ * TODO CRUD Student Enrolment Fee / Student Fee (Completed)
+ */
 
-
+// create
 $('#add_student_fee').on("click", () => {
     $('#student_fee_modal').modal('show');
     $('#student_fee_modal_label').html(`<h4 class='text-white'> Enrol Student </h4>`);
@@ -3269,6 +3285,7 @@ $('#add_student_fee').on("click", () => {
 
 });
 
+// display grade level by student id
 function student_fee_display_grade_level_by_student_id() {
     let student_id = $('#student_fee_student_id').val();
     if(student_id > 0)
@@ -3295,7 +3312,8 @@ function student_fee_display_grade_level_by_student_id() {
                     }
                 }
 
-                $('#student_fee_grade_level_id').attr('placeholder', grade_level[0].name).attr('value', grade_level[0].id); // grade level -id
+                $('#student_fee_grade_level_id').attr('placeholder', grade_level[0].name).attr('value', grade_level[0].id); // grade level id (hide)
+                $('#student_fee_grade_level_val').attr('value',grade_level[0].grade_val); // display grade level val by grade level id
                 $('#student_fee_fee').attr('placeholder','Php ' + grade_level[0].total_amount).attr('value', grade_level[0].total_amount); // grade level total fee
                 $('#student_fee_months_no').val(`${grade_level[0].months_no} month/s`);
             },
@@ -3314,6 +3332,7 @@ function student_fee_display_grade_level_by_student_id() {
 
 }
 
+// display discounted fee by student id
 function student_fee_display_discounted_fee_by_student_id()
 {
     let student_fee_discount = $('#student_fee_discount').val(); //discount value
@@ -3329,7 +3348,7 @@ function student_fee_display_discounted_fee_by_student_id()
 
 }
 
-// add student Fee()
+// store
 function addStudentFee()
 {
     let student_id = $('#student_fee_student_id').val();
@@ -3377,8 +3396,9 @@ function addStudentFee()
         return toastr.warning("Please select a student");
     }
 }
-// end add student Fee()
 
+
+// index
 function displayStudentFee() 
 {
 
@@ -3442,6 +3462,7 @@ function displayStudentFee()
     });
 }
 
+// show
 function showStudentFee(id)
 {
     $.ajax({
@@ -3529,6 +3550,7 @@ function showStudentFee(id)
     })
 }
 
+// delete
 function deleteStudentFee(id) {
 
     Swal.fire({
@@ -3557,13 +3579,16 @@ function deleteStudentFee(id) {
       })
 }
 
-// -----------------> END STUDENT ENROLMENT FEE
+//* -----------------> END STUDENT ENROLMENT FEE
 
 
-/**<------------------ Start Payment () */
+/** 
+ * * <------------ Start Payment 
+ * TODO CRUD Payment  (Completed)
+ */
 
-// show Payment by id 
 
+// show 
 function showPayment(id) {
     $.ajax({
         url: route('payment.show', id),
@@ -3642,7 +3667,8 @@ $('#payment_amount').on("input", () => {
    }
 });
 
-/** START PAYMENT DISCOUNT FUNCTION () */
+
+// * START PAYMENT DISCOUNT FUNCTION ()
 
 function payment_display_discount_input_field()
 {
@@ -4629,7 +4655,7 @@ function payment_display_cash_discount() {
 }
 
 
-// END PAYMENT DISCOUNT FUNCTION 
+//* END PAYMENT DISCOUNT FUNCTION 
 
 
 // create payment for student
@@ -4710,7 +4736,7 @@ function editPayment(id) {
     })
 }
 
-
+// update
 function updatePayment() {
     let payment_id = $('#payment_id').attr('data-id');
     let payment_student_fee_id =  $('#payment_student_fee_id').val();
@@ -4762,7 +4788,8 @@ function updatePayment() {
     }
 
 }
-// end edit payment()
+
+
 
 // display student total balance by student_id()
 
@@ -4899,7 +4926,7 @@ function payment_display_balance_by_student_id() {
 
 // end 
 
-// Add Payment for Student()
+// store
 function addPayment() {
     let payment_total_balance = $('#payment_total_balance');
     let student_fee_id = $('#payment_student_fee_id').val();
@@ -4989,8 +5016,9 @@ function addPayment() {
     }
 }
 
-// end add Payment
 
+
+// index
 function displayPayments() 
 {
 
@@ -5021,7 +5049,7 @@ function displayPayments()
     });
 }
 
-
+// delete
 function deletePayment(id) {
 
     Swal.fire({
@@ -5054,12 +5082,15 @@ function deletePayment(id) {
       })
 }
 
-// ---------------> End Payment ()
+//* ---------------> End Payment ()
 
 
-// <------------- Start Payment Report ()
+/** 
+ * * <------------ Start Payment Report
+ * TODO CRUD Payment Report (Completed)
+ */
 
-
+// index
 function displayPaymentReport() {
  
     $('#payment_report_DT').DataTable({
@@ -5109,12 +5140,16 @@ function displayPaymentReport() {
 
 
 
-// --------------> End Payment Report
+//* --------------> End Payment Report
 
 
 
-// <--------------- Start User () 
+/** 
+ * * <------------ Start User Management
+ * TODO CRUD User Management (Completed)
+ */
 
+// index
 function displayUser()
 {
     $('#user_DT').DataTable({
@@ -5149,6 +5184,7 @@ function displayUser()
     });
 }
 
+// create
 $('#add_user').on('click', ()=> {
 
     $('#user_modal_label').html(`<h4 class='text-white'>Create an Account <i class="fas fa-user-plus"></i></h4>`);
@@ -5201,6 +5237,7 @@ $('#add_user').on('click', ()=> {
 
 });
 
+// display student info on user modal
 function display_student_info_on_user_modal() {
     let student_id = $('#user_student_id').val(); // get student_id 
 
@@ -5236,6 +5273,7 @@ function display_student_info_on_user_modal() {
     }
 }
 
+// display parent info on user modal
 function display_parent_info_on_user_modal() {
     let parent_id = $('#user_parent_id').val(); // get student_id 
 
@@ -5270,6 +5308,8 @@ function display_parent_info_on_user_modal() {
         $('#role_div').show();
     }
 }
+
+// store
 function createUser()
 {
     let name = $('#user_full_name');
@@ -5371,6 +5411,7 @@ function createUser()
     }
 }
 
+// edit
 function editUser(id)
 {
     $('#user_modal_label').html(`<h4>Edit User <i class="fas fa-user-plus"></i></h4>`);
@@ -5428,6 +5469,7 @@ function editUser(id)
 
 }
 
+// update
 function updateUser()
 {
     let password = $('#user_password');
@@ -5451,6 +5493,7 @@ function updateUser()
     
 }
 
+// delete
 function deleteUser(id)
 {
     Swal.fire({
@@ -5483,12 +5526,16 @@ function deleteUser(id)
       })
 }
 
-// -------------> END USER()
+//* -------------> END USER()
 
 
 
-// <-------- Start Parent()
+/** 
+ * * <------------ Start Parent Module
+ * TODO CRUD Parent Module (Completed)
+ */
 
+// index
 function displayParents()
 {
     $('#parent_DT').DataTable({
@@ -5524,6 +5571,7 @@ function displayParents()
     });
 }
 
+// create
 $('#add_parent').on('click', ()=> {
     $('#parent_modal').modal('show');
     $('#parent_modal_label').html(`<h4 class='text-white'>Register Parent <i class="fas fa-plus-circle"></i> </h4> `);
@@ -5538,6 +5586,7 @@ $('#add_parent').on('click', ()=> {
     
 });
 
+// store
 function createParent()
 {
     let name = $('#parent_name');
@@ -5571,10 +5620,12 @@ function createParent()
     }
 }
 
+// show
 function showParent(id)
 {
-    $('#show_parent_modal_label').html(`Parent Details`);
+    $('#show_parent_modal_label').html(`<h4 class='text-white'>Parent Info <i class="fas fa-info-circle"></i></h4>`);
     $('#show_parent_modal').modal('show');
+    $('#show_parent_modal_header').addClass('bg-primary');
 
     $.ajax({
         url: route('parent.show',id),
@@ -5611,6 +5662,7 @@ function showParent(id)
     });
 }
 
+// parent delete student by id
 function parent_destroy_student(id)
 {
     let parent_id = id;
@@ -5653,6 +5705,7 @@ function parent_destroy_student(id)
 
 }
 
+// edit
 function editParent(id)
 {
     $('#parent_modal').modal('show');
@@ -5683,6 +5736,7 @@ function editParent(id)
     });
 }
 
+// update
 function updateParent()
 {
     let parent_id = $('#btn_update_parent').attr('data-id');
@@ -5717,6 +5771,7 @@ function updateParent()
     }
 }
 
+// delete
 function deleteParent(id)
 {
     Swal.fire({
@@ -5752,9 +5807,12 @@ function deleteParent(id)
 
 
 
-// <------- Start Student Parent()
+/** 
+ * * <------------ Start Student Parent
+ * TODO CRUD Student Parent (Completed)
+ */
 
-
+// create
 $('#student_add_parent').on('click', () => {
 
     $('#parent_parent_id').attr('value', '');
@@ -5792,6 +5850,7 @@ $('#student_add_parent').on('click', () => {
     });
 });
 
+// store
 function parent_student_store()
 {
     let parent_id = $('#parent_parent_id').val();
@@ -5830,12 +5889,15 @@ function parent_student_store()
     
 }
 
-// --------> End Student Parent()
+//* --------> End Student Parent()
 
 
+/** 
+ * * <------------ Start Admin Dashboard
+ * TODO CRUD Admin Dashboard (Completed)
+ */
 
-// <--------- Start Admin User()
-
+// index
 function AdminDashBoardDisplayUser()
 {
     $.ajax({
@@ -5961,6 +6023,7 @@ function AdminDashBoardDisplayUser()
    
 }
 
+// index parent payment request
 function display_parent_payment_request()
 {
     $('#parent_payment_request_DT').DataTable({
@@ -5997,6 +6060,7 @@ function display_parent_payment_request()
 
 }
 
+// display payment approved request
 function get_payment_approved_payment_request()
 {
     $('#parent_approved_payment_request_DT').DataTable({
@@ -6031,6 +6095,7 @@ function get_payment_approved_payment_request()
 
 }
 
+// display payment declined request
 function get_payment_declined_payment_request()
 {
     $('#parent_declined_payment_request_DT').DataTable({
@@ -6152,12 +6217,16 @@ $('#to_show_receipt').on('click', function() {
 });
 
 
-// ----------> End Admin User()
+//* ----------> End Admin User()
 
 
-// <-------- Start Mode of Payment ()
+/** 
+ * * <------------ Start Payment Mode
+ * TODO CRUD Payment Mode (Completed)
+ */
 
 
+// index
 function displayPaymentMode() {
     $('#payment_mode_DT').DataTable({
         processing: false,
@@ -6189,6 +6258,7 @@ function displayPaymentMode() {
     });
 }
 
+// create
 $('#add_payment_mode').on('click', () => {
     $('.bootstrap-tagsinput').show();
     $('#payment_mode_title').hide();
@@ -6205,6 +6275,7 @@ $('#add_payment_mode').on('click', () => {
 
 });
 
+// store
 function createPaymentMode()
 {
     let payment_mode = $('#payment_mode_title');
@@ -6233,6 +6304,7 @@ function createPaymentMode()
     }
 }
 
+// edit
 function editPaymentMode(id) {
 
     $('.bootstrap-tagsinput').hide();
@@ -6261,6 +6333,7 @@ function editPaymentMode(id) {
     })
 }
 
+// update
 function updatePaymentMode() {
     let payment_mode = $('#payment_mode_title');
     let payment_mode_id =  $('#btn_update_payment_mode').attr('data-id');
@@ -6285,6 +6358,7 @@ function updatePaymentMode() {
 
 }
 
+// delete
 function deletePaymentMode(id) {
 
 
@@ -6319,9 +6393,12 @@ function deletePaymentMode(id) {
 
 
 
-// ------------- > End Mode of Payment ()
+//* ------------- > End Mode of Payment ()
 
-//Assign Subject
+/** 
+ *  
+ * TODO Assign Subject (PENDING)
+ */
 
     function assign_subject() {
     
@@ -6364,13 +6441,84 @@ function grade_level_assign_subject_fetch_subjects(){
       
 }
 
-
-
 // End Assign Subject
 
 
+/**
+ * * <---------- START ROLE () 
+ * TODO Roles CRUD() 
+ * 
+ */
+
+// index
+function displayRoles()
+{
+    $('#role_DT').DataTable({
+        processing: false,
+        serverSide: true,
+        retrieve: true,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                        // test
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+            }
+        },
+        autoWidth: false,
+        ajax : route('role.index'),
+        columns: [
+            {data: 'name'},
+            // {data: 'created_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
+            // {data: 'updated_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
+            {data: 'actions'},
+        ]
+    });
+}
+
+// create
+
+$('#add_role').on('click', ()=> {
+    $('#role_modal').modal('show');
+    $('#role_modal_label').html(`<h4 class='text-white'> Add Role <i class="fas fa-users-cog"></i> </h4>`);
+    $('#role_modal_header').removeClass('bg-success').addClass('bg-primary');
+});
+
+function createRole()
+{
+    if(isNotEmpty($('#role_title')))
+    {
+        $.ajax({
+            method: 'POST',
+            url: route('role.index'),
+            dataType:'json',
+            data: $('#role_form').serialize(),
+            success: response => {
+                console.log(response);
+                if(response == "success")
+                {
+                    $('#role_DT').DataTable().draw();
+                    toastSuccess("Role Added");
+                }
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
+    }
+}
 
 
+
+
+// * -------------> END Role()
 
 
 /**

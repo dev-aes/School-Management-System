@@ -12,8 +12,12 @@
     {{--Fonts--}}
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     {{--Favicon--}}
-	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/fav/apple-touch-icon.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/fav/favicon-32x32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href=""{{ asset('images/fav/favicon-16x16.png') }}">
+	<link rel="manifest" href="{{ asset('images/fav/site.webmanifest') }}">
 
 	<title>@yield('title', 'Admin Dashboard')</title>
 
@@ -43,9 +47,11 @@
 	{{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script> --}}
 
 	{{-- <link rel="stylesheet" href="{{ asset('css/tagsinput.css') }}"> --}}
-	{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" /> --}}
 
-	<link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+	{{--Tags Input--}}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
+
+	{{-- <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/> --}}
 
 
 
@@ -171,19 +177,18 @@
 					</li>
 
 
-				
 
 					<li class="sidebar-item">
 						<a href="#to_school" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
                         </a>
 						<ul id="to_school" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('school.index') }}">Manage School</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('user.index')}}">Manage User</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('parent.index')}}">Parent Registration</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}">Mode of Payment</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('academic_year.index')}}">Academic Year</a></li>
-
+							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('school.index') }}"><i class="fas fa-wrench"></i>Manage School</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{{route('user.index')}}"><i class="fas fa-users-cog"></i> Manage User </a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{{route('parent.index')}}"><i class="fas fa-user-plus"></i> Parent Registration </a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}"><i class="far fa-credit-card"></i> Mode of Payment</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{{route('academic_year.index')}}"><i class="fas fa-calendar"></i> Academic Year</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="{{route('role.index')}}"> <i class="fas fa-key"></i> Roles</a></li>
 						</ul>
 					</li>
 
@@ -307,10 +312,7 @@
 							<div class="dropdown-menu dropdown-menu-end">
 								<a class="dropdown-item" href="javascript:void(0)"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
 								<a class="dropdown-item" href="{{ route('home.index') }}"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="javascript:void(0)"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
-								<a class="dropdown-item" href="javascript:void(0)"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
-								<div class="dropdown-divider"></div>
+								
 								<a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                               document.getElementById('logout-form').submit();" class="user-settings">
@@ -390,7 +392,7 @@
 	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js" integrity="sha512-TToQDr91fBeG4RE5RjMl/tqNAo35hSRR4cbIFasiV2AAMQ6yKXXYhdSdEpUcRE6bqsTiB+FPLPls4ZAFMoK5WA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
 
 	{{--Tags--}}
-	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script> --}}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
 
 
 
