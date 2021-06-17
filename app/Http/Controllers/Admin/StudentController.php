@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\User;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use App\Models\Section;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
@@ -26,10 +28,12 @@ class StudentController extends Controller
 
         if(request()->ajax()) {
             
-            $students = DB::table('grade_levels')
-                        ->join('students', 'grade_level_id', '=' , 'grade_levels.id')
-                        ->select('students.*', 'grade_levels.name')
+            $students = DB::table('sections')
+                        ->join('students', 'section_id', '=' , 'sections.id')
+                        ->select('students.*', 'sections.name')
                         ->get();
+
+                       
 
             return DataTables::of($students)
                    ->addIndexColumn()
@@ -52,12 +56,11 @@ class StudentController extends Controller
     
     }
 
-
     public function create()
     {
         if(request()->ajax())
         {
-            return response()->json(GradeLevel::all());
+            return response()->json(Section::all());
         }
     }
 
@@ -69,7 +72,7 @@ class StudentController extends Controller
             'last_name' => 'required|alpha',
             'birth_date' => 'required|string',
             'gender' => 'required|alpha',
-            'grade_level_id' => 'required|string',
+            'section_id' => 'required|string',
             'nationality' => 'required|alpha_spaces',
             'city' => 'required|alpha_spaces',
             'province' => 'required|alpha_spaces',
@@ -126,7 +129,7 @@ class StudentController extends Controller
             'last_name' => 'required|alpha',
             'birth_date' => 'required|string',
             'gender' => 'required|alpha',
-            'grade_level_id' => 'required|string',
+            'section_id' => 'required|string',
             'nationality' => 'required|alpha_spaces',
             'city' => 'required|alpha_spaces',
             'province' => 'required|alpha_spaces',

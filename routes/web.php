@@ -94,12 +94,13 @@ Route::middleware(['auth' , 'admin'])->group(function() {
         Route::get('/admin/home/teacher/display_teachers', [TeacherController::class, 'teacher_assign_subject_to_student_display_teachers'])->name('teacher.teacher_assign_subject_to_student_display_teachers');
 
         // (Display all Section by Teachers ID)
-        Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
+        //Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
+        Route::get('/admin/home/teacher/display_teachers/display_sections', [TeacherController::class, 'teacher_assign_sections_display_sections'])->name('teacher.teacher_assign_section_display_sections');
 
     // End
     
     //Assign Subject Student
-    Route::post('/admin/home/teacher/storeSubjectStudent', [SubjectStudentController::class, 'store'])->name('subjectstudent.subjectstudentstore');
+    Route::post('/admin/home/teacher/storeAssignSection', [TeacherController::class, 'teacher_assign_section'])->name('teacher.teacher_assign_section');
 
     
     //End

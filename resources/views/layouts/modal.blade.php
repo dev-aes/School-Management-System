@@ -500,55 +500,55 @@
         
 
 
-      {{--Teacher Assign Subject to Student--}}
+      {{--Teacher Assign Section--}}
 
-        <div class="modal fade" id="teacher_assign_subject_to_student_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_subject_to_student_label" aria-hidden="true">
+        <div class="modal fade" id="teacher_assign_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_section_label" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" id="teacher_assign_subject_to_student_header">
-                <h5 class="modal-title text-primary" id="teacher_assign_subject_to_student_label">{{--Modal Title--}}</h5>
+                <div class="modal-header" id="teacher_assign_section_header">
+                <h5 class="modal-title text-primary" id="teacher_assign_section_label">{{--Modal Title--}}</h5>
                 <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </button>
                 </div>
 
                 {{--Alert--}}
-                <div class="alert alert-danger p-3 fade show" id="teacher_assign_subject_to_student_div_err" role="alert" style="display:none">
-                    <ul id="teacher_assign_subject_to_student_err"></ul>
+                <div class="alert alert-danger p-3 fade show" id="teacher_assign_section_div_err" role="alert" style="display:none">
+                    <ul id="teacher_assign_section_err"></ul>
                 </div>
 
                 <div class="modal-body">
-                <form id=teacher_assign_subject_to_student_form" autocomplete="off" enctype="multipart/form-data">
+                <form id=teacher_assign_section_form" autocomplete="off" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class='form-label'>Select Teacher</label>
-                                <select class="form-select" id="teacher_assign_subject_to_student_teacher_id" name="teacher_id" onchange="teacher_assign_subject_to_student_display_section()">
+                                <select class="form-select" id="teacher_assign_section_teacher_id" name="teacher_id" onchange="teacher_assign_section_display_section()">
                                     {{--Display all Teachers --}}
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class='form-label'>Select Section</label>
-                            <select class="form-select" id="teacher_assign_subject_to_student_section_id" name="section_id">
-                                {{--Display all the Sections assigned to teacher ID --}}
+                            <select class="form-select" id="teacher_assign_section_section_id" name="section_id">
+                              {{-- Display all the Sections assigned to teacher ID --}}
                             </select>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div id="teacher_assign_subject_to_student_display_subjects">
+                            <div id="teacher_assign_section_display_subjects">
                                 {{--Display all the subjects assigned to teacher ID --}}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{--<div class="col-md-6">
                             <label class='form-label'>Select Student</label>
-                            <select class="form-select" id="teacher_assign_subject_to_student_student_id" name="student_id">
-                                {{--Display all the Students By Teacher's Grade Level_id --}}
+                            <select class="form-select" id="teacher_assign_section_student_id" name="student_id">
+                                Display all the Students By Teacher's Grade Level_id 
                             </select>
-                        </div>
+                        </div>--}}
                     </div>
                    
                     
@@ -556,7 +556,7 @@
                 </div>
 
                 <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_add_grade" onclick="teacher_assign_subject_to_student()">Submit</button>
+                <button type="button" class="btn btn-primary" id="btn_add_grade" onclick="teacher_assign_section()">Submit</button>
                 {{-- <button type="button" class="btn btn-success" id="btn_update_grade" style="display:none" onclick="updateGrade()">Save</button> --}}
                 </div>
             </div>
@@ -1006,8 +1006,8 @@
                 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class='form-label'>Grade Level *</label>
-                        <select class='form-select' name="grade_level_id" id="student_grade_level">
+                        <label class='form-label'>Section *</label>
+                        <select class='form-select' name="section_id" id="section_id">
                            
                         </select>
                     </div>

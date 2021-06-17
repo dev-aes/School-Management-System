@@ -28,7 +28,7 @@
                         <div class="card">
                             <div class="card-body" style="background-color:#2980b9">
                                 <h5 class="card-title mb-4 text-white">Total Users</h5>
-                                <h1 class="mt-1 mb-3 text-white">{{$users}}</h1>
+                                <h1 class="mt-1 mb-3 text-white">{{--$users--}}</h1>
                                 <div class="mb-1">
                                     {{-- <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
                                     <span class="text-muted">Since last week</span> --}}
@@ -38,7 +38,7 @@
                         <div class="card">
                             <div class="card-body" style="background-color:#c0392b">
                                 <h5 class="card-title mb-4 text-white">Total Students</h5>
-                                <h1 class="mt-1 mb-3 text-white">{{$students}}</h1>
+                                <h1 class="mt-1 mb-3 text-white">{{--$students--}}</h1>
                                 <div class="mb-1">
                                     {{-- <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
                                     <span class="text-muted">Since last week</span> --}}
@@ -50,7 +50,7 @@
                         <div class="card">
                             <div class="card-body" style="background-color:#f1c40f">
                                 <h5 class="card-title mb-4 text-white">Total Staff</h5>
-                                <h1 class="mt-1 mb-3 text-white">{{$get_total_staff}}</h1>
+                                <h1 class="mt-1 mb-3 text-white">{{--$get_total_staff--}}</h1>
                                 <div class="mb-1">
                                     {{-- <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
                                     <span class="text-muted">Since last week</span> --}}
@@ -60,7 +60,7 @@
                         <div class="card" style="background-color:#8e44ad">
                             <div class="card-body">
                                 <h5 class="card-title mb-4 text-white">Total Parents</h5>
-                                <h1 class="mt-1 mb-3 text-white">{{$parents}}</h1>
+                                <h1 class="mt-1 mb-3 text-white">{{--$parents--}}</h1>
                                 <div class="mb-1">
                                     {{-- <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
                                     <span class="text-muted">Since last week</span> --}}
@@ -74,7 +74,7 @@
                         <div class="card">
                             <div class="card-body" style="background-color:#2ecc71">
                                 <h5 class="card-title mb-4 text-white">Total Enrollee</h5>
-                                <h1 class="mt-1 mb-3 text-white">{{$get_total_enrollee}}</h1>
+                                <h1 class="mt-1 mb-3 text-white">{{--$get_total_enrollee--}}</h1>
                                 <div class="mb-1">
                                     {{-- <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
                                     <span class="text-muted">Since last week</span> --}}
@@ -87,7 +87,7 @@
                         <div class="card" style="background-color:#95a5a6">
                             <div class="card-body">
                                 <h5 class="card-title mb-4 text-white">Total Teachers</h5>
-                                <h1 class="mt-1 mb-3 text-white">{{$teachers}}</h1>
+                                <h1 class="mt-1 mb-3 text-white">{{--$teachers--}}</h1>
                                 <div class="mb-1">
                                     {{-- <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
                                     <span class="text-muted">Since last week</span> --}}
@@ -126,7 +126,7 @@
                         <div class="py-3">
                             <div class="chart chart-xs">
                                 {{-- <canvas id="chartjs-dashboard-pie"></canvas> --}}
-                                 <h1 class="display-5">₱ {{ number_format($yearly_sales->total) }}</h1>
+                                 {{-- <h1 class="display-5">₱ {{ number_format($yearly_sales->total) }}</h1> --}}
                                 <canvas id="chart_ys"></canvas>
                             </div>
                         </div>
@@ -212,70 +212,70 @@
 
 	{{--Monthly Sale--}}
 	<script>
-		const my_chart = document.getElementById('chart_ms');
+		// const my_chart = document.getElementById('chart_ms');
 
-		const chart_ms = new Chart(my_chart,{
-			type:'line', // bar , horizontal, line ,doughnut ,radar , polarArea
-			data:{
-				labels:{!! json_encode($months) !!},
-				datasets:[{
-					label:'Monthly Sales for AY 2020-2021',
-					data:{!! json_encode($sales) !!},
-					backgroundColor:[
-					'rgba(26, 188, 156,1.0)',
-					'rgba(52, 152, 219,1.0)',
-					'rgba(155, 89, 182,1.0)',
-					'rgba(52, 73, 94,1.0)',
-					'rgba(230, 126, 34,1.0)',
-					'rgba(241, 196, 15,1.0)'
-				]
-				}],
+		// const chart_ms = new Chart(my_chart,{
+		// 	type:'line', // bar , horizontal, line ,doughnut ,radar , polarArea
+		// 	data:{
+		// 		labels:($months),
+		// 		datasets:[{
+		// 			label:'Monthly Sales for AY 2020-2021',
+		// 			data: json_encode($sales),
+		// 			backgroundColor:[
+		// 			'rgba(26, 188, 156,1.0)',
+		// 			'rgba(52, 152, 219,1.0)',
+		// 			'rgba(155, 89, 182,1.0)',
+		// 			'rgba(52, 73, 94,1.0)',
+		// 			'rgba(230, 126, 34,1.0)',
+		// 			'rgba(241, 196, 15,1.0)'
+		// 		]
+		// 		}],
 				
-			},
-			options:{
-				// title: {
-				// 	display: true,
-				// 	text: 'Monthly Sales'
-				// }
-			}
-		});
+		// 	},
+		// 	options:{
+		// 		// title: {
+		// 		// 	display: true,
+		// 		// 	text: 'Monthly Sales'
+		// 		// }
+		// 	}
+		// });
 
 
-        const my_chart2 = document.getElementById('chart_gl');
-        const chart_gl = new Chart(my_chart2,{
-			type:'doughnut', // bar , horizontal, line ,doughnut ,radar , polarArea
-			data:{
-				labels:['Grade 1','Grade 2','Grade 3', 'Grade 4' , 'Grade 5' , 'Grade 6'],
-				datasets:[{
-					label:'Students by Grade Level',
-					data:[
-                        {!! json_encode($g1) !!},
-                        {!! json_encode($g2) !!},
-                        {!! json_encode($g3) !!},
-                        {!! json_encode($g4) !!},
-                        {!! json_encode($g5) !!},
-                        {!! json_encode($g6) !!}
-                    ],
-					backgroundColor:
-                    [
-                    'rgba(26, 188, 156,1.0)',
-					'rgba(52, 152, 219,1.0)',
-					'rgba(155, 89, 182,1.0)',
-					'rgba(52, 73, 94,1.0)',
-					'rgba(230, 126, 34,1.0)',
-					'rgba(241, 196, 15,1.0)'
-                    ],
-                    hoverOffset: 6
-				}],
+        // const my_chart2 = document.getElementById('chart_gl');
+        // const chart_gl = new Chart(my_chart2,{
+		// 	type:'doughnut', // bar , horizontal, line ,doughnut ,radar , polarArea
+		// 	data:{
+		// 		labels:['Grade 1','Grade 2','Grade 3', 'Grade 4' , 'Grade 5' , 'Grade 6'],
+		// 		datasets:[{
+		// 			label:'Students by Grade Level',
+		// 			data:[
+        //                 { json_encode($g1) },
+        //                 { json_encode($g2) },
+        //                 { json_encode($g3) },
+        //                 { json_encode($g4) }
+        //                 { json_encode($g5) },
+        //                 { json_encode($g6) }
+        //             ],
+		// 			backgroundColor:
+        //             [
+        //             'rgba(26, 188, 156,1.0)',
+		// 			'rgba(52, 152, 219,1.0)',
+		// 			'rgba(155, 89, 182,1.0)',
+		// 			'rgba(52, 73, 94,1.0)',
+		// 			'rgba(230, 126, 34,1.0)',
+		// 			'rgba(241, 196, 15,1.0)'
+        //             ],
+        //             hoverOffset: 6
+		// 		}],
 				
-			},
-			options:{
-				// title: {
-				// 	display: true,
-				// 	text: 'Monthly Sales'
-				// }
-			}
-		});
+		// 	},
+		// 	options:{
+		// 		// title: {
+		// 		// 	display: true,
+		// 		// 	text: 'Monthly Sales'
+		// 		// }
+		// 	}
+		// });
 
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("datetimepicker-dashboard").flatpickr({

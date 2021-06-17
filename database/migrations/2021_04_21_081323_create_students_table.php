@@ -20,7 +20,8 @@ class CreateStudentsTable extends Migration
             $table->string('last_name');
             $table->string('birth_date');
             $table->string('gender');
-            $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('section_id')->constrained('sections')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nationality');
             $table->string('city');
             $table->string('province');

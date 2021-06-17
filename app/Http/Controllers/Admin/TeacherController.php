@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use App\Models\Section;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -306,6 +307,40 @@ public function teacher_destroy_student()
             return response()->json([$teacher->section, $teacher->student, $teacher->subject]);
         }
     }
+
+    public function teacher_assign_sections_display_sections()
+    {
+        if(request()->ajax())
+        {
+            return response()->json(Section::all());
+        }
+    }
+
+    public function teacher_assign_section()
+    {
+
+       
+
+        $assign_teacher_section = request()->validate([
+            'section_id' => 'required',
+            'teacher_id'=>'required',
+
+            // 'grade_level_id'=>'required|string' removed
+        ]);
+
+        if(request()->ajax()) {
+ 
+            DB::table('section_teacher')->insert([
+               'teacher_id' => $assign_teacher_section['teacher_id'],
+               'section_id' => $assign_teacher_section['section_id'],
+               'created_at' => now()
+            ]);
+
+            return response()->json('success');
+        }
+    }
+
+
 
 
 

@@ -1375,13 +1375,13 @@ function teacher_student2_store_teacher_subject() {
 }
 
 
-// teacher assign subject to student
+// teacher assign section
 
-$('#teacher_assign_subject_to_student').on('click', ()=> {
-    $('#teacher_assign_subject_to_student_modal').modal('show');
-    $('#teacher_assign_subject_to_student_label').html(`<h3 class='text-white'> Assign Subject - Student </h1>`);
-    $('#teacher_assign_subject_to_student_header').removeClass('bg-success').addClass('bg-primary');
-    $('#teacher_assign_subject_to_student_modal').modal('show');
+$('#teacher_assign_section').on('click', ()=> {
+    $('#teacher_assign_section_modal').modal('show');
+    $('#teacher_assign_section_label').html(`<h3 class='text-white'> Assign Subject - Student </h1>`);
+    $('#teacher_assign_section_header').removeClass('bg-success').addClass('bg-primary');
+    $('#teacher_assign_section_modal').modal('show');
 
     $.ajax({
         url: route('teacher.teacher_assign_subject_to_student_display_teachers'),
@@ -1393,7 +1393,8 @@ $('#teacher_assign_subject_to_student').on('click', ()=> {
             });
 
             // append all fetch teachers information
-            $('#teacher_assign_subject_to_student_teacher_id').html(output);
+            $('#teacher_assign_section_teacher_id').html(output);
+            
         },
         error: err => {
             console.log(err);
@@ -1403,42 +1404,46 @@ $('#teacher_assign_subject_to_student').on('click', ()=> {
 });
 
 // display all section by teacher's id
-function teacher_assign_subject_to_student_display_section()
+function teacher_assign_section_display_section()
 {
-    let teacher_id =  $('#teacher_assign_subject_to_student_teacher_id').val();
+    let teacher_id =  $('#teacher_assign_section_teacher_id').val();
 
     if(teacher_id > 0)
     {
         $.ajax({
-            url: route('teacher.teacher_assign_subject_to_student_display_sections',teacher_id),
+            //url: route('teacher.teacher_assign_subject_to_student_display_sections',teacher_id), removed teacher_id since we need to display all sections
+            url: route('teacher.teacher_assign_section_display_sections'),
             dataType:'json',
-            success: data => {
+            success: sections => {
                 
                 // display sections
                 let section_output = `<option> </option>`;
-                data[0].forEach(section => {
-                    section_output += `<option value='${section.id}'> ${section.name}</option>`;
-                });
-                $('#teacher_assign_subject_to_student_section_id').html(section_output);
+                sections.forEach(section => {
+                    section_output += `<option value='${section.id}'> ${section.name} </option>`;
+                    $('#section_id').html(section_output);
+                })
+                $('#teacher_assign_section_section_id').html(section_output);
 
+
+              
                 // display students
-                let student_output = `<option> </option>`;
-                data[1].forEach(student => {
-                    student_output += `<option value='${student.id}'> ${student.first_name} ${student.last_name}</option>`;
-                });
-                $('#teacher_assign_subject_to_student_student_id').html(student_output);
+                // let student_output = `<option> </option>`;
+                // data[1].forEach(student => {
+                //     student_output += `<option value='${student.id}'> ${student.first_name} ${student.last_name}</option>`;
+                // });
+                // $('#teacher_assign_section_student_id').html(student_output);
 
                   // display subjects
-                  let subject_output = `<h5 class='mt-3'> Select Subject </h5>`;
-                  data[2].forEach(subject => {
-                      subject_output +=`<div class='form-check form-check-inline mt-2'>
-                                            <input class="form-check-input" type="checkbox" name='subject_id[]' value="${subject.id}" id="subject_id-${subject.id}">
-                                            <h4 class="form-check-label text-muted" for="flexCheckDefault">
-                                            ${subject.name}
-                                            </h4>
-                                        </div>`;
-                  });
-                  $('#teacher_assign_subject_to_student_display_subjects').html(subject_output);
+                //   let subject_output = `<h5 class='mt-3'> Select Subject </h5>`;
+                //   data[2].forEach(subject => {
+                //       subject_output +=`<div class='form-check form-check-inline mt-2'>
+                //                             <input class="form-check-input" type="checkbox" name='subject_id[]' value="${subject.id}" id="subject_id-${subject.id}">
+                //                             <h4 class="form-check-label text-muted" for="flexCheckDefault">
+                //                             ${subject.name}
+                //                             </h4>
+                //                         </div>`;
+                //   });
+                //   $('#teacher_assign_section_display_subjects').html(subject_output);
 
             },
             error: err => {
@@ -1458,16 +1463,23 @@ function teacher_assign_subject_to_student_display_section()
 
 //Assign Subject to student
 
-function teacher_assign_subject_to_student(){
+function teacher_assign_section(){
+   // let subject_form = $('#subject_form');
 
-    let teacher_assign_subject_to_student_form = $('#teacher_assign_subject_to_student_form');
+   let teacher_id = $('#teacher_assign_section_teacher_id').val();
+   let section_id = $('#teacher_assign_section_section_id').val();
 
+    let teacher_assign_section_form = $('#teacher_assign_section_form');
+    // alert(teacher_assign_section_teacher_id.section_id);
     $.ajax({
         method: 'POST',
-        url: route('subjectstudent.subjectstudentstore'),
-        data: teacher_assign_subject_to_student_form.serialize(),
+        url: route('teacher.teacher_assign_section'),
+        data: {
+            teacher_id: teacher_id,
+            section_id: section_id
+        },
         success: response => {
-           console.log('success');
+           console.log(response);
         },
         error: err => {
            
@@ -2475,11 +2487,11 @@ $('#student_modal_header').removeClass('bg-success').addClass('bg-primary');
     $.ajax({
         url: route('student.create'),
         data:'json',
-        success: grade_levels => {
+        success: sections => {
             let output=' <option></option>';
-            grade_levels.forEach(grade_level => {
-                output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
-                $('#student_grade_level').html(output);
+            sections.forEach(section => {
+                output += `<option value='${section.id}'> ${section.name} </option>`;
+                $('#section_id').html(output);
             })
         },
         error: err => {
