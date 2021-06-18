@@ -522,7 +522,7 @@
                 </div>
 
                 <div class="modal-body">
-                <form id=teacher_assign_section_form" autocomplete="off" enctype="multipart/form-data">
+                <form id="teacher_assign_section_form" autocomplete="off" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row">

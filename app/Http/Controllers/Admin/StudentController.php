@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\School;
+use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Models\Section;
 use App\Models\GradeLevel;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use Illuminate\Support\Facades\DB;
@@ -95,7 +96,22 @@ class StudentController extends Controller
                 $student_form_data['student_avatar'] = request('student_avatar')->getClientOriginalName(); // get the original file name
                 request('student_avatar')->storeAs('uploads/student', $student_form_data['student_avatar'], 'public' ); // params: fileFolder, fileName , filePath
 
-                return response()->json(Student::create($student_form_data));
+               //Insert student data here
+                $student_data = Student::create($student_form_data);
+                
+                //Get Current Academic Year ID
+                $ay_id = AcademicYear::select('id')->where('status',1)->first();
+
+
+        DB::table('student_subject_teacher')
+        ->updateOrInsert(
+            [ 'section_id' => $student_data->section_id],
+            ['student_id' => $student_data->id]
+        );
+
+                
+
+                return response()->json('success');
             }
         }
 
