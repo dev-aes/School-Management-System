@@ -130,9 +130,9 @@ $(()=> {
    
 
 
-    check();
+    //check();
     
-     AdminDashBoardDisplayUser()
+     //AdminDashBoardDisplayUser()
 
     // setInterval(()=> {
     //     AdminDashBoardDisplayUser()
