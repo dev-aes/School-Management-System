@@ -218,7 +218,7 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
 
     //Grade Level Assign Subjects
-    Route::get('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
+    Route::get('/admin/gradeLevel/addSubjects/{grade_level}', [GradeLevelController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
     Route::post('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'grade_level_assign_subject_subject_id_store'])->name('grade_level.grade_level_assign_subject_subject_id_store');
     
 

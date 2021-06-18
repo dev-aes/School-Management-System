@@ -2043,11 +2043,29 @@ function createGradeLevel() {
             $('#show_grade_level_modal_header').removeClass('bg-success').addClass('bg-info');
 
             let output = `
-                          <ul class='list-group '>
-                          <li class='list-group-item'><span class='badge bg-secondary'> Grade Name:</span> ${grade_level.name} </li>
-                          <li class='list-group-item'><span class='badge bg-secondary'>Grade Description:</span> ${grade_level.description}  </li>
-                          </ul>
+                          <h4 class='fw-bold text-primary text-uppercase lead'> ${grade_level.name} </h4>
+                          <br><br>
+                          <table class='table table-hover '>
+                          <caption>List of Subjects  </caption>
+                             <thead class='bg-info text-white'>
+                                <tr> 
+                                    <th>Subject Name </th>
+                                    <th> Subject Description </th>
+                                </tr>
+                             </thead>
+                             <tbody>
                          `;
+
+                grade_level.subject.forEach(subject => {
+                    output += `<tr>
+                                <td>${subject.name}</td> 
+                                <td>${subject.description}</td> 
+                               </tr>`;
+                });
+
+                output += `</tbody>
+                          </table>`;
+
              $('#show_grade_level_info').html(output);
  
          },
@@ -6549,9 +6567,10 @@ function assign_subject(id) {
 
 
     $.ajax({
-        url: route('grade_level.display_subjects_for_grade_level'),
+        url: route('grade_level.display_subjects_for_grade_level',id),
         dataType:'json',
         success: subjects => {
+            res(subjects);
            let output = `<option></option>`;
            subjects.forEach(subject=>{
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;

@@ -25,8 +25,8 @@ class GradeLevelController extends Controller
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showGradeLevel" onclick="showGradeLevel('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editGradeLevel" onclick="editGradeLevel('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="AddSubject" class="btn btn-secondary btn-sm assignSubject" onclick="assign_subject('.$row->id.')"><i class="fas fa-edit"></i> Add Subject</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editGradeLevel" onclick="editGradeLevel('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="AddSubject" class="btn btn-secondary btn-sm assignSubject" onclick="assign_subject('.$row->id.')"><i class="fas fa-edit"></i> Add Subject</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteGradeLevel" onclick="deleteGradeLevel('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
 
                     return $btn;
@@ -63,7 +63,7 @@ class GradeLevelController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($gradeLevel);
+            return response()->json(GradeLevel::with('subject')->where('id', $gradeLevel->id)->first()); // get grade level and its assigned subject(s)
         }
     }
 
@@ -97,10 +97,26 @@ class GradeLevelController extends Controller
         }
     }
 
-    public function display_subjects_for_grade_level()
+    public function display_subjects_for_grade_level(GradeLevel $gradeLevel)
     {
         if(request()->ajax()){
-            return response()->json(Subject::all());
+
+            // TODO display all subjects that is not assigned yet to this grade level
+
+            // $subjects = Subject::all(); // get all subjects
+
+            // $sub = []; // subject container
+
+            // foreach($subjects as $subject)
+            // {
+            //     // check if this subjects grade level id is not equal to this grade level id ( it means this subject is not yet assigned to this grade level)
+            //     if(isset($subject[0]->grade_level)) 
+            //     {
+            //         array_push($sub, $subject);
+            //     }
+            // }
+
+            return response()->json(Subject::doesnthave('grade_level')->get());
         }
     }
 
