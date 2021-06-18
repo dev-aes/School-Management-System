@@ -60,11 +60,11 @@ class SubjectController extends Controller
         if(request()->ajax()) {
 
             $subject = Subject::create($subject_form_data);
-            DB::table('grade_level_subject')->insert([
-              // 'grade_level_id' => request('grade_level_id'),
-               'subject_id' => $subject->id,
-               'created_at' => now()
-            ]);
+            // DB::table('grade_level_subject')->insert([
+            //   // 'grade_level_id' => request('grade_level_id'),
+            //    'subject_id' => $subject->id,
+            //    'created_at' => now()
+            // ]);
 
            return $this->res();
         }
