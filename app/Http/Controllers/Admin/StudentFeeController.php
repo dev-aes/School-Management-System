@@ -82,11 +82,15 @@ class StudentFeeController extends Controller
     {
         if(request()->ajax())
         {
+
+            $get_student_grade_level_by_section_id = $student->section->grade_level;
+
+
             $check_student_status = DB::table('student_fee')
                                     ->where('student_id', $student->id)
                                     ->first();
                                     
-            return response()->json([$student->grade_level, $check_student_status]);
+             return response()->json([$get_student_grade_level_by_section_id , $check_student_status]);
         }
     }
 

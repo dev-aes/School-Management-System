@@ -3349,7 +3349,6 @@ function student_fee_display_grade_level_by_student_id() {
         $.ajax({
             url:route('studentfee.display_grade_level_by_student_id', student_id),
             success: grade_level => {
-
                 if(grade_level[1] == undefined)
                 {
                     $('#select2-student_fee_student_id-container').attr('style', 'background:#gray;color:#black !important');
