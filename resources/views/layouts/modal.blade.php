@@ -1989,8 +1989,8 @@
     <div class="modal fade " id="grade_level_assign_subject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="grade_level_assign_subject" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header" id="grade_level_modal_header">
-            <h5 class="modal-title text-primary" id="grade_level_label">Assign Subjects</h5>
+            <div class="modal-header" id="grade_level_assign_subject_modal_header">
+            <h5 class="modal-title" id="grade_level_assign_subject_modal_label"></h5>
             <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
             </button>
             </div>
@@ -2002,26 +2002,22 @@
 
             <div class="modal-body">
             <form id="grade_level_assign_subject_form" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="grade_level_id" id="grade_level_assign_subject_grade_level_id">
+
                 @csrf
                 <div class="form-group">
-                    
-                    <select  class="form-select" id="grade_level_assign_subject_subject_id" onchange="grade_level_assign_subject_fetch_subjects()">
+                    <label for="grade_level_assign_subject_subject_id" class="form-label">Select Subject *</label>
+                    <select  class="grade_level_assign_subject_subject_id" id="grade_level_assign_subject_subject_id" name="subject_id[]" multiple style="width:100%">
                     {{-- Display Subjects to be added on grade level--}}
                     </select>
-                    
                 </div>
                 <br>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_name" name="subject_name">
-                    {{-- Fetch id here this must be hidden--}}
-                    <input type="text" class="form-control" id="grade_level_assign_subject_fetch_subject_id" name="subject_id" style="display:none">
-                </div>
-                
+               
             </form>
             </div>
 
             <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="btn_add_grade_level_assign_subject" onclick="">Submit</button>
+            <button type="button" class="btn btn-primary" id="btn_add_grade_level_assign_subject" onclick=" grade_level_assign_subject_subject_id_store()">Submit</button>
             <button type="button" class="btn btn-success" id="btn_update_grade_level_assign_subject" style="display:none" onclick="">Save</button>
             </div>
         </div>

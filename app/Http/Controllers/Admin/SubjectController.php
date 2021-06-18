@@ -137,9 +137,5 @@ class SubjectController extends Controller
         }
     }
 
-    public function display_subjects_for_grade_level(){
-        if(request()->ajax()){
-            return response()->json(Subject::all());
-        }
-    }
+   
 }

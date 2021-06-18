@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\School;
+use App\Models\Subject;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,49 @@ class GradeLevelController extends Controller
     {
         if(request()->ajax()) {
             $gradeLevel->delete();
+        }
+    }
+
+    public function display_subjects_for_grade_level()
+    {
+        if(request()->ajax()){
+            return response()->json(Subject::all());
+        }
+    }
+
+    public function grade_level_assign_subject_subject_id_store() 
+    {
+        if(request()->ajax())
+        {
+
+           $grade_level_id = request('grade_level_id'); // grade level
+
+           foreach(request('subject_id') as $subject_id):
+
+            // check if this subject is already assigned to this grade level
+
+                $subject = DB::table('grade_level_subject')
+                           ->where('grade_level_id', $grade_level_id)
+                           ->where('subject_id', $subject_id)
+                           ->first();
+
+                if($subject)
+                {
+                    return $this->err(); // return error msg
+                }
+
+                else
+                {
+                    DB::table('grade_level_subject')
+                    ->insert(['grade_level_id' => $grade_level_id,
+                              'subject_id' => $subject_id,
+                              'created_at' => now()
+                               ]);
+                }
+               
+           endforeach;
+
+           return $this->res(); // success msg
         }
     }
 

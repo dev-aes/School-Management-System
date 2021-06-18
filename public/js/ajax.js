@@ -24,8 +24,9 @@ $(()=> {
      if(window.location.href == route('grade_level.index')) 
     {
         displayGradeLevels();  // after loading the grade level page ; load the grade level data
-    //    $('#grade_level_assign_subject_fetch_subject_id').tagsinput();
-    //     $('#grade_level_assign_subject_fetch_subject_name').tagsinput();
+        $('.grade_level_assign_subject_subject_id').select2({
+            dropdownParent: $('#grade_level_assign_subject')
+        });
     }
 
     if(window.location.href == route('section.index'))
@@ -130,12 +131,13 @@ $(()=> {
    
 
 
-    //check();
-    
 
-    // AdminDashBoardDisplayUser()
+   
+ 
+
 
      //AdminDashBoardDisplayUser()
+
 
 
     // setInterval(()=> {
@@ -2179,16 +2181,17 @@ function displaySection()
         autoWidth: false,
         ajax: route('section.index'),
         columns: [
+            {data: 'id'},
             {data: 'name'},
             {data: 'description'},
-            {data: 'created_at', render(data) {
-                const date =  new Date(data);
-                return date.toLocaleString();
-            }},
-            {data: 'updated_at', render(data) {
-                const date =  new Date(data);
-                return date.toLocaleString();
-            }},
+            // {data: 'created_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
+            // {data: 'updated_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
             {data: 'actions', orderable: false, searchable: false},
         ]
     });
@@ -6541,13 +6544,15 @@ function deletePaymentMode(id) {
 //* ------------- > End Mode of Payment ()
 
 /** 
- *  
+ *  * Grade Level Module()
  * TODO Assign Subject (PENDING)
  */
 
-    function assign_subject() {
+function assign_subject(id) {
     
     $('#grade_level_assign_subject').modal('show');
+    $('#grade_level_assign_subject_modal_header').addClass('bg-primary');
+    $('#grade_level_assign_subject_modal_label').html(`<h4 class='text-white'> Assign Subjects </h4>`);
 
 
     $.ajax({
@@ -6559,32 +6564,50 @@ function deletePaymentMode(id) {
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;
            })
 
-            $('#grade_level_assign_subject_subject_id').html(output); 
+            $('#grade_level_assign_subject_subject_id').html(output);
+            $('#grade_level_assign_subject_grade_level_id').attr('value',id); // store the grade_level id to this input hidden 
         }
     })
 
-    
+}
+// store
+function grade_level_assign_subject_subject_id_store()
+{
+    let subject_id =  $('#grade_level_assign_subject_subject_id').val();
+
+    if(subject_id.length > 0)
+    {
+        $.ajax({
+            method: 'POST',
+            url: route('grade_level.grade_level_assign_subject_subject_id_store'),
+            dataType:'json',
+            data: $('#grade_level_assign_subject_form').serialize(),
+            success: response => {
+                res(response);
+                if(response == 'success')
+                {
+                    return toastSuccess('Subject/s Assigned');
+                    $('#grade_level_assign_subject').modal('hide');
+
+                }
+
+                if(response == 'error')
+                {
+                    return toastr.warning("Some of the Subjects are already assigned to this Grade Level");
+                }
+            },
+            error: err => {
+                res(err);
+                toastDanger();
+            }
+        })
+    }
+    else
+    {
+        return toastr.warning("Please select a subject");
+    }
 }
 
-
-function grade_level_assign_subject_fetch_subjects(){
-
-        let subject_id = $('#grade_level_assign_subject_subject_id').val();
-        let subject_name = $('#grade_level_assign_subject_subject_id').find(':selected').text();
-
-        if(subject_id > 0)
-        {
-            $('.bootstrap-tagsinput').prepend(`
-            <span class="tag label label-info"> ${subject_name}<span data-role="remove"></span></span>
-            <span class="tag label label-info"> ${subject_id}<span data-role="remove"></span></span>
-                     `);
-        }
-        else
-        {
-            $('.bootstrap-tagsinput span').remove();
-        }
-      
-}
 
 // End Assign Subject
 

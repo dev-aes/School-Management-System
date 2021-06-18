@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subject extends Model
 {
-    use HasFactory, LogsActivity;
+    //use HasFactory, LogsActivity;
+    use HasFactory;
 
      protected $guarded = [];
 
@@ -21,14 +22,14 @@ class Subject extends Model
 
     // protected static $logAttributes = ['name', 'description'];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['name', 'description'])
-        ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} subject")
-        ->useLogName('subject');
-        // Chain fluent methods for configuration options
-    }
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()
+    //     ->logOnly(['name', 'description'])
+    //     ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} subject")
+    //     ->useLogName('subject');
+    //     // Chain fluent methods for configuration options
+    // }
 
     // public function tapActivity(Activity $activity, string $eventName)
     // {

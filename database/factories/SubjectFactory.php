@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Section;
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class SectionFactory extends Factory
+class SubjectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Section::class;
+    protected $model = Subject::class;
 
     /**
      * Define the model's default state.
@@ -21,10 +21,8 @@ class SectionFactory extends Factory
      */
     public function definition()
     {
-       
         return [
-            'grade_level_id' => 1,
-            'name' => 'bayabas',
+            'name' => 'math',
             'description' => $this->faker->name
         ];
     }
