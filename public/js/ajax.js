@@ -1683,7 +1683,7 @@ function createSubject() {
             url: route('subject.store'),
             data: subject_form.serialize(),
             success: response => {
-                console.log(response);
+                res(response);
                 toastSuccess('Subject Added');
                 $('#subject_DT').DataTable().draw();
                 subject_form[0].reset();
@@ -6663,6 +6663,12 @@ function toastWarning()
     "hideMethod": "fadeOut"
     }
     Command: toastr["warning"]("Please fill up all required fields ", "Warning")
+
+}
+
+function res(res)
+{
+    console.log(res);
 
 }
 

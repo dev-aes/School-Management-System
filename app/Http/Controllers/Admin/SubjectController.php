@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers\Admin;
-
 use App\Models\Subject;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
@@ -60,17 +59,18 @@ class SubjectController extends Controller
 
         if(request()->ajax()) {
 
-            $subject = Subject::create($subject_form_data);
-            DB::table('grade_level_subject')->insert([
-               'grade_level_id' => request('grade_level_id'),
-               'subject_id' => $subject->id,
-               'created_at' => now()
-            ]);
+            // $subject = Subject::create($subject_form_data);
+            // DB::table('grade_level_subject')->insert([
+            //    'grade_level_id' => request('grade_level_id'),
+            //    'subject_id' => $subject->id,
+            //    'created_at' => now()
+            // ]);
 
-            return response()->json('success');
+           return $this->all();
         }
     }
 
+   
     public function show(Subject $subject)
     {
         if(request()->ajax())
