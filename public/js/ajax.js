@@ -130,7 +130,7 @@ $(()=> {
    
 
 
-
+    check();
     
      AdminDashBoardDisplayUser()
 
@@ -3527,6 +3527,7 @@ function showStudentFee(id)
         data:{id:id},
         success: studentfee => {
             $('#show_student_fee_modal').modal('show');
+            $('#show_student_fee_modal_header').addClass('bg-secondary');
 
 
             // student info with grade level
@@ -3668,6 +3669,7 @@ function showPayment(id) {
        
             //display payment info
             $('#show_payment_modal').modal('show');
+            $('#show_payment_modal_header').addClass('bg-secondary');
             $('#payment_date').text(`${d}`);
             $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
             $('#payment_payment_amount').text(`₱ ${payment[0].amount.toLocaleString()}`);

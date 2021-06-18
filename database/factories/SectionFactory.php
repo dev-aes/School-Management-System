@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\GradeLevel;
+use App\Models\Section;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GradeLevelFactory extends Factory
+class SectionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = GradeLevel::class;
-
+    protected $model = Section::class;
 
     /**
      * Define the model's default state.
@@ -22,13 +21,11 @@ class GradeLevelFactory extends Factory
      */
     public function definition()
     {
-
+       
         return [
-          'name' => 'grade 1',
-          'grade_val' => 1,
-          'description' => 'g1',
-          'months_no' => '10'
+            'grade_level_id' => 1,
+            'name' => 'math',
+            'description' => $this->faker->name
         ];
- 
     }
 }

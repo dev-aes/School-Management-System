@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\AcademicYear;
 
 class StudentFeeController extends Controller
 {
@@ -106,7 +107,9 @@ class StudentFeeController extends Controller
             ]);
 
 
+            $academic_year = AcademicYear::where('status', 1)->first(); // get the current / active academic year
 
+            $data['academic_year_id'] = $academic_year->id; // store the current academic_year_id for insertion 
             $data['created_at'] = Carbon::now();
             $data['discount'] = request('discount');
             $months_no = School::all('months_no')->first();

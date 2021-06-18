@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\GradeLevel;
+use App\Models\AcademicYear;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GradeLevelFactory extends Factory
+class AcademicYearFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = GradeLevel::class;
-
+    protected $model = AcademicYear::class;
 
     /**
      * Define the model's default state.
@@ -22,13 +21,9 @@ class GradeLevelFactory extends Factory
      */
     public function definition()
     {
-
         return [
-          'name' => 'grade 1',
-          'grade_val' => 1,
-          'description' => 'g1',
-          'months_no' => '10'
+            'academic_year' => '2021-2022',
+            'status' => 1
         ];
- 
     }
 }

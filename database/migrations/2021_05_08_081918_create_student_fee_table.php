@@ -26,6 +26,7 @@ class CreateStudentFeeTable extends Migration
             $table->float('monthly_payment')->default(0);
             $table->date('date_started');
             $table->string('status')->default('active');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
 
