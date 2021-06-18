@@ -131,11 +131,15 @@ class SectionController extends Controller
         }
     }
 
+    // Display students in a section
     public function show_students_and_teacher_in_section(Section $section){
         if(request()->ajax())
         {
             return response()->json($section->student);
         }
     }
+
+    
+
 
 }

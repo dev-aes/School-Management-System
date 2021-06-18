@@ -1166,12 +1166,12 @@ $('#teacher_add_subject2').on('click', ()=> {
                 });
                 $('#teacher_subject2_teacher').html(output);
 
-             //Display grade levels
-             let gl = `<option> </option>`;
-                teachers[1].forEach(grade_level => {
-                    gl += `<option value='${grade_level.id}'> ${grade_level.name} </option>`
-                });
-                $('#teacher_subject2_grade_level').html(gl);
+            //  //Display grade levels
+            //  let gl = `<option> </option>`;
+            //     teachers[1].forEach(grade_level => {
+            //         gl += `<option value='${grade_level.id}'> ${grade_level.name} </option>`
+            //     });
+            //     $('#teacher_subject2_grade_level').html(gl);
 
         },
         error: err => {
@@ -1181,6 +1181,65 @@ $('#teacher_add_subject2').on('click', ()=> {
     })
 
 }); 
+
+// display teacher's grade level by ID 6/18/21
+
+function teacher_teacher_display_grade_level_by_teacher_id() 
+{
+    let teacher_id = $('#teacher_subject2_teacher').val();
+
+    $.ajax({
+        url: route('teacher.teacher_teacher_display_grade_level_by_teacher_id', teacher_id),
+        dataType:'json',
+        success: grade_levels => {
+          // res(grade_levels);
+
+          
+
+          //const uniqueArr = [... new Set(grade_levels.map(data => data.name))] 
+
+          // res(uniqueArr); 
+           
+           let output = `<option> </option>`;
+        
+        //    function removeDups(array) {
+        //     let unique = {};
+        //     grade_levels.forEach(function(i) {
+        //       if(!unique[i]) {
+        //         unique[i] = true;
+        //       }
+        //     });
+        //     return Object.keys(unique);
+        //   }
+
+        //   
+
+
+        const distinct_grade_levels = Array.from(new Set(grade_levels.map(s => s.id)))
+                            .map(id => {
+                                return {
+                                    id:id,
+                                    name: grade_levels.find(s => s.id === id).name
+                                };
+                            });
+                           // res(distinct_grade_levels);
+
+
+           distinct_grade_levels.forEach(grade_level => {
+
+               output += `<option value='${grade_level.id}'>${grade_level.name} </option>`
+          
+            });
+           $('#teacher_subject2_grade_level').html(output);
+        },
+        error: err => {
+            console.log(err);
+        }
+    })
+
+}
+
+
 
 //Display subjects by grade level
 function teacher_subject2_display_subjects_by_grade_level(){
@@ -1234,6 +1293,7 @@ function teacher_subject2_display_subjects_by_teacher_grade_level_id(id) {
                 url: route('teacher.teacher_display_by_teacher_id', teacher_id),
                 dataType:'json',
                 success: teacher => {
+                    res(teacher);
                     $('#teacher_subject2_grade_level_id').attr('value', teacher);//Grade Level ID
       
                     teacher_subject2_display_subjects_by_teacher_grade_level_id( $('#teacher_subject2_grade_level_id').attr('value') );
@@ -1264,14 +1324,14 @@ function teacher_subject_2_store_teacher_subject() {
        dataType:'json',
        data:teacher_subject2_form.serialize(),
        success: response => {
-           return console.log(response);
+          // return res(response);
             if(response == 'success')
             {
                 toastSuccess('Subject Added');
             }
             else 
             {
-                return toastr.warning('You already have this subject');
+                return toastr.warning('You already have this subject or some subjects selected are already assigned');
             }
        },
        error: err => {
@@ -2640,7 +2700,7 @@ function createStudent() {
         dataType:'json',
         data: {id:id},
         success: student => {
-            //console.log(student);
+           res(student[3]);
            $('#show_student_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -2661,7 +2721,8 @@ function createStudent() {
                          <li class='list-group-item'><span class='badge bg-primary'>Middle Name:</span> ${student[0].middle_name} </li>
                          <li class='list-group-item'><span class='badge bg-primary'>Last Name:</span>  ${student[0].last_name}</li>
                          <li class='list-group-item'><span class='badge bg-primary'>Birth Date:</span> ${student[0].birth_date} </li>
-                         <li class='list-group-item'><span class='badge bg-primary'>Grade Level:</span>  ${student[0].grade_level.name} </li>
+                         <li class='list-group-item'><span class='badge bg-primary'>Grade Level:</span> ${student[2].name} </li>
+                         <li class='list-group-item'><span class='badge bg-primary'>Section:</span> ${student[1].name} </li>
                          <li class='list-group-item'><span class='badge bg-primary'>Nationality:</span> ${student[0].nationality}  </li>
                          <li class='list-group-item'><span class='badge bg-primary'>City:</span> ${student[0].city}  </li>
                          <li class='list-group-item'><span class='badge bg-primary'>Province:</span> ${student[0].province}</li>
@@ -2675,9 +2736,33 @@ function createStudent() {
                          </ul>
                         </div>
                         `;
+                        
  
 
-            // display student_subjects
+            // // display student_subjects
+            //  output += `<div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
+            //                             <table class='table table-hover'>
+            //                              <thead>
+            //                                 <tr>
+            //                                  <th> Subject </th>
+            //                                  <th> Description </th>
+            //                                  <th> Teacher </th>
+            //                               </thead>
+            //                               <tbody>`;
+            // student[2].forEach(subject => {
+            //     output += `<tr> 
+            //                                 <td> ${subject.name} </td>
+            //                                 <td> ${subject.description} </td>
+            //                                 <td> ${subject.first_name} ${subject.last_name} </td> 
+            //                             </tr>`;
+            // })
+            // output += `</tbody>
+            //                          </table>
+            //                          </div>
+            //                          </div>`;
+
+             // display student_subjects
+
              output += `<div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
                                         <table class='table table-hover'>
                                          <thead>
@@ -2686,23 +2771,21 @@ function createStudent() {
                                              <th> Description </th>
                                              <th> Teacher </th>
                                           </thead>
-                                          <tbody>`;
-            student[2].forEach(subject => {
-                output += `<tr> 
-                                            <td> ${subject.name} </td>
-                                            <td> ${subject.description} </td>
-                                            <td> ${subject.first_name} ${subject.last_name} </td> 
-                                        </tr>`;
-            })
-            output += `</tbody>
-                                     </table>
-                                     </div>
-                                     </div>`;
+                                          <tbody>
+                                            <tr> 
+                                                <td> </td>
+                                                <td> </td>
+                                                <td>  </td> 
+                                             </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>`;
               
             $('#show_student_info').html(output);
 
             //get student_id
-            $('#add_student_id').attr('value', `${student[0].id}`);
+            //$('#add_student_id').attr('value', `${student[0].id}`);
         },
         error: err => {
             console.log(err);
@@ -6668,7 +6751,7 @@ function toastWarning()
 
 function res(res)
 {
-    console.log(res);
+  return  console.log(res);
 
 }
 

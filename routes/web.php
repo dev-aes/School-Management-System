@@ -113,6 +113,11 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
 
     // teacher add subject2
+
+    //Teacher Add Subject 6/18/21
+    Route::get('/admin/home/addSubject/{teacher}', [TeacherController::class,'teacher_teacher_display_grade_level_by_teacher_id'])->name('teacher.teacher_teacher_display_grade_level_by_teacher_id');
+
+    
     Route::get('/admin/home/createSubject',[TeacherController::class, 'teacher_create_subject_2'])->name('teacher.teacher_create_subject_2');
     Route::get('/admin/home/createSubject/{teacher}',[TeacherController::class, 'teacher_display_by_teacher_id'])->name('teacher.teacher_display_by_teacher_id');
     Route::get('/admin/home/createSubject/teacher/{grade_level}',[TeacherController::class, 'teacher_subject2_display_subjects_by_teacher_grade_level_id'])->name('teacher.teacher_subject2_display_subjects_by_teacher_grade_level_id');

@@ -423,7 +423,7 @@
                     
                     <div class="form-group">
                         <label class='form-label'>Select Teacher</label>
-                        <select class="form-select" id="teacher_subject2_teacher" name="teacher_id">
+                        <select class="form-select" id="teacher_subject2_teacher" name="teacher_id" onchange="teacher_teacher_display_grade_level_by_teacher_id()">
                             {{--Select Teacher--}}
                         </select>
                     </div>
@@ -1152,7 +1152,7 @@
                                         <div class="card w-100">
                                             <div class="card-body">
                                                 <div id="show_student_info">
-                                            
+                                                    
                                                 </div>
                                             </div>
                                         </div>

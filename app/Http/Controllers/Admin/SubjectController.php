@@ -66,7 +66,7 @@ class SubjectController extends Controller
                'created_at' => now()
             ]);
 
-           return $this->all();
+           return $this->res();
         }
     }
 

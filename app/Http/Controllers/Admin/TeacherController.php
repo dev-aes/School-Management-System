@@ -220,19 +220,31 @@ public function teacher_destroy_student()
 
             $input = request()->all(); // subject ids array()
           // return response()->json($input['subject_id']);
+            
+        //Check if teacher has been assigned to a subject
+          
+        $sub_id = DB::table('subject_teacher')->select()
+        ->where('subject_id',$input['subject_id'])
+        ->where('teacher_id',$input['teacher_id'])
+        ->first();
+          if(!$sub_id){
             foreach($input['subject_id'] as $subject_id){
                 
+                
+
                 DB::table('subject_teacher')->insert([
                     'teacher_id' => $input['teacher_id'],
                     'subject_id' => $subject_id,
                     'created_at' => now()
                  ]);
             }
-
-           
-            
+ 
 
            return response()->json('success');
+             
+          }
+          return response()->json(response());
+          
         }
     } //end
 
@@ -256,7 +268,28 @@ public function teacher_destroy_student()
         if(request()->ajax())
         {
 
-            return response()->json([Teacher::all(),GradeLevel::all()]);
+            return response()->json([Teacher::all()]);
+        }
+    }
+
+    public function teacher_teacher_display_grade_level_by_teacher_id(Teacher $teacher)
+    {
+        if(request()->ajax())
+        {
+            $gl = [];
+
+            //teacher->section returns a collection 
+            // extract its individual value via loop
+            // return section value 
+            // you can now get the invidual section value with a invidiual grade level value (thru relationship);
+
+
+            foreach($teacher->section as $section): 
+                    array_push($gl, $section->grade_level);
+            endforeach;
+            //distinct 
+           // $grade_levels = array_unique($gl);
+            return response()->json($gl);
         }
     }
 
@@ -264,7 +297,8 @@ public function teacher_destroy_student()
     {
         if(request()->ajax())
         {
-            return response()->json($teacher->grade_level_id);
+
+            return response()->json('here');
         }
     }
 

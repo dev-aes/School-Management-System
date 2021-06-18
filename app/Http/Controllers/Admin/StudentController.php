@@ -121,10 +121,26 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json([
-                $student, 
-                $student->grade_level, DB::select("SELECT DISTINCT b.first_name, b.last_name , c.name, c.description, b.id as teacher_id ,c.id as subject_id from students a ,teachers b,subjects c, student_teacher d,subject_teacher e where a.id = $student->id and d.student_id = $student->id and e.subject_id = c.id and d.teacher_id = e.teacher_id and b.id = e.teacher_id")]);
-             // return response()->json([$student, $student->grade_level, Teacher::where('grade_level_id', $student->grade_level_id)->get(), 'from show function']);
+            //student_id, subject_id, teacher_id, section_id
+            //$student_with_sub_teacher = DB::select("SELECT DISTINCT b.first_name, b.last_name , c.name, c.description, b.id as teacher_id ,c.id as subject_id from students a ,teachers b,subjects c, student_teacher d,subject_teacher e where a.id = $student->id and d.student_id = $student->id and e.subject_id = c.id and d.teacher_id = e.teacher_id and b.id = e.teacher_id");
+
+            //student_section_id -> grade_level->subjects
+            //section->teacher
+
+            $student_profile =  $student;
+
+            $student_grade =  $student->section->grade_level;
+
+            $student_section = $student->section;
+
+           //Display student subject and teacher     
+           $display_student_subjects_teacher = Student::with('section','grade_level','teacher')->where('id', $student->id)->first();
+            
+
+
+
+            return response()->json([$student_profile, $student_section, $student_grade, $display_student_subjects_teacher]);
+          
         }
     }
 
