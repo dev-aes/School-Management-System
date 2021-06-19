@@ -27,17 +27,15 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SubjectStudentController;
-use App\Models\User;
 
 // User Restful Controllers
 
 use App\Http\Controllers\User\ParentController as UserParentController;
 use App\Http\Controllers\User\StudentController as UserStudentController;
-use App\Models\Grade;
 
 // Route::get('/testlink', function() {
 
-//     // Artisan::call('optimize');
+    // Artisan::call('optimize');
 
 //     return view('test');
 // });
@@ -89,9 +87,6 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::get('/admin/home/createTeacher', [SectionController::class, 'section_create_teacher'])->name('section.section_create_teacher');
     Route::post('/admin/home/createTeacher', [SectionController::class, 'section_store_teacher'])->name('section.section_store_teacher');
 
-
-    //Section Route for students with section
-    Route::get('/admin/section/{section}', [SectionController::class, 'show_students_and_teacher_in_section'])->name('section.show_students_and_teacher_in_section');
     
     // teacher assign subject to student 
 
@@ -106,7 +101,7 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     
 
     //Display subjects and teachers of student
-    Route::get('/admin/home/student/{id}', [Student::class, 'display_student_subjects_and_teachers'])->name('student.student_display_subjects_teachers');
+    Route::get('/admin/home/student/{id}', [StudentController::class, 'display_student_subjects_and_teachers'])->name('student.student_display_subjects_teachers');
 
 
     //Assign Subject Student
@@ -224,6 +219,10 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
     //Grade Level Assign Subjects
     Route::get('/admin/gradeLevel/addSubjects/{grade_level}', [GradeLevelController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0d8016cbc3618399f7f56144dcb4edafc7146217
     Route::post('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'grade_level_assign_subject_subject_id_store'])->name('grade_level.grade_level_assign_subject_subject_id_store');
     
 

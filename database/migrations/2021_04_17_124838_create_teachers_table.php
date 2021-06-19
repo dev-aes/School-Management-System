@@ -15,7 +15,6 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('first_name');
             $table->string('middle_name');
             $table->string('last_name');

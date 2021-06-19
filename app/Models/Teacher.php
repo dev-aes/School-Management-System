@@ -44,19 +44,19 @@ class Teacher extends Model
 
     
     // student has many subject
-    public function student()
-    {
-        return $this->belongsToMany(Student::class)->withTimestamps();
-    }
+    // public function student()
+    // {
+    //     return $this->belongsToMany(Student::class)->withTimestamps();
+    // }
 
 
-    public function getCreatedAtAttribute($value) {
-        //return Carbon::parse($value)->format('m-d-Y h:iA');
-        return Carbon::parse($value)->diffForHumans();
-    }
+    // public function getCreatedAtAttribute($value) {
+    //     //return Carbon::parse($value)->format('m-d-Y h:iA');
+    //     return Carbon::parse($value)->diffForHumans();
+    // }
 
-    public function getUpdatedAtAttribute($value) {
-        //return Carbon::parse($value)->format('m-d-Y h:iA');
-        return Carbon::parse($value)->diffForHumans();
-    }
+    // public function getUpdatedAtAttribute($value) {
+    //     //return Carbon::parse($value)->format('m-d-Y h:iA');
+    //     return Carbon::parse($value)->diffForHumans();
+    // }
 }

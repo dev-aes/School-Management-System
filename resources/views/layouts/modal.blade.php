@@ -148,18 +148,6 @@
             <div class="modal-body">
               <form id="teacher_form" autocomplete="off" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-5"></div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class='form-label'>Grade Level</label>
-                            <select class='form-select' name="grade_level_id" id="teacher_grade_level">
-                               
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class='form-label'>First Name </label>
@@ -868,6 +856,32 @@
         </div>
 
     {{--End Section Add Teacher Modal--}}
+
+    {{--Show Section Modal--}}
+
+    <div class="modal fade " id="show_section_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content ">
+              <div class="modal-header" id="show_section_modal_header">
+                    <h4 class="modal-title text-white" id="myLargeModalLabel">Section Information <i class="fas fa-info-circle"></i> </h4>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+              </div>
+              <div class="modal-body" >
+                <div class="row justify-content-center">
+                    <div class="card w-75 ">
+                        <div class="card-body py-5">
+                           <div id="show_section_info">
+                               {{--Display Section and its assigned Teachers & Students--}}
+                           </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+    {{--End Section Modal--}}
 
 
 
