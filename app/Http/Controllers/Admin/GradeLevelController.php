@@ -97,26 +97,12 @@ class GradeLevelController extends Controller
         }
     }
 
-    public function display_subjects_for_grade_level(GradeLevel $gradeLevel)
+    public function display_subjects_for_grade_level($grade_level_id)
     {
         if(request()->ajax()){
+            $subjects_per_grade_level = Subject::where('grade_val',$grade_level_id)->get();
+            return response()->json($subjects_per_grade_level);
 
-            // TODO display all subjects that is not assigned yet to this grade level
-
-            // $subjects = Subject::all(); // get all subjects
-
-            // $sub = []; // subject container
-
-            // foreach($subjects as $subject)
-            // {
-            //     // check if this subjects grade level id is not equal to this grade level id ( it means this subject is not yet assigned to this grade level)
-            //     if(isset($subject[0]->grade_level)) 
-            //     {
-            //         array_push($sub, $subject);
-            //     }
-            // }
-
-            return response()->json(Subject::doesnthave('grade_level')->get());
         }
     }
 

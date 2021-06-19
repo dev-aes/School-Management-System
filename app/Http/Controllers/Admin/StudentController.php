@@ -136,10 +136,16 @@ class StudentController extends Controller
            //Display student subject and teacher     
            $display_student_subjects_teacher = Student::with('section','grade_level','teacher')->where('id', $student->id)->first();
             
+           $grade_level = GradeLevel::find($student->section->id)->first();
+           $get_subjects = DB::table('grade_level_subject')
+                            ->join('subjects','grade_level_subject.subject_id','subjects.id')
+                            ->join('subject_teacher','subject_teacher.subject_id','subjects.id')
+                            ->join('teachers','teachers.id','subject_teacher.teacher_id')
+                            ->where('grade_level_subject.grade_level_id',$grade_level->id)
+                            ->get();
+                            
 
-
-
-            return response()->json([$student_profile, $student_section, $student_grade, $display_student_subjects_teacher]);
+            return response()->json([$student_profile, $student_section, $student_grade, $display_student_subjects_teacher,$get_subjects]);
           
         }
     }
