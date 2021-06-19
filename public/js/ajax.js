@@ -6591,11 +6591,7 @@ function assign_subject(id) {
         url: route('grade_level.display_subjects_for_grade_level',id),
         dataType:'json',
         success: subjects => {
-<<<<<<< HEAD
             res(subjects);
-=======
-           // res(subjects);
->>>>>>> 6bbf5b0ff25e54757afde23774ad7d75f9dc38e8
            let output = `<option></option>`;
            subjects.forEach(subject=>{
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;
