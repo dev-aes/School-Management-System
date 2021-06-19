@@ -97,11 +97,26 @@ class GradeLevelController extends Controller
         }
     }
 
-    public function display_subjects_for_grade_level($grade_level_id)
+    // Todo display unadded subjects by grade level
+    public function display_subjects_for_grade_level(GradeLevel $grade_level)
     {
         if(request()->ajax()){
-            $subjects_per_grade_level = Subject::where('grade_val',$grade_level_id)->get();
-            return response()->json($subjects_per_grade_level);
+            //$subjects_per_grade_level = Subject::where('grade_val',$grade_level->grade_val)->get();
+
+            $subjects = DB::table('subjects')
+                        ->leftJoin('grade_level_subject','subjects.id','grade_level_subject.subject_id')
+                        //->leftJoin('grade_levels','grade_levels.id','grade_level_subject.grade_level_id')
+                        ->select('subjects.name','subjects.id','subjects.grade_val')
+                        ->where('subjects.grade_val','=',$grade_level->id)
+                        ->where('grade_level_subject.subject_id', NULL)
+                        ->get();
+           
+            
+
+          
+
+
+            return response()->json($subjects);
 
         }
     }
