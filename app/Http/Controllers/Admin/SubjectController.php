@@ -60,11 +60,11 @@ class SubjectController extends Controller
         if(request()->ajax()) {
 
             $subject = Subject::create($subject_form_data);
-            DB::table('grade_level_subject')->insert([
-               'grade_level_id' => request('grade_level_id'),
-               'subject_id' => $subject->id,
-               'created_at' => now()
-            ]);
+            // DB::table('grade_level_subject')->insert([
+            //   // 'grade_level_id' => request('grade_level_id'),
+            //    'subject_id' => $subject->id,
+            //    'created_at' => now()
+            // ]);
 
            return $this->res();
         }
@@ -102,10 +102,10 @@ class SubjectController extends Controller
         if(request()->ajax()) {
             
 
-            $sub =  DB::table('grade_level_subject')
-                  ->where('grade_level_id', $subject->grade_level[0]->id)
-                  ->where('subject_id',$subject->id)
-                  ->update(['grade_level_id' => request('grade_level_id')]);
+            // $sub =  DB::table('grade_level_subject')
+            //       ->where('grade_level_id', $subject->grade_level[0]->id)
+            //       ->where('subject_id',$subject->id)
+            //       ->update(['grade_level_id' => request('grade_level_id')]);
                
             //Subject Update    
             $subject->update($subject_form_data); 

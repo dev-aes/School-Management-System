@@ -104,6 +104,11 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
     // End
     
+
+    //Display subjects and teachers of student
+    Route::get('/admin/home/student/{id}', [Student::class, 'display_student_subjects_and_teachers'])->name('student.student_display_subjects_teachers');
+
+
     //Assign Subject Student
     Route::post('/admin/home/teacher/storeAssignSection', [TeacherController::class, 'teacher_assign_section'])->name('teacher.teacher_assign_section');
 

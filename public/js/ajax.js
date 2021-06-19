@@ -131,7 +131,14 @@ $(()=> {
    
 
 
+
+   
+ 
+
+
      //AdminDashBoardDisplayUser()
+
+
 
     // setInterval(()=> {
     //     AdminDashBoardDisplayUser()
@@ -1810,11 +1817,11 @@ function showSubject(id)
            $('#btn_update_subject').css('display', 'block').attr('data-id', subject[0].id);
 
            // display all fetch Grade levels
-           let output=`<option value='${subject[2].id}'>Current [${subject[2].name}]</option>`;
-           subject[1].forEach(grade_level => {
-                 output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
-                 $('#subject_grade_level').html(output);
-           })
+        //    let output=`<option value='${subject[2].id}'>Current [${subject[2].name}]</option>`;
+        //    subject[1].forEach(grade_level => {
+        //          output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
+        //          $('#subject_grade_level').html(output);
+        //    })
         },
         error: err => {
             toastDanger();
@@ -2718,7 +2725,10 @@ function createStudent() {
         dataType:'json',
         data: {id:id},
         success: student => {
+
            res(student[3]);
+
+
            $('#show_student_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -3144,6 +3154,8 @@ $('#delete_all_student').on('click', ()=> {
 
 
 });
+
+
 
 //* ---------> END Student
 
@@ -6012,6 +6024,10 @@ $('#student_add_parent').on('click', () => {
 // store
 function parent_student_store()
 {
+
+    
+    
+
     let parent_id = $('#parent_parent_id').val();
     let student_id = $('#parent_student_id').val();
 
