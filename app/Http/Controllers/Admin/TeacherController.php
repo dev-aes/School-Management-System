@@ -98,7 +98,15 @@ class TeacherController extends Controller
     
         if(request()->ajax()) {
             
-            return response()->json([$teacher]);
+            return response()->json([$teacher, $teacher->section]); // params (teacher, section)
+        }
+    }
+
+    public function teacher_display_students_by_section_id(Section $section)
+    {
+        if(request()->ajax())
+        {
+            return response()->json($section->student); // display students by teacher's section_id
         }
     }
 
