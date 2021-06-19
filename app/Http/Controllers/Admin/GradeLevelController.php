@@ -97,10 +97,11 @@ class GradeLevelController extends Controller
         }
     }
 
-    public function display_subjects_for_grade_level()
+    public function display_subjects_for_grade_level($grade_level_id)
     {
         if(request()->ajax()){
-            return response()->json(Subject::all());
+            $subjects_per_grade_level = Subject::where('grade_val',$grade_level_id)->get();
+            return response()->json($subjects_per_grade_level);
         }
     }
 

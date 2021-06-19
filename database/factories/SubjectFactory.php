@@ -23,7 +23,8 @@ class SubjectFactory extends Factory
     {
         return [
             'name' => 'math',
-            'description' => $this->faker->name
+            'description' => $this->faker->name,
+            'grade_val'=>1
         ];
     }
 }

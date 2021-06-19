@@ -18,7 +18,7 @@ class CreateSubjectsTable extends Migration
           //  $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('name');
             $table->string('description');
-            $table->boolean('isAssigned')->default(0);
+            $table->bigInteger('grade_val');
             $table->timestamps();
         });
     }

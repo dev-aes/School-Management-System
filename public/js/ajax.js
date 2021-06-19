@@ -1299,7 +1299,7 @@ function teacher_subject2_display_subjects_by_teacher_grade_level_id(id) {
                 url: route('teacher.teacher_display_by_teacher_id', teacher_id),
                 dataType:'json',
                 success: teacher => {
-                    res(teacher);
+                    //res(teacher);
                     $('#teacher_subject2_grade_level_id').attr('value', teacher);//Grade Level ID
       
                     teacher_subject2_display_subjects_by_teacher_grade_level_id( $('#teacher_subject2_grade_level_id').attr('value') );
@@ -1721,7 +1721,7 @@ $('#subject_modal_header').removeClass('bg-success').addClass('bg-primary');
         success: grade_levels => {
             let output=' <option></option>';
             grade_levels.forEach(grade_level => {
-                output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
+                output += `<option value='${grade_level.grade_val}'> ${grade_level.name} </option>`;
                 $('#subject_grade_level').html(output);
             })
         },
@@ -2708,8 +2708,8 @@ function createStudent() {
         data: {id:id},
         success: student => {
 
-           res(student[3]);
-
+           res(student[4]);
+            
 
            $('#show_student_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -3136,6 +3136,10 @@ $('#delete_all_student').on('click', ()=> {
 
 
 });
+
+
+
+
 
 
 
@@ -6565,9 +6569,10 @@ function assign_subject(id) {
 
 
     $.ajax({
-        url: route('grade_level.display_subjects_for_grade_level'),
+        url: route('grade_level.display_subjects_for_grade_level',id),
         dataType:'json',
         success: subjects => {
+           // res(subjects);
            let output = `<option></option>`;
            subjects.forEach(subject=>{
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;
