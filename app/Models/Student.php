@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Fee;
 use App\Models\Section;
-use App\Models\Student;
 use App\Models\ParentModel;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -34,10 +33,10 @@ class Student extends Model
     }
 
     //student has many teacher
-    public function teacher()
-    {
-        return $this->belongsToMany(Teacher::class)->withTimestamps();
-    }
+    // public function teacher()
+    // {
+    //     return $this->belongsToMany(Teacher::class)->withTimestamps();
+    // }
 
     //student has many fee
 

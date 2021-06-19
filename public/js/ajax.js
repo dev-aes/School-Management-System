@@ -603,10 +603,9 @@ function displayTeachers() {
             {data: 'city'},
             {data: 'contact'},
             {data: 'teacher_avatar'},
-            {data: 'name'}, // grade level_id 
             {data: 'created_at', render(data) {
                 const date =  new Date(data);
-                return date.toLocaleString();
+                return date.toLocaleDateString();
             }},
             {data: 'actions', orderable: false, searchable: false}
 
@@ -637,21 +636,6 @@ $('#add_teacher').on('click', ()=> {
     $('#preview_teacher_img').css('display','none');
     $('#teacher_modal_header').removeClass('bg-success').addClass('bg-primary');
 
-
-    $.ajax({
-        url: route('teacher.create'),
-        dataType:'json',
-        success: grade_levels => {
-            let output=' <option></option>';
-            grade_levels.forEach(grade_level => {
-                output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
-                $('#teacher_grade_level').html(output);
-            })
-        },
-        error: err => {
-            console.log(err);
-        }
-    })
 });
     // end teacher Modal
 
@@ -739,10 +723,6 @@ function createTeacher()  {
                             <br>
                             <p class='text-center lead'> Teacher </p>
                             <br>
-                            <div class='float-end'>
-                            <a class="btn btn-sm btn-outline-primary" href="javascript:void(0)" onclick='teacher_createSubject(${teacher[0].id})'>Add Subject <i class="fas fa-plus-circle"></i> </a> |
-                            <a class="btn btn-sm btn-outline-success" href="javascript:void(0)" onclick='teacher_createStudent(${teacher[0].id})'>Add Student <i class="fas fa-plus-circle"></i> </a>
-                            </div> <br> <br>
                             <ul class='list-group'>
                             <li class='list-group-item'><span class='badge bg-success'> First Name:</span> ${teacher[0].first_name} </li>
                             <li class='list-group-item'><span class='badge bg-success'>Middle Name:</span> ${teacher[0].middle_name} </li>
@@ -756,7 +736,6 @@ function createTeacher()  {
                             <li class='list-group-item'><span class='badge bg-success'>Contact:</span> ${teacher[0].contact}  </li>
                             <li class='list-group-item'><span class='badge bg-success'>Facebook:</span> ${teacher[0].facebook}  </li>
                             <li class='list-group-item'><span class='badge bg-success'>email:</span> ${teacher[0].email} </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Grade Level:</span> ${teacher[1].name} </li>
                             </ul>
                          </div>
 
@@ -774,15 +753,15 @@ function createTeacher()  {
                                 <tbody>
                             `;
                             // Teacher Subject Table
-                teacher[3].forEach(subject => {
+              
                     output += ` 
                                 <tr>
-                                    <td> ${subject.name} </td>
-                                    <td> ${subject.description} </td>
-                                    <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='teacher_destroySubject(${subject.id})'> <i class="fas fa-trash-alt"></i> </a> </td>
-                                        <input type='hidden' id='subject_teacher_id' data-id = ${teacher[0].id}>
+                                    <td>  </td>
+                                    <td>   </td>
+                                    <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='teacher_destroySubject()'> <i class="fas fa-trash-alt"></i> </a> </td>
+                                        <input type='hidden' id='subject_teacher_id' data-id = >
                                 </tr>`;
-                })
+             
                     output += `    
                                 </tbody>
                                 </table>
@@ -805,13 +784,13 @@ function createTeacher()  {
                                 </thead>
                                 <tbody>`;
             
-                  teacher[5].forEach(student => {
+                  
                     output += ` <tr>
-                                    <td> ${student.first_name} ${student.last_name}</td>
-                                    <td> ${teacher[1].name} </td>
-                                    <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='teacher_destroyStudent(${student.id}, ${id})'> <i class="fas fa-trash-alt"></i> </a> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='teacher_destroyStudent()'> <i class="fas fa-trash-alt"></i> </a> </td>
                                 </tr>`;
-                         })
+                 
                     output += `    
                     </tbody>
                     </table>
@@ -1029,30 +1008,24 @@ function back() {
         success: teacher => {
            $('#teacher_modal').modal('show');
            $('#teacher_modal_label').html(`<h4 class='text-white'>Edit Teacher <i class="fas fa-user-plus"></i> </h4> `);
-           $('#teacher_first_name').attr('value', teacher[0].first_name);
-           $('#teacher_middle_name').attr('value', teacher[0].middle_name);
-           $('#teacher_last_name').attr('value', teacher[0].last_name);
-           $('#teacher_birth_date').attr('value', teacher[0].birth_date);
-           $('#teacher_gender').attr('value', teacher[0].gender);
-           $('#teacher_city').attr('value', teacher[0].city);
-           $('#teacher_province').attr('value', teacher[0].province);
-           $('#teacher_country').attr('value', teacher[0].country);
-           $('#teacher_address').attr('value', teacher[0].address);
-           $('#teacher_contact').attr('value', teacher[0].contact);
-           $('#teacher_facebook').attr('value', teacher[0].facebook);
-           $('#teacher_email').attr('value', teacher[0].email);
-           $('#teacher_avatar').attr('value', teacher[0].teacher_avatar);
-           $('#student_grade_level').attr('value', teacher[0].grade_level_id);
-           $('#preview_teacher_img').css('display','block').attr('src', "/storage/uploads/teacher/" + teacher[0].teacher_avatar);
+           $('#teacher_first_name').attr('value', teacher.first_name);
+           $('#teacher_middle_name').attr('value', teacher.middle_name);
+           $('#teacher_last_name').attr('value', teacher.last_name);
+           $('#teacher_birth_date').attr('value', teacher.birth_date);
+           $('#teacher_gender').attr('value', teacher.gender);
+           $('#teacher_city').attr('value', teacher.city);
+           $('#teacher_province').attr('value', teacher.province);
+           $('#teacher_country').attr('value', teacher.country);
+           $('#teacher_address').attr('value', teacher.address);
+           $('#teacher_contact').attr('value', teacher.contact);
+           $('#teacher_facebook').attr('value', teacher.facebook);
+           $('#teacher_email').attr('value', teacher.email);
+           $('#teacher_avatar').attr('value', teacher.teacher_avatar);
+           $('#preview_teacher_img').css('display','block').attr('src', "/storage/uploads/teacher/" + teacher.teacher_avatar);
            $('#btn_add_teacher').css('display', 'none');
-           $('#btn_update_teacher').css('display', 'block').attr('data-id', teacher[0].id);
+           $('#btn_update_teacher').css('display', 'block').attr('data-id', teacher.id);
            $('#teacher_modal_header').removeClass('bg-primary').addClass('bg-success');
-
-           let output=`<option value='${teacher[0].grade_level_id}'>Current [${teacher[0].grade_level.name}]</option>`;
-           teacher[1].forEach(grade_level => {
-                 output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
-                 $('#teacher_grade_level').html(output);
-           })
+        
         },
         error: err => {
             toastDanger();
@@ -2270,6 +2243,90 @@ function createSection()
     }
 }
 
+function showSection(id)
+{
+    $('#show_section_modal').modal('show');
+    $('#show_section_modal_header').addClass('bg-info');
+
+    $.ajax({
+        url: route('section.show',id),
+        dataType:'json',
+        success: section => {
+           res(section);
+
+           // display section -> gradelevel , teachers , students .
+           let output = `
+                        <div class='row'>
+                                 <h3 class='text-muted'> Section: <span class='text-primary fw-bold text-uppercase'> ${section.name} </span> </h3>
+                                 <h3 class='text-muted'> Grade Level: <span class='text-primary fw-bold text-uppercase'> ${section.grade_level.name} </span> </h3>
+                        </div>
+
+                        <div class='row py-5'>
+                            <table class='table table-hover table-bordered  caption-top'>
+                            <caption>List of Assigned Teachers  </caption>
+                            <thead style='background:none'>
+                                <tr> 
+                                    <th> Instructor </th>
+                                    <th>  Avatar </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `;
+
+                        // display assigned teachers
+
+                    section.teacher.forEach(teacher => {
+                     
+                        output+= `
+                                <tr> 
+                                    <td>${teacher.first_name} ${teacher.last_name}</td>
+                                    <td> <img class='rounded-circle' src='/storage/uploads/teacher/${teacher.teacher_avatar}' title='${teacher.first_name}' alt='teacher_avatar' width='50'> </td>
+                                </tr>
+                                  `;
+                    });
+
+                output+= `</tbody>
+                        </table>`; // closer for teachers table
+
+                output+= ` <div class='row'>
+                                <table class='table table-hover table-bordered  caption-top'>
+                                <caption>List of Assigned Students  </caption>
+                                <thead style='background:none'>
+                                    <tr> 
+                                        <th> Student </th>
+                                        <th>  Avatar </th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                            `; // start student table
+
+
+                        section.student.forEach(student => {
+                    
+                            output+= `
+                                    <tr> 
+                                        <td>${student.first_name} ${student.last_name}</td>
+                                        <td><img class='rounded-circle' src='/storage/uploads/student/${student.student_avatar}' title='${student.first_name}' alt='student_avatar' width='50'></td>
+                                    </tr>
+                                        `;
+                        });
+
+                output+= `</tbody>
+                        </table>`; // closer for students table
+
+
+
+        
+                        $('#show_section_info').html(output); // append section info
+
+        },
+        error: err => {
+            res(err);
+            toastDanger();
+        }
+    })
+}
+
 // edit
 function editSection(id)
 {
@@ -2433,23 +2490,6 @@ function section_store_teacher()
     {
         toastr.warning("Please select a section/teacher");
     }
-}
-
-
-
-function show_students_and_teacher_in_section(id){
-    $.ajax({
-        url:route('section.show_students_and_teacher_in_section',id),
-        dataType:'json',
-
-        success: response => {
-            console.log(response);
-        },
-        error: err => {
-            console.log(err);
-        }
-        
-    })
 }
 
 
@@ -6590,11 +6630,7 @@ function assign_subject(id) {
         url: route('grade_level.display_subjects_for_grade_level',id),
         dataType:'json',
         success: subjects => {
-<<<<<<< HEAD
             res(subjects);
-=======
-           // res(subjects);
->>>>>>> 6bbf5b0ff25e54757afde23774ad7d75f9dc38e8
            let output = `<option></option>`;
            subjects.forEach(subject=>{
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;

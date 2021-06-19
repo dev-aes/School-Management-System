@@ -28,10 +28,7 @@ class TeacherController extends Controller
 
         if(request()->ajax()) {
 
-            $teachers = DB::table('grade_levels')
-                        ->join('teachers', 'grade_level_id', '=' , 'grade_levels.id')
-                        ->select('teachers.*', 'grade_levels.name')
-                        ->get();
+            $teachers = Teacher::all();
 
             return DataTables::of($teachers)
                    ->addIndexColumn()
@@ -78,7 +75,6 @@ class TeacherController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'teacher_avatar' => 'image',
-            'grade_level_id'=>'required|string'
 
         ]);
         if(request()->ajax()) {
@@ -93,20 +89,23 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
+        /**
+         * TODO display teacher 
+         * display his/her student
+         * display his/her section 
+         * display his/her subjects
+         */
+    
         if(request()->ajax()) {
-            return response()->json([$teacher, $teacher->grade_level, Subject::where('grade_level_id', $teacher->grade_level_id)->get(), $teacher->subject, Student::where('grade_level_id', $teacher->grade_level_id)->get(),DB::select("Select distinct b.id, b.first_name, b.last_name from student_teacher a , students b , teachers c WHERE a.teacher_id = $teacher->id AND b.id = a.student_id;")]);
+            
+            return response()->json([$teacher]);
         }
-
-        // if(request()->ajax()) {
-        //     $teacher = Teacher::findOrFail($id);
-        //     return response()->json([$teacher, $teacher->grade_level]);
-        // }
     }
 
     public function edit(Teacher $teacher)
     {
         if(request()->ajax()) {
-            return response()->json([$teacher, GradeLevel::all(), $teacher->grade_level->name]);
+            return response()->json($teacher);
         }
     }
 
@@ -126,7 +125,6 @@ class TeacherController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'teacher_avatar' => 'image',
-            'grade_level_id'=>'required|string'
         ]);
 
         if(request()->ajax()) {

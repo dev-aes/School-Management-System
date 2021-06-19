@@ -24,7 +24,6 @@
                                             <th>City</th>
                                             <th>Contact</th>
                                             <th>Avatar</th>
-                                            <th>Grade Level</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
