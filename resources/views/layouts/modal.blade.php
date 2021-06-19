@@ -751,28 +751,22 @@
      {{--SHOW Grade Level MODAL--}}
     
      <div class="modal fade " id="show_grade_level_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content ">
               <div class="modal-header" id="show_grade_level_modal_header">
                     <h4 class="modal-title text-white" id="myLargeModalLabel">Grade Level Information <i class="fas fa-info-circle"></i> </h4>
                     <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
               </div>
               <div class="modal-body" >
-                  <div class="card">
-                      <div class="card-header">
-                          <div class="card-body">
-                             <div class="row justify-content-center">
-                                 <div class="card w-75">
-                                     <div class="card-body">
-                                        <div id="show_grade_level_info">
-                                    
-                                        </div>
-                                     </div>
-                                 </div>
-                             </div>
-                          </div>
-                      </div>
-                  </div>
+                <div class="row justify-content-center">
+                    <div class="card w-75 ">
+                        <div class="card-body py-5">
+                           <div id="show_grade_level_info">
+                               {{--Display Grade Level and its assigned Subject(s)--}}
+                           </div>
+                        </div>
+                    </div>
+                </div>
               </div>
           </div>
         </div>
