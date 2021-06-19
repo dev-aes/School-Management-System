@@ -138,7 +138,8 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::delete('/admin/teacher/deleteStudent/{teacher}/{student}', [TeacherController::class, 'teacher_destroy_student'])->name('teacher.teacher_destroy_student');
 
 
-
+    // Teacher show students by its section id 06/19/21
+    Route::get('/admin/teacher/show_students/{section}', [TeacherController::class, 'teacher_display_students_by_section_id'])->name('teacher.teacher_display_students_by_section_id');
 
 
     // student truncate all records

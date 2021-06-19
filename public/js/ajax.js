@@ -703,16 +703,17 @@ function createTeacher()  {
         dataType:'json',
         data: {id:id},
         success: teacher => {
+            // res(teacher);
            $('#show_teacher_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="teacherinfo-tab" data-bs-toggle="tab" data-bs-target="#teacherinfo" type="button" role="tab" aria-controls="teacherinfo" aria-selected="true">Student Info</button>
+                            <button class="nav-link active" id="teacherinfo-tab" data-bs-toggle="tab" data-bs-target="#teacherinfo" type="button" role="tab" aria-controls="teacherinfo" aria-selected="true">Teacher Info</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Subjects Handled</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="student-tab" data-bs-toggle="tab" data-bs-target="#students" type="button" role="tab" aria-controls="students" aria-selected="false">Student Handled</button>
+                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Section Handled</button>
                         </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">`;
@@ -769,34 +770,32 @@ function createTeacher()  {
                             </div>`;
 
 
-                    // Teacher STUDENT TABLE
+                    // Teacher Section
+                    output += `<div class="tab-pane fade" id="sections" role="tabpanel" aria-labelledby="section-tab">
+                                <div class="accordion py-5" id="accordionExample">`;
+
+
+                            teacher[1].forEach(section => {
+                          
                     output += `
-                            <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="contact-tab">
-                                <ul class='list-group'><br><br>
-                                <h3 class='text-muted text-center'> Students Handled </h3> <br>
-                                <table class='table'> 
-                                <thead> 
-                                    <tr> 
-                                        <th> Student </th>
-                                        <th> Grade Level </th>
-                                        <th>  </th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-            
-                  
-                    output += ` <tr>
-                                    <td> </td>
-                                    <td> </td>
-                                    <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='teacher_destroyStudent()'> <i class="fas fa-trash-alt"></i> </a> </td>
-                                </tr>`;
-                 
-                    output += `    
-                    </tbody>
-                    </table>
-                    </ul>
-                   </div>
-                </div>`;
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='teacher_display_students_by_section_id(${section.id})'>
+                                            Section: <span class='ms-2 text-primary fw-bold text-uppercase'> ${section.name} </section>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body" id='display_students-${section.id}'>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                                }) // foreach closer
+
+
+                output += `    </div>    
+                        </div>`; // closer tab
 
             $('#show_teacher_info').html(output);
 
@@ -805,6 +804,42 @@ function createTeacher()  {
 
         }
     })
+}
+
+function teacher_display_students_by_section_id(id) 
+{
+   $.ajax({
+      url: route('teacher.teacher_display_students_by_section_id',id),
+      dataType:'json',
+      success: students => {
+          res(students);
+          let output = `<table class='table table-hover table-bordered'>
+                            <thead>
+                                <tr> 
+                                    <th> Student Name </th>
+                                    <th> Gender </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `;
+            students.forEach(student => {
+                output += `<tr>
+                            <td> ${student.first_name} ${student.last_name} </td>
+                            <td> ${student.gender} </td>
+                          </tr>`
+            }) // loop closure
+
+            output += `</tbody>
+                     </table>`; // table closure
+ 
+                $('#display_students-'+ id).html(output); // dynamic id + elemt id
+
+      },
+      error: err => {
+          res(err);
+          toastDanger();
+      }
+   })
 }
 
 // teacher student 
@@ -2263,7 +2298,7 @@ function showSection(id)
 
                         <div class='row py-5'>
                             <table class='table table-hover table-bordered  caption-top'>
-                            <caption>List of Assigned Teachers  </caption>
+                            <caption># Teachers  </caption>
                             <thead style='background:none'>
                                 <tr> 
                                     <th> Instructor </th>
@@ -2290,7 +2325,7 @@ function showSection(id)
 
                 output+= ` <div class='row'>
                                 <table class='table table-hover table-bordered  caption-top'>
-                                <caption>List of Assigned Students  </caption>
+                                <caption># Students  </caption>
                                 <thead style='background:none'>
                                     <tr> 
                                         <th> Student </th>

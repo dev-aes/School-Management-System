@@ -82,10 +82,15 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('teacher.index') }}">
-                            <i class="align-middle" data-feather="user"></i> <span class="align-middle">Teacher</span>
+						<a href="#teacher" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Teacher</span>
                         </a>
+						<ul id="teacher" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" id="" href="{{ route('teacher.index') }}">Manage Teacher</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" href="javascript:void(0)">Assign Subject to Section</a></li>
+						</ul>
 					</li>
+
 
 					<li class="sidebar-item">
 						<a href="#student" data-bs-toggle="collapse" class="sidebar-link collapsed">
