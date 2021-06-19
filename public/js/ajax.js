@@ -719,6 +719,7 @@ function createTeacher()  {
         dataType:'json',
         data: {id:id},
         success: teacher => {
+            
            $('#show_teacher_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
