@@ -1723,7 +1723,7 @@ function createSubject() {
             url: route('subject.store'),
             data: subject_form.serialize(),
             success: response => {
-                res(response);
+               // res(response);
                 toastSuccess('Subject Added');
                 $('#subject_DT').DataTable().draw();
                 subject_form[0].reset();
@@ -2231,14 +2231,26 @@ function createSection()
             dataType:'json',
             data:section_form.serialize(),
             success: response => {
+               // res();
                 if(response == 'success')
                 {   
+
                     $('#section_DT').DataTable().draw();
                     return toastSuccess("Section Added");
                 }
+
+              
             },
+
+            
+
             error: err => {
-                console.log(err);
+                let err_msg = '';
+                $.each(err.responseJSON.errors,function(field_name,error){
+                   err_msg += `${error}`;
+                }) 
+                toastr.warning(err_msg);
+                
             }
         })
     }
@@ -2253,7 +2265,7 @@ function showSection(id)
         url: route('section.show',id),
         dataType:'json',
         success: section => {
-           res(section);
+         //  res(section);
 
            // display section -> gradelevel , teachers , students .
            let output = `
@@ -2322,7 +2334,7 @@ function showSection(id)
 
         },
         error: err => {
-            res(err);
+            //res(err);
             toastDanger();
         }
     })
@@ -2767,7 +2779,7 @@ function createStudent() {
         data: {id:id},
         success: student => {
 
-           res(student[4]);
+          // res(student[4]);
             
 
            $('#show_student_modal').modal('show');
@@ -6631,7 +6643,7 @@ function assign_subject(id) {
         url: route('grade_level.display_subjects_for_grade_level',id),
         dataType:'json',
         success: subjects => {
-            res(subjects);
+           // res(subjects);
            let output = `<option></option>`;
            subjects.forEach(subject=>{
                output+=`<option value='${subject.id}' data-value='${subject.name}'> ${subject.name}</option>`;
@@ -6656,7 +6668,7 @@ function grade_level_assign_subject_subject_id_store()
             dataType:'json',
             data: $('#grade_level_assign_subject_form').serialize(),
             success: response => {
-                res(response);
+                //res(response);
                 if(response == 'success')
                 {
                     return toastSuccess('Subject/s Assigned');
@@ -6670,7 +6682,7 @@ function grade_level_assign_subject_subject_id_store()
                 }
             },
             error: err => {
-                res(err);
+               // res(err);
                 toastDanger();
             }
         })

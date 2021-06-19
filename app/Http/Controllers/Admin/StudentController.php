@@ -134,7 +134,7 @@ class StudentController extends Controller
             $student_section = $student->section;
 
            //Display student subject and teacher     
-           $display_student_subjects_teacher = Student::with('section','grade_level','teacher')->where('id', $student->id)->first();
+           $display_student_subjects_teacher = Student::with('section','grade_level')->where('id', $student->id)->first();
             
            $grade_level = GradeLevel::find($student->section->id)->first();
            $get_subjects = DB::table('grade_level_subject')

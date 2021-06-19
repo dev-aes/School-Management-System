@@ -51,22 +51,15 @@ class SubjectController extends Controller
     public function store()
     {
         $subject_form_data = request()->validate([
-            'name' => 'required|string',
-            'description'=>'required|string',
+            'name' => 'required|string|unique:subjects',
+            'description'=>'required|unique:subjects|string',
             'grade_val'=>'required'
 
-            // 'grade_level_id'=>'required|string' removed
         ]);
 
         if(request()->ajax()) {
 
             $subject = Subject::create($subject_form_data);
-            // DB::table('grade_level_subject')->insert([
-            //   // 'grade_level_id' => request('grade_level_id'),
-            //    'subject_id' => $subject->id,
-            //    'created_at' => now()
-            // ]);
-
            return $this->res();
         }
     }

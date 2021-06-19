@@ -48,6 +48,12 @@ class SectionController extends Controller
                 'description' => 'required|string'
             ]);
 
+            $section = Section::where('name',$data['name'])->first();
+            if($section){
+                return $this->err();
+            }
+
+
             Section::create($data);
 
             return response()->json('success');
