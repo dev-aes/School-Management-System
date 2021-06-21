@@ -98,7 +98,14 @@ class TeacherController extends Controller
     
         if(request()->ajax()) {
             
-            return response()->json([$teacher, $teacher->section]); // params (teacher, section)
+            $teacher_subjects = DB::table('section_subject')
+                                ->join('subjects', 'subject_id', 'subjects.id')
+                                ->join('teachers', 'teacher_id', 'teachers.id')
+                                ->select('subjects.*')
+                                ->where('teacher_id', $teacher->id)
+                                ->get();
+
+            return response()->json([$teacher, $teacher->section, $teacher_subjects]); // params (teacher, section, subjects)
         }
     }
 
@@ -429,17 +436,47 @@ public function teacher_destroy_student()
 
 
         if(request()->ajax()) {
-           DB::table('section_subject')->insert([
-             'section_id'=> request('section_id') ,
-             'subject_id'=> request('subject_id'),
-             'teacher_id'=> request('teacher_id'),
-             'created_at'=>now() 
-           ]);
+
+           // passing multiple insertion (subject_id) 
+           // loop 
+
+           foreach(request('subject_id') as $subject_id): 
+
+                DB::table('section_subject')->insert([
+                    'section_id'=> request('section_id') ,
+                    'subject_id'=> $subject_id,
+                    'teacher_id'=> request('teacher_id'),
+                    'created_at'=>now() 
+                ]);
+
+           endforeach;
+         
 
         }
         return response()->json('success');
+    }
 
 
+    public function teacher_destroy_section(Teacher $teacher, Section $section)
+    {
+        if(request()->ajax())
+        {
+            //  get the teacher_section row by teacher_id and section_id 
+       
+            $teacher_section = DB::table('section_teacher')
+                                  ->where('section_id', $section->id)
+                                  ->where('teacher_id', $teacher->id)
+                                  ->delete();
+                                  // delete section_teacher
+
+            $teacher_subject = DB::table('section_subject')
+                                 ->where('section_id', $section->id)
+                                 ->where('teacher_id', $teacher->id)
+                                 ->delete();
+                                 // after deleting of section_Teacher automatically delete its subjects (section_subject) 
+            return $this->res();
+
+        }
     }
 
 
