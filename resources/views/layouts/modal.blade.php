@@ -736,6 +736,62 @@
         </div>
     </div>
 
+
+
+
+    {{--Show Assign Teacher's Subject to Section Modal--}}
+    <div class="modal fade" id="teacher_assign_subject_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_subject_section_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="teacher_assign_subject_section_header">
+            <h5 class="modal-title text-primary" id="teacher_assign_subject_section_title">{{--Modal Title--}}</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="teacher_assign_subject_section_div_err" role="alert" style="display:none">
+                <ul id="teacher_assign_subject_section_err"></ul>
+            </div>
+
+            <div class="modal-body">
+            <form id="teacher_assign_subject_section_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label class='form-label'>Select Teacher </label>
+                    <select class="form-control" name="teacher_id" type="text" id="teacher_assign_subject_section_teacher_id" onchange="display_section_by_teacher()" value="">
+                        {{--display teachers --}}
+                    </select>   
+                   
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Select Section </label>
+                    <select class="form-control" name="section_id" type="text" id="teacher_assign_subject_section_section_id" onchange="display_subject_by_grade_level()" value="">
+                        {{--display sections --}}
+                    </select>   
+                    
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Select Subjects </label>
+                    <select class="form-control" name="subject_id" type="text" id="teacher_assign_subject_section_subject_id" value="">
+                        {{--display subjects --}}
+                    </select>   
+                    
+                </div>
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_subject_to_section_by_teacher_id" onclick="store_subjects_by_grade_level_id()">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_subject_to_section_by_teacher_id" style="display:none" onclick="update_subjects_by_grade_level_id()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    {{--End--}}
+
      {{--SHOW Grade Level MODAL--}}
     
      <div class="modal fade " id="show_grade_level_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

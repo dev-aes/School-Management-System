@@ -644,6 +644,103 @@ $('#add_teacher').on('click', ()=> {
 
 });
     // end teacher Modal
+    $('#teacher_assign_subject_section').on('click', ()=> {
+        $('#teacher_assign_subject_section_modal').modal('show');
+        $.ajax({
+            url:route('teacher.teacher_assign_subject_to_student_display_teachers'),//Route Display All teacher
+            dataType:'json',
+            success:teachers =>{
+               // res(teachers);
+                 let output = `<option></option>`;
+
+                 teachers.forEach(teacher => {
+                    output += `<option value='${teacher.id}'> ${teacher.id} - ${teacher.first_name} ${teacher.last_name} </option>`
+                });
+                $('#teacher_assign_subject_section_teacher_id').html(output);
+            },
+            error:err=>{
+                res(err)
+            }
+
+        })
+
+
+    });
+    //Display section by teacher id
+    function display_section_by_teacher(){
+        let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
+        $.ajax({
+            url:route('teacher.display_section_by_teacher',teacher_id),
+            dataType:'json',
+            success:sections => {
+                let output = `<option></option>`;
+                sections.forEach(section => {
+                    output += `<option value='${section.id}'> ${section.id} - ${section.name} </option>`
+                });
+                $('#teacher_assign_subject_section_section_id').html(output);
+            },
+            error:err => {
+                res(err)
+            }
+
+        })
+    }
+    //
+
+
+    //Display subjects by grade level
+    function display_subject_by_grade_level(){
+        let section_id = $('#teacher_assign_subject_section_section_id').val();
+        
+        $.ajax({
+            url:route('teacher.display_subjects_by_grade_level_id',section_id),
+            dataType:'json',
+            success:subjects => {
+                //res(sections);
+                let output = `<option></option>`;
+                subjects.forEach(subject => {
+                    output += `<option value='${subject.id}'>${subject.name} </option>`
+                });
+                $('#teacher_assign_subject_section_subject_id').html(output);
+            },
+            error:err => {
+                res(err)
+            }
+
+        })
+    }
+
+
+    function store_subjects_by_grade_level_id(){
+        let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
+        let section_id = $('#teacher_assign_subject_section_section_id').val();
+        let subject_id = $('#teacher_assign_subject_section_subject_id').val();
+        let form = $('#teacher_assign_subject_section_form');
+        
+        if(teacher_id > 0 || section_id > 0 || subject_id >0){
+          $.ajax({
+            method: 'POST',
+            url: route('teacher.store_subjects_by_grade_level_id'),
+            dataType: 'json',
+            data:form.serialize(),
+            success:response => {
+                res(response);
+            },
+            error:err => {
+                res(err);
+            }
+          })  
+           
+              
+        }
+        else{
+            toastWarning();
+        }
+
+
+    }
+
+
 
 
 // store

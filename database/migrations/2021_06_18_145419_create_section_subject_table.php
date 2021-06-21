@@ -15,9 +15,9 @@ class CreateSectionSubjectTable extends Migration
     {
         Schema::create('section_subject', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('section_id')->nullable()->constrained('sections')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('subject_id')->nullable()->constrained('subjects')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('section_id')->constrained('sections')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subjects')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained('teachers')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

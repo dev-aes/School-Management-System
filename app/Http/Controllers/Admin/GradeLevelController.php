@@ -110,11 +110,6 @@ class GradeLevelController extends Controller
                         ->where('subjects.grade_val','=',$grade_level->id)
                         ->where('grade_level_subject.subject_id', NULL)
                         ->get();
-           
-            
-
-          
-
 
             return response()->json($subjects);
 

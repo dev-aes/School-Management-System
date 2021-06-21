@@ -104,6 +104,13 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::get('/admin/home/student/{id}', [StudentController::class, 'display_student_subjects_and_teachers'])->name('student.student_display_subjects_teachers');
 
 
+    //Display sections by teacher id
+    Route::get('/admin/home/teacher/{teacher}', [TeacherController::class, 'display_section_by_teacher'])->name('teacher.display_section_by_teacher');
+    //Display subjects by sections grade level id
+    Route::get('/admin/home/teacher/section/{section}', [TeacherController::class, 'display_subjects_by_grade_level_id'])->name('teacher.display_subjects_by_grade_level_id');
+    Route::post('/admin/home/teacher/section', [TeacherController::class, 'store_subjects_by_grade_level_id'])->name('teacher.store_subjects_by_grade_level_id');
+
+
     //Assign Subject Student
     Route::post('/admin/home/teacher/storeAssignSection', [TeacherController::class, 'teacher_assign_section'])->name('teacher.teacher_assign_section');
 
