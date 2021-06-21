@@ -398,11 +398,30 @@ public function teacher_destroy_student()
 
     //Todo Once the subject already assigned it wont display
     public function display_subjects_by_grade_level_id(Section $section){
-        $gl = GradeLevel::where('id',$section->grade_level_id)->first();
+
+        // $subjects = DB::table('subjects')
+        //                 ->leftJoin('grade_level_subject','subjects.id','grade_level_subject.subject_id')
+        //                 //->leftJoin('grade_levels','grade_levels.id','grade_level_subject.grade_level_id')
+        //                 ->select('subjects.name','subjects.id','subjects.grade_val')
+        //                 ->where('subjects.grade_val','=',$grade_level->id)
+        //                 ->where('grade_level_subject.subject_id', NULL)
+        //                 ->get();
+
+        //get all assigned subjects to section by teacher id
+       
+       
+        $subjects = DB::table('subjects')
+        ->leftJoin('section_subject','section_subject.subject_id','subjects.id')
+        //->select('subjects.name')
+        // ->where('subjects.grade_val',$section->grade_level_id)
+        // ->where('section_subject.subject_id', NULL)
+        ->get();
+
+        //display subjects
+        //$gl = GradeLevel::where('id',$section->grade_level_id)->first();
     
-       
-       
-        return response()->json($gl->subject);
+
+        return response()->json($subjects);
     }
 
     //Store assigned subjects by teacher section id
