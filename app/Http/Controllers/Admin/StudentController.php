@@ -45,7 +45,7 @@ class StudentController extends Controller
                    ->addColumn('actions', function($row) {
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showStudent" onclick="showStudent('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                         $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editStudent" onclick="editStudent('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteStudent" onclick="deleteStudent('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteStudent" onclick="crud_delete(\' '.'a.deleteStudent'.' \' , \'student.destroy\', \' '.'Student Deleted'.' \' , \' '.'.student_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
         
                         return $btn;
                    })
@@ -210,7 +210,9 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            $student->delete();
+            Student::whereIn('id', request('id'))->delete();
+
+            return $this->res();
         }
     }
 

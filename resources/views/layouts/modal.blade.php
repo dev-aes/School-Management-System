@@ -584,12 +584,12 @@
               <form id="subject_form" autocomplete="off" enctype="multipart/form-data">
                 @csrf
 
-                {{-- <div class="form-group">
+               <div class="form-group">
                     <label class='form-label'>Select Grade Level </label>
                     <select class="form-select " name="grade_val" type="text" id="subject_grade_level" > 
-                        {{--Display Grade Levels
+                        {{--Display Grade Levels --}}
                     </select>    
-                </div> --}}
+                </div> 
 
                 
                 <div class="form-group">

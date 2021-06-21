@@ -16,10 +16,11 @@
                         <br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="student_DT">
+                                <table class="table table-hover student_DT">
                                     <caption>List of Students</caption>
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Gender</th>
@@ -27,8 +28,6 @@
                                             <th>Address</th>
                                             <th>Contact</th>
                                             <th>Avatar</th>
-                                            <th>Created At</th>
-                                            <th>Updated At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

@@ -167,6 +167,11 @@ $(()=> {
     
 });
 
+let selected = []; // dynamic container for table row_id's
+row_select($('.subject_DT tbody'));
+row_select($('.student_DT tbody'));
+row_select($('.teacher_DT tbody'));
+
 /** 
  * * <------------ Start Academic Year
  * TODO CRUD Academic Year (Completed)
@@ -582,7 +587,7 @@ function updateSchool() {
 // index
 function displayTeachers() {
   
-    $('#teacher_DT').DataTable({
+    $('.teacher_DT').DataTable({
         processing: false,
         serverSide: true,
         retrieve: true,
@@ -597,16 +602,17 @@ function displayTeachers() {
         autoWidth: false,
         ajax: route('teacher.index'),
         columns: [
+            {data: 'id'},
             {data: 'first_name'},
             {data: 'last_name'},
             {data: 'gender'},
             {data: 'city'},
             {data: 'contact'},
             {data: 'teacher_avatar'},
-            {data: 'created_at', render(data) {
-                const date =  new Date(data);
-                return date.toLocaleDateString();
-            }},
+            // {data: 'created_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleDateString();
+            // }},
             {data: 'actions', orderable: false, searchable: false}
 
         ]
@@ -1139,7 +1145,7 @@ function back() {
             $.ajax({
                 method:'DELETE',
                 url:route('teacher.destroy', id),
-                data:{id:id},
+                data:{id:selected},
                 success: response => {
                    toastSuccess('Teacher Deleted');
                    $('#teacher_DT').DataTable().draw();
@@ -1681,7 +1687,9 @@ function teacher_assign_section(){
 
 // index
 function displaySubjects() {
-    $('#subject_DT').DataTable({
+
+
+    $('.subject_DT').DataTable({
         processing: false,
         serverSide: true,
         retrieve: true,
@@ -1693,9 +1701,15 @@ function displaySubjects() {
                 renderer: $.fn.dataTable.Responsive.renderer.tableAll()
             }
         },
+        "rowCallback": function( row, data ) {
+            if ( $.inArray(data.id, selected) !== -1 ) {
+                $(row).addClass('selected');
+            }
+        },
         autoWidth: false,
         ajax: route('subject.index'),
         columns: [
+            {data: 'id'},
             {data: 'name'},
             {data: 'description'},
             {data: 'created_at', render(data) {
@@ -1710,6 +1724,27 @@ function displaySubjects() {
         ]
     });
 }
+
+
+$('#subject_DT tbody').on('dblclick', 'tr', function () {
+
+    let id = $(this).children(":first").toggleClass("sorting_1");
+
+    let selected_id = id.text(); // selected row id
+
+    let index = $.inArray(selected_id, selected);
+
+
+    if ( index === -1 ) {
+        selected.push( selected_id );
+        
+    } else {
+        selected.splice( index, 1 );
+    }
+
+     $(this).toggleClass('selected');
+} );
+
 
 
 // create
@@ -1872,38 +1907,42 @@ function updateSubject()
     }
 }
 
-// delete
-function deleteSubject(id)
+
+function crud_delete(element,route_name,msg,dt)
 {
+    $(document).on('click', element , function() {
+        let id = [$(this).attr('data-id')];
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                method:'DELETE',
-                url:route('subject.destroy', id),
-                data:{id:id},
-                success: response => {
-                    toastSuccess('Subject Deleted')
-                    $('#subject_DT').DataTable().draw();
-                },
-                error: err => {
-                    toastDanger();
-                    console.log(err);
+        Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method:'DELETE',
+                        url:route(route_name, id),
+                        data:{id: selected == "" ?  id  : selected // check if the selected[] is null  get the single  row id
+                        },
+                        success: response => {
+                            console.log(response);
+                            toastSuccess(response)
+                            $(dt).DataTable().draw();
+                        },
+                        error: err => {
+                            toastDanger();
+                            console.log(err);
+                        }
+        
+                    })
                 }
-
             })
-        }
-      })
+    })
 }
-
 
 $('#imp_subject').on('click', () => {
     $('#subject_file').click();
@@ -2671,7 +2710,7 @@ function createGrade()
 
 // index
 function displayStudents() {
-    $('#student_DT').DataTable({
+    $('.student_DT').DataTable({
         responsive: true,
         processing: false,
         serverSide: true,
@@ -2684,9 +2723,15 @@ function displayStudents() {
                 renderer: $.fn.dataTable.Responsive.renderer.tableAll()
             }
         },
+        "rowCallback": function( row, data ) {
+            if ( $.inArray(data.id, selected) !== -1 ) {
+                $(row).addClass('selected');
+            }
+        },
         autoWidth: false,
         ajax : route('student.index'),
         columns: [
+            {data: 'id'},
             {data: 'first_name'},
             {data: 'last_name'},
             {data: 'gender'},
@@ -2694,14 +2739,14 @@ function displayStudents() {
             {data: 'address'},
             {data: 'contact'},
             {data: 'student_avatar'},
-            {data: 'created_at', render(data) {
-                const date =  new Date(data);
-                return date.toLocaleString();
-            }},
-            {data: 'updated_at', render(data) {
-                const date =  new Date(data);
-                return date.toLocaleString();
-            }},
+            // {data: 'created_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
+            // {data: 'updated_at', render(data) {
+            //     const date =  new Date(data);
+            //     return date.toLocaleString();
+            // }},
             {data: 'actions'},
         ]
     });
@@ -3132,7 +3177,7 @@ function deleteStudent(id)
             $.ajax({
                 method:'DELETE',
                 url:route('student.destroy', id),
-                data:{id:id},
+                data:{id:selected},
                 success: response => {
                     toastSuccess('Student Deleted')
                     $('#student_DT').DataTable().draw();
@@ -6903,5 +6948,30 @@ function res(res)
 
 }
 
+
+
+function row_select(val)
+{
+    let element = val;
+
+    $(element).on('dblclick', 'tr', function () {
+
+        let id = $(this).children(":first").toggleClass("sorting_1");
+    
+        let selected_id = id.text(); // selected row id
+    
+        let index = $.inArray(selected_id, selected);
+    
+    
+        if ( index === -1 ) {
+            selected.push( selected_id );
+            
+        } else {
+            selected.splice( index, 1 );
+        }
+    
+         $(this).toggleClass('selected');
+    } );
+}
 
 //$2y$10$UPNEWO.3925PqB8KN1tl..IFHJSKBINMWxKZNBWB9hBMfNlayuue6

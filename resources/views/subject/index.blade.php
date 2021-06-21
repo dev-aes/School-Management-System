@@ -14,10 +14,11 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_subject">Add Subject <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="subject_DT">
+                                <table class="table table-hover subject_DT">
                                     <caption>List of Subjects <i class="fas fa-book"></i> </caption>
                                     <thead style="">
                                         <tr>
+                                            <th>ID</th>
                                             <th>Subject Name</th>
                                             <th>Subject Description</th>
                                             <th>Created At</th>

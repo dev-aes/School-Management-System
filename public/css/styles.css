@@ -220,3 +220,6 @@ thead {
   background: rgb(217, 217, 217);
 }
 
+.selected {
+  background-color: #dff9fb;
+}

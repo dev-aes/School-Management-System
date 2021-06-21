@@ -14,17 +14,17 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_teacher">Add Teacher <i class="ms-1 fas fa-user-plus"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="teacher_DT">
+                                <table class="table table-hover teacher_DT" >
                                     <caption>List of Teachers</caption>
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Gender</th>
                                             <th>City</th>
                                             <th>Contact</th>
                                             <th>Avatar</th>
-                                            <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
