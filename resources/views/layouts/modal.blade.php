@@ -744,7 +744,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" id="teacher_assign_subject_section_header">
-            <h5 class="modal-title text-primary" id="teacher_assign_subject_section_title">{{--Modal Title--}}</h5>
+            <h5 class="modal-title text-primary" id="teacher_assign_subject_section_label">{{--Modal Title--}}</h5>
             <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
             </button>
             </div>
@@ -773,10 +773,9 @@
                 </div>
                 <div class="form-group">
                     <label class='form-label'>Select Subjects </label>
-                    <select class="form-control" name="subject_id" type="text" id="teacher_assign_subject_section_subject_id" value="">
+                    <select class="teacher_assign_subjects_to_section_display_subjects" name="subject_id[]" type="text" id="teacher_assign_subject_section_subject_id" multiple style="width:100%">
                         {{--display subjects --}}
                     </select>   
-                    
                 </div>
             </form>
             </div>

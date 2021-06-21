@@ -16,6 +16,9 @@ $(()=> {
      if(window.location.href == route('teacher.index'))
     {
         displayTeachers(); // after loading the teacher page ; load the teacher data
+        $('.teacher_assign_subjects_to_section_display_subjects').select2({
+            dropdownParent: $('#teacher_assign_subject_section_modal')
+        });
     }
      if(window.location.href == route('subject.index'))
     {
@@ -646,6 +649,8 @@ $('#add_teacher').on('click', ()=> {
     // end teacher Modal
     $('#teacher_assign_subject_section').on('click', ()=> {
         $('#teacher_assign_subject_section_modal').modal('show');
+        $('#teacher_assign_subject_section_label').html(`<h4 class='text-white'> Assign Subjects to Section </h4>`);
+        $('#teacher_assign_subject_section_header').addClass('bg-primary');
         $.ajax({
             url:route('teacher.teacher_assign_subject_to_student_display_teachers'),//Route Display All teacher
             dataType:'json',
@@ -669,21 +674,30 @@ $('#add_teacher').on('click', ()=> {
     //Display section by teacher id
     function display_section_by_teacher(){
         let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
-        $.ajax({
-            url:route('teacher.display_section_by_teacher',teacher_id),
-            dataType:'json',
-            success:sections => {
-                let output = `<option></option>`;
-                sections.forEach(section => {
-                    output += `<option value='${section.id}'> ${section.id} - ${section.name} </option>`
-                });
-                $('#teacher_assign_subject_section_section_id').html(output);
-            },
-            error:err => {
-                res(err)
-            }
 
-        })
+        if(teacher_id > 0)
+        {
+            $.ajax({
+                url:route('teacher.display_section_by_teacher',teacher_id),
+                dataType:'json',
+                success:sections => {
+                    let output = `<option></option>`;
+                    sections.forEach(section => {
+                        output += `<option value='${section.id}'> ${section.id} - ${section.name} </option>`
+                    });
+                    $('#teacher_assign_subject_section_section_id').html(output);
+                },
+                error:err => {
+                    res(err)
+                }
+    
+            })
+        }
+        else
+        {
+            $('#teacher_assign_subject_section_section_id').html(``); 
+        }
+       
     }
     //
 
@@ -691,25 +705,34 @@ $('#add_teacher').on('click', ()=> {
     //Display subjects by grade level
     function display_subject_by_grade_level(){
         let section_id = $('#teacher_assign_subject_section_section_id').val();
+
+        if(section_id > 0)
+        {
+            $.ajax({
+                url:route('teacher.display_subjects_by_grade_level_id',section_id),
+                dataType:'json',
+                success:subjects => {
+                    //res(sections);
+                    let output = `<option></option>`;
+                    subjects.forEach(subject => {
+                        output += `<option value='${subject.id}'>${subject.name} </option>`
+                    });
+                    $('#teacher_assign_subject_section_subject_id').html(output);
+                },
+                error:err => {
+                    res(err)
+                }
+    
+            })
+        }
+        else
+        {
+            $('#teacher_assign_subject_section_subject_id').html(``);
+
+        }
         
-        $.ajax({
-            url:route('teacher.display_subjects_by_grade_level_id',section_id),
-            dataType:'json',
-            success:subjects => {
-                //res(sections);
-                let output = `<option></option>`;
-                subjects.forEach(subject => {
-                    output += `<option value='${subject.id}'>${subject.name} </option>`
-                });
-                $('#teacher_assign_subject_section_subject_id').html(output);
-            },
-            error:err => {
-                res(err)
-            }
-
-        })
+       
     }
-
 
     function store_subjects_by_grade_level_id(){
         let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
@@ -724,7 +747,10 @@ $('#add_teacher').on('click', ()=> {
             dataType: 'json',
             data:form.serialize(),
             success:response => {
-                res(response);
+                if(response == 'success')
+                {
+                    toastSuccess("Subjects Assigned");
+                }
             },
             error:err => {
                 res(err);
@@ -806,7 +832,7 @@ function createTeacher()  {
         dataType:'json',
         data: {id:id},
         success: teacher => {
-            // res(teacher);
+        //    res(teacher);
            $('#show_teacher_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -857,14 +883,19 @@ function createTeacher()  {
                                 <tbody>
                             `;
                             // Teacher Subject Table
-              
+
+                        teacher[2].forEach(subject => {
+                     
                     output += ` 
                                 <tr>
-                                    <td>  </td>
-                                    <td>   </td>
-                                    <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='teacher_destroySubject()'> <i class="fas fa-trash-alt"></i> </a> </td>
-                                        <input type='hidden' id='subject_teacher_id' data-id = >
+                                    <td>${subject.name}</td>
+                                    <td>${subject.description}</td>
+                                    <td> </td>
                                 </tr>`;
+
+                                       
+                        }); // loop closer
+              
              
                     output += `    
                                 </tbody>
@@ -886,6 +917,8 @@ function createTeacher()  {
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='teacher_display_students_by_section_id(${section.id})'>
                                             Section: <span class='ms-2 text-primary fw-bold text-uppercase'> ${section.name} </section>
                                             </button>
+                                            <a class='btn btn-sm text-danger float-end mt-2 me-3 mb-2' href='javascript:void(0)' onclick='teacher_destroy_section(${section.id},${teacher[0].id})' title='delete section'> <i class="fas fa-times fa-lg"></i> </a>
+
                                         </h2>
                                         <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id='display_students-${section.id}'>
@@ -909,13 +942,45 @@ function createTeacher()  {
     })
 }
 
+// Teacher Delete Assigned SECTION
+
+function teacher_destroy_section(section, teacher)
+{
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method:'DELETE',
+                url:route('teacher.teacher_destroy_section',[teacher,section]),
+                success: response => {
+                    res(response);
+                    toastSuccess("Section Deleted")
+                },
+                error: err => {
+                    res(err);
+                    toastDanger();
+                }
+
+            })
+        }
+    });
+}
+
+
 function teacher_display_students_by_section_id(id) 
 {
    $.ajax({
       url: route('teacher.teacher_display_students_by_section_id',id),
       dataType:'json',
       success: students => {
-          res(students);
+          //res(students);
           let output = `<table class='table table-hover table-bordered'>
                             <thead>
                                 <tr> 
@@ -1891,7 +1956,7 @@ function createSubject() {
             success: response => {
                // res(response);
                 toastSuccess('Subject Added');
-                $('#subject_DT').DataTable().draw();
+                $('.subject_DT').DataTable().draw();
                 subject_form[0].reset();
                 $('#subject_modal').modal('hide');
                 $('#subject_div_err').css('display', 'none');
