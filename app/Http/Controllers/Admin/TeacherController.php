@@ -405,30 +405,31 @@ public function teacher_destroy_student()
 
     //Todo Once the subject already assigned it wont display
     public function display_subjects_by_grade_level_id(Section $section){
+     
 
-        // $subjects = DB::table('subjects')
-        //                 ->leftJoin('grade_level_subject','subjects.id','grade_level_subject.subject_id')
-        //                 //->leftJoin('grade_levels','grade_levels.id','grade_level_subject.grade_level_id')
-        //                 ->select('subjects.name','subjects.id','subjects.grade_val')
-        //                 ->where('subjects.grade_val','=',$grade_level->id)
-        //                 ->where('grade_level_subject.subject_id', NULL)
-        //                 ->get();
+        $section_subject_ids = DB::table('section_subject')
+                        ->select('subject_id')
+                        ->where('section_id',$section->id)
+                        ->get();
+        $section_sub = [];
+        
+       $subjects = Subject::where('grade_val',$section->grade_level->grade_val)->get();
+       $subs = [];
 
-        //get all assigned subjects to section by teacher id
-       
-       
-        $subjects = DB::table('subjects')
-        ->leftJoin('section_subject','section_subject.subject_id','subjects.id')
-        //->select('subjects.name')
-        // ->where('subjects.grade_val',$section->grade_level_id)
-        // ->where('section_subject.subject_id', NULL)
-        ->get();
+       foreach($section_subject_ids as $subject_id):
+            array_push($section_sub, $subject_id->subject_id);
+       endforeach;
 
-        //display subjects
-        //$gl = GradeLevel::where('id',$section->grade_level_id)->first();
-    
+       foreach($subjects as $subject):
+            array_push($subs, $subject->id);
+        endforeach;
 
-        return response()->json($subjects);
+        $results = array_diff($subs,$section_sub);
+        
+
+        $result_subject = Subject::whereIn('id',$results)->get();
+
+        return response()->json($result_subject);
     }
 
     //Store assigned subjects by teacher section id

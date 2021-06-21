@@ -712,7 +712,7 @@ $('#add_teacher').on('click', ()=> {
                 url:route('teacher.display_subjects_by_grade_level_id',section_id),
                 dataType:'json',
                 success:subjects => {
-                    //res(sections);
+                   // res(subjects);
                     let output = `<option></option>`;
                     subjects.forEach(subject => {
                         output += `<option value='${subject.id}'>${subject.name} </option>`
@@ -740,9 +740,6 @@ $('#add_teacher').on('click', ()=> {
         let subject_id = $('#teacher_assign_subject_section_subject_id').val();
         let form = $('#teacher_assign_subject_section_form');
         
-       alert([
-            subject_id
-        ])
 
         if(teacher_id > 0 || section_id > 0 || subject_id >0){
           $.ajax({
@@ -805,7 +802,7 @@ function createTeacher()  {
             processData: false,
             contentType: false,
             success: response => {
-                console.log(response);
+                
                 toastSuccess('Teacher Added')
                 $('#teacher_DT').DataTable().draw();
                 form.reset();
@@ -1277,7 +1274,7 @@ function back() {
             processData: false,
             contentType: false,
             success: response => {
-                // console.log(response);
+               
                 toastSuccess('Teacher Updated')
                 $('#teacher_DT').DataTable().draw();
                 $('#teacher_modal').modal('hide');
