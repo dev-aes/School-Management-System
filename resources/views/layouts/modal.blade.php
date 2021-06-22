@@ -559,6 +559,69 @@
       {{--End Teacher Assign Subject to Student--}}
 
 
+      {{--Teacher Assign Grade to Student's Subject--}}
+
+      <div class="modal fade "  id="teacher_assign_grade_to_student_subject_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content ">
+              <div class="modal-header" id="teacher_assign_grade_to_student_subject_header">
+                    <h4 class="modal-title text-white" id="myLargeModalLabel">Add Grade <i class="fas fa-info-circle"></i> </h4>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+              </div>
+              <div class="modal-body" >
+                <div class="row justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-body py-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form onsubmit="false">
+                                        @csrf
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="teacher_assign_grade_to_student_subject_teacher_id">Select Teacher *</label>
+                                            <select class="form-select" name="" id="teacher_assign_grade_to_student_subject_teacher_id" onchange="teacher_assign_grade_to_student_subject_display_section()">
+                                                {{--Display Teacher--}}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="teacher_assign_grade_to_student_subject_section_id">Select Section *</label>
+                                            <select class="form-select" name="" id="teacher_assign_grade_to_student_subject_section_id" onchange="teacher_assign_grade_to_student_subject_display_students_by_section_id()">
+                                                {{--Display Section by Teacher ID--}}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="teacher_assign_grade_to_student_subject_quarter_id">Select Quarter *</label>
+                                            <select class="form-select" name="" id="teacher_assign_grade_to_student_subject_quarter_id">
+                                                {{--Display All Quarters--}}
+                                            </select>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="col-md-2"></div>
+
+                                <div class="col-md-6 border p-5">
+                                    <div id="teacher_assign_grade_to_student_subject_display_students">
+                                         {{--Display Student By Teacher's Section ID--}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-3 border p-3" id="teacher_assign_grade_to_student_display_encoding_of_grade">
+                                    {{--Display Form for encoding Student Grades--}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+      {{--End Teacher Assign Grade--}}
+
+
 {{--End TEACHER Modal--}}
 
 
