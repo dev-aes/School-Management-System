@@ -449,6 +449,17 @@ public function teacher_destroy_student()
 
            foreach(request('subject_id') as $subject_id): 
 
+
+                $stored_subject_id = DB::table('section_subject')
+                ->where('subject_id',$subject_id)
+                ->where('section_id',request('section_id'))
+                ->where('teacher_id',request('teacher_id'))
+                ->first();
+
+                if($stored_subject_id){
+                    return $this->err();
+                }
+
                 DB::table('section_subject')
                 ->updateOrInsert(
                  ['section_id' => request('section_id'), 'teacher_id' => request('teacher_id'),'subject_id'=>NULL],

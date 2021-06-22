@@ -752,6 +752,9 @@ $('#add_teacher').on('click', ()=> {
                 {
                     toastSuccess("Subjects Assigned");
                 }
+                if(response == 'error'){
+                    toastr.warning("Subject already assigned");
+                }
             },
             error:err => {
                 res(err);
@@ -2747,6 +2750,7 @@ function section_store_teacher()
 {
     let section_id =  $('#section_section_id').val();
     let teacher_id = $('#section_teacher_id').val();
+    let section_adviser = $('#section_adviser').val();
 
     if(section_id > 0 && teacher_id > 0)
     {
@@ -2756,9 +2760,12 @@ function section_store_teacher()
             dataType:'json',
             data:{
                 section_id: section_id,
-                teacher_id: teacher_id
+                teacher_id: teacher_id,
+                section_adviser: section_adviser,
+
             },
             success: response => {
+                res(response);
                 if(response == "success")
                 {
                    return toastSuccess("Teacher Assigned");
@@ -2767,6 +2774,11 @@ function section_store_teacher()
                 {
                     return toastr.warning("Teacher is already assigned to this section");
                 }
+                if(response == "section has adviser")
+                {
+                    return toastr.warning("Adviser is already assigned to this section");
+                }
+
             },
             error: err => {
                 console.log(err);

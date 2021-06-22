@@ -900,6 +900,15 @@
                             {{--Select Teacher--}}
                         </select>
                     </div>
+
+
+                    <div class="form-group mt-2" >
+                        
+                        <select class="" id="section_adviser" name="adviser" style="width: 100%">
+                           <option value='1'>Adviser</option>
+                           <option value='2'>Subject Teacher</option>
+                        </select>
+                    </div>
                 </form>
                 </div>
         

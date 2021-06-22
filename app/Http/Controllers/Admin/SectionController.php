@@ -110,6 +110,8 @@ class SectionController extends Controller
     {
         if(request()->ajax())
         {
+
+
             return response()->json([Section::all(), Teacher::all()]);
         }
     }
@@ -122,26 +124,56 @@ class SectionController extends Controller
             $data = request()->validate([
                 'section_id' => 'required',
                 'teacher_id' => 'required',
+                'section_adviser'=>'',
             ]);
+
+            $adviser = Section::where('id',$data['section_id'])
+                     ->where('adviser_id',$data['teacher_id'])
+                     ->first();
+
+
 
             $data['created_at'] = now();
 
+            if($adviser){
+                return response()->json('section has adviser');
+            }
             // check if the teacher is already assigned to the specific section
 
-            $teacher = DB::table('section_teacher')
-                      ->where('section_id', $data['section_id'])
-                      ->where('teacher_id', $data['teacher_id'])
-                      ->first();
+          //  return response()->json($data['section_adviser']);
             
-            if(!$teacher)
-            {
-                DB::table('section_teacher')->insert($data);
-                return response()->json('success');
-            }
-            else
-            {
-                return response()->json('error');
-            }
+                    if($data['section_adviser'] == '1'){
+                        DB::table('sections')
+                        ->updateOrInsert(
+                        ['id' => $data['section_id']],
+                        ['adviser_id' => $data['teacher_id'],'created_at'=>now()]
+                    );
+                    return $this->res();
+
+                    }
+                    else{
+                            $teacher = DB::table('section_teacher')
+                                    ->where('section_id', $data['section_id'])
+                                    ->where('teacher_id', $data['teacher_id'])
+                                    ->first();
+                            
+                            if(!$teacher)
+                            {
+                                DB::table('section_teacher')->insert(
+                                    [
+                                        'section_id'=>$data['section_id'],
+                                        'teacher_id'=> $data['teacher_id'],
+                                        'created_at'=> now()
+                                    ],
+                                    
+                                );
+                                return response()->json('success');
+                            }
+                            else
+                            {
+                                return response()->json('error');
+                            }
+                    }        
         
         }
     }
