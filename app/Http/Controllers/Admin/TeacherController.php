@@ -412,8 +412,12 @@ public function teacher_destroy_student()
                         ->select('subject_id')
                         ->where('section_id',$section->id)
                         ->get();
+
         $section_sub = [];
         
+
+
+
        $subjects = Subject::where('grade_val',$section->grade_level->grade_val)->get();
        $subs = [];
 
@@ -441,15 +445,15 @@ public function teacher_destroy_student()
 
            // passing multiple insertion (subject_id) 
            // loop 
+           //will look for subject null value and update the first occurence otherwise insert new data
 
            foreach(request('subject_id') as $subject_id): 
 
-                DB::table('section_subject')->insert([
-                    'section_id'=> request('section_id') ,
-                    'subject_id'=> $subject_id,
-                    'teacher_id'=> request('teacher_id'),
-                    'created_at'=>now() 
-                ]);
+                DB::table('section_subject')
+                ->updateOrInsert(
+                 ['section_id' => request('section_id'), 'teacher_id' => request('teacher_id'),'subject_id'=>NULL],
+                 ['subject_id' => $subject_id,'created_at'=>now()]
+            );
 
            endforeach;
          
