@@ -75,4 +75,7 @@ class AcademicYearController extends Controller
             return response()->json('success');
         }
     }
+
+   
+
 }

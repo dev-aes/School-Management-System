@@ -109,6 +109,25 @@ class StudentController extends Controller
             ['student_id' => $student_data->id]
         );
 
+
+        //Insert ay_id, student_id, adviser_id on student_grade    
+        $academic_year = AcademicYear::where('status',1)->first();
+
+        //Get Adviser ID through section_id
+        $adviser_id = Sections::where('id',$student_form_data['section_id'])->first();
+        //$adviser = Teachers::where('id',$adviser_id->adviser_id)->first();
+        
+        // DB::table('student_grade')->insert([
+        //     'academic_year_id'=>$academic_year->id,
+        //     'adviser_id'=>$adviser_id->id,
+        //     'student_id'=>
+        // ]);
+    
+        
+        DB::table('users')->insert([
+            'email' => 'kayla@example.com',
+            'votes' => 0
+        ]);
                 
 
                 return response()->json('success');

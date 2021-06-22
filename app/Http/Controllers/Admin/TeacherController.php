@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Quarter;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
@@ -516,9 +517,9 @@ public function teacher_destroy_student()
         if(request()->ajax())
         {
             $teachers = Teacher::all();
-            
+            $quarters = Quarter::all();
 
-            return response()->json($teachers);
+            return response()->json([$teachers,$quarters]);
         }
     }
 

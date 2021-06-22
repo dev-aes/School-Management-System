@@ -1896,12 +1896,17 @@ $('#teacher_assign_grade_to_student').on('click', () => {
         success: teachers => {
             // res(teachers);
             let output = `<option> </option>`;
+            let output1 = `<option> </option>`;
             
-            teachers.forEach(teacher => {
+            teachers[0].forEach(teacher => {
                 output += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
             })
+            teachers[1].forEach(quarter => {
+                output1 += `<option value='${quarter.id}'> ${quarter.name} </option>`;
+            })
 
-            $('#teacher_assign_grade_to_student_subject_teacher_id').html(output);
+            $('#teacher_assign_grade_to_student_subject_teacher_id').html(output);//Teacher Options
+            $('#teacher_assign_grade_to_student_subject_quarter_id').html(output1);//Quarter OPtions
         },
         error: err => {
             res(err);
@@ -1950,7 +1955,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             url: route('teacher.teacher_assign_grade_to_subject_display_students_by_section_id', section_id),
             dataType:'json',
             success: students => {
-                 res(students);
+                 //res(students);
                 let output = `
                             <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
                             <caption> List of Students </caption>
