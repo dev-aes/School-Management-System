@@ -136,7 +136,7 @@ class SectionController extends Controller
             $data['created_at'] = now();
 
             if($adviser){
-                return response()->json('section has adviser');
+               // return response()->json('success');
             }
             // check if the teacher is already assigned to the specific section
 
@@ -148,14 +148,14 @@ class SectionController extends Controller
                         ['id' => $data['section_id']],
                         ['adviser_id' => $data['teacher_id'],'created_at'=>now()]
                     );
-                    return $this->res();
+                    //return $this->res();
 
                     }
-                    else{
-                            $teacher = DB::table('section_teacher')
-                                    ->where('section_id', $data['section_id'])
-                                    ->where('teacher_id', $data['teacher_id'])
-                                    ->first();
+                    
+                     $teacher = DB::table('section_teacher')
+                            ->where('section_id', $data['section_id'])
+                            ->where('teacher_id', $data['teacher_id'])
+                            ->first();
                             
                             if(!$teacher)
                             {
@@ -173,7 +173,7 @@ class SectionController extends Controller
                             {
                                 return response()->json('error');
                             }
-                    }        
+                        
         
         }
     }

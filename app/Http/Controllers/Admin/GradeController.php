@@ -82,4 +82,18 @@ class GradeController extends Controller
             return response()->json($subjects);
         }
     }
+
+
+    public function grade_display_grades_subjects_by_student_id(){
+
+        $student_grades = DB::table('grades')
+        ->leftJoin('subjects','grades.subject_id','subjects.id')
+        ->leftJoin('quarter','grades.quarter_id','quarter.id')
+        ->leftJoin('teachers','grades.subject_teacher_id','teachers.id')
+        ->leftJoin('student_grade','grades.student_grade_id','student_grade.id')
+        ->where('student_grade.student_id',1)
+        ->get();
+
+return response()->json($student_grades);
+    }
 }

@@ -2776,7 +2776,7 @@ function section_store_teacher()
                 }
                 if(response == "section has adviser")
                 {
-                    return toastr.warning("Adviser is already assigned to this section");
+                   // return toastr.warning("Adviser is already assigned to this section");
                 }
 
             },
@@ -2894,11 +2894,12 @@ function createGrade()
 
 
     $.ajax({
-        method: 'POST',
-        url: route('grade.grade_store_subject'),
+        method: 'GET',
+        url: route('grade.grade_display_grades_subjects_by_student_id'),
          dataType:'json',
         data:grade_form.serialize(),
         success: response => {
+            res(response);
             if(response == 'success')
             {
                 toastSuccess('Grade Added');
