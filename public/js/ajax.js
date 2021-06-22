@@ -1947,7 +1947,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             url: route('teacher.teacher_assign_grade_to_subject_display_students_by_section_id', section_id),
             dataType:'json',
             success: students => {
-                 res(students);
+                 //res(students);
                 let output = `
                             <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
                             <caption> List of Students </caption>
@@ -1997,7 +1997,7 @@ function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            res(student_subjects);
+            //res(student_subjects);
            
             // let output = `
             //                 <div class='col-md-4'>
@@ -2044,7 +2044,8 @@ function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
             //             `;
 
             let output = `
-                            <h4 class='text-muted fw-bold'> Student : ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h4>
+                           <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
+                           <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${student_subjects[0].id}'> Student : ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
                             <table class="table table-bordered mt-2 " border="1" id='table_assign_grade_to_subject_student_grade_table'>
                             <thead style="background: none">
                                 <tr class="text-center fw-bold">
@@ -2085,7 +2086,7 @@ function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
                             </tbody>
                         </table>
                         <form>
-                            <input type='number' min='60' name='grade' id='g_grade' style='width:100%;display:none'>
+                            <input type='number' min='60' name='grade' id='g_grade' data-subject_id='' style='width:100%;display:none'>
                         </form>
                         `;
 
@@ -2138,12 +2139,29 @@ function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
 }
 
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
-            $(this).append($('#g_grade').css('display', 'block'));
+            $(this).append($('#g_grade').css('display', 'block').attr('data-subject_id',$(this).parent().attr('data-subject') )); // store subject id to this input field
 });
 
 $(document).on('keypress', '#g_grade', function(e) {
+
+    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
+    let quarter_id = $('#teacher_assign_grade_to_student_subject_quarter_id').val();
+    let student_id = $('#s_student').attr('data-id');
+    let subject_id = $('#g_grade').attr('data-subject_id');
+    let grade_val = $('#g_grade').val();
+    
     if(e.keyCode == 13){
-        alert($(this).val());
+       console.log(
+                    {
+                        teacher_id: teacher_id,
+                        section_id: section_id,
+                        quarter_id: quarter_id,
+                        student_id: student_id,
+                        subject_id: subject_id,
+                        grade_val: grade_val,
+                    }
+                  )
     }
 })
 
