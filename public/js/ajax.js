@@ -1875,6 +1875,183 @@ function teacher_assign_section(){
 }
 
 
+// teacher assign grade to student's subject
+
+$('#teacher_assign_grade_to_student').on('click', () => {
+    $('#teacher_assign_grade_to_student_subject_modal').modal('show');
+    $('#teacher_assign_grade_to_student_subject_header').addClass('bg-primary');
+
+    // reset
+    $('#teacher_assign_grade_to_student_subject_section_id').html(``);
+    $('#teacher_assign_grade_to_student_subject_teacher_id').html(``);
+    $('#teacher_assign_grade_to_student_subject_display_students').html(``);
+    $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(``);
+
+    $.ajax({
+        url: route('teacher.teacher_assign_grade_to_subject_display_teachers'),
+        dataType:'json',
+        success: teachers => {
+            // res(teachers);
+            let output = `<option> </option>`;
+            
+            teachers.forEach(teacher => {
+                output += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
+            })
+
+            $('#teacher_assign_grade_to_student_subject_teacher_id').html(output);
+        },
+        error: err => {
+            res(err);
+        }
+    })
+});
+
+function teacher_assign_grade_to_student_subject_display_section()
+{
+    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+
+    if(teacher_id > 0)
+    {
+        $.ajax({
+            url: route('teacher.teacher_assign_grade_to_subject_display_sections_by_teacher_id', teacher_id),
+            dataType:'json',
+            success: sections => {
+                 //res(sections);
+                let output = `<option> </option>`;
+                sections.forEach(section => {
+                    output += `<option value='${section.id}'>${section.name}</option>`;
+                })
+    
+                $('#teacher_assign_grade_to_student_subject_section_id').html(output);
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+    else
+    {
+        $('#teacher_assign_grade_to_student_subject_section_id').html(``);
+        $('#teacher_assign_grade_to_student_subject_display_students').html(``);
+        $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(``);
+    }
+}
+
+function teacher_assign_grade_to_student_subject_display_students_by_section_id()
+{
+    let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
+    let teacher_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
+    if(section_id > 0)
+    {
+        $.ajax({
+            url: route('teacher.teacher_assign_grade_to_subject_display_students_by_section_id', section_id),
+            dataType:'json',
+            success: students => {
+                 res(students);
+                let output = `
+                            <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
+                            <caption> List of Students </caption>
+                                <thead style='background:none'>
+                                    <tr>
+                                        <th> Student Name</th>
+                                        <th> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                `;
+
+                                students.forEach(student => {
+                   output +=        `<tr>
+                                        <td> ${student.first_name} ${student.last_name}</td>
+                                        <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='teacher_assign_grade_to_subject_create_grade(${student.id}, ${teacher_id}, ${section_id})'> Add Grade </a></td>
+                                     </tr>
+                                    `;                 
+                                })
+              
+                $('#teacher_assign_grade_to_student_subject_display_students').html(output);
+
+                $('#teacher_assign_grade_to_subject_students_DT').DataTable({
+                    pageLength : 3,
+                    lengthMenu: [[3, 10, 20, -1], [3, 10, 20]]
+                });
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+    else
+    {
+        $('#teacher_assign_grade_to_student_subject_display_students').html(``);
+        $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(``);
+
+    }
+}
+
+// Create Grade
+
+function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
+{
+    $.ajax({
+        url: route('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id', [teacher,section]),
+        dataType:'json',
+        data:{student_id:student}, // send the student id via get request
+        success: student_subjects => {
+            res(student_subjects);
+           
+            let output = `
+                            <div class='col-md-4'>
+                                <div class='card w-100'>
+                                    <div class='card-body'>
+                                    <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='75'></center>
+                                        <div class='text-center mt-2'>
+                                            <h5> ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='col-md-6'>
+                                <div class='card>'
+                                    <div class='card-body'>
+                                        <form autocomplete='off'> 
+                         `;
+
+                         student_subjects[1].forEach(subject => {
+              output += `             <div class='row'>
+                                        <div class='col-md-6 mb-2'>
+                                            <div class='form-group'>
+                                                <label class='form-label'> Subject Name </label>
+                                                <input class='form-control'  value='${subject.name}' readonly>
+                                                <input class='form-control' name='subject_id' value='${subject.id}' style='display:none'>
+                                            </div>
+                                       </div>
+
+                                       <div class='col-md-6'>
+                                            <div class='form-group'>
+                                                <label class='form-label'> Enter Grade * </label>
+                                                <input class='form-control' type='number' min='60' name='grade' value='' required>
+                                            </div>
+                                       </div>
+                                     </div>
+                        `               
+                         });
+              output += `               <button class='btn btn-sm btn-primary float-end' onclick=''>Submit</button>
+                                        </form>
+                                   </div>
+                                </div>
+                            </div>
+                        `;
+               
+        
+
+                         $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(output);
+        },
+        error: err => {
+            res(err);
+        }
+    })
+}
 //* ---------> END TEACHER MANAGEMENT 
 
 

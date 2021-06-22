@@ -148,15 +148,33 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     Route::delete('/admin/teacher/deleteStudent/{teacher}/{student}', [TeacherController::class, 'teacher_destroy_student'])->name('teacher.teacher_destroy_student');
 
 
-    // Teacher show students by its section id 06/19/21
+    //? Teacher show students by its section id 06/19/21
     Route::get('/admin/teacher/show_students/{section}', [TeacherController::class, 'teacher_display_students_by_section_id'])->name('teacher.teacher_display_students_by_section_id');
 
-    // Teacher Delete Section 
+    //? Teacher Delete Section 
     Route::delete('/admin/teacher/deleteSection/{teacher}/{section}', [TeacherController::class, 'teacher_destroy_section'])->name('teacher.teacher_destroy_section');
 
-    // Teacher Delete Subject to Section
+    //? Teacher Delete Subject to Section
 
     Route::put('/admin/teacher/deleteSubject/{teacher}/{subject}/{section}', [TeacherController::class , 'teacher_destroy_section_subject'])->name('teacher.teacher_destroy_section_subject');
+
+    //? Teacher Assign Grade to Student's Subject { DISPLAY ALL TEACHERS}
+
+    Route::get('/admin/teacher/assign_grade_to_student/display_teachers', [TeacherController::class, 'teacher_assign_grade_to_subject_display_teachers'])->name('teacher.teacher_assign_grade_to_subject_display_teachers');
+
+    //? Teacher Assign Grade to Student's Subject { DISPLAY ALL Sections by teacher ID}
+
+    Route::get('/admin/teacher/assign_grade_to_student/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_grade_to_subject_display_sections_by_teacher_id'])->name('teacher.teacher_assign_grade_to_subject_display_sections_by_teacher_id');
+
+    //? Teacher Assign Grade to Student's Subject { DISPLAY ALL Students  by teacher's section ID}
+
+    Route::get('/admin/teacher/assign_grade_to_student/display_students/{section}', [TeacherController::class, 'teacher_assign_grade_to_subject_display_students_by_section_id'])->name('teacher.teacher_assign_grade_to_subject_display_students_by_section_id');
+
+    //? Teacher Assign Grade to Student's Subject { DISPLAY ALL Subjects  by teacher's section ID}
+
+    Route::get('/admin/teacher/assign_grade_to_student/display_subjects/{teacher}/{section}', [TeacherController::class, 'teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id'])->name('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id');
+
+
 
 
     // student truncate all records

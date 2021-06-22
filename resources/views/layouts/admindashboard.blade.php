@@ -90,6 +90,7 @@
 						<ul id="teacher" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
 							<li class="sidebar-item"><a class="sidebar-link" id="" href="{{ route('teacher.index') }}">Manage Teacher</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_subject_section" href="javascript:void(0)">Assign Subject to Section</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_grade_to_student" href="javascript:void(0)">Assign Grade to Student</a></li>
 						</ul>
 					</li>
 

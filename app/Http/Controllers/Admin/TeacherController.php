@@ -499,6 +499,65 @@ public function teacher_destroy_student()
         }
     }
 
+    // display all teachers in teacher_assign_grade_to_subject_display_teachers modal
+    public function teacher_assign_grade_to_subject_display_teachers()
+    {
+        if(request()->ajax())
+        {
+            $teachers = Teacher::all();
+            
+
+            return response()->json($teachers);
+        }
+    }
+
+     // display all sections in teacher_assign_grade_to_subject_display_teachers modal by teacher_ID
+     public function teacher_assign_grade_to_subject_display_sections_by_teacher_id(Teacher $teacher)
+     {
+         if(request()->ajax())
+         {
+             
+             return response()->json($teacher->section);
+         }
+     }
+
+     public function teacher_assign_grade_to_subject_display_students_by_section_id(Section $section)
+     {
+         if(request()->ajax())
+         {
+             return response()->json($section->student);
+         }
+     }
+
+     // get all  subjects that the teacher assign to the specific section 
+     public function teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id(Teacher $teacher , Section $section)
+     {
+         if(request()->ajax())
+         {
+             $get_subject_ids = DB::table('section_subject')
+                         ->where('teacher_id', $teacher->id)
+                         ->where('section_id', $section->id)
+                         ->get();
+
+             $subject_ids = []; // container for subject id
+
+             foreach($get_subject_ids as $subject_id): 
+
+                    array_push($subject_ids, $subject_id->subject_id);
+
+             endforeach;
+
+            $subjects = Subject::whereIn('id', $subject_ids)->get(); //  subjects handled by the teacher (teacher_ID)
+
+            $student = Student::where('id', request('student_id'))->first(); // get the specific student 
+
+
+
+                         return response()->json([$student, $subjects]); // return subjects[] , student
+         }
+     }
+ 
+
 
 
 
