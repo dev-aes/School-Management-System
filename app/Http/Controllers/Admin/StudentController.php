@@ -121,31 +121,42 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            //student_id, subject_id, teacher_id, section_id
-            //$student_with_sub_teacher = DB::select("SELECT DISTINCT b.first_name, b.last_name , c.name, c.description, b.id as teacher_id ,c.id as subject_id from students a ,teachers b,subjects c, student_teacher d,subject_teacher e where a.id = $student->id and d.student_id = $student->id and e.subject_id = c.id and d.teacher_id = e.teacher_id and b.id = e.teacher_id");
-
-            //student_section_id -> grade_level->subjects
-            //section->teacher
-
+            
             $student_profile =  $student;
 
             $student_grade =  $student->section->grade_level;
 
             $student_section = $student->section;
-
-           //Display student subject and teacher     
-           $display_student_subjects_teacher = Student::with('section','grade_level')->where('id', $student->id)->first();
             
            $grade_level = GradeLevel::find($student->section->id)->first();
-           $get_subjects = DB::table('grade_level_subject')
-                            ->join('subjects','grade_level_subject.subject_id','subjects.id')
-                            ->join('subject_teacher','subject_teacher.subject_id','subjects.id')
-                            ->join('teachers','teachers.id','subject_teacher.teacher_id')
-                            ->where('grade_level_subject.grade_level_id',$grade_level->id)
-                            ->get();
+          
+        //    $get_student_subjects = DB::table('section_subject')
+        //                                 ->select('subject_id')
+        //                                 ->where('section_id', $student->section_id)
+        //                                 ->get(); // get the student subjects_id and select the subjects from the subject table by the subject id result
+
+        //     $student_sub_container = []; // subject id container
+
+        //     foreach($get_student_subjects as $subject):  
+
+        //         array_push($student_sub_container, $subject->subject_id); 
+
+        //     endforeach;
+
+        //     $student_subjects = Subject::whereIn('id', $student_sub_container  )->get(); // fetch all student's subject
+
+
+            $student_subject_teacher = DB::table('section_subject')
+                                       ->join('teachers', 'teacher_id', 'teachers.id')
+                                       ->join('subjects', 'subject_id', 'subjects.id')
+                                       ->join('sections', 'section_id', 'sections.id')
+                                       ->select('subjects.name', 'subjects.description', 'teachers.first_name' , 'teachers.last_name')
+                                       ->where('section_id', $student->section_id)
+                                       ->get();
+                               
                             
 
-            return response()->json([$student_profile, $student_section, $student_grade, $display_student_subjects_teacher,$get_subjects]);
+            return response()->json([$student_profile, $student_section, $student_grade, $student_subject_teacher ]);
           
         }
     }

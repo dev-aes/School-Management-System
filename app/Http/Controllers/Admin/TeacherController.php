@@ -101,7 +101,8 @@ class TeacherController extends Controller
             $teacher_subjects = DB::table('section_subject')
                                 ->join('subjects', 'subject_id', 'subjects.id')
                                 ->join('teachers', 'teacher_id', 'teachers.id')
-                                ->select('subjects.*')
+                                ->join('sections', 'section_id', 'sections.id')
+                                ->select('subjects.*', DB::raw("sections.name as section, sections.id as section_id"))
                                 ->where('teacher_id', $teacher->id)
                                 ->get();
 
@@ -477,6 +478,20 @@ public function teacher_destroy_student()
                                  // after deleting of section_Teacher automatically delete its subjects (section_subject) 
             return $this->res();
 
+        }
+    }
+
+    public function teacher_destroy_section_subject(Teacher $teacher , Subject $subject, Section $section)
+    {
+        if(request()->ajax())
+        {
+            $teacher_section_subject = DB::table('section_subject')
+                                            ->where('section_id', $section->id)
+                                            ->where('teacher_id', $teacher->id)
+                                            ->where('subject_id', $subject->id)
+                                            ->update(['subject_id' => NULL]);
+
+                    return $this->res();
         }
     }
 

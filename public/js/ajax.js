@@ -878,6 +878,7 @@ function createTeacher()  {
                                     <tr> 
                                         <th> Subject </th>
                                         <th> Description </th>
+                                        <th> Section </th>
                                         <th>  </th>
                                     </tr>
                                 </thead>
@@ -888,10 +889,11 @@ function createTeacher()  {
                         teacher[2].forEach(subject => {
                      
                     output += ` 
-                                <tr>
+                                <tr id='subject-${subject.id}'>
                                     <td>${subject.name}</td>
                                     <td>${subject.description}</td>
-                                    <td> </td>
+                                    <td>${subject.section}</td>
+                                    <td><a class='text-danger' href='javascript:void(0)' onclick='teacher_destroy_section_subject(${teacher[0].id}, ${subject.id}, ${subject.section_id})'> <i class="fas fa-times fa-lg"></i></a> </td>
                                 </tr>`;
 
                                        
@@ -913,15 +915,15 @@ function createTeacher()  {
                             teacher[1].forEach(section => {
                           
                     output += `
-                                    <div class="accordion-item">
+                                    <div class="accordion-item" id='section-${section.id}'>
                                         <h2 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='teacher_display_students_by_section_id(${section.id})'>
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${section.id}" aria-expanded="true" aria-controls="collapseOne" onclick='teacher_display_students_by_section_id(${section.id})'>
                                             Section: <span class='ms-2 text-primary fw-bold text-uppercase'> ${section.name} </section>
                                             </button>
                                             <a class='btn btn-sm text-danger float-end mt-2 me-3 mb-2' href='javascript:void(0)' onclick='teacher_destroy_section(${section.id},${teacher[0].id})' title='delete section'> <i class="fas fa-times fa-lg"></i> </a>
 
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div id="collapse-${section.id}" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id='display_students-${section.id}'>
                                             
                                             </div>
@@ -943,6 +945,41 @@ function createTeacher()  {
     })
 }
 
+
+// Teacher Delete Assigned subjects to Section
+
+function teacher_destroy_section_subject(teacher,subject,section) 
+{
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method:'PUT',
+                url:route('teacher.teacher_destroy_section_subject',[teacher,subject,section]),
+                success: response => {
+                    res(response);
+                    toastSuccess("Section Deleted")
+                    $('#subject-'+subject).remove().fadeOut('slow');
+                },
+                error: err => {
+                    res(err);
+                    toastDanger();
+                }
+
+            })
+        }
+    });
+}
+
+
+
 // Teacher Delete Assigned SECTION
 
 function teacher_destroy_section(section, teacher)
@@ -963,6 +1000,7 @@ function teacher_destroy_section(section, teacher)
                 success: response => {
                     res(response);
                     toastSuccess("Section Deleted")
+                    $('#section-'+section).remove().fadeOut('slow');
                 },
                 error: err => {
                     res(err);
@@ -3020,10 +3058,6 @@ function createStudent() {
         dataType:'json',
         data: {id:id},
         success: student => {
-
-          // res(student[4]);
-            
-
            $('#show_student_modal').modal('show');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -3060,33 +3094,9 @@ function createStudent() {
                         </div>
                         `;
                         
- 
-
-            // // display student_subjects
-            //  output += `<div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
-            //                             <table class='table table-hover'>
-            //                              <thead>
-            //                                 <tr>
-            //                                  <th> Subject </th>
-            //                                  <th> Description </th>
-            //                                  <th> Teacher </th>
-            //                               </thead>
-            //                               <tbody>`;
-            // student[2].forEach(subject => {
-            //     output += `<tr> 
-            //                                 <td> ${subject.name} </td>
-            //                                 <td> ${subject.description} </td>
-            //                                 <td> ${subject.first_name} ${subject.last_name} </td> 
-            //                             </tr>`;
-            // })
-            // output += `</tbody>
-            //                          </table>
-            //                          </div>
-            //                          </div>`;
-
              // display student_subjects
 
-             output += `<div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
+             output += `<div class="tab-pane fade py-5" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
                                         <table class='table table-hover'>
                                          <thead>
                                             <tr>
@@ -3094,16 +3104,22 @@ function createStudent() {
                                              <th> Description </th>
                                              <th> Teacher </th>
                                           </thead>
-                                          <tbody>
-                                            <tr> 
-                                                <td> </td>
-                                                <td> </td>
-                                                <td>  </td> 
-                                             </tr>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                    </div>`;
+                                          <tbody>`;
+
+                                    student[3].forEach(student => {
+                                        
+             output +=  `                     <tr> 
+                                                <td>${student.name} </td>
+                                                <td>${student.description} </td>
+                                                <td>${student.first_name} ${student.last_name}</td> 
+                                             </tr>`;
+
+                                         });
+                                            
+          output += `                     </tbody>
+                                        </table>
+                                    </div>
+                                </div>`;
               
             $('#show_student_info').html(output);
 

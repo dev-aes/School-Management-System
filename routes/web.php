@@ -151,6 +151,11 @@ Route::middleware(['auth' , 'admin'])->group(function() {
     // Teacher Delete Section 
     Route::delete('/admin/teacher/deleteSection/{teacher}/{section}', [TeacherController::class, 'teacher_destroy_section'])->name('teacher.teacher_destroy_section');
 
+    // Teacher Delete Subject to Section
+
+    Route::put('/admin/teacher/deleteSubject/{teacher}/{subject}/{section}', [TeacherController::class , 'teacher_destroy_section_subject'])->name('teacher.teacher_destroy_section_subject');
+
+
     // student truncate all records
     Route::post('/admin/student/truncateStudent', [StudentController::class , 'truncate'])->name('student.truncate');
     //student display teacher subject
