@@ -2005,52 +2005,137 @@ function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            res(student_subjects);
+            //res(student_subjects);
            
+            // let output = `
+            //                 <div class='col-md-4'>
+            //                     <div class='card w-100'>
+            //                         <div class='card-body'>
+            //                         <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='75'></center>
+            //                             <div class='text-center mt-2'>
+            //                                 <h5> ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
+            //                             </div>
+            //                         </div>
+            //                     </div>
+            //                 </div>
+
+            //                 <div class='col-md-6'>
+            //                     <div class='card>'
+            //                         <div class='card-body'>
+            //                             <form autocomplete='off'> 
+            //              `;
+
+            //              student_subjects[1].forEach(subject => {
+            //   output += `             <div class='row'>
+            //                             <div class='col-md-6 mb-2'>
+            //                                 <div class='form-group'>
+            //                                     <label class='form-label'> Subject Name </label>
+            //                                     <input class='form-control'  value='${subject.name}' readonly>
+            //                                     <input class='form-control' name='subject_id' value='${subject.id}' style='display:none'>
+            //                                 </div>
+            //                            </div>
+
+            //                            <div class='col-md-6'>
+            //                                 <div class='form-group'>
+            //                                     <label class='form-label'> Enter Grade * </label>
+            //                                     <input class='form-control' type='number' min='60' name='grade' value='' required>
+            //                                 </div>
+            //                            </div>
+            //                          </div>
+            //             `               
+            //              });
+            //   output += `               <button class='btn btn-sm btn-primary float-end' onclick=''>Submit</button>
+            //                             </form>
+            //                        </div>
+            //                     </div>
+            //                 </div>
+            //             `;
+
             let output = `
-                            <div class='col-md-4'>
-                                <div class='card w-100'>
-                                    <div class='card-body'>
-                                    <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='75'></center>
-                                        <div class='text-center mt-2'>
-                                            <h5> ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
+                           <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${student_subjects[0].id}'> Student : ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
+                            <table class="table table-bordered mt-2 " border="1" id='table_assign_grade_to_subject_student_grade_table'>
+                            <thead style="background: none">
+                                <tr class="text-center fw-bold">
+                                    <td rowspan="2" style="width:25%">Learning Areas</td>
+                                    <td colspan="4" style="width:25%">Quarter</td>
+                                    <td rowspan="2" style="width:25%">Final Grade</td>
+                                    <td rowspan="2" style="width:25%">Remark</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                    student_subjects[1].forEach(subject => {
 
-                            <div class='col-md-6'>
-                                <div class='card>'
-                                    <div class='card-body'>
-                                        <form autocomplete='off'> 
-                         `;
-
-                         student_subjects[1].forEach(subject => {
-              output += `             <div class='row'>
-                                        <div class='col-md-6 mb-2'>
-                                            <div class='form-group'>
-                                                <label class='form-label'> Subject Name </label>
-                                                <input class='form-control'  value='${subject.name}' readonly>
-                                                <input class='form-control' name='subject_id' value='${subject.id}' style='display:none'>
-                                            </div>
-                                       </div>
-
-                                       <div class='col-md-6'>
-                                            <div class='form-group'>
-                                                <label class='form-label'> Enter Grade * </label>
-                                                <input class='form-control' type='number' min='60' name='grade' value='' required>
-                                            </div>
-                                       </div>
-                                     </div>
-                        `               
-                         });
-              output += `               <button class='btn btn-sm btn-primary float-end' onclick=''>Submit</button>
-                                        </form>
-                                   </div>
-                                </div>
-                            </div>
+            output += `     <tr class='s_subject' data-subject='${subject.id}'>
+                                <th>${subject.name}</th>
+                                <td data-quarter='1' style='width:7%'></td>
+                                <td data-quarter='2' style='width:7%'></td>
+                                <td data-quarter='3' style='width:7%'></td>
+                                <td data-quarter='4' style='width:7%'></td>
+                                <td ></td>
+                                <td></td>
+                            </tr>
+                      `;
+                    });
+                   
+             output += `
+                            <tr class="text-center fw-bold">
+                                <td></td>
+                                <td colspan="4">General Average</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <form>
+                            <input type='number' min='60' name='grade' id='g_grade' data-subject_id='' style='width:100%;display:none'>
+                        </form>
                         `;
-               
+
+                        
+            output += `<div class="row mt-2" id="descriptors">
+                        <table class="table table-sm ">
+                            <thead style="background: none">
+                                <tr class="fw-bold">
+                                    <th>Descriptors</th>
+                                    <th>Grading Scale</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Outstanding</td>
+                                    <td>90-100</td>
+                                    <td>Passed</td>
+                                </tr>
+                                <tr>
+                                    <td>Very Satisfactory</td>
+                                    <td>85-89</td>
+                                    <td>Passed</td>
+                                </tr>
+                                <tr>
+                                    <td>Satisfactory</td>
+                                    <td>80-84</td>
+                                    <td>Passed</td>
+                                </tr>
+                                <tr>
+                                    <td>Fairly Satisfactory</td>
+                                    <td>75-79</td>
+                                    <td>Passed</td>
+                                </tr>
+                                <tr>
+                                    <td>Did not Meet Expectations</td>
+                                    <td>Below 75</td>
+                                    <td>Failed</td>
+                                </tr>
+                            </tbody>
+                        </table> `;   
         
 
                          $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(output);
@@ -2060,6 +2145,42 @@ function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
         }
     })
 }
+
+$(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
+            $(this).append($('#g_grade').css('display', 'block').attr('data-subject_id',$(this).parent().attr('data-subject') )); // store subject id to this input field
+});
+
+$(document).on('keypress', '#g_grade', function(e) {
+
+    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
+    let quarter_id = $('#teacher_assign_grade_to_student_subject_quarter_id').val();
+    let student_id = $('#s_student').attr('data-id');
+    let subject_id = $('#g_grade').attr('data-subject_id');
+    let grade_val = $('#g_grade').val();
+    
+    if(e.keyCode == 13){
+       console.log(
+                    {
+                        teacher_id: teacher_id,
+                        section_id: section_id,
+                        quarter_id: quarter_id,
+                        student_id: student_id,
+                        subject_id: subject_id,
+                        grade_val: grade_val,
+                    }
+                  )
+    }
+})
+
+$(document).on('mouseleave', '#g_grade', function(e) {
+    $(this).css('display','none');
+})
+
+
+
+
+
 //* ---------> END TEACHER MANAGEMENT 
 
 
