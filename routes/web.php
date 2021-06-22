@@ -46,6 +46,9 @@ Route::get('/', function () {
 })->middleware('auth');
 
 
+Route::get('/test', function () {
+    return view('test.index');
+});
 
 
 // Admin Dashboard
