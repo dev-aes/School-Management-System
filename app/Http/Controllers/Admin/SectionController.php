@@ -127,11 +127,20 @@ class SectionController extends Controller
                 'section_adviser'=>'',
             ]);
 
+
+             //Start insert adviser ID on student_grade table
+                
+                                    
+                               
+                                    //->join('sections','sections.id','students.section_id')    
+
+
+            //
+
+           
             $adviser = Section::where('id',$data['section_id'])
                      ->where('adviser_id',$data['teacher_id'])
                      ->first();
-
-
 
             $data['created_at'] = now();
 
@@ -140,7 +149,7 @@ class SectionController extends Controller
             }
             // check if the teacher is already assigned to the specific section
 
-          //  return response()->json($data['section_adviser']);
+         
             
                     if($data['section_adviser'] == '1'){
                         DB::table('sections')
@@ -148,6 +157,14 @@ class SectionController extends Controller
                         ['id' => $data['section_id']],
                         ['adviser_id' => $data['teacher_id'],'created_at'=>now()]
                     );
+
+                    //Get Section id via student ID
+                    $insert_adviser_id = DB::table('student_grade')
+                    ->leftJoin('students','students.id','student_grade.student_id')
+                    ->where('students.section_id',$data['section_id'])
+                    ->update(['adviser_id'=>$data['teacher_id']]);
+                    
+
                     //return $this->res();
 
                     }

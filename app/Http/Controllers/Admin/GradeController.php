@@ -83,9 +83,7 @@ class GradeController extends Controller
         }
     }
 
-
     
-
 
     public function grade_display_grades_subjects_by_student_id(){
 

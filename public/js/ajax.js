@@ -2170,6 +2170,7 @@ $(document).on('keypress', '#g_grade', function(e) {
                         grade_val: grade_val,
                     }
                   )
+                  // ajax
     }
 })
 
