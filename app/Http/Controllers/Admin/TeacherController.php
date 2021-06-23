@@ -565,6 +565,10 @@ public function teacher_destroy_student()
             $student = Student::where('id', request('student_id'))->first(); // get the specific student 
 
 
+            //Display Grades here
+
+            //
+
 
                          return response()->json([$student, $subjects]); // return subjects[] , student
          }

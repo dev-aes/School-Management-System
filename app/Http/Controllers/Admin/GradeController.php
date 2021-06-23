@@ -61,18 +61,17 @@ class GradeController extends Controller
 
 
 
-
-
-            DB::table('grades')->insert(
-                [
-                    'student_grade_id'=>$student_grade_id->id,
-                    'subject_id'=> $data['subject_id'],
-                    'grades'=>$data['grades'],
-                    'subject_teacher_id'=>$get_subject_teacher->id,
-                    'quarter_id'=>$data['quarter_id'],
-                    'created_at'=> now(),
+                   
+            DB::table('grades')
+            ->updateOrInsert(
+                [ 'student_grade_id'=>$student_grade_id->id,
+                'subject_id'=> $data['subject_id'],
+                'subject_teacher_id'=>$get_subject_teacher->id,
+                'quarter_id'=>$data['quarter_id'],
                 ],
-            );
+                
+                ['grades'=>$data['grades'],'created_at'=> now()]
+            );                                
 
             return response()->json($get_subject_teacher);
             }

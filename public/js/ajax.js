@@ -2076,7 +2076,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
 
             output += `     <tr class='s_subject' data-subject='${subject.id}'>
                                 <th>${subject.name}</th>
-                                <td data-quarter='1' style='width:7%'></td>
+                                <td data-quarter='1' style='width:7%'>test</td>
                                 <td data-quarter='2' style='width:7%'></td>
                                 <td data-quarter='3' style='width:7%'></td>
                                 <td data-quarter='4' style='width:7%'></td>
@@ -2160,18 +2160,22 @@ $(document).on('keypress', '#g_grade', function(e) {
     let student_id = $('#s_student').attr('data-id');
     let subject_id = $('#g_grade').attr('data-subject_id');
     let grades = $('#g_grade').val();
+   
     
+    // let quarter = $('#btn_update_subject').attr('data-quarter');
     if(e.keyCode == 13){
     //    console.log(
     //                 {
-    //                   //  teacher_id: teacher_id, adviser ID
+    // //                   //  teacher_id: teacher_id, adviser ID
     //                     section_id: section_id,
     //                     quarter_id: quarter_id,
     //                     student_id: student_id,
     //                     subject_id: subject_id,
     //                     grades: grades,
-    //                 }
-    //               )
+
+
+                //     }
+                //   )
         
                   $.ajax({
                     method: 'POST',
