@@ -566,7 +566,7 @@ public function teacher_destroy_student()
 
 
             //Display Grades here
-
+                
             //
 
 
