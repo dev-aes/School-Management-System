@@ -649,7 +649,7 @@
 
                <div class="form-group">
                     <label class='form-label'>Select Grade Level </label>
-                    <select class="form-select " name="grade_val" type="text" id="subject_grade_level" > 
+                    <select class="form-select " name="grade_val" type="text" id="grade_val" > 
                         {{--Display Grade Levels --}}
                     </select>    
                 </div> 

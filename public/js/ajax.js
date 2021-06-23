@@ -1948,7 +1948,7 @@ function teacher_assign_grade_to_student_subject_display_section()
 function teacher_assign_grade_to_student_subject_display_students_by_section_id()
 {
     let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
-    let teacher_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
+    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
     if(section_id > 0)
     {
         $.ajax({
@@ -2000,12 +2000,13 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
 
 function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
 {
+
     $.ajax({
         url: route('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id', [teacher,section]),
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            //res(student_subjects);
+            res(student_subjects);
            
             // let output = `
             //                 <div class='col-md-4'>
@@ -2170,7 +2171,8 @@ $(document).on('keypress', '#g_grade', function(e) {
                         grade_val: grade_val,
                     }
                   )
-                  // ajax
+                  
+                  
     }
 })
 
@@ -2270,10 +2272,11 @@ $('#subject_modal_header').removeClass('bg-success').addClass('bg-primary');
         url: route('subject.create'),
         dataType:'json',
         success: grade_levels => {
+            res(grade_levels);
             let output=' <option></option>';
             grade_levels.forEach(grade_level => {
-                output += `<option value='${grade_level.grade_val}'> ${grade_level.name} </option>`;
-                $('#subject_grade_level').html(output);
+                output += `<option value='${grade_level.grade_val}'>Grade ${grade_level.grade_val} </option>`;
+                $('#grade_val').html(output);
             })
         },
         error: err => {
@@ -2355,6 +2358,8 @@ function showSubject(id)
         data: {id:id},
         cache: false,
         success: subject => {
+
+           // res(subject[1]);
            $('#subject_modal').modal('show');
 
            $('#subject_modal_header').removeClass('bg-primary').addClass('bg-success');
@@ -2363,16 +2368,17 @@ function showSubject(id)
            $('#subject_modal_label').html(`<h4 class='text-white'> Edit Subject <i class="fas fa-edit"></i> </h4> `);
            $('#subject_name').attr('value', subject[0].name);
            $('#subject_description').attr('value', subject[0].description);
-           $('#student_grade_level').attr('value', subject[0].grade_level_id);
+           $('#subject_grade_level').attr('value', subject[1].grade_level_id);
            $('#btn_add_subject').css('display', 'none');
            $('#btn_update_subject').css('display', 'block').attr('data-id', subject[0].id);
 
-           // display all fetch Grade levels
-        //    let output=`<option value='${subject[2].id}'>Current [${subject[2].name}]</option>`;
-        //    subject[1].forEach(grade_level => {
-        //          output += `<option value='${grade_level.id}'> ${grade_level.name} </option>`;
-        //          $('#subject_grade_level').html(output);
-        //    })
+          // display all fetch Grade levels
+          // let output=`<option value='${subject[2].id}'>Current [${subject[2].name}]</option>`;
+          let output = `<option></option>`
+           subject[1].forEach(grade_level => {
+                 output += `<option value='${grade_level.id}'> Grade ${grade_level.grade_val} </option>`;
+                 $('#grade_val').html(output);
+           })
         },
         error: err => {
             toastDanger();
@@ -2389,6 +2395,7 @@ function updateSubject()
     let name = $('#subject_name');
     let description = $('#subject_description');
     let id = $('#btn_update_subject').attr('data-id');
+    let grade_val = $('#grade_val');
 
     if(isNotEmpty(name) && isNotEmpty(description)) 
     {

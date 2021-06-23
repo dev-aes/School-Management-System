@@ -103,6 +103,10 @@ Route::middleware(['auth' , 'admin'])->group(function() {
         //Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
         Route::get('/admin/home/teacher/display_teachers/display_sections', [TeacherController::class, 'teacher_assign_sections_display_sections'])->name('teacher.teacher_assign_section_display_sections');
 
+
+        //Teacher Assign Grade to Student
+        
+
     // End
     
 
