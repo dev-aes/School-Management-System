@@ -53,8 +53,8 @@
 	{{--Tags Input--}}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
 
-	{{-- <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/> --}}
-
+	{{--E-one--}}
+	<link rel="stylesheet" href="{{ asset('css/eone.min.css') }}">
 
 
 </head>
@@ -135,21 +135,7 @@
 						</ul>
 					</li>
 
-					<li class="sidebar-item">
-						<a href="#grading" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="award"></i> <span class="align-middle">Grading System</span>
-                        </a>
-						<ul id="grading" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" id="assign_grade_to_subject" href="javascript:void(0)">Assign Grade</a></li>
-							{{-- <li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href=""></a></li> --}}
-						</ul>
-					</li>
-
 					
-
-
 					<li class="sidebar-item">
 						<a href="#billing" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Billing</span>
@@ -175,6 +161,24 @@
                         </a>
 					</li>
 
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{{ route('report.index') }}" title="coming soon">
+							<i class="align-middle" data-feather="bookmark"></i> <span class="align-middle">Reports</span>
+                        </a>
+					</li>
+
+					{{-- <li class="sidebar-item">
+						<a href="#reports" data-bs-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="bookmark"></i> <span class="align-middle">Reports</span>
+                        </a>
+						<ul id="reports" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Student List</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Teacher List</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Payment List</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Form 137</a></li>
+							<li class="sidebar-item"><a class="sidebar-link" id="" href="{{ route('report.to_form_138') }}">Form 138</a></li>
+						</ul>
+					</li> --}}
 
 
 					<li class="sidebar-item">
@@ -393,6 +397,8 @@
 	{{--Tags--}}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
 
+	{{--E-one--}}
+    <script src="{{ asset('js/eone.min.js') }}"></script>
 
 
 

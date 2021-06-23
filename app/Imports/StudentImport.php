@@ -23,7 +23,7 @@ class StudentImport implements ToModel,WithHeadingRow,WithValidation
             "last_name"    => $row["last_name"],
             "birth_date"  =>  $birth_date,
             "gender"  => $row["gender"],
-            "grade_level_id"  => $row["grade_level_id"],
+            "section_id"  => $row["section_id"],
             "nationality"  => $row["nationality"],
             "city"  => $row["city"],
             "province"  => $row["province"],
