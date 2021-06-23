@@ -1898,14 +1898,14 @@ $('#teacher_assign_grade_to_student').on('click', () => {
             let output = `<option> </option>`;
             let output1 = `<option> </option>`;
             
-            teachers[0].forEach(teacher => {
-                output += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
+            teachers[0].forEach(grade_level => {
+                output += `<option value='${grade_level.id}'> Grade ${grade_level.grade_val} </option>`;
             })
             teachers[1].forEach(quarter => {
                 output1 += `<option value='${quarter.id}'> ${quarter.name} </option>`;
             })
 
-            $('#teacher_assign_grade_to_student_subject_teacher_id').html(output);//Teacher Options
+            $('#grade_assign_grade_to_student_subject_teacher_id').html(output);//Grade Options
             $('#teacher_assign_grade_to_student_subject_quarter_id').html(output1);//Quarter OPtions
         },
         error: err => {
@@ -1914,14 +1914,14 @@ $('#teacher_assign_grade_to_student').on('click', () => {
     })
 });
 
-function teacher_assign_grade_to_student_subject_display_section()
+function grade_assign_grade_to_student_subject_display_section()
 {
-    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    let grade_id = $('#grade_assign_grade_to_student_subject_teacher_id').val();
 
-    if(teacher_id > 0)
+    if(grade_id > 0)
     {
         $.ajax({
-            url: route('teacher.teacher_assign_grade_to_subject_display_sections_by_teacher_id', teacher_id),
+            url: route('teacher.teacher_assign_grade_to_subject_display_sections_by_teacher_id', grade_id),
             dataType:'json',
             success: sections => {
                  //res(sections);
@@ -1948,7 +1948,7 @@ function teacher_assign_grade_to_student_subject_display_section()
 function teacher_assign_grade_to_student_subject_display_students_by_section_id()
 {
     let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
-    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    //let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
     if(section_id > 0)
     {
         $.ajax({
@@ -1971,7 +1971,8 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
                                 students.forEach(student => {
                    output +=        `<tr>
                                         <td> ${student.first_name} ${student.last_name}</td>
-                                        <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='teacher_assign_grade_to_subject_create_grade(${student.id}, ${teacher_id}, ${section_id})'> Add Grade </a></td>
+                                        <td> <a class='btn btn-sm btn-info' href='javascript:void(0)'
+                                         onclick='teacher_assign_grade_to_subject_create_grade(${student.id}, ${section_id})'> Add Grade </a></td>
                                      </tr>
                                     `;                 
                                 })
@@ -1998,15 +1999,15 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
 
 // Create Grade
 
-function teacher_assign_grade_to_subject_create_grade(student,teacher,section)
+function teacher_assign_grade_to_subject_create_grade(student,section)
 {
 
     $.ajax({
-        url: route('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id', [teacher,section]),
+        url: route('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id', [section]),
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            res(student_subjects);
+            //res(student_subjects);
            
             // let output = `
             //                 <div class='col-md-4'>
@@ -2153,24 +2154,48 @@ $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .
 
 $(document).on('keypress', '#g_grade', function(e) {
 
-    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    //let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
     let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
     let quarter_id = $('#teacher_assign_grade_to_student_subject_quarter_id').val();
     let student_id = $('#s_student').attr('data-id');
     let subject_id = $('#g_grade').attr('data-subject_id');
-    let grade_val = $('#g_grade').val();
+    let grades = $('#g_grade').val();
     
     if(e.keyCode == 13){
-       console.log(
-                    {
-                        teacher_id: teacher_id,
+    //    console.log(
+    //                 {
+    //                   //  teacher_id: teacher_id, adviser ID
+    //                     section_id: section_id,
+    //                     quarter_id: quarter_id,
+    //                     student_id: student_id,
+    //                     subject_id: subject_id,
+    //                     grades: grades,
+    //                 }
+    //               )
+        
+                  $.ajax({
+                    method: 'POST',
+                    url: route('grade.teacher_store_student_grade'),
+                    dataType:'json',
+                    data:{
+                        
                         section_id: section_id,
                         quarter_id: quarter_id,
                         student_id: student_id,
-                        subject_id: subject_id,
-                        grade_val: grade_val,
+                        subject_id:subject_id,
+                        grades: grades,
+        
+                    },
+                   
+                    success: response => {
+                        res(response);
+                        
+                    },
+                    error: err => {
+                        console.log(err);
                     }
-                  )
+                })
+                    
                   
                   
     }

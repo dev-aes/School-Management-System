@@ -577,8 +577,8 @@
                                     <form onsubmit="false">
                                         @csrf
                                         <div class="form-group mb-2">
-                                            <label class="form-label" for="teacher_assign_grade_to_student_subject_teacher_id">Select Teacher *</label>
-                                            <select class="form-select" name="" id="teacher_assign_grade_to_student_subject_teacher_id" onchange="teacher_assign_grade_to_student_subject_display_section()">
+                                            <label class="form-label" for="grade_assign_grade_to_student_subject_teacher_id">Select Grade Level*</label>
+                                            <select class="form-select" name="" id="grade_assign_grade_to_student_subject_teacher_id" onchange="grade_assign_grade_to_student_subject_display_section()">
                                                 {{--Display Teacher--}}
                                             </select>
                                         </div>
