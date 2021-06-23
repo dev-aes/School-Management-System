@@ -31,27 +31,50 @@ class GradeController extends Controller
 
     public function store(){
         if(request()->ajax()) {
+            
             $data = request()->validate([
-                'student_id' => 'required',
-                'subject_id' => 'required|array',
-                'subject_id .*' => 'required|string',
-                'grade' => 'required|array',
-                'grade .*' => 'required|float',
-
+                'grades' => '',
+                'quarter_id' => '',
+                'section_id'=>'',
+                'student_id'=>'',
+                'subject_id'=>'',
             ]);
 
-            foreach (array_combine(request('subject_id'), request('grade')) as $subject_id => $grade):
+            $academic_year = DB::table('academic_years')
+                    ->join('student_grade','academic_years.id','student_grade.academic_year_id')
+                    ->select('academic_years.id')
+                    ->where('student_grade.student_id',$data['student_id'])
+                    ->first();
+            //Get ID from student grade ID with academic year id and student_id
+            $student_grade_id = DB::table('student_grade')
+                            ->where('academic_year_id',$academic_year->id)
+                            ->where('student_id',$data['student_id'])
+                            ->first();
+            
+            //Get Subject Teacher ID section_subject
+            $get_subject_teacher = DB::table('section_subject')
+                                ->join('teachers','section_subject.teacher_id','teachers.id')
+                                ->select('teachers.id')
+                                ->where('section_subject.section_id',$data['section_id'])
+                                ->where('section_subject.subject_id',$data['subject_id'])
+                                ->first(); 
 
-                $inputs = ['student_id' => $data['student_id'],
-                                    'subject_id' => $subject_id,
-                                    'grades' => $grade];
-
-                Grade::create($inputs);
-
-            endforeach;
 
 
-            return response()->json('success');
+
+
+            DB::table('grades')->insert(
+                [
+                    'student_grade_id'=>$student_grade_id->id,
+                    'subject_id'=> $data['subject_id'],
+                    'grades'=>$data['grades'],
+                    'subject_teacher_id'=>$get_subject_teacher->id,
+                    'quarter_id'=>$data['quarter_id'],
+                    'created_at'=> now(),
+                ],
+            );
+
+            return response()->json($get_subject_teacher);
             }
 
     } 

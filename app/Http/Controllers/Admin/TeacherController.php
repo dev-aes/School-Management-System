@@ -516,20 +516,21 @@ public function teacher_destroy_student()
     {
         if(request()->ajax())
         {
-            $teachers = Teacher::all();
+            $grade_level = GradeLevel::all();
             $quarters = Quarter::all();
 
-            return response()->json([$teachers,$quarters]);
+            return response()->json([$grade_level,$quarters]);
         }
     }
 
      // display all sections in teacher_assign_grade_to_subject_display_teachers modal by teacher_ID
-     public function teacher_assign_grade_to_subject_display_sections_by_teacher_id(Teacher $teacher)
+     public function teacher_assign_grade_to_subject_display_sections_by_teacher_id($id)
      {
          if(request()->ajax())
          {
              
-             return response()->json($teacher->section);
+            $sections = Section::where('grade_level_id',$id)->get();
+             return response()->json($sections);
          }
      }
 
@@ -542,12 +543,12 @@ public function teacher_destroy_student()
      }
 
      // get all  subjects that the teacher assign to the specific section 
-     public function teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id(Teacher $teacher , Section $section)
+     public function teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id(Section $section)
      {
          if(request()->ajax())
          {
              $get_subject_ids = DB::table('section_subject')
-                         ->where('teacher_id', $teacher->id)
+                         //->where('teacher_id', $teacher->id)
                          ->where('section_id', $section->id)
                          ->get();
 

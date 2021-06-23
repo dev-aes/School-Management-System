@@ -89,6 +89,7 @@ class SubjectController extends Controller
         $subject_form_data = request()->validate([
             'name' => 'required|string',
             'description'=>'required|string',
+            'grade_val'=>'',
            
 
         ]);

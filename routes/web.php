@@ -116,6 +116,10 @@ Route::middleware(['auth' , 'admin'])->group(function() {
         //Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
         Route::get('/admin/home/teacher/display_teachers/display_sections', [TeacherController::class, 'teacher_assign_sections_display_sections'])->name('teacher.teacher_assign_section_display_sections');
 
+
+        //Teacher Assign Grade to Student
+        
+
     // End
     
 
@@ -188,10 +192,12 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
     //? Teacher Assign Grade to Student's Subject { DISPLAY ALL Subjects  by teacher's section ID}
 
-    Route::get('/admin/teacher/assign_grade_to_student/display_subjects/{teacher}/{section}', [TeacherController::class, 'teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id'])->name('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id');
+    Route::get('/admin/teacher/assign_grade_to_student/display_subjects/{section}', [TeacherController::class, 'teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id'])->name('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id');
 
 
-
+    //admin add grade
+    Route::post('/admin/teacher/addgrade', [GradeController::class, 'store'])->name('grade.teacher_store_student_grade');
+    
 
     // student truncate all records
     Route::post('/admin/student/truncateStudent', [StudentController::class , 'truncate'])->name('student.truncate');
