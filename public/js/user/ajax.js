@@ -145,7 +145,7 @@ $(() => {
         $.ajax({
             url: route('parent.parent_payment_show', id),
             success: payment => {
-                console.log(payment);
+               // console.log(payment);
                 const date = new Date(payment[0].created_at);
                 //const d = date.toDateString();
                 const d = date.toLocaleDateString();

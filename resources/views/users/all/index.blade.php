@@ -15,7 +15,7 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_user">Add User <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="user_DT">
+                                <table class="table table-hover user_DT" >
                                     <caption>List of Users <i class="fas fa-users"></i> </caption>
                                     <thead>
                                         <tr>
@@ -23,8 +23,6 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
-                                            <th>Created At</th>
-                                            <th>Updated At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

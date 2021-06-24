@@ -77,10 +77,11 @@ class SubjectController extends Controller
     {
         if(request()->ajax())
         {
-            $recent_subject = $subject->grade_level->first();
+            // $recent_subject = $subject->grade_level->first();
+            $recent_subject_by_grade_val = GradeLevel::where('grade_val', $subject->grade_val)->first();
             $grades = GradeLevel::all();
 
-            return response()->json([$subject,$grades, $recent_subject]);
+            return response()->json([$subject,$grades, $recent_subject_by_grade_val]);
         }
     }
 
@@ -90,32 +91,22 @@ class SubjectController extends Controller
             'name' => 'required|string',
             'description'=>'required|string',
             'grade_val'=>'',
-           
-
         ]);
 
-        if(request()->ajax()) {
-            
-
-            // $sub =  DB::table('grade_level_subject')
-            //       ->where('grade_level_id', $subject->grade_level[0]->id)
-            //       ->where('subject_id',$subject->id)
-            //       ->update(['grade_level_id' => request('grade_level_id')]);
-               
+        if(request()->ajax()) 
+        {
             //Subject Update    
             $subject->update($subject_form_data); 
 
-             // DB::update("UPDATE grade_level_subject set grade_level_id = $grade_level_id where ID = $sub->id");
-
            return response()->json('success');
-        
         
         }
     }
 
     public function destroy(Subject $subject)
     {
-        if(request()->ajax()) {
+        if(request()->ajax()) 
+        {
 
             Subject::whereIn('id', request('id'))->delete();
 

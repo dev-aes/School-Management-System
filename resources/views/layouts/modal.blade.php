@@ -629,7 +629,7 @@
     
 {{--Start Subject Modal--}}
 
-    <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="subject_modal_label" aria-hidden="true">
+    <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="subject_modal_label" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered " role="document">
           <div class="modal-content">
             <div class="modal-header" id="subject_modal_header">
@@ -951,14 +951,14 @@
                     @csrf
                     
                     <div class="form-group">
-                        <label class='form-label'>Select Section</label>
+                        <label class='form-label'>Select Section *</label>
                         <select class="" id="section_section_id" name="section_id" style="width: 100%">
                             {{--Select Section--}}
                         </select>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label class='form-label'>Select Teacher</label>
+                        <label class='form-label'>Select Teacher *</label>
                         <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
                             {{--Select Teacher--}}
                         </select>
@@ -966,10 +966,11 @@
 
 
                     <div class="form-group mt-2" >
-                        
-                        <select class="" id="section_adviser" name="adviser" style="width: 100%">
-                           <option value='1'>Adviser</option>
-                           <option value='2'>Subject Teacher</option>
+                        <label class="form-label" for="section_adviser">Option</label>
+                        <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
+                            <option ></option>
+                            <option value='1'>Adviser</option>
+                            <option value='2'>Subject Teacher</option>
                         </select>
                     </div>
                 </form>
@@ -987,7 +988,7 @@
     {{--Show Section Modal--}}
 
     <div class="modal fade " id="show_section_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
           <div class="modal-content ">
               <div class="modal-header" id="show_section_modal_header">
                     <h4 class="modal-title text-white" id="myLargeModalLabel">Section Information <i class="fas fa-info-circle"></i> </h4>
@@ -1149,7 +1150,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class='form-label'>Section *</label>
-                        <select class='form-select' name="section_id" id="section_id">
+                        <select class='form-select' name="section_id" id="student_section_id">
                            
                         </select>
                     </div>
@@ -1276,23 +1277,17 @@
         <div class="modal fade " id="show_student_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Student Information <i class="fas fa-info-circle"></i> </h4>
+                <div class="modal-header" id="show_student_modal_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Student Information <i class="fas fa-info-circle"></i> </h4>
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-10">
-                                        <div class="card w-100">
-                                            <div class="card-body">
-                                                <div id="show_student_info">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="card w-100">
+                                <div class="card-body p-6">
+                                    <div id="show_student_info">
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1300,7 +1295,7 @@
                     </div>
                 </div>
             </div>
-            </div>
+          </div>
         </div>
   
   {{--END SHOW Student MODAL--}}
@@ -2067,7 +2062,7 @@
 
 
     {{--Show Parent --}}
-
+    
     <div class="modal fade" id="show_parent_modal" tabindex="-1" role="dialog" aria-labelledby="show_parent_modal" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -2095,7 +2090,7 @@
                                     <thead style="background:none">
                                         <tr>
                                             <th>Name</th>
-                                            <th>Grade Level</th>
+                                            <th>Section</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

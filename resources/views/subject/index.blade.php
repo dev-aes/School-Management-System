@@ -18,11 +18,9 @@
                                     <caption>List of Subjects <i class="fas fa-book"></i> </caption>
                                     <thead style="">
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Subject Name</th>
-                                            <th>Subject Description</th>
-                                            <th>Created At</th>
-                                            <th>Updated At</th>
+                                            <th>#</th>
+                                            <th>Subject</th>
+                                            <th>Description</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -38,9 +36,9 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-info" href="javascript:void(0)" id="imp_subject"><i class="fas fa-upload"></i> Import</a>
-                <a class="btn  btn-info" href="javascript:void(0)" id="exp_subject"><i class="fas fa-file-export"></i> Export</a>
-                <a class="btn  btn-danger" href="javascript:void(0)" id="delete_all_subject"><i class="fas fa-trash-alt"></i> Delete Record</a>
+                <a class="btn btn-outline-info" href="javascript:void(0)" id="imp_subject"><i class="fas fa-upload"></i> Import</a>
+                <a class="btn  btn-outline-info" href="javascript:void(0)" id="exp_subject"><i class="fas fa-file-export"></i> Export</a>
+                <a class="btn  btn-outline-danger" href="javascript:void(0)" id="delete_all_subject"><i class="fas fa-trash-alt"></i> Delete Record</a>
             </div>
         </div>
     </div>

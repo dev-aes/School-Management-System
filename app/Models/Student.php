@@ -48,7 +48,7 @@ class Student extends Model
 
     public function parents()
     {
-        return $this->belongsToMany(ParentModel::class, 'parent_student', 'parent_id', 'student_id');
+        return $this->belongsToMany(ParentModel::class, 'parent_student','student_id', 'parent_id');
     }
 
     public function section(){

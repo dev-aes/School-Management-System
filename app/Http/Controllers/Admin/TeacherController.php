@@ -39,7 +39,7 @@ class TeacherController extends Controller
                    })
                    ->addColumn('actions', function($row) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm  showTeacher" onclick="showTeacher('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary  btn-sm editTeacher" onclick="editTeacher('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary  btn-sm editTeacher" onclick="editTeacher('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm  deleteTeacher" onclick="crud_delete(\' '.'a.deleteTeacher'.' \' , \'teacher.destroy\', \' '.'Teacher Deleted'.' \' , \' '.'.teacher_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
     
                     return $btn;

@@ -76,67 +76,67 @@
                          <div class="row justify-content-center">
                              <div class="card w-100 border border-secondary">
                                    <div class="card-body" id="print">
-                                    <div class="card-header p-0">
-                                        <div class="row">
-                                           <div class="col-md-6">
-                                               <h1 class="display-5">Receipt</h1>
-                                               <h5>School name Inc.</h5>
-                                               <h5>Juna Subd. Matina Davao City,8000</h5>
-                                               <h5>09659212003</h5>
-                                               <h5>school.edu.ph</h5>
-                                           </div>
-                                           <div class="col-md-6">
-                                               <img class="float-end" src="{{asset('images/logo.png')}}" alt="sample_logo" width="250">
-                                           </div>
-                                        </div>
-                                       </div><br>
-                                       <div class="row">
-                                            <div class="col-md-6">
-                                                <h5 >Enrolment Fee No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h5>
-                                                <h5 >Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h5>
-                                                <h5 >Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h5>
-                                                <h5 >Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h5>
+                                        <div class="card-header p-0">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h1 class="display-5">Receipt</h1>
+                                                    <h5>School name Inc.</h5>
+                                                    <h5>Juna Subd. Matina Davao City,8000</h5>
+                                                    <h5>09659212003</h5>
+                                                    <h5>school.edu.ph</h5>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img class="float-end" src="{{asset('images/logo.png')}}" alt="sample_logo" width="250">
+                                                </div>
                                             </div>
+                                        </div><br>
+                                            <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h5 >Enrolment Fee No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h5>
+                                                        <h5 >Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h5>
+                                                        <h5 >Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h5>
+                                                        <h5 >Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h5>
+                                                    </div>
 
-                                            <div class="col-md-6">
-                                                <h5>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h5>
-                                                <h5>OR No: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h5>
-                                                <h5>Amount paid: <span class="h5 fw-bold" id="payment_payment_amount"> {{--Display Payment amount--}}</span></h5>
-                                                <h5>Remark: <span class="h5 fw-bold" id="payment_payment_remarks"> {{--Display Payment Remarks--}}</span></h5>
+                                                    <div class="col-md-6">
+                                                        <h5>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h5>
+                                                        <h5>OR No: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h5>
+                                                        <h5>Amount paid: <span class="h5 fw-bold" id="payment_payment_amount"> {{--Display Payment amount--}}</span></h5>
+                                                        <h5>Remark: <span class="h5 fw-bold" id="payment_payment_remarks"> {{--Display Payment Remarks--}}</span></h5>
+                                                    </div>
                                             </div>
-                                       </div>
                                       <hr>
                                     <h5>Payment Summary</h5>
                                     <div class="row">
-                                    <div class="col-md-6 border border-dark border-1 p-2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h5>Fee Details</h5>
-                                                <hr>
+                                        <div class="col-md-6 border border-dark border-1 p-2">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5>Fee Details</h5>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                {{-- Display Sub Fees and Totals --}}
+                                                <div class="col-md-6">
+                                                    <h5>Fee Type</h5>
+                                                    <div id="payment_sf_type">
+                                                        {{-- display subfees--}}
+                                                    </div>
+                                                    <h5 class="fw-bold">Sub Total</h5>
+                                                    <h5 class="fw-bold">Total Discount</h5>
+                                                    <h5 class="fw-bold">Total</h5>
+                                                </div>
+                                                <div class="col-md-6 text-end">
+                                                    <h5>Amount</h5>
+                                                    <div id="payment_sf_amount">
+                                                        {{-- display subfees--}}
+                                                    </div>
+                                                    <h5 class="fw-bold" id="payment_sf_total">{{--Display Sub Total--}}</h5>
+                                                    <h5 class="fw-bold" id="payment_sf_total_discount">{{--Display Total Discount--}}</h5>
+                                                    <h5 class="fw-bold" id="payment_sf_total_discounted_amount">{{--Display Total Discounted Amount--}}</h5>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            {{-- Display Sub Fees and Totals --}}
-                                            <div class="col-md-6">
-                                                <h5>Fee Type</h5>
-                                                <div id="payment_sf_type">
-                                                    {{-- display subfees--}}
-                                                </div>
-                                                <h5 class="fw-bold">Sub Total</h5>
-                                                <h5 class="fw-bold">Total Discount</h5>
-                                                <h5 class="fw-bold">Total</h5>
-                                            </div>
-                                            <div class="col-md-6 text-end">
-                                                <h5>Amount</h5>
-                                                <div id="payment_sf_amount">
-                                                    {{-- display subfees--}}
-                                                </div>
-                                                <h5 class="fw-bold" id="payment_sf_total">{{--Display Sub Total--}}</h5>
-                                                <h5 class="fw-bold" id="payment_sf_total_discount">{{--Display Total Discount--}}</h5>
-                                                <h5 class="fw-bold" id="payment_sf_total_discounted_amount">{{--Display Total Discounted Amount--}}</h5>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6 border border-dark  p-2">
                                         <div class="row">
                                             <h5>Payment Details</h5>
@@ -220,58 +220,58 @@
                             </div>
                         </div>
                         <div class="card-body">
-                        <form id="parent_add_student_payment_form" class='col-md-10 bg-light border p-5 mx-auto'  onsubmit="false">
-                            @csrf
+                            <form id="parent_add_student_payment_form" class='col-md-10 bg-light border p-5 mx-auto'  onsubmit="false">
+                                @csrf
 
-                            <input type="hidden" name="student_id" id="student_id">
-                            <div class="form-group mb-2">
-                                <label>Name *</label>
-                                <input class="form-control" type="text" id="student_name" readonly>
-                            </div>
-                            
-                            <div class="form-group mb-2">
-                                <label>Monthly Payment *</label>
-                                <input class="form-control" type="number" min="-0" id="monthly_payment" name="monthly_payment" readonly>
-                            </div>
+                                <input type="hidden" name="student_id" id="student_id">
+                                <div class="form-group mb-2">
+                                    <label>Name *</label>
+                                    <input class="form-control" type="text" id="student_name" readonly>
+                                </div>
+                                
+                                <div class="form-group mb-2">
+                                    <label>Monthly Payment *</label>
+                                    <input class="form-control" type="number" min="-0" id="monthly_payment" name="monthly_payment" readonly>
+                                </div>
 
-                            <div class="form-group mb-2">
-                                <label>Remaining Balance *</label>
-                                <input class="form-control" type="text" id="total_balance" name="total_balance" readonly>
-                            </div>
+                                <div class="form-group mb-2">
+                                    <label>Remaining Balance *</label>
+                                    <input class="form-control" type="text" id="total_balance" name="total_balance" readonly>
+                                </div>
 
-                            <div class="form-group mb-2">
-                                <label>Enter Receipt Code *</label>
-                                <input class="form-control" type="number" min="0" id="payment_or" name="official_receipt" aria-describedby="payment_or_help" >
-                                <div id="payment_or_help" class="form-text">* Transaction No. / Reference No. </div>
-                            </div>
+                                <div class="form-group mb-2">
+                                    <label>Enter Receipt Code *</label>
+                                    <input class="form-control" type="number" min="0" id="payment_or" name="official_receipt" aria-describedby="payment_or_help" >
+                                    <div id="payment_or_help" class="form-text">* Transaction No. / Reference No. </div>
+                                </div>
 
-                            <div class="form-group mb-2">
-                                <label>Enter Amount *</label>
-                                <input class="form-control" type="number" min="0" id="payment_amount" name="amount" >
-                            </div>
+                                <div class="form-group mb-2">
+                                    <label>Enter Amount *</label>
+                                    <input class="form-control" type="number" min="0" id="payment_amount" name="amount" >
+                                </div>
 
-                            <div class="form-group mb-2">
-                                <label>Receipt Type *</label>
-                                <select class="form-select" name="receipt_type" id="payment_receipt_type">
-                                    <option></option>
-                                    <option value="school">School</option>
-                                    <option value="gcash">Gcash</option>
-                                    <option value="palawan">Palawan Pawnshop</option>
-                                    <option value="cebuana">Cebuana Lhuillier</option>
-                                </select>
-                            </div>
+                                <div class="form-group mb-2">
+                                    <label>Receipt Type *</label>
+                                    <select class="form-select" name="receipt_type" id="payment_receipt_type">
+                                        <option></option>
+                                        <option value="school">School</option>
+                                        <option value="gcash">Gcash</option>
+                                        <option value="palawan">Palawan Pawnshop</option>
+                                        <option value="cebuana">Cebuana Lhuillier</option>
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label></label>
-                                <input class="form-control" type="file" id="payment_screenshot" name="screenshot" aria-describedby="payment_screenshot_help" onchange="previewImg(event)">
-                                <div id="payment_screenshot_help" class="form-text">* Please add a screenshot of your Transaction Receipt <br> as proof of payment.</div>
-                            </div>
+                                <div class="form-group">
+                                    <label></label>
+                                    <input class="form-control" type="file" id="payment_screenshot" name="screenshot" aria-describedby="payment_screenshot_help" onchange="previewImg(event)">
+                                    <div id="payment_screenshot_help" class="form-text">* Please add a screenshot of your Transaction Receipt <br> as proof of payment.</div>
+                                </div>
 
-                            <div class="preview mt-2">
-                                <img id="preview_payment_screenshot" style="display:none" width="160">
-                            </div>
+                                <div class="preview mt-2">
+                                    <img id="preview_payment_screenshot" style="display:none" width="160">
+                                </div>
 
-                        </form>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" id="btn_add_payment_to_student" onclick="parent_store_payment_to_student()">Submit</button>
@@ -288,8 +288,8 @@
 {{--Add Down Payment to Student Modal--}}
     <div class="modal fade" id="parent_add_student_down_payment_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="parent_add_student_down_payment_modal" aria-hidden="true">
         <div class="modal-dialog modal-lg " role="document">
-            <div class="modal-content" id="parent_add_student_down_payment_modal_label">
-                <div class="modal-header">
+            <div class="modal-content">
+                <div class="modal-header" id="parent_add_student_down_payment_modal_header">
                     <h5 class="modal-title text-primary" id="parent_add_student_down_payment_modal_label">{{--Modal Title--}}</h5>
                     <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -302,53 +302,53 @@
                             </div>
                         </div>
                         <div class="card-body">
-                        <form id="parent_add_student_down_payment_form" class='col-md-10 bg-light border p-5 mx-auto'  onsubmit="false">
-                            @csrf
+                            <form id="parent_add_student_down_payment_form" class='col-md-10 bg-light border p-5 mx-auto'  onsubmit="false">
+                                @csrf
 
-                            <input type="hidden" name="student_id" id="dp_student_id">
-                            <div class="form-group mb-2">
-                                <label>Name *</label>
-                                <input class="form-control" type="text" id="dp_student_name" readonly>
-                            </div>
-                            
-                            <div class="form-group mb-2">
-                                <label>Total Balance *</label>
-                                <input class="form-control" type="text" id="dp_total_balance" name="total_balance" readonly>
-                            </div>
+                                <input type="hidden" name="student_id" id="dp_student_id">
+                                <div class="form-group mb-2">
+                                    <label>Name *</label>
+                                    <input class="form-control" type="text" id="dp_student_name" readonly>
+                                </div>
+                                
+                                <div class="form-group mb-2">
+                                    <label>Total Balance *</label>
+                                    <input class="form-control" type="text" id="dp_total_balance" name="total_balance" readonly>
+                                </div>
 
-                            <div class="form-group mb-2">
-                                <label>Enter Receipt Code *</label>
-                                <input class="form-control" type="number" min="0" id="dp_payment_or" name="official_receipt" aria-describedby="official_receipt_help" >
-                                <div id="official_receipt_help" class="form-text">* Transaction No. / Reference No. </div>
-                            </div>
+                                <div class="form-group mb-2">
+                                    <label>Enter Receipt Code *</label>
+                                    <input class="form-control" type="number" min="0" id="dp_payment_or" name="official_receipt" aria-describedby="official_receipt_help" >
+                                    <div id="official_receipt_help" class="form-text">* Transaction No. / Reference No. </div>
+                                </div>
 
-                            <div class="form-group mb-2">
-                                <label>Enter Amount *</label>
-                                <input class="form-control" type="number" min="0" id="dp_payment_amount" name="amount" >
-                            </div>
+                                <div class="form-group mb-2">
+                                    <label>Enter Amount *</label>
+                                    <input class="form-control" type="number" min="0" id="dp_payment_amount" name="amount" >
+                                </div>
 
-                            <div class="form-group">
-                                <label>Receipt Type *</label>
-                                <select class="form-select" name="receipt_type" id="dp_payment_receipt_type">
-                                    <option></option>
-                                    <option value="school">School</option>
-                                    <option value="gcash">Gcash</option>
-                                    <option value="palawan">Palawan Pawnshop</option>
-                                    <option value="cebuana">Cebuana Lhuillier</option>
-                                </select>
-                            </div>
+                                <div class="form-group">
+                                    <label>Receipt Type *</label>
+                                    <select class="form-select" name="receipt_type" id="dp_payment_receipt_type">
+                                        <option></option>
+                                        <option value="school">School</option>
+                                        <option value="gcash">Gcash</option>
+                                        <option value="palawan">Palawan Pawnshop</option>
+                                        <option value="cebuana">Cebuana Lhuillier</option>
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label></label>
-                                <input class="form-control" type="file" id="dp_payment_screenshot" name="screenshot" aria-describedby="payment_screenshot_help" onchange="previewImg(event)">
-                                <div id="payment_screenshot_help" class="form-text">* Please add a screenshot of your Transaction Receipt <br> as proof of payment.</div>
-                            </div>
+                                <div class="form-group">
+                                    <label></label>
+                                    <input class="form-control" type="file" id="dp_payment_screenshot" name="screenshot" aria-describedby="payment_screenshot_help" onchange="previewImg(event)">
+                                    <div id="payment_screenshot_help" class="form-text">* Please add a screenshot of your Transaction Receipt <br> as proof of payment.</div>
+                                </div>
 
-                            <div class="preview mt-2">
-                                <img id="preview_down_payment_screenshot" style="display:none" width="160">
-                            </div>
+                                <div class="preview mt-2">
+                                    <img id="preview_down_payment_screenshot" style="display:none" width="160">
+                                </div>
 
-                        </form>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" id="btn_add_down_payment_to_student" onclick="parent_store_down_payment_to_student()">Submit</button>

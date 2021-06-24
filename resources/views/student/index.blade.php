@@ -24,7 +24,7 @@
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Gender</th>
-                                            <th>Grade Level</th>
+                                            <th>Section</th>
                                             <th>Address</th>
                                             <th>Contact</th>
                                             <th>Avatar</th>
@@ -45,9 +45,9 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn  btn-info" href="javascript:void(0)" id="imp_student"><i class="fas fa-upload"></i> Import</a>
-                <a class="btn  btn-info" href="javascript:void(0)" id="exp_student"><i class="fas fa-file-export"></i> Export</a>
-                <a class="btn  btn-danger" href="javascript:void(0)" id="delete_all_student"><i class="fas fa-trash-alt"></i> Delete Record</a>
+                <a class="btn  btn-outline-info" href="javascript:void(0)" id="imp_student"><i class="fas fa-upload"></i> Import</a>
+                <a class="btn  btn-outline-info" href="javascript:void(0)" id="exp_student"><i class="fas fa-file-export"></i> Export</a>
+                <a class="btn  btn-outline-danger" href="javascript:void(0)" id="delete_all_student"><i class="fas fa-trash-alt"></i> Delete Record</a>
 
             </div>
         </div>
