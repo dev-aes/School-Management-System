@@ -11,6 +11,7 @@ $(()=> {
     if(window.location.href == route('school.index')) 
     {
         displaySchools(); // after loading the school page ; load the school data
+        $('#school_announcement').emojioneArea();
 
     }
      if(window.location.href == route('teacher.index'))
@@ -1739,7 +1740,7 @@ function teacher_student2_store_teacher_subject() {
                     console.log(response);
                     if(response == 'success')
                     {
-                              $('#teacher_DT').DataTable().draw();
+                              $('.teacher_DT').DataTable().draw();
                        return toastSuccess('Teacher Data Imported');
                     }
                 },
@@ -2520,7 +2521,7 @@ function import_subject()
                     console.log(response);
                     if(response == 'success')
                     {
-                              $('#subject_DT').DataTable().draw();
+                              $('.subject_DT').DataTable().draw();
                        return toastSuccess('Subject Data Imported');
                     }
                 },
@@ -3759,7 +3760,7 @@ function import_student()
                     console.log(response);
                     if(response == 'success')
                     {
-                       $('#student_DT').DataTable().draw();
+                       $('.student_DT').DataTable().draw();
                        toastSuccess('Student Data Imported');
 
                        return;
@@ -3800,7 +3801,7 @@ $('#delete_all_student').on('click', ()=> {
           console.log(response);
          if(response == "success")
          {
-            $('#student_DT').DataTable().draw();
+            $('.student_DT').DataTable().draw();
             return toastSuccess("Students Data Deleted");
          }
 
@@ -7379,10 +7380,401 @@ function createRole()
     }
 }
 
-
-
-
 // * -------------> END Role()
+
+
+/** 
+ ** <------------ START REPORTING()
+ */
+
+ // display students by academic year
+ function report_display_students_by_ay()
+ {
+    let ay = $('#report_ay').val();
+
+    if(ay > 0)
+    {
+        $.ajax({
+            url: route('report.display_students_by_ay', ay),
+            dataType:'json',
+            success: students => {
+                // res(students);
+                let output =    `
+                                <table class='table table-bordered table-hover mt-5' id='report_student_DT'>
+                                  <caption>List of Students </caption>
+                                    <thead>
+                                        <tr>
+                                             <td>First Name</td>
+                                             <td>Last Name</td>
+                                             <td>Gender</td>
+                                             <td>Section</td>
+                                             <td>Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                    </table>
+
+                                    <div class='row' id='report_display_students_by_ay_id'>
+
+
+                                    </div>
+                                    `;
+                 
+    
+                $('#report_display_data').html(output);
+
+                $('#report_student_DT').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    retrieve: true,
+                    responsive: {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal( {
+                                    // test
+                            } ),
+                            renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                        }
+                    },
+                    autoWidth: false,
+                    ajax : route('report.display_students_by_ay', ay),
+                    columns: [
+                        {data: 'first_name'},
+                        {data: 'last_name'},
+                        {data: 'gender'},
+                        {data: 'section.name'},
+                        {data: 'actions'},
+                    ]
+                });
+
+              
+
+            },
+            error: err => {
+                res(err);
+            }
+        });
+    }
+    else
+    {
+        $('#report_display_data').html(``);
+        $('#report_display_students_by_ay_id').html(``);
+
+    }
+    
+ }
+
+ // display student's grade record by student id
+ function report_to_form_138_show_by_student_id(student) 
+ {
+     $.ajax({
+         url: route('report.to_form_138_show_by_student_id', student),
+         dataType:'json',
+         success: student_form => {
+            let output = `
+                            <h1 class="fw-bold text-uppercase text-center mb-5"> report on learning progress and achievement</h1>
+                            <table class="table table-bordered " border="1">
+                                <thead style="background: none">
+                                    <tr class="text-center fw-bold">
+                                        <td rowspan="2" style="width:25%">Learning Areas</td>
+                                        <td colspan="4" style="width:25%">Quarter</td>
+                                        <td rowspan="2" style="width:25%">Final Grade</td>
+                                        <td rowspan="2" style="width:25%">Remark</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <td>Filipino</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>English</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Math</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Science</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Araling Panlipunan</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Edukasyon sa Pagpapakatao <br>(Esp)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th style="border-bottom: 1px solid transparent">MAPEH</th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid transparent">Music</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid transparent">Arts</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-bottom: 1px solid transparent">P.E.</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td >Health</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="text-center fw-bold">
+                                        <td></td>
+                                        <td colspan="4">General Average</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-2" id="descriptors">
+                                <table class="table table-sm ">
+                                    <thead style="background: none">
+                                        <tr class="fw-bold">
+                                            <th>Descriptors</th>
+                                            <th>Grading Scale</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Outstanding</td>
+                                            <td>90-100</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Very Satisfactory</td>
+                                            <td>85-89</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Satisfactory</td>
+                                            <td>80-84</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fairly Satisfactory</td>
+                                            <td>75-79</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Did not Meet Expectations</td>
+                                            <td>Below 75</td>
+                                            <td>Failed</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row mt-5" id="obsereved_values">
+                                <h1 class="fw-bold text-uppercase text-center mb-5"> report on learner's observed values</h1>
+                                <table class="table table-bordered">
+                                    <thead style="background: none">
+                                        <tr class="fw-bold text-center">
+                                            <td rowspan="2">Core Values</td>
+                                            <td rowspan="2">Behavior Statements</td>
+                                            <td colspan="4">Quarter</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>1</td>
+                                            <td>2</td>
+                                            <td>3</td>
+                                            <td>4</td>
+                                        </tr>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2">1. Makadiyos</td>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td rowspan="2">2. Makatao</td>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td rowspan="2">3. Makakalikasan</td>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td rowspan="2">4. Makabansa</td>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                            <td>.</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row mt-2" id="marking">
+                            <table class="table table-sm ">
+                                <thead style="background: none">
+                                    <tr class="fw-bold">
+                                        <th>Marking</th>
+                                        <th>Non-numerical Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>AO</td>
+                                        <td>Always Observed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SO</td>
+                                        <td>Sometimes Observed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RO</td>
+                                        <td>Rarely Observed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NO</td>
+                                        <td>Not Observed</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+            
+                         `;
+
+                         $('#report_form_138_display_student_record').html(output);
+
+         },
+         error: err => {
+             res(err);
+         }
+     })
+ }
+
+ function report_reset()
+ {
+     $('#report_display_data').html(``);
+     $('#report_form_138_display_student_record').html(``);
+ }
+
+
+ //* ----------> END REPORTING ()
 
 
 /**

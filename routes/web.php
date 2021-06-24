@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ParentPaymentController;
 use App\Http\Controllers\Admin\PaymentModeController;
 use App\Http\Controllers\Admin\StudentFeeController;
 use App\Http\Controllers\Admin\PaymentReportController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
@@ -53,12 +54,25 @@ Route::get('/test', function () {
 
 // Admin Dashboard
 Route::middleware(['auth' , 'admin'])->group(function() {
-    //DASHBOARD 
-    Route::resource('/home', DashboardController::class);
 
-    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    //DASHBOARD 
+        Route::resource('/home', DashboardController::class);
+    // End Dashboard
+
+    // Reports
+
+        // display students enroled in a particula academic year
+        Route::get('/admin/report/display_student/academic_year/{academic_year}', [ReportController::class, 'report_display_students_by_ay'])->name('report.display_students_by_ay');
+
+         // get student grade form
+        Route::get('/admin/report/form_138/display_student_record/{student}', [ReportController::class, 'to_form_138_show_by_student_id'])->name('report.to_form_138_show_by_student_id');
+
+        Route::resource('/admin/report', ReportController::class);
+    // end Report
+
+
+
     Route::resource('/admin/school', SchoolController::class);
-    // Route::get('/admin/teacher/{id}', [TeacherController::class, 'teacher_create_subject'])->name('teacher.createSubject');
     Route::resource('/admin/teacher', TeacherController::class);
     Route::resource('/admin/subject', SubjectController::class);
     Route::resource('/admin/grade_level',GradeLevelController::class );
@@ -78,7 +92,6 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
 
     //Grade()  Assign Grade to Subject 
-    //
     //display students and grades
     Route::get('/admin/home/displaygrade', [GradeController::class, 'grade_display_grades_subjects_by_student_id'])->name('grade.grade_display_grades_subjects_by_student_id');
 
