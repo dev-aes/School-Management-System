@@ -52,30 +52,44 @@ class GradeController extends Controller
                             ->first();
             
             //Get Subject Teacher ID section_subject
+            
             $get_subject_teacher = DB::table('section_subject')
-                                ->join('teachers','section_subject.teacher_id','teachers.id')
-                                ->select('teachers.id')
-                                ->where('section_subject.section_id',$data['section_id'])
-                                ->where('section_subject.subject_id',$data['subject_id'])
-                                ->first(); 
+                                   ->leftJoin('subjects','section_subject.subject_id','subjects.id')
+                                   ->where('section_subject.section_id',$data['section_id'])
+                                   ->where('section_subject.subject_id',$data['subject_id'])
+                                   ->first();
+                                
 
+                                   
+            //Get grade value of a subject
+            $grade_val = DB::table('grade_level_subject')
+                         ->join('grade_levels','grade_level_subject.grade_level_id','grade_levels.id')                           
+                        ->where('grade_level_subject.subject_id', $data['subject_id'])->first();              
 
-
-
-
-            DB::table('grades')->insert(
-                [
+            DB::table('grades')
+            ->updateOrInsert(
+                [ 
                     'student_grade_id'=>$student_grade_id->id,
                     'subject_id'=> $data['subject_id'],
-                    'grades'=>$data['grades'],
-                    'subject_teacher_id'=>$get_subject_teacher->id,
+                    'subject_teacher_id'=>$get_subject_teacher->teacher_id,
                     'quarter_id'=>$data['quarter_id'],
-                    'created_at'=> now(),
+                    'grade_level_val'=> $grade_val->grade_val,
                 ],
-            );
+                
+                [
+                    'grades'=>$data['grades'],
+                    'created_at'=> now()
+                ]
+            );                                
 
-            return response()->json($get_subject_teacher);
+           
+            return response()->json('sucess');
+            
+        
+
+
             }
+
 
     } 
 
