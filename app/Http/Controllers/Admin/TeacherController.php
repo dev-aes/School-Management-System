@@ -467,6 +467,27 @@ public function teacher_destroy_student()
                  ['subject_id' => $subject_id,'created_at'=>now()]
             );
 
+
+               //update subject teacher id to grades table
+
+               $student_grade_ids =  DB::table('grades')->select('student_grade_id')->distinct()->get();
+
+              if($student_grade_ids){ 
+               foreach($student_grade_ids as $id):
+                    DB::table('grades')->updateOrInsert(
+                        ['subject_id' => $subject_id, 'student_grade_id'=> $id->student_grade_id],
+                        ['subject_teacher_id' => request('teacher_id')]
+                    );
+                endforeach;
+            }
+            else{
+                DB::table('grades')->updateOrInsert(
+                    ['subject_id' => $subject_id],
+                    ['subject_teacher_id' => request('teacher_id')]
+                );
+            }
+
+
            endforeach;
          
 
@@ -547,6 +568,9 @@ public function teacher_destroy_student()
      {
          if(request()->ajax())
          {
+
+            $student_id = request()->student_id;
+
              $get_subject_ids = DB::table('section_subject')
                          //->where('teacher_id', $teacher->id)
                          ->where('section_id', $section->id)
@@ -560,7 +584,51 @@ public function teacher_destroy_student()
 
              endforeach;
 
-            $subjects = Subject::whereIn('id', $subject_ids)->get(); //  subjects handled by the teacher (teacher_ID)
+            //$subjects = Subject::whereIn('id', $subject_ids)
+                     //   ->get(); //  subjects handled by the teacher (teacher_ID)
+
+
+             //Get all subjects within the section ---> *refactor
+             //Tables section_subject, sections, subjects
+             //Join there grades per quarter
+             //quarter id, subject_teacher, student
+
+
+             $student_grade_id = DB::table('student_grade')->where('student_id',$student_id)->first();
+             //Get all the subjects in a section for grade encoding
+
+             //if Grades table is empty
+
+             $grds = DB::table('grades')->first();
+            //  if(!$grds){
+            //     $subjects = DB::table('subjects')
+            //     ->join('section_subject','subjects.id','section_subject.subject_id')
+            //     ->select('section_subject.subject_id','subjects.name','section_subject.section_id')
+            //     ->where('section_subject.section_id',$section->id)
+            //     ->get();
+            //  }
+
+             //
+
+           //  else{
+
+
+            
+             $subjects = DB::table('subjects')
+                            ->join('section_subject','subjects.id','section_subject.subject_id')
+                            ->join('grades','subjects.id','grades.subject_id')
+                            ->select('section_subject.subject_id','subjects.name','grades.grades','section_subject.section_id','grades.quarter_id','grades.subject_teacher_id')
+                            ->where('section_subject.section_id',$section->id)
+                            ->where('grades.student_grade_id',$student_grade_id->id)
+                            ->where('grades.quarter_id',1)
+                           // ->orWhere('grades.student_grade_id',NULL)
+                            // ->orWhere(function($query) {
+                            //     $query->orWhere('grades.student_grade_id',NULL);
+                            // })
+                            
+                            
+                            ->get();
+          //   }
 
             $student = Student::where('id', request('student_id'))->first(); // get the specific student 
 
@@ -568,6 +636,7 @@ public function teacher_destroy_student()
             //Display Grades here
                 
             //
+            $section = $section->subject;
 
 
                          return response()->json([$student, $subjects]); // return subjects[] , student

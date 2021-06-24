@@ -11,4 +11,6 @@ class Grade extends Model
 
     protected $guarded= [];
 
+    protected $table = 'grades';
+
 }

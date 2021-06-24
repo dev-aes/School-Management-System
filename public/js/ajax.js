@@ -1894,7 +1894,7 @@ $('#teacher_assign_grade_to_student').on('click', () => {
         url: route('teacher.teacher_assign_grade_to_subject_display_teachers'),
         dataType:'json',
         success: teachers => {
-            // res(teachers);
+             res(teachers[1]);
             let output = `<option> </option>`;
             let output1 = `<option> </option>`;
             
@@ -1902,7 +1902,7 @@ $('#teacher_assign_grade_to_student').on('click', () => {
                 output += `<option value='${grade_level.id}'> Grade ${grade_level.grade_val} </option>`;
             })
             teachers[1].forEach(quarter => {
-                output1 += `<option value='${quarter.id}'> ${quarter.name} </option>`;
+                output1 += `<option value='${quarter.quarter_val}'> ${quarter.name} </option>`;
             })
 
             $('#grade_assign_grade_to_student_subject_teacher_id').html(output);//Grade Options
@@ -2007,7 +2007,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            //res(student_subjects);
+            res(student_subjects[1]);
            
             // let output = `
             //                 <div class='col-md-4'>
@@ -2074,9 +2074,9 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                             <tbody>`;
                     student_subjects[1].forEach(subject => {
 
-            output += `     <tr class='s_subject' data-subject='${subject.id}'>
-                                <th>${subject.name}</th>
-                                <td data-quarter='1' style='width:7%'>test</td>
+            output += `     <tr class='s_subject' data-subject='${subject.subject_id}' =>
+                                <th >${subject.name}</th>
+                                <td data-quarter='1' style='width:7%'>${subject.grades}</td>
                                 <td data-quarter='2' style='width:7%'></td>
                                 <td data-quarter='3' style='width:7%'></td>
                                 <td data-quarter='4' style='width:7%'></td>
@@ -2154,7 +2154,7 @@ $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .
 
 $(document).on('keypress', '#g_grade', function(e) {
 
-    //let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
     let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
     let quarter_id = $('#teacher_assign_grade_to_student_subject_quarter_id').val();
     let student_id = $('#s_student').attr('data-id');
@@ -2164,18 +2164,18 @@ $(document).on('keypress', '#g_grade', function(e) {
     
     // let quarter = $('#btn_update_subject').attr('data-quarter');
     if(e.keyCode == 13){
-    //    console.log(
-    //                 {
-    // //                   //  teacher_id: teacher_id, adviser ID
-    //                     section_id: section_id,
-    //                     quarter_id: quarter_id,
-    //                     student_id: student_id,
-    //                     subject_id: subject_id,
-    //                     grades: grades,
+       console.log(
+                    {
+    //                   //  teacher_id: teacher_id, adviser ID
+                        section_id: section_id,
+                        quarter_id: quarter_id,
+                        student_id: student_id,
+                        subject_id: subject_id,
+                        grades: grades,
 
 
-                //     }
-                //   )
+                    }
+                  )
         
                   $.ajax({
                     method: 'POST',
@@ -7279,7 +7279,7 @@ function grade_level_assign_subject_subject_id_store()
             dataType:'json',
             data: $('#grade_level_assign_subject_form').serialize(),
             success: response => {
-                //res(response);
+                res(response);
                 if(response == 'success')
                 {
                     return toastSuccess('Subject/s Assigned');

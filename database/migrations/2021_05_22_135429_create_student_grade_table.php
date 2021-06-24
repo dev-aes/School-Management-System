@@ -16,7 +16,7 @@ class CreateStudentGradeTable extends Migration
         Schema::create('student_grade', function (Blueprint $table) {
             $table->id();
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('adviser_id')->constrained('teachers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('adviser_id')->nullable()->constrained('teachers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

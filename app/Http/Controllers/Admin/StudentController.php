@@ -117,14 +117,37 @@ class StudentController extends Controller
         $adviser_id = Section::where('id',$student_form_data['section_id'])->first();
         //$adviser = Teachers::where('id',$adviser_id->adviser_id)->first();
         
-        DB::table('student_grade')->insert([
+        $student_grade_id = DB::table('student_grade')->insertGetId([
             'academic_year_id'=>$academic_year->id,
             'adviser_id'=>$adviser_id->adviser_id,
             'student_id'=>$student_data->id
         ]);
     
         
-                
+         
+        
+        //Populate grades here
+        $get_subjects_and_teachers_id = DB::table('section_subject')->where('section_id',$student_form_data['section_id'])->get();
+        $get_section_grade_level = DB::table('sections')
+                                ->join('grade_levels','sections.grade_level_id','grade_levels.id')
+                                ->select('grade_levels.grade_val')
+                                ->where('sections.id',$student_data->section_id)
+                                ->first();
+
+
+        
+        foreach ($get_subjects_and_teachers_id as $subject_teacher_id):
+            DB::table('grades')->insert([
+                'student_grade_id'=>$student_grade_id,
+                'subject_id'=>$subject_teacher_id->subject_id,
+                'grades'=>NULL,
+                'subject_teacher_id'=>$subject_teacher_id->teacher_id,
+                'quarter_id'=>1,
+                'grade_level_val' => $get_section_grade_level->grade_val,
+            ]);
+        endforeach;    
+
+
 
                 return response()->json('success');
             }

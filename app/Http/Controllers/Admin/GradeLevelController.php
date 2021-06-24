@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Grade;
 use App\Models\School;
 use App\Models\Subject;
 use App\Models\GradeLevel;
@@ -139,16 +140,36 @@ class GradeLevelController extends Controller
 
                 else
                 {
+                    
                     DB::table('grade_level_subject')
                     ->insert(['grade_level_id' => $grade_level_id,
                               'subject_id' => $subject_id,
                               'created_at' => now()
                                ]);
+
+                    $student_grade_ids =  DB::table('grades')->select('student_grade_id')->distinct()->get();
+                    
+                    foreach($student_grade_ids as $id):
+                        DB::table('grades')
+                        ->insert([
+                            'student_grade_id'=>$id->student_grade_id,
+                            'subject_id' => $subject_id,  
+                            'grade_level_val'=>$grade_level_id,
+                            'quarter_id'=>1    
+                        ]);    
+                    endforeach;         
+
+                          
+
                 }
+
+
+
                
            endforeach;
 
            return $this->res(); // success msg
+         
         }
     }
 
