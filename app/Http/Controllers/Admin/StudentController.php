@@ -133,8 +133,8 @@ class StudentController extends Controller
                                 ->where('sections.id',$student_data->section_id)
                                 ->first();
 
-
-       
+            
+        
 
          //If no subjects and teachers exist    
         if($get_subjects_and_teachers_id->count() == 0){

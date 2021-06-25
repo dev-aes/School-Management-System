@@ -38,6 +38,7 @@ class GradeController extends Controller
                 'section_id'=>'',
                 'student_id'=>'',
                 'subject_id'=>'',
+                'grades_id'=>'',
             ]);
 
             $academic_year = DB::table('academic_years')
@@ -58,40 +59,50 @@ class GradeController extends Controller
                                    ->where('section_subject.section_id',$data['section_id'])
                                    ->where('section_subject.subject_id',$data['subject_id'])
                                    ->first();
-                                
-
-                                   
+   
             //Get grade value of a subject
             $grade_val = DB::table('grade_level_subject')
                          ->join('grade_levels','grade_level_subject.grade_level_id','grade_levels.id')                           
-                        ->where('grade_level_subject.subject_id', $data['subject_id'])->first();              
+                        ->where('grade_level_subject.subject_id', $data['subject_id'])->first();  
 
+                        $quarter = 0;
+                        
+                        if($data['quarter_id'] == 1)
+                        {
+                            $quarter = 'quarter_1';
+                        }
+                        else if($data['quarter_id'] == 2)
+                        {
+                            $quarter = 'quarter_2';
+                        }
+                        else if($data['quarter_id'] == 3)
+                        {
+                            $quarter = 'quarter_3';
+                        }
+                        else
+                        {
+                            $quarter = 'quarter_4';
+                        }
+
+         //Update or insert grades of a student on all quarters
             DB::table('grades')
             ->updateOrInsert(
                 [ 
-                    'student_grade_id'=>$student_grade_id->id,
+                    'student_grade_id'=>$data['student_id'],
                     'subject_id'=> $data['subject_id'],
-                    'subject_teacher_id'=>$get_subject_teacher->teacher_id,
-                    'quarter_id'=>$data['quarter_id'],
-                    'grade_level_val'=> $grade_val->grade_val,
+                    'subject_teacher_id'=>$get_subject_teacher->teacher_id,          
                 ],
-                
                 [
-                    'grades'=>$data['grades'],
+                    'grade_level_val'=> $grade_val->grade_val,
+                     $quarter => $data['grades'],
                     'created_at'=> now()
                 ]
             );                                
-
-           
-            return response()->json('sucess');
-            
-        
-
-
-            }
-
-
+            return response()->json('sucess');          
     } 
+
+}
+
 
     public function grade_display_subjects_by_student_id()
     {
