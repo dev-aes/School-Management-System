@@ -634,19 +634,9 @@ public function teacher_destroy_student()
              $subjects = DB::table('subjects')
                             ->join('section_subject','subjects.id','section_subject.subject_id')
                             ->join('grades','subjects.id','grades.subject_id')
-                            ->select('section_subject.subject_id','subjects.name','grades.grades','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.quarter_id','grades.subject_teacher_id')
+                            ->select('section_subject.subject_id','subjects.name','grades.grades','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.subject_teacher_id')
                             ->where('section_subject.section_id',$section->id)
-                            ->where('grades.student_grade_id',$student_grade_id->id)
-<<<<<<< HEAD
-=======
-                            //->where('grades.quarter_id',1)
->>>>>>> 31efeb6f0db623870ea597a1ea797e207f71356c
-                           // ->orWhere('grades.student_grade_id',NULL)
-                            // ->orWhere(function($query) {
-                            //     $query->orWhere('grades.student_grade_id',NULL);
-                            // })
-                            
-                            
+                            ->where('grades.student_grade_id',$student_grade_id->id)                            
                             ->get();
 
           //   }
