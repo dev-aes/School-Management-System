@@ -19,7 +19,10 @@ class CreateGradesTable extends Migration
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->onUpdate('cascade')->onDelete('cascade');
             $table->string('grades')->nullable()->default('0');
             $table->foreignId('subject_teacher_id')->nullable()->constrained('teachers')->onDelete('cascade')->onUpdate('cascade');
-            $table->bigInteger('quarter_id')->nullable();
+            $table->bigInteger('quarter_1')->nullable();
+            $table->bigInteger('quarter_2')->nullable();
+            $table->bigInteger('quarter_3')->nullable();
+            $table->bigInteger('quarter_4')->nullable();
             $table->bigInteger('grade_level_val')->nullable();
             
             $table->timestamps();

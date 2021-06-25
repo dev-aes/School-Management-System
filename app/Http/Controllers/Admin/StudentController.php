@@ -126,28 +126,37 @@ class StudentController extends Controller
         
         //Populate grades here
         $get_subjects_and_teachers_id = DB::table('section_subject')->where('section_id',$student_form_data['section_id'])->get();
+       
         $get_section_grade_level = DB::table('sections')
                                 ->join('grade_levels','sections.grade_level_id','grade_levels.id')
                                 ->select('grade_levels.grade_val')
                                 ->where('sections.id',$student_data->section_id)
                                 ->first();
 
-
+            
         
-        foreach ($get_subjects_and_teachers_id as $subject_teacher_id):
-            DB::table('grades')->insert([
-                'student_grade_id'=>$student_grade_id,
-                'subject_id'=>$subject_teacher_id->subject_id,
-                'grades'=>NULL,
-                'subject_teacher_id'=>$subject_teacher_id->teacher_id,
-                'quarter_id'=>1,
-                'grade_level_val' => $get_section_grade_level->grade_val,
-            ]);
-        endforeach;    
 
+         //If no subjects and teachers exist    
+        if($get_subjects_and_teachers_id->count() == 0){
+             DB::table('grades')->insert(['student_grade_id'=>$student_grade_id]);
+            
+        }
+        
 
+             //if there is already existing section with subjects the newly added student will populate the Grades Table
+            
+             foreach ($get_subjects_and_teachers_id as $subject_teacher_id):
+                DB::table('grades')->insert([
+                    'student_grade_id'=>$student_grade_id,
+                    'subject_id'=>$subject_teacher_id->subject_id,
+                    'subject_teacher_id'=>$subject_teacher_id->teacher_id,
+                    'grade_level_val' => $get_section_grade_level->grade_val,
+                ]);
+            endforeach;    
+        
 
-                return response()->json('success');
+            return response()->json('success');
+                
             }
         }
 

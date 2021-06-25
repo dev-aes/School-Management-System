@@ -701,6 +701,7 @@ $('#add_teacher').on('click', ()=> {
             dataType: 'json',
             data:form.serialize(),
             success:response => {
+                res(response);
                 if(response == 'success')
                 {
                     toastSuccess("Subjects Assigned");
@@ -1878,6 +1879,7 @@ $('#teacher_assign_grade_to_student').on('click', () => {
                 output += `<option value='${grade_level.id}'> Grade ${grade_level.grade_val} </option>`;
             })
             teachers[1].forEach(quarter => {
+               
                 output1 += `<option value='${quarter.quarter_val}'> ${quarter.name} </option>`;
             })
 
@@ -1983,7 +1985,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            //res(student_subjects[1]);
+            res(student_subjects[1]);
    
 
             let output = `
@@ -2005,16 +2007,23 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                                 </tr>
                             </thead>
                             <tbody>`;
+
+                    
+                            
+                            
                     student_subjects[1].forEach(subject => {
 
-            output += `     <tr class='s_subject' data-subject='${subject.subject_id}' =>
+                         let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4;
+                         let remark = (average > 74) ? 'Passed': 'Failed';
+
+            output += `     <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
                                 <th >${subject.name}</th>
-                                <td data-quarter='1' style='width:7%'>${subject.grades}</td>
-                                <td data-quarter='2' style='width:7%'></td>
-                                <td data-quarter='3' style='width:7%'></td>
-                                <td data-quarter='4' style='width:7%'></td>
-                                <td ></td>
-                                <td></td>
+                                <td data-quarter='1' style='width:7%'>${subject.quarter_1}</td>
+                                <td data-quarter='2' style='width:7%'>${subject.quarter_2}</td>
+                                <td data-quarter='3' style='width:7%'>${subject.quarter_3}</td>
+                                <td data-quarter='4' style='width:7%'>${subject.quarter_4}</td>
+                                <td>${average}</td>
+                                <td>${remark}</td>
                             </tr>
                       `;
                     });
@@ -2086,7 +2095,9 @@ $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .
                             $('#g_grade').css('display', 'block')
                             .attr('data-subject_id',$(this).parent().attr('data-subject'))
                             .attr('data-quarter_id', $(this).attr('data-quarter'))
-                          ); // store subject id  && quarter_id to this input field
+                            .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
+
+                          ); // store subject id  && quarter_id  && grade_id to this input field
 
 });
 
@@ -2097,8 +2108,8 @@ $(document).on('keypress', '#g_grade', function(e) {
     let student_id = $('#s_student').attr('data-id');
     let subject_id = $('#g_grade').attr('data-subject_id');
     let quarter_id = $('#g_grade').attr('data-quarter_id');
+    let grades_id = $('#g_grade').attr('data-grades_id');
     let grades = $('#g_grade').val();
-   
     
     if(e.keyCode == 13){
        console.log(
@@ -2109,33 +2120,34 @@ $(document).on('keypress', '#g_grade', function(e) {
                         student_id: student_id,
                         subject_id: subject_id,
                         grades: grades,
+                        grades_id: grades_id,
 
 
                     }
                   )
         
-                //   $.ajax({
-                //     method: 'POST',
-                //     url: route('grade.teacher_store_student_grade'),
-                //     dataType:'json',
-                //     data:{
+                  $.ajax({
+                    method: 'POST',
+                    url: route('grade.teacher_store_student_grade'),
+                    dataType:'json',
+                    data:{
                         
-                //         section_id: section_id,
-                //         quarter_id: quarter_id,
-                //         student_id: student_id,
-                //         subject_id:subject_id,
-                //         grades: grades,
-        
-                //     },
+                        section_id: section_id,
+                        quarter_id: quarter_id,
+                        student_id: student_id,
+                        subject_id:subject_id,
+                        grades: grades,
+                        grades_id: grades_id,
+                    },
                    
-                //     success: response => {
-                //         res(response);
+                    success: response => {
+                        res(response);
                         
-                //     },
-                //     error: err => {
-                //         console.log(err);
-                //     }
-                // })
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                })
                     
                   
                   
@@ -2305,8 +2317,7 @@ function showSubject(id)
            $('#btn_update_subject').css('display', 'block').attr('data-id', subject[0].id);
 
           // display all fetch Grade levels
-          // let output=`<option value='${subject[2].id}'>Current [${subject[2].name}]</option>`;
-          let output = `<option> Current [${subject[2].name}] </option>`
+          let output=`<option value='${subject[2].grade_val}'>Current [${subject[2].name}]</option>`;
            subject[1].forEach(grade_level => {
                  output += `<option value='${grade_level.id}'> Grade ${grade_level.grade_val} </option>`;
                  $('#grade_val').html(output);
@@ -2338,7 +2349,7 @@ function updateSubject()
             success: response => {
                 console.log(response);
                 toastSuccess('Subject Updated')
-                $('#subject_DT').DataTable().draw();
+                $('.subject_DT').DataTable().draw();
                 subject_form[0].reset();
                 $('#subject_modal').modal('hide');
             },
