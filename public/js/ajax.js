@@ -217,7 +217,9 @@ $(()=> {
 
     if(window.location.href == route('role.index'))
     {
-        displayRoles(); // after loading the Role ; load the Role data
+        let role_column_data = [ {data: 'name'}, {data: 'actions'} ];
+        crud_index('.role_DT', 'role.index', role_column_data); // after loading the Role ; load the Role data
+
         $('#role_title').tagsinput(); 
     }
 
@@ -295,38 +297,7 @@ function createAY()
         })
     }
 }
-//delete
-function deleteAY(id)
-{
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                method: 'DELETE',
-                url: route('academic_year.destroy', id),
-                success: response => {
-                      if(response == 'success')
-                      {
-                        $('.academic_year_DT').DataTable().draw();
-                        toastSuccess('Academic Year Deleted');
-                      }
-                  
-                },
-                error: err => { 
-                    toastDanger();
-                    console.log(err);
-                }
-            })
-        }
-      })
-}
+
 
 // academic year activation
 function activateAY(e)
@@ -380,35 +351,6 @@ function displaySchools() {
         success: school => {
             // display school's information
            
-            // let output = `  <div id='stud' class="d-flex justify-content-between border border-sm-border-5 p-5">
-            //                     <div class="school_key">
-            //                         <h4 class=''>Name:</h4>
-            //                         <h4 class=''>DepEd No:</h4>
-            //                         <h4 class=''>City:</h4>
-            //                         <h4 class=''>Province:</h4>
-            //                         <h4 class=''>Country:</h4>
-            //                         <h4 class=''>Address:</h4>
-            //                         <h4 class=''>Contact:</h4>
-            //                         <h4 class=''>Email:</h4>
-            //                         <h4 class=''>Website:</h4>
-            //                         <h4 class=''>Facebook:</h4>
-            //                         <h4 class=''>No of Months:</h4>
-            //                     </div>
-            //                     <div class="school_value">
-            //                         <h4 class=''>${school[0].school_name}</h4>
-            //                         <h4 class=''>${school[0].depEd_no}</h4>
-            //                         <h4 class=''>${school[0].city}</h4>
-            //                         <h4 class=''>${school[0].province}</h4>
-            //                         <h4 class=''>${school[0].country}</h4>
-            //                         <h4 class=''>${school[0].address}</h4>
-            //                         <h4 class=''>${school[0].contact}</h4>
-            //                         <h4 class=''>${school[0].email}</h4>
-            //                         <h4 class=''> ${school[0].website}</h4>
-            //                         <h4 class=''>${school[0].facebook}</h4>
-            //                         <h4 class=''>${school[0].months_no}</h4>
-            //                     </div>
-            //                 </div>`;
-
             let output = `<table class="table table-borderless" style='width:65%;margin-left:auto;'>
                                 <tbody>
                                 <tr>
@@ -517,8 +459,6 @@ function displaySchools() {
 // create
 $('#add_school').on('click', ()=> {
 
-    // const school_modal =  new bootstrap.Modal(document.getElementById('school_modal'));
-    // school_modal.show();
     $('#school_modal').modal('show');
     $('#school_modal').show();
     $('#school_modal_label').html(`Add School <i class="fas fa-school"></i> `);
@@ -864,27 +804,50 @@ function createTeacher()  {
                         </ul>
                         <div class="tab-content" id="myTabContent">`;
 
-            output += `<div class="tab-pane fade show active" id="teacherinfo" role="tabpanel" aria-labelledby="home-tab"> <br>
-                            <center><img class='rounded-circle' src='/storage/uploads/teacher/${teacher[0].teacher_avatar}' alt='teacher_avatar' width='160'>
-                            </center>
-                            <br>
-                            <p class='text-center lead'> Teacher </p>
-                            <br>
-                            <ul class='list-group'>
-                            <li class='list-group-item'><span class='badge bg-success'> First Name:</span> ${teacher[0].first_name} </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Middle Name:</span> ${teacher[0].middle_name} </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Last Name:</span>  ${teacher[0].last_name}</li>
-                            <li class='list-group-item'><span class='badge bg-success'>Birth Date:</span> ${teacher[0].birth_date} </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Gender:</span>  ${teacher[0].gender} </li>
-                            <li class='list-group-item'><span class='badge bg-success'>City:</span> ${teacher[0].city}  </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Province:</span> ${teacher[0].province}  </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Country:</span> ${teacher[0].country}</li>
-                            <li class='list-group-item'><span class='badge bg-success'> Address:</span> ${teacher[0].address} </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Contact:</span> ${teacher[0].contact}  </li>
-                            <li class='list-group-item'><span class='badge bg-success'>Facebook:</span> ${teacher[0].facebook}  </li>
-                            <li class='list-group-item'><span class='badge bg-success'>email:</span> ${teacher[0].email} </li>
-                            </ul>
-                         </div>
+            output += `     <div class="tab-pane fade show active" id="teacherinfo" role="tabpanel" aria-labelledby="home-tab"> <br>
+                                <div class='row'>
+                                    <div class='col-md-6 mb-5'>
+                                        <br>
+                                        <center><img class='rounded-circle' src='/storage/uploads/teacher/${teacher[0].teacher_avatar}' alt='teacher_avatar' width='250'></center>
+                                    </div>
+
+                                    <div class='col-md-6'>
+                                        <div class='row'>
+                                            <div class='col-md-8'>
+                                                    <p class='text-muted lead'> Basic Info  <i class="fas fa-info-circle"></i> </p> <br>
+                                                    <div class='d-flex justify-content-between'>
+                                                        <div>
+                                                            <p class='text-muted text-capitalize'> Name: </p>
+                                                            <p class='text-muted text-capitalize'> Birth Date:  </p>
+                                                            <p class='text-muted text-capitalize'> Gender </p>
+                                                            <p class='text-muted text-capitalize'> City: </p>
+                                                            <p class='text-muted text-capitalize'> Province: </p>
+                                                            <p class='text-muted text-capitalize'> Country: </p>
+                                                            <p class='text-muted text-capitalize'> Address: </p>
+                                                            <p class='text-muted text-capitalize'> Contact:  </p>
+                                                            <p class='text-muted text-capitalize'> Facebook: </p>
+                                                            <p class='text-muted text-capitalize'> Email:  </p>
+                                                        </div>
+                                                
+                                                        <div>
+                                                            <p class='text-capitalize'> ${teacher[0].first_name} ${teacher[0].last_name}  </p>
+                                                            <p class='text-capitalize'>  ${teacher[0].birth_date} </p>
+                                                            <p class='text-capitalize'>  ${teacher[0].gender} </p>
+                                                            <p class='text-capitalize'>  ${teacher[0].city} </p>
+                                                            <p class='text-capitalize'>  ${teacher[0].province} </p>
+                                                            <p class='text-capitalize'>  ${teacher[0].country} </p>
+                                                            <p class='text-capitalize'> ${teacher[0].address} </p>
+                                                            <p class='text-capitalize'>  ${teacher[0].contact} </p>
+                                                            <p class='text-capitalize'> ${teacher[0].facebook} </p>
+                                                            <p class='text-capitalize'> ${teacher[0].email} </p>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class='col-md-4'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
 
                          <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="profile-tab">
                             <ul class='list-group'><br><br>
@@ -1907,7 +1870,7 @@ $('#teacher_assign_grade_to_student').on('click', () => {
         url: route('teacher.teacher_assign_grade_to_subject_display_teachers'),
         dataType:'json',
         success: teachers => {
-             res(teachers[1]);
+            // res(teachers[1]);
             let output = `<option> </option>`;
             let output1 = `<option> </option>`;
             
@@ -2020,51 +1983,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            res(student_subjects[1]);
-           
-            // let output = `
-            //                 <div class='col-md-4'>
-            //                     <div class='card w-100'>
-            //                         <div class='card-body'>
-            //                         <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='75'></center>
-            //                             <div class='text-center mt-2'>
-            //                                 <h5> ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
-            //                             </div>
-            //                         </div>
-            //                     </div>
-            //                 </div>
-
-            //                 <div class='col-md-6'>
-            //                     <div class='card>'
-            //                         <div class='card-body'>
-            //                             <form autocomplete='off'> 
-            //              `;
-
-            //              student_subjects[1].forEach(subject => {
-            //   output += `             <div class='row'>
-            //                             <div class='col-md-6 mb-2'>
-            //                                 <div class='form-group'>
-            //                                     <label class='form-label'> Subject Name </label>
-            //                                     <input class='form-control'  value='${subject.name}' readonly>
-            //                                     <input class='form-control' name='subject_id' value='${subject.id}' style='display:none'>
-            //                                 </div>
-            //                            </div>
-
-            //                            <div class='col-md-6'>
-            //                                 <div class='form-group'>
-            //                                     <label class='form-label'> Enter Grade * </label>
-            //                                     <input class='form-control' type='number' min='60' name='grade' value='' required>
-            //                                 </div>
-            //                            </div>
-            //                          </div>
-            //             `               
-            //              });
-            //   output += `               <button class='btn btn-sm btn-primary float-end' onclick=''>Submit</button>
-            //                             </form>
-            //                        </div>
-            //                     </div>
-            //                 </div>
-            //             `;
+            //res(student_subjects[1]);
+   
 
             let output = `
                            <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
@@ -2162,24 +2082,28 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
 }
 
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
-            $(this).append($('#g_grade').css('display', 'block').attr('data-subject_id',$(this).parent().attr('data-subject') )); // store subject id to this input field
+            $(this).append(
+                            $('#g_grade').css('display', 'block')
+                            .attr('data-subject_id',$(this).parent().attr('data-subject'))
+                            .attr('data-quarter_id', $(this).attr('data-quarter'))
+                          ); // store subject id  && quarter_id to this input field
+
 });
 
 $(document).on('keypress', '#g_grade', function(e) {
 
     let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
     let section_id = $('#teacher_assign_grade_to_student_subject_section_id').val();
-    let quarter_id = $('#teacher_assign_grade_to_student_subject_quarter_id').val();
     let student_id = $('#s_student').attr('data-id');
     let subject_id = $('#g_grade').attr('data-subject_id');
+    let quarter_id = $('#g_grade').attr('data-quarter_id');
     let grades = $('#g_grade').val();
    
     
-    // let quarter = $('#btn_update_subject').attr('data-quarter');
     if(e.keyCode == 13){
        console.log(
                     {
-    //                   //  teacher_id: teacher_id, adviser ID
+                     //  teacher_id: teacher_id, adviser ID
                         section_id: section_id,
                         quarter_id: quarter_id,
                         student_id: student_id,
@@ -2190,28 +2114,28 @@ $(document).on('keypress', '#g_grade', function(e) {
                     }
                   )
         
-                  $.ajax({
-                    method: 'POST',
-                    url: route('grade.teacher_store_student_grade'),
-                    dataType:'json',
-                    data:{
+                //   $.ajax({
+                //     method: 'POST',
+                //     url: route('grade.teacher_store_student_grade'),
+                //     dataType:'json',
+                //     data:{
                         
-                        section_id: section_id,
-                        quarter_id: quarter_id,
-                        student_id: student_id,
-                        subject_id:subject_id,
-                        grades: grades,
+                //         section_id: section_id,
+                //         quarter_id: quarter_id,
+                //         student_id: student_id,
+                //         subject_id:subject_id,
+                //         grades: grades,
         
-                    },
+                //     },
                    
-                    success: response => {
-                        res(response);
+                //     success: response => {
+                //         res(response);
                         
-                    },
-                    error: err => {
-                        console.log(err);
-                    }
-                })
+                //     },
+                //     error: err => {
+                //         console.log(err);
+                //     }
+                // })
                     
                   
                   
@@ -3174,10 +3098,11 @@ $('#student_modal_header').removeClass('bg-success').addClass('bg-primary');
         url: route('student.create'),
         data:'json',
         success: sections => {
+            res(sections);
             let output=' <option></option>';
             sections.forEach(section => {
                 output += `<option value='${section.id}'> ${section.name} </option>`;
-                $('#section_id').html(output);
+                $('#student_section_id').html(output);
             })
         },
         error: err => {
@@ -3191,6 +3116,7 @@ $('#student_modal_header').removeClass('bg-success').addClass('bg-primary');
 function createStudent() {
    let student_form = $('#student_form')[0];
    let student_form_data = new FormData(student_form);
+   let student_lrn = $('#student_lrn');
    let student_first_name = $('#student_first_name');
    let student_middle_name = $('#student_middle_name');
    let student_last_name = $('#student_last_name');
@@ -3210,7 +3136,7 @@ function createStudent() {
    let student_guardian_contact = $('#student_guardian_contact');
    let student_guardian_facebook = $('#student_guardian_facebook');
 
-   if(isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_section) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email) && isNotEmpty(student_avatar) && isNotEmpty(student_guardian_name) && isNotEmpty(student_guardian_contact) && isNotEmpty(student_guardian_facebook))
+   if(isNotEmpty(student_lrn)&& isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_section) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email) && isNotEmpty(student_avatar) && isNotEmpty(student_guardian_name) && isNotEmpty(student_guardian_contact) && isNotEmpty(student_guardian_facebook))
    {
         $.ajax({
             method:'POST',
@@ -3268,46 +3194,48 @@ function createStudent() {
             output +=       `
                                 <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="studentinfo-tab"><br>
                                     <div class='row'>
-                                        <div class='col-md-6'>
+                                        <div class='col-md-6 mb-5'>
                                         <br>
-                                            <center><img class='rounded-circle' src='/storage/uploads/student/${student[0].student_avatar}' alt='student_avatar' width='250'></center>
+                                            <center><img class='rounded-circle img-fluid' src='/storage/uploads/student/${student[0].student_avatar}' alt='student_avatar' width='250'></center>
                                         </div>
 
                                         <div class='col-md-6'>
                                             <div class='row'>
-                                                <div class='col-md-6'>
+                                                <div class='col-md-8'>
                                                 <p class='text-muted lead'> Basic Info  <i class="fas fa-info-circle"></i> </p> <br>
                                                     <div class='d-flex justify-content-between'>
                                                         <div>
-                                                            <h3 class='text-muted'> Name: </h3>
-                                                            <h3 class='text-muted'> Birth Date:  </h3>
-                                                            <h3 class='text-muted'> Grade Level: </h3>
-                                                            <h3 class='text-muted'> Section:  </h3>
-                                                            <h3 class='text-muted'> Nationality:  </h3>
-                                                            <h3 class='text-muted'> City: </h3>
-                                                            <h3 class='text-muted'> Province: </h3>
-                                                            <h3 class='text-muted'> Address: </h3>
-                                                            <h3 class='text-muted'> Contact:  </h3>
-                                                            <h3 class='text-muted'> Facebook: </h3>
-                                                            <h3 class='text-muted'> Email:  </h3>
+                                                            <p class='text-muted text-capitalize'> Name: </p>
+                                                            <p class='text-muted text-capitalize'> Birth Date:  </p>
+                                                            <p class='text-muted text-capitalize'> Grade Level: </p>
+                                                            <p class='text-muted text-capitalize'> Section:  </p>
+                                                            <p class='text-muted text-capitalize'> Nationality:  </p>
+                                                            <p class='text-muted text-capitalize'> City: </p>
+                                                            <p class='text-muted text-capitalize'> Province: </p>
+                                                            <p class='text-muted text-capitalize'> Address: </p>
+                                                            <p class='text-muted text-capitalize'> Contact:  </p>
+                                                            <p class='text-muted text-capitalize'> Facebook: </p>
+                                                            <p class='text-muted text-capitalize'> Email:  </p>
+                                                            <p class='text-muted text-capitalize'> LRN#:  </p>
                                                         </div>
                                                 
                                                         <div>
-                                                            <h3> ${student[0].first_name} ${student[0].last_name}  </h3>
-                                                            <h3>  ${student[0].birth_date} </h3>
-                                                            <h3>  ${student[2].name} </h3>
-                                                            <h3> ${student[1].name} </h3>
-                                                            <h3>  ${student[0].nationality} </h3>
-                                                            <h3>  ${student[0].city} </h3>
-                                                            <h3>  ${student[0].province} </h3>
-                                                            <h3> ${student[0].address} </h3>
-                                                            <h3>  ${student[0].contact} </h3>
-                                                            <h3> ${student[0].facebook} </h3>
-                                                            <h3> ${student[0].email} </h3>
+                                                            <p class='text-capitalize'> ${student[0].first_name} ${student[0].last_name}  </p>
+                                                            <p class='text-capitalize'>  ${student[0].birth_date} </p>
+                                                            <p class='text-capitalize'>  ${student[2].name} </p>
+                                                            <p class='text-capitalize'> ${student[1].name} </p>
+                                                            <p class='text-capitalize'>  ${student[0].nationality} </p>
+                                                            <p class='text-capitalize'>  ${student[0].city} </p>
+                                                            <p class='text-capitalize'>  ${student[0].province} </p>
+                                                            <p class='text-capitalize'> ${student[0].address} </p>
+                                                            <p class='text-capitalize'>  ${student[0].contact} </p>
+                                                            <p class='text-capitalize'> ${student[0].facebook} </p>
+                                                            <p class='text-capitalize'> ${student[0].email} </p>
+                                                            <p class='text-capitalize'> ${student[0].lrn} </p>
                                                         </div>
                                                  </div>
                                               </div>
-                                                <div class='col-md-6'></div>
+                                                <div class='col-md-4'></div>
                                             </div>
                                         </div>
                                     </div>
@@ -3487,6 +3415,7 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
         success: student => {
             $('#student_modal').modal('show');
             $('#student_modal_label').html(`<h4 class='text-white'> Edit Student <i class="fas fa-user-plus"></i></h4>`);
+            $('#student_lrn').attr('value', student[0].lrn);
             $('#student_first_name').attr('value', student[0].first_name);
             $('#student_middle_name').attr('value', student[0].middle_name);
             $('#student_last_name').attr('value', student[0].last_name);
@@ -3535,6 +3464,7 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
    student_update_form_data.append('_method', 'PATCH');
 
    let id = $('#btn_update_student').attr('data-id');
+   let student_lrn = $('#student_lrn');
    let student_first_name = $('#student_first_name');
    let student_middle_name = $('#student_middle_name');
    let student_last_name = $('#student_last_name');
@@ -3554,7 +3484,7 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
    let student_guardian_contact = $('#student_guardian_contact');
    let student_guardian_facebook = $('#student_guardian_facebook');
 
-   if(isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_grade_level) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email) && isNotEmpty(student_guardian_name) && isNotEmpty(student_guardian_contact) && isNotEmpty(student_guardian_facebook))
+   if(isNotEmpty(student_lrn) && isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_grade_level) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email) && isNotEmpty(student_guardian_name) && isNotEmpty(student_guardian_contact) && isNotEmpty(student_guardian_facebook))
    {
         $.ajax({
             method:'POST',
@@ -5751,6 +5681,9 @@ $('#add_user').on('click', ()=> {
     $('#btn_update_user').css('display', 'none');
     $('#user_modal_header').removeClass('bg-success').addClass('bg-primary');
 
+    $('#user_student_id').attr('disabled', false);
+    $('#user_parent_id').attr('disabled', false);
+
 
     $.ajax({
         url:route('user.create'),
@@ -5792,6 +5725,8 @@ $('#add_user').on('click', ()=> {
 // display student info on user modal
 function display_student_info_on_user_modal() {
     let student_id = $('#user_student_id').val(); // get student_id 
+    $('#user_student_role').attr('value', '');
+    $('#user_parent_id').attr('disabled', true);
 
     if(student_id > 0)
     {
@@ -5805,7 +5740,7 @@ function display_student_info_on_user_modal() {
                 $('#role_div').hide();
                 $('#parent_role_div').hide();
                 $('#student_role_div').show();
-                $('#user_student_role').attr('value', 'Student');
+                $('#user_student_role').attr('value', 'Student').attr('readonly', true);
         
             },
             error: err => {
@@ -5829,6 +5764,8 @@ function display_student_info_on_user_modal() {
 function display_parent_info_on_user_modal() {
     let parent_id = $('#user_parent_id').val(); // get student_id 
 
+    $('#user_student_id').attr('disabled', true);
+
     if(parent_id > 0)
     {
         $.ajax({
@@ -5841,7 +5778,7 @@ function display_parent_info_on_user_modal() {
                 $('#role_div').hide();
                 $('#student_role_div').hide();
                 $('#parent_role_div').show();
-                $('#user_parent_role').attr('value', 'Parent');
+                $('#user_parent_role').attr('value', 'Parent').attr('readonly', true);
         
             },
             error: err => {
@@ -5976,15 +5913,13 @@ function editUser(id)
     $('#btn_update_user').css('display', 'block');
     $('#user_modal_header').removeClass('bg-primary').addClass('bg-success');
 
-    
-
         $.ajax({
             url: route('user.edit', id),
             dataType: 'json',
             success: user => {
-                //console.log(user);
 
                 let student_id = (user.student_id > 0) ? user.name: "";
+                let pareint_id = (user.pareint_id > 0) ? user.name: "";
 
                 $('#user_modal').modal('show');
                 $('#user_modal_label').html(`Edit User`);
@@ -5993,10 +5928,12 @@ function editUser(id)
                 $('#user_password').attr('value', `${user.password}`);
                 $('#student_role_div').show();
                 $('#role_div').hide();
+                $('#parent_role_div').hide();
 
                 if(user.role_id == 1)
                 {
-                    $('#user_student_role').val('Admin').attr('disabled', true); 
+                    $('#user_student_role').attr('value', 'Admin').attr('disabled', true); 
+                    
 
                 }
                 else if (user.role_id == 2)
@@ -6011,6 +5948,7 @@ function editUser(id)
                 }
                 
                 $('#user_student_id').attr('value', student_id).attr('disabled', true).html(`<option> ${student_id} </option>`);
+                $('#user_parent_id').attr('value', pareint_id).attr('disabled', true).html(`<option> ${pareint_id} </option>`);
                 $('#btn_update_user').attr('data-id', user.id);
                 
             },
@@ -6957,38 +6895,6 @@ function grade_level_assign_subject_subject_id_store()
  * 
  */
 
-// index
-function displayRoles()
-{
-    $('#role_DT').DataTable({
-        processing: false,
-        serverSide: true,
-        retrieve: true,
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal( {
-                        // test
-                } ),
-                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
-            }
-        },
-        autoWidth: false,
-        ajax : route('role.index'),
-        columns: [
-            {data: 'name'},
-            // {data: 'created_at', render(data) {
-            //     const date =  new Date(data);
-            //     return date.toLocaleString();
-            // }},
-            // {data: 'updated_at', render(data) {
-            //     const date =  new Date(data);
-            //     return date.toLocaleString();
-            // }},
-            {data: 'actions'},
-        ]
-    });
-}
-
 // create
 
 $('#add_role').on('click', ()=> {
@@ -7010,8 +6916,12 @@ function createRole()
                 console.log(response);
                 if(response == "success")
                 {
-                    $('#role_DT').DataTable().draw();
+                    $('.role_DT').DataTable().draw();
                     toastSuccess("Role Added");
+                }
+                if(response == 'error')
+                {
+                    toastr.warning("Role already exist!");
                 }
             },
             error: err => {
@@ -7021,6 +6931,8 @@ function createRole()
         })
     }
 }
+
+
 
 // * -------------> END Role()
 

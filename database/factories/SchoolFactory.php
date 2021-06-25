@@ -33,7 +33,8 @@ class SchoolFactory extends Factory
             'facebook' => $this->faker->url,
             'school_logo' => 'HOLY_CROSS.png',
             'months_no' => 10,
-            'date_started' => '2021-06-21'
+            'date_started' => '2021-06-21',
+            'country' => 'Philippines'
         ];
     }
 }

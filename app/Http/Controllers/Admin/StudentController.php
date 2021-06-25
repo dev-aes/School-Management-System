@@ -68,6 +68,7 @@ class StudentController extends Controller
     public function store()
     {
         $student_form_data = request()->validate([
+            'lrn' => 'required|integer',
             'first_name' => 'required|alpha',
             'middle_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha',
@@ -83,9 +84,6 @@ class StudentController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'student_avatar' => 'required|image',
-            'guardian_name' => 'required|alpha_spaces',
-            'guardian_contact' => 'required|string|max:11',
-            'guardian_facebook' => 'required|string',
         ]);
 
         if(request()->ajax()) 
@@ -197,7 +195,7 @@ class StudentController extends Controller
     public function update(Student $student)
     {
         $student_form_data = request()->validate([
-           
+            'lrn' => 'required|integer',
             'first_name' => 'required|alpha',
             'middle_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha',
@@ -213,9 +211,6 @@ class StudentController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'student_avatar' => 'image',
-            'guardian_name' => 'required|alpha_spaces',
-            'guardian_contact' => 'required|string|max:11',
-            'guardian_facebook' => 'required|string',
         ]);
 
         if(request()->ajax())

@@ -24,8 +24,8 @@ class SubjectController extends Controller
             return DataTables::of(Subject::all())
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showSubject" onclick="showSubject('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editSubject" onclick="editSubject('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    // $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showSubject" onclick="showSubject('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editSubject" onclick="editSubject('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteSubject" onclick="crud_delete(\' '.'a.deleteSubject'.' \' , \'subject.destroy\', \' '.'Subject Deleted'.' \' , \' '.'.subject_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
 
                     return $btn;
@@ -75,6 +75,7 @@ class SubjectController extends Controller
 
     public function edit(Subject $subject) 
     {
+        
         if(request()->ajax())
         {
             // $recent_subject = $subject->grade_level->first();

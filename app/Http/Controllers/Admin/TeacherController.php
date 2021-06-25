@@ -620,7 +620,7 @@ public function teacher_destroy_student()
                             ->select('section_subject.subject_id','subjects.name','grades.grades','section_subject.section_id','grades.quarter_id','grades.subject_teacher_id')
                             ->where('section_subject.section_id',$section->id)
                             ->where('grades.student_grade_id',$student_grade_id->id)
-                            ->where('grades.quarter_id',1)
+                            //->where('grades.quarter_id',1)
                            // ->orWhere('grades.student_grade_id',NULL)
                             // ->orWhere(function($query) {
                             //     $query->orWhere('grades.student_grade_id',NULL);

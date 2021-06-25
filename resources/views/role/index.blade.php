@@ -14,7 +14,7 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_role">Add Role <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="role_DT">
+                                <table class="table table-hover role_DT">
                                     <caption>List of User Roles <i data-feather='user'></i> </caption>
                                     <thead style="">
                                         <tr>

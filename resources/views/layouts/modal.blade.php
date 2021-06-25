@@ -280,16 +280,10 @@
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="card w-75">
-                                        <div class="card-body">
-                                            <div id="show_teacher_info">
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="row justify-content-center">
+                        <div class="card w-75">
+                            <div class="card-body py-5">
+                                <div id="show_teacher_info">
                                 </div>
                             </div>
                         </div>
@@ -637,7 +631,7 @@
               <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
               </button>
             </div>
-
+            <h1>EDITED 6/25/21</h1>
             {{--Alert--}}
             <div class="alert alert-danger p-3 fade show" id="subject_div_err" role="alert" style="display:none">
                 <ul id="subject_err"></ul>
@@ -1088,20 +1082,11 @@
                 <div class="col-md-4"></div>
 
                 <div class="col-md-4">
-                    <label>Requirement *</label>
-                    <br>
-                    <div class="form-check form-check-inline mt-2">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        <label class="form-check-label" for="inlineCheckbox1">PSA</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                        <label class="form-check-label" for="inlineCheckbox2">Form 137</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
-                        <label class="form-check-label" for="inlineCheckbox3">All</label>
-                    </div>
+                   <div class="form-group">
+                       <label class="form-label">LRN *</label>
+                       <input class="form-control" name="lrn" min="0" type="number" id="student_lrn">
+                       <div class="form-text">Learner Reference Number</div>
+                   </div>
                 </div>
             </div>
             <br>
@@ -1184,7 +1169,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 mb-1">
                     <div class="form-group">
                         <label class='form-label'>Country *</label>
                         <input class="form-control" type="text" name="country" id="student_country" value="Philippines" placeholder="Philippines" readonly>
@@ -1232,31 +1217,20 @@
                         <img id="preview_student_img" style="display:none" width="100" alt="student">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4 bg-light">
-                    <div class="">
-                        <div class="row border p-3">
-                            <h4 class="text-muted">Parent Info *</h4>
-                            <div class="col-md-4 b">
-                                <div class="form-group">
-                                    <label class='form-label'>Name</label>
-                                    <input class="form-control" type="text" name="guardian_name" id="student_guardian_name" value="">
-                                </div>
-                            </div>
-        
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class='form-label'>Contact</label>
-                                    <input class="form-control" min="0" type="number" name="guardian_contact" id="student_guardian_contact" value="">
-                                </div>
-                            </div>
-        
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class='form-label'>Facebook</label>
-                                    <input class="form-control" type="text" name="guardian_facebook" id="student_guardian_facebook" value="">
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-4 mt-2">
+                    <label>Requirement *</label>
+                    <br>
+                    <div class="form-check form-check-inline mt-2">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">PSA</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox2">Form 137</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox3">All</label>
                     </div>
                 </div>
             </div>
