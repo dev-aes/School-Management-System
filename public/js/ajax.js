@@ -748,6 +748,7 @@ $('#add_teacher').on('click', ()=> {
             dataType: 'json',
             data:form.serialize(),
             success:response => {
+                res(response);
                 if(response == 'success')
                 {
                     toastSuccess("Subjects Assigned");
@@ -1894,7 +1895,7 @@ $('#teacher_assign_grade_to_student').on('click', () => {
         url: route('teacher.teacher_assign_grade_to_subject_display_teachers'),
         dataType:'json',
         success: teachers => {
-             res(teachers[1]);
+             //res(teachers[1]);
             let output = `<option> </option>`;
             let output1 = `<option> </option>`;
             
@@ -1902,6 +1903,7 @@ $('#teacher_assign_grade_to_student').on('click', () => {
                 output += `<option value='${grade_level.id}'> Grade ${grade_level.grade_val} </option>`;
             })
             teachers[1].forEach(quarter => {
+               
                 output1 += `<option value='${quarter.quarter_val}'> ${quarter.name} </option>`;
             })
 
@@ -2007,7 +2009,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            res(student_subjects[1]);
+            res(student_subjects[2]);
            
             // let output = `
             //                 <div class='col-md-4'>
@@ -2072,14 +2074,20 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                                 </tr>
                             </thead>
                             <tbody>`;
+
+                    
+                            student_subjects[2].forEach(subject_name => {
+                                
+                            });        
+                            
                     student_subjects[1].forEach(subject => {
 
             output += `     <tr class='s_subject' data-subject='${subject.subject_id}' =>
                                 <th >${subject.name}</th>
-                                <td data-quarter='1' style='width:7%'>${subject.grades}</td>
-                                <td data-quarter='2' style='width:7%'></td>
-                                <td data-quarter='3' style='width:7%'></td>
-                                <td data-quarter='4' style='width:7%'></td>
+                                <td data-quarter='1' style='width:7%'>${subject.quarter_1}</td>
+                                <td data-quarter='2' style='width:7%'>${subject.quarter_2}</td>
+                                <td data-quarter='3' style='width:7%'>${subject.quarter_3}</td>
+                                <td data-quarter='4' style='width:7%'>${subject.quarter_4}</td>
                                 <td ></td>
                                 <td></td>
                             </tr>

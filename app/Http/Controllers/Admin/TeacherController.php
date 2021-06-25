@@ -468,26 +468,43 @@ public function teacher_destroy_student()
             );
 
 
-               //update subject teacher id to grades table
+                //Get student grade ids that belongs to a section
+               $student_grade_ids =  DB::table('student_grade')
+                                     ->join('students','student_grade.student_id','students.id')  
+                                     ->select('student_grade.id')
+                                     ->where('students.section_id',request('section_id')) 
+                                     ->distinct()
+                                     ->get();
+           
 
-               $student_grade_ids =  DB::table('grades')->select('student_grade_id')->distinct()->get();
 
               if($student_grade_ids){ 
                foreach($student_grade_ids as $id):
-                    DB::table('grades')->updateOrInsert(
-                        ['subject_id' => $subject_id, 'student_grade_id'=> $id->student_grade_id],
-                        ['subject_teacher_id' => request('teacher_id')]
-                    );
+
+                            DB::table('grades')->updateOrInsert(
+                                [
+                                    'subject_id' => $subject_id,
+                                    'student_grade_id'=> $id->id
+                                ],
+                                [
+                                    'subject_teacher_id' => request('teacher_id')
+                                ]
+                            );
+
+                            DB::table('grades')
+                            ->where('student_grade_id',$id->id)
+                            ->where('subject_id',NULL)
+                            ->delete();
+
+
                 endforeach;
-            }
-            else{
-                DB::table('grades')->updateOrInsert(
-                    ['subject_id' => $subject_id],
-                    ['subject_teacher_id' => request('teacher_id')]
-                );
+              
+            
+            
+            
             }
 
-
+               
            endforeach;
          
 
@@ -617,10 +634,9 @@ public function teacher_destroy_student()
              $subjects = DB::table('subjects')
                             ->join('section_subject','subjects.id','section_subject.subject_id')
                             ->join('grades','subjects.id','grades.subject_id')
-                            ->select('section_subject.subject_id','subjects.name','grades.grades','section_subject.section_id','grades.quarter_id','grades.subject_teacher_id')
+                            ->select('section_subject.subject_id','subjects.name','grades.grades','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.quarter_id','grades.subject_teacher_id')
                             ->where('section_subject.section_id',$section->id)
                             ->where('grades.student_grade_id',$student_grade_id->id)
-                            ->where('grades.quarter_id',1)
                            // ->orWhere('grades.student_grade_id',NULL)
                             // ->orWhere(function($query) {
                             //     $query->orWhere('grades.student_grade_id',NULL);
@@ -628,18 +644,30 @@ public function teacher_destroy_student()
                             
                             
                             ->get();
+
           //   }
 
+
+          $subject_names = DB::table('subjects')
+          ->join('section_subject','subjects.id','section_subject.subject_id')
+          ->join('grades','subjects.id','grades.subject_id')
+          ->select('subjects.name','section_subject.subject_id')
+          ->where('section_subject.section_id',$section->id)
+          ->where('grades.student_grade_id',$student_grade_id->id) 
+          ->distinct()         
+          ->get();
+
+          
+           
             $student = Student::where('id', request('student_id'))->first(); // get the specific student 
-
-
+           
             //Display Grades here
                 
             //
             $section = $section->subject;
 
 
-                         return response()->json([$student, $subjects]); // return subjects[] , student
+                         return response()->json([$student, $subjects, $subject_names]); // return subjects[] , student
          }
      }
  

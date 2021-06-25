@@ -147,17 +147,19 @@ class GradeLevelController extends Controller
                               'created_at' => now()
                                ]);
 
-                    $student_grade_ids =  DB::table('grades')->select('student_grade_id')->distinct()->get();
+                    //Before inserting new subject we must get the section of every student   
                     
-                    foreach($student_grade_ids as $id):
-                        DB::table('grades')
-                        ->insert([
-                            'student_grade_id'=>$id->student_grade_id,
-                            'subject_id' => $subject_id,  
-                            'grade_level_val'=>$grade_level_id,
-                            'quarter_id'=>1    
-                        ]);    
-                    endforeach;         
+                    
+                    // $student_grade_ids =  DB::table('grades')->select('student_grade_id')->distinct()->get();
+                    
+                    // foreach($student_grade_ids as $id):
+                    //     DB::table('grades')
+                    //     ->insert([
+                    //         'student_grade_id'=>$id->student_grade_id,
+                    //         'subject_id' => $subject_id,  
+                    //         'grade_level_val'=>$grade_level_id, 
+                    //     ]);    
+                    // endforeach;         
 
                           
 
