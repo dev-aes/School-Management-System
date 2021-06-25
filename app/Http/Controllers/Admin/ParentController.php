@@ -52,7 +52,19 @@ class ParentController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($parent::with('students')->get());
+            $parent_student_section = [];
+
+            foreach($parent->students as $student):
+
+                $s = Student::with('section')->where('id', $student->id)->first(); // get the individual students with assigned section and store to the parent_student_section[]
+
+                array_push($parent_student_section, $s);
+
+            endforeach;
+
+                                                 
+
+            return response()->json([$parent, $parent_student_section  ]); // parent, parent's student's section
         }
     }
 

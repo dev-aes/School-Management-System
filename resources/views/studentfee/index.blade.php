@@ -14,7 +14,7 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_student_fee">Add new entry <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="student_fee_DT">
+                                <table class="table table-hover student_fee_DT" >
                                     <caption>List of Student Fees <i class="fas fa-money-check-alt"></i> </caption>
                                     <thead>
                                         <tr>

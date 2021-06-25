@@ -14,7 +14,7 @@
                         <h1 class="text-center text-primary update" id="payment_info">Payment Report <i class="fas fa-info-circle"></i></h1>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="payment_report_DT">
+                                <table class="table table-hover payment_report_DT">
                                     <caption>List of Payments <i class="fas fa-money-check-alt"></i> </caption>
                                     <thead>
                                         <tr>

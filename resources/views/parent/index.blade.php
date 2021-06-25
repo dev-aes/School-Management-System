@@ -14,7 +14,7 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_parent">Add Parent <i class="ms-1 fas fa-user-plus"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="parent_DT">
+                                <table class="table table-hover parent_DT">
                                     <caption>List of Parents <i class="fas fa-book-reader"></i> </caption>
                                     <thead>
                                         <tr>
@@ -23,8 +23,6 @@
                                             <th>Email</th>
                                             <th>Contact</th>
                                             <th>Facebook</th>
-                                            <th>Created At</th>
-                                            <th>Updated At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

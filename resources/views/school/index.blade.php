@@ -49,14 +49,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <form>
+                        <form onsubmit="false">
+                            @csrf
                             <div class="form-group">
                                 <label for="school_announcement" class="form-label">Add Announcement 🔔</label>
                                 <textarea class="form-control" name="" id="school_announcement" rows="5" placeholder="Some text here ... " required></textarea>
                             </div>
                             <br>
                             <div class="form-group">
-                                <button class="float-end btn btn-sm btn-primary">Send</button>
+                                <button type="button" class="float-end btn btn-sm btn-primary">Send</button>
                             </div>
                         </form>
                     </div>

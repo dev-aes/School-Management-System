@@ -14,14 +14,13 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_grade_level">Add Grade Level  <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="grade_level_DT">
-                                    <caption>List of Grade Level <i class="fas fa-chart-bar"></i> </caption>
+                                <table class="table table-hover grade_level_DT">
+                                    <caption>List of Grade Levels  <i class="fas fa-chart-bar ms-1"></i> </caption>
                                     <thead>
                                         <tr>
-                                            <th>Grade Name</th>
-                                            <th>Grade Description</th>
-                                            <th>Created At</th>
-                                            <th>Updated At</th>
+                                            <th>#</th>
+                                            <th>Grade Level</th>
+                                            <th>Description</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

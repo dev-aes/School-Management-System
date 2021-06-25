@@ -14,15 +14,12 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_section">Add Section <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="section_DT">
+                                <table class="table table-hover section_DT" >
                                     <caption>List of Sections <i class="fas fa-book-reader"></i> </caption>
                                     <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>Section</th>
                                             <th>Description</th>
-                                            {{-- <th>Created At</th>
-                                            <th>Updated At</th> --}}
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

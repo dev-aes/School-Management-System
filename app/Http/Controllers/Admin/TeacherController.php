@@ -39,7 +39,7 @@ class TeacherController extends Controller
                    })
                    ->addColumn('actions', function($row) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm  showTeacher" onclick="showTeacher('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary  btn-sm editTeacher" onclick="editTeacher('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary  btn-sm editTeacher" onclick="editTeacher('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm  deleteTeacher" onclick="crud_delete(\' '.'a.deleteTeacher'.' \' , \'teacher.destroy\', \' '.'Teacher Deleted'.' \' , \' '.'.teacher_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
     
                     return $btn;
@@ -637,6 +637,10 @@ public function teacher_destroy_student()
                             ->select('section_subject.subject_id','subjects.name','grades.grades','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.quarter_id','grades.subject_teacher_id')
                             ->where('section_subject.section_id',$section->id)
                             ->where('grades.student_grade_id',$student_grade_id->id)
+<<<<<<< HEAD
+=======
+                            //->where('grades.quarter_id',1)
+>>>>>>> 31efeb6f0db623870ea597a1ea797e207f71356c
                            // ->orWhere('grades.student_grade_id',NULL)
                             // ->orWhere(function($query) {
                             //     $query->orWhere('grades.student_grade_id',NULL);

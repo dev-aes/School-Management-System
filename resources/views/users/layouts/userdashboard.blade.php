@@ -38,7 +38,7 @@
 
 <body>
 	<div class="wrapper">
-	@include('users.layouts.modal');
+	@include('users.layouts.modal')
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="javascript:void(0)">

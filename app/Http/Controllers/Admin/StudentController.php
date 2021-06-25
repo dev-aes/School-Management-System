@@ -68,6 +68,7 @@ class StudentController extends Controller
     public function store()
     {
         $student_form_data = request()->validate([
+            'lrn' => 'required|integer',
             'first_name' => 'required|alpha',
             'middle_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha',
@@ -83,9 +84,6 @@ class StudentController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'student_avatar' => 'required|image',
-            'guardian_name' => 'required|alpha_spaces',
-            'guardian_contact' => 'required|string|max:11',
-            'guardian_facebook' => 'required|string',
         ]);
 
         if(request()->ajax()) 
@@ -169,29 +167,16 @@ class StudentController extends Controller
         if(request()->ajax())
         {
             
-            $student_profile =  $student;
+            $student_profile =  Student::with('parents')->where('id', $student->id)->first(); // student with assigned parent
 
             $student_grade =  $student->section->grade_level;
 
             $student_section = $student->section;
             
-           $grade_level = GradeLevel::find($student->section->id)->first();
+            $grade_level = GradeLevel::find($student->section->id)->first();
+
+            $student_guardian = $student->parents; // get student's parent
           
-        //    $get_student_subjects = DB::table('section_subject')
-        //                                 ->select('subject_id')
-        //                                 ->where('section_id', $student->section_id)
-        //                                 ->get(); // get the student subjects_id and select the subjects from the subject table by the subject id result
-
-        //     $student_sub_container = []; // subject id container
-
-        //     foreach($get_student_subjects as $subject):  
-
-        //         array_push($student_sub_container, $subject->subject_id); 
-
-        //     endforeach;
-
-        //     $student_subjects = Subject::whereIn('id', $student_sub_container  )->get(); // fetch all student's subject
-
 
             $student_subject_teacher = DB::table('section_subject')
                                        ->join('teachers', 'teacher_id', 'teachers.id')
@@ -203,7 +188,7 @@ class StudentController extends Controller
                                
                             
 
-            return response()->json([$student_profile, $student_section, $student_grade, $student_subject_teacher ]);
+            return response()->json([$student_profile, $student_section, $student_grade, $student_subject_teacher]);
           
         }
     }
@@ -212,14 +197,14 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json([$student,GradeLevel::all(), $student->grade_level->name]);
+            return response()->json([$student,Section::all(), $student->section->name]);
         }
     }
 
     public function update(Student $student)
     {
         $student_form_data = request()->validate([
-           
+            'lrn' => 'required|integer',
             'first_name' => 'required|alpha',
             'middle_name' => 'required|alpha_spaces',
             'last_name' => 'required|alpha',
@@ -235,9 +220,6 @@ class StudentController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'student_avatar' => 'image',
-            'guardian_name' => 'required|alpha_spaces',
-            'guardian_contact' => 'required|string|max:11',
-            'guardian_facebook' => 'required|string',
         ]);
 
         if(request()->ajax())

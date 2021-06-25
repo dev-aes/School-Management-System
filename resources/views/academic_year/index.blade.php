@@ -15,7 +15,7 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_accademic_year">Academic Year <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="academic_year_DT">
+                                <table class="table table-hover academic_year_DT">
                                     <caption>List of Academic Year <i data-feather='calendar'></i> </caption>
                                     <thead>
                                         <tr>

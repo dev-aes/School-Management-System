@@ -14,7 +14,7 @@
                         <a class=" float-end btn btn-info me-3" href="javascript:void(0)" id="add_payment_mode">Add mode <i class="ms-1 fas fa-plus-circle"></i></a><br><br>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="payment_mode_DT">
+                                <table class="table table-hover payment_mode_DT">
                                     <caption>List of MOP <i class="fab fa-cc-paypal"></i> </caption>
                                     <thead>
                                         <tr>

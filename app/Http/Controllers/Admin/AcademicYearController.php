@@ -18,7 +18,7 @@ class AcademicYearController extends Controller
             ->addColumn('actions',function($row) {
                 // $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showAccademicYear" onclick="showAY('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                 // $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editAccademicYear" onclick="editAY('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteAccademicYear" onclick="deleteAY('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteAccademicYear" onclick="crud_delete(\' '.'a.deleteAccademicYear'.' \' , \'academic_year.destroy\', \' '.'Academic Year Deleted'.' \' , \' '.'.academic_year_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
 
                 return $btn;
             })

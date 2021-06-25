@@ -280,16 +280,10 @@
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="card w-75">
-                                        <div class="card-body">
-                                            <div id="show_teacher_info">
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="row justify-content-center">
+                        <div class="card w-75">
+                            <div class="card-body py-5">
+                                <div id="show_teacher_info">
                                 </div>
                             </div>
                         </div>
@@ -629,7 +623,7 @@
     
 {{--Start Subject Modal--}}
 
-    <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="subject_modal_label" aria-hidden="true">
+    <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="subject_modal_label" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered " role="document">
           <div class="modal-content">
             <div class="modal-header" id="subject_modal_header">
@@ -637,7 +631,7 @@
               <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
               </button>
             </div>
-
+            <h1>EDITED 6/25/21</h1>
             {{--Alert--}}
             <div class="alert alert-danger p-3 fade show" id="subject_div_err" role="alert" style="display:none">
                 <ul id="subject_err"></ul>
@@ -951,14 +945,14 @@
                     @csrf
                     
                     <div class="form-group">
-                        <label class='form-label'>Select Section</label>
+                        <label class='form-label'>Select Section *</label>
                         <select class="" id="section_section_id" name="section_id" style="width: 100%">
                             {{--Select Section--}}
                         </select>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label class='form-label'>Select Teacher</label>
+                        <label class='form-label'>Select Teacher *</label>
                         <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
                             {{--Select Teacher--}}
                         </select>
@@ -966,10 +960,11 @@
 
 
                     <div class="form-group mt-2" >
-                        
-                        <select class="" id="section_adviser" name="adviser" style="width: 100%">
-                           <option value='1'>Adviser</option>
-                           <option value='2'>Subject Teacher</option>
+                        <label class="form-label" for="section_adviser">Option</label>
+                        <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
+                            <option ></option>
+                            <option value='1'>Adviser</option>
+                            <option value='2'>Subject Teacher</option>
                         </select>
                     </div>
                 </form>
@@ -987,7 +982,7 @@
     {{--Show Section Modal--}}
 
     <div class="modal fade " id="show_section_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
           <div class="modal-content ">
               <div class="modal-header" id="show_section_modal_header">
                     <h4 class="modal-title text-white" id="myLargeModalLabel">Section Information <i class="fas fa-info-circle"></i> </h4>
@@ -1087,20 +1082,11 @@
                 <div class="col-md-4"></div>
 
                 <div class="col-md-4">
-                    <label>Requirement *</label>
-                    <br>
-                    <div class="form-check form-check-inline mt-2">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        <label class="form-check-label" for="inlineCheckbox1">PSA</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                        <label class="form-check-label" for="inlineCheckbox2">Form 137</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
-                        <label class="form-check-label" for="inlineCheckbox3">All</label>
-                    </div>
+                   <div class="form-group">
+                       <label class="form-label">LRN *</label>
+                       <input class="form-control" name="lrn" min="0" type="number" id="student_lrn">
+                       <div class="form-text">Learner Reference Number</div>
+                   </div>
                 </div>
             </div>
             <br>
@@ -1149,7 +1135,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class='form-label'>Section *</label>
-                        <select class='form-select' name="section_id" id="section_id">
+                        <select class='form-select' name="section_id" id="student_section_id">
                            
                         </select>
                     </div>
@@ -1183,7 +1169,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 mb-1">
                     <div class="form-group">
                         <label class='form-label'>Country *</label>
                         <input class="form-control" type="text" name="country" id="student_country" value="Philippines" placeholder="Philippines" readonly>
@@ -1231,31 +1217,20 @@
                         <img id="preview_student_img" style="display:none" width="100" alt="student">
                     </div>
                 </div>
-                <div class="col-md-8 mt-4 bg-light">
-                    <div class="">
-                        <div class="row border p-3">
-                            <h4 class="text-muted">Parent Info *</h4>
-                            <div class="col-md-4 b">
-                                <div class="form-group">
-                                    <label class='form-label'>Name</label>
-                                    <input class="form-control" type="text" name="guardian_name" id="student_guardian_name" value="">
-                                </div>
-                            </div>
-        
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class='form-label'>Contact</label>
-                                    <input class="form-control" min="0" type="number" name="guardian_contact" id="student_guardian_contact" value="">
-                                </div>
-                            </div>
-        
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class='form-label'>Facebook</label>
-                                    <input class="form-control" type="text" name="guardian_facebook" id="student_guardian_facebook" value="">
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-4 mt-2">
+                    <label>Requirement *</label>
+                    <br>
+                    <div class="form-check form-check-inline mt-2">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">PSA</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox2">Form 137</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox3">All</label>
                     </div>
                 </div>
             </div>
@@ -1276,23 +1251,17 @@
         <div class="modal fade " id="show_student_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Student Information <i class="fas fa-info-circle"></i> </h4>
+                <div class="modal-header" id="show_student_modal_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Student Information <i class="fas fa-info-circle"></i> </h4>
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-10">
-                                        <div class="card w-100">
-                                            <div class="card-body">
-                                                <div id="show_student_info">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="card w-100">
+                                <div class="card-body p-6">
+                                    <div id="show_student_info">
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1300,7 +1269,7 @@
                     </div>
                 </div>
             </div>
-            </div>
+          </div>
         </div>
   
   {{--END SHOW Student MODAL--}}
@@ -2067,7 +2036,7 @@
 
 
     {{--Show Parent --}}
-
+    
     <div class="modal fade" id="show_parent_modal" tabindex="-1" role="dialog" aria-labelledby="show_parent_modal" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -2095,7 +2064,7 @@
                                     <thead style="background:none">
                                         <tr>
                                             <th>Name</th>
-                                            <th>Grade Level</th>
+                                            <th>Section</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

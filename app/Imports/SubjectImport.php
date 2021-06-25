@@ -13,7 +13,7 @@ class SubjectImport implements ToModel,WithHeadingRow, WithValidation
     public function model(array $row)
     {
         return new Subject([
-            'grade_level_id' => $row['grade_level_id'],
+            'grade_val' => $row['grade_val'],
             'name' => $row['name'],
             'description' => $row['description']
         ]);
