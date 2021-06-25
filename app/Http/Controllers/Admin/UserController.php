@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\ParentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\ParentModel;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -36,8 +37,14 @@ class UserController extends Controller
     public function create()
     {
         if(request()->ajax())
-        {
-            return response()->json([Student::all(), Role::where('name', '!=', 'student')->where('name', '!=', 'parent')->get(), ParentModel::all()]);
+        {   
+            $students = Student::all();
+            $roles = Role::where('name', '!=', 'student')->where('name', '!=', 'parent')->get();
+            $parents = ParentModel::all();
+            $teachers = Teacher::all();
+
+
+            return response()->json([ $students,$roles,$parents,$teachers ]);
         }
     }
 
@@ -57,6 +64,14 @@ class UserController extends Controller
         }
     }
 
+    public function display_teacher_info(Teacher $teacher)
+    {
+        if(request()->ajax())
+        {
+            return response()->json($teacher); // display teacher info by teacher_id 
+        }
+    }
+
     public function store(Request $request)
     {
         if(request()->ajax())
@@ -66,8 +81,6 @@ class UserController extends Controller
                     ->where('email', request('email'))
                     ->where('name', request('name'))
                     ->first();
-
-                    // return response()->json($user);
             
             if($user)
             {
@@ -139,6 +152,30 @@ class UserController extends Controller
                         
                         return response()->json('success');
                 }   
+
+                 // Teacher
+                 if($request->has('teacher_role'))
+                 {
+                     // return response()->json(request()->all());
+ 
+                     $data = request()->validate([
+                         'name' => 'alpha_spaces|required',
+                         'email'=> 'email|required',
+                         'password' => 'required|min:8',
+                         'teacher_id' => 'required',
+                         'teacher_role' => 'required'
+                         ]);
+ 
+                         User::create([
+                             'name' => $data['name'],
+                             'email' => $data['email'],
+                             'password' => Hash::make($data['password']),
+                             'teacher_id' => $data['teacher_id'],
+                             'role_id' => $data['teacher_role']
+                         ]);
+                         
+                         return response()->json('success');
+                 }   
         }
     }
 

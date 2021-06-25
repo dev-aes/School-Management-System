@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->foreignId('student_id')->nullable()->constrained('students')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('parents')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

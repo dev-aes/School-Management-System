@@ -76,7 +76,7 @@
 							{{-- <p class="ms-5 check_status">Online <span class="circle"><i class="fas fa-circle text-success"></i></span> </p> --}}
 						</div>
 					</li>
-
+					
 					<li class="sidebar-item active">
 						<a class="sidebar-link" href="{{ route('home.index') }}">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
@@ -104,12 +104,6 @@
 							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('student.index') }}">Manage Student</a></li>
 						</ul>
 					</li>
-
-					{{-- <li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('student.index') }}">
-							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
-                        </a>
-					</li> --}}
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('subject.index') }}">
@@ -167,20 +161,6 @@
                         </a>
 					</li>
 
-					{{-- <li class="sidebar-item">
-						<a href="#reports" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="bookmark"></i> <span class="align-middle">Reports</span>
-                        </a>
-						<ul id="reports" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Student List</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Teacher List</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Payment List</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="" href="javascript:void(0)">Form 137</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="" href="{{ route('report.to_form_138') }}">Form 138</a></li>
-						</ul>
-					</li> --}}
-
-
 					<li class="sidebar-item">
 						<a href="#to_school" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
@@ -194,12 +174,6 @@
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('role.index')}}"> <i class="fas fa-key"></i> Roles</a></li>
 						</ul>
 					</li>
-
-					{{-- <li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('school.index') }}">
-                             <i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
-                        </a>
-					</li> --}}
 
                 </ul>
 			</div>

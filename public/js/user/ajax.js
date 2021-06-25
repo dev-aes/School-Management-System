@@ -8,11 +8,33 @@ $(() => {
     });
 
 
+    if(window.location.href == route('teacher.dashboard'))
+    {
+        let teacher_student_column_data = [
+                                            {data:'student_avatar', render(data) {
+                                                // return `<a href='javascript:void(0)' data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><img class='rounded-circle img-fluid' src='/storage/uploads/student/${data}' alt='student_avatar' width='60'></a>`;
+
+                                                return `<button type="button" id='pop' class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>`;
+                                            }},
+                                            {data:'first_name'},
+                                            {data:'last_name'},
+                                            {data:'gender'},
+                                            {data:'section.name'},
+                                            {data: 'actions', orderable: false, searchable: false}
+                                          ];
+
+        crud_index('.teacher_student_DT', 'teacher.dashboard', teacher_student_column_data);
+
+    }
 
 
 
 
 })
+
+var popover = new bootstrap.Popover(document.querySelector('#pop'), {
+    trigger: 'focus'
+  })
 
 
 
@@ -449,7 +471,25 @@ $(() => {
 
 
 
+// Teacher Dashboard
 
+// function displayTeacherStudents()
+// {
+//     $.ajax({
+//         url: route('teacher.dashboard'),
+//         dataType:'json',
+//         success: students => {
+//             alert('aw');
+//             res(students);
+//         },
+//         error: err => {
+//             res(err);
+//         }
+//     })
+// }
+
+
+// End Teacher Dashboard
 
 /**
  * VALIDATE INPUT FIELD
@@ -542,4 +582,23 @@ function toastWarning()
     }
     Command: toastr["warning"]("Please fill up all required fields ", "Warning")
 
+}
+
+function res(res)
+{
+  return  console.log(res);
+
+}
+
+// crud index / read / select all
+function crud_index(dt,route_name,data) {
+    
+    $(dt).DataTable({
+        processing: false,
+        serverSide: true,
+        retrieve: true,
+        autoWidth: false,
+        ajax: route(route_name),
+        columns:data
+    });
 }

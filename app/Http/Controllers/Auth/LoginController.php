@@ -65,6 +65,12 @@ class LoginController extends Controller
             $this->isOnline($user);
             return redirect(route('student.dashboard'));
         }
+
+        if(Auth::attempt($credentials) && Gate::allows('teacher')) {
+            $request->session()->regenerate();
+            $this->isOnline($user);
+            return redirect(route('teacher.dashboard'));
+        }
     }
 
     public function isOnline($user)

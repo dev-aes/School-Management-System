@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'student_id',
         'parent_id',
+        'teacher_id',
         'role_id'
     ];
 
@@ -45,7 +46,7 @@ class User extends Authenticatable
     //     ->logOnly(['name', 'email'])
     //     ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} user")
     //     ->useLogName('user');
-    //     // Chain fluent methods for configuration options
+    // Chain fluent methods for configuration options
     // }
 
     /**
@@ -58,13 +59,13 @@ class User extends Authenticatable
     ];
 
     // public function getCreatedAtAttribute($value) {
-    //     //return Carbon::parse($value)->format('m-d-Y h:iA');
-    //     //return Carbon::parse($value)->diffForHumans();
+        //return Carbon::parse($value)->format('m-d-Y h:iA');
+         //return Carbon::parse($value)->diffForHumans();
     // }
 
     // public function getUpdatedAtAttribute($value) {
-    //     //return Carbon::parse($value)->format('m-d-Y h:iA');
-    //    // return Carbon::parse($value)->diffForHumans();
+         //return Carbon::parse($value)->format('m-d-Y h:iA');
+        // return Carbon::parse($value)->diffForHumans();
     // }
 
     public function role() {

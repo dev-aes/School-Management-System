@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\SubjectStudentController;
 
 use App\Http\Controllers\User\ParentController as UserParentController;
 use App\Http\Controllers\User\StudentController as UserStudentController;
+use App\Http\Controllers\User\TeacherController as UserTeacherController;
 
 // Route::get('/testlink', function() {
 
@@ -53,7 +54,7 @@ Route::get('/test', function () {
 
 
 // Admin Dashboard
-Route::middleware(['auth' , 'admin'])->group(function() {
+Route::middleware(['auth', 'admin'])->group(function() {
 
     //DASHBOARD 
         Route::resource('/home', DashboardController::class);
@@ -223,12 +224,16 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
 
 
-    // User display student info 
+    //Admin- User display student info 
 
     Route::get('/admin/user/student/{student}', [UserController::class, 'display_student_info'])->name('user.display_student_info');
 
     // User display parent info
     Route::get('/admin/user/parent/{parent}', [UserController::class, 'display_parent_info'])->name('user.display_parent_info');
+
+    // User display teacher info
+
+    Route::get('/admin/user/teacher/{teacher}', [UserController::class, 'display_teacher_info'])->name('user.display_teacher_info');
 
 
     // Parent display Student 
@@ -334,6 +339,27 @@ Route::middleware(['auth' , 'admin'])->group(function() {
 
 
 // End Parent Dashboard
+
+
+
+
+
+
+
+// Teacher Dashboard
+
+Route::get('/dashboard/teacher', [UserTeacherController::class , 'index'])->name('teacher.dashboard');
+
+
+
+
+
+
+
+
+
+
+// End Teacher Dashboard
 
 
 

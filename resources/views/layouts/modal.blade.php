@@ -1865,24 +1865,47 @@
                 @csrf
 
                 <div class="row">
+                    <div class="col-md-6"></div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class='form-label'>Select Student</label>
-                            <select class="form-select" id="user_student_id" name="student_id"  aria-describedby="studentHelp" onchange="display_student_info_on_user_modal()">
-                                {{--Display Student--}}
+                            <label class='form-label'>Select User</label>
+                            <select class="form-select" id="select_user" onchange="display_user_select_box()">
+                               <option></option>
+                               <option value="student">Student</option>
+                               <option value="parent">Parent</option>
+                               <option value="teacher">Teacher</option>
                             </select>
-                            <div id="studentHelp" class="form-text text-success">Select only for student's account registration</div>
                         </div>
                     </div>
-
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <div class="form-group">
+
+                        <div class="form-group" style="display:none" id="p_parent_div">
                             <label class='form-label'>Select Parent</label>
-                            <select class="form-select" id="user_parent_id" name="parent_id"  aria-describedby="parenttHelp" onchange="display_parent_info_on_user_modal()">
+                            <select class="form-select" id="user_parent_id" name="parent_id"  onchange="display_parent_info_on_user_modal()">
                                 {{--Display Parent--}}
                             </select>
                             <div id="parentHelp" class="form-text text-success">Select only for parent's account registration</div>
                         </div>
+
+                        <div class="form-group" style="display:none" id="s_student_div">
+                            <label class='form-label'>Select Student</label>
+                            <select class="form-select" id="user_student_id" name="student_id" onchange="display_student_info_on_user_modal()">
+                                {{--Display Student--}}
+                            </select>
+                            <div class="form-text text-success">Select only for student's account registration</div>
+                        </div>
+
+                        <div class="form-group" style="display:none" id="t_teacher_div">
+                            <label class='form-label'>Select Teacher</label>
+                            <select class="form-select" id="user_teacher_id" name="teacher_id"  onchange="display_teacher_info_on_user_modal()">
+                                {{--Display Teacher--}}
+                            </select>
+                            <div class="form-text text-success">Select only for teacher's account registration</div>
+                        </div>
+
                     </div>
                 </div>
                 <br>
@@ -1918,6 +1941,12 @@
                     <div class="form-group" id='parent_role_div'>
                         <label class='form-label'>Role </label>
                         <input class="form-control " name="user_role" type="text" id="user_parent_role"  disabled>
+                    </div>  
+
+                     {{--Teacher--}}
+                     <div class="form-group" id='teacher_role_div'>
+                        <label class='form-label'>Role </label>
+                        <input class="form-control " name="user_role" type="text" id="user_teacher_role"  disabled>
                     </div>  
 
                 </div>

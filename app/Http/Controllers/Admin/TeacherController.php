@@ -406,36 +406,52 @@ public function teacher_destroy_student()
     //Display Subjects by Sections Grade Level Id
 
     //Todo Once the subject already assigned it wont display
-    public function display_subjects_by_grade_level_id(Section $section){
-     
+    public function display_subjects_by_grade_level_id(Section $section)
+    {
+            $grade_level_subj = []; // grade level subject containter    
 
-        $section_subject_ids = DB::table('section_subject')
-                        ->select('subject_id')
-                        ->where('section_id',$section->id)
-                        ->get();
+            $grade_level_subject_id = DB::table('grade_level_subject')
+                                    ->where('grade_level_id', $section->grade_level->id)
+                                    ->get(); // select all assigned subjects(subject_ID) by Section's grade level id on grade_level_subject TABLE
+            
+            if($grade_level_subject_id->count() > 0) // if there is a result then loop and extract each row and push to the subject container[]
+            {
+                foreach($grade_level_subject_id as $subject_ids): 
 
-        $section_sub = [];
-        
+                    array_push($grade_level_subj, $subject_ids->subject_id); // push to the subject container[]
+
+                endforeach;
+
+                 $subjects = Subject::whereIn('id', $grade_level_subj)->get(); // select all subject that has equivalent subject id's on the subject container[]
 
 
+                 // after getting the grade level subject 
+                // select the section_subject and get the subjects that are assigned to the specific section 
 
-       $subjects = Subject::where('grade_val',$section->grade_level->grade_val)->get();
-       $subs = [];
+                 $section_subject_ids = DB::table('section_subject')
+                                        ->select('subject_id')
+                                        ->where('section_id',$section->id)
+                                        ->get();
+                $section_sub = []; // section subject container []
+                $subs= []; // subject container []
 
-       foreach($section_subject_ids as $subject_id):
-            array_push($section_sub, $subject_id->subject_id);
-       endforeach;
+                foreach($section_subject_ids as $subject_id):
+                    array_push($section_sub, $subject_id->subject_id);  // loop through section_subject table and get individual assigned subjects ( subject_id)
+                endforeach;
 
-       foreach($subjects as $subject):
-            array_push($subs, $subject->id);
-        endforeach;
+                foreach($subjects as $subjs):
+                    array_push($subs, $subjs->id); // get the selected grade_level_subjects and store to the subs[] container
+                endforeach;
 
-        $results = array_diff($subs,$section_sub);
-        
+                $results = array_diff($subs, $section_sub); // get its differences 
 
-        $result_subject = Subject::whereIn('id',$results)->get();
+                $result_subject = Subject::whereIn('id',$results)->get(); // after getting the unique id's select the subjects using the unique results[subject id] 
 
-        return response()->json($result_subject);
+
+                return response()->json($result_subject); // display
+            }     
+            
+
     }
 
     //Store assigned subjects by teacher section id
