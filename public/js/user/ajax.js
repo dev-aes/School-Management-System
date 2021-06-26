@@ -760,7 +760,7 @@ $(document).on('keypress', '#g_grade', function(e) {
                         grades_id: grades_id,
                     },
                     success: response => {
-
+                        
                        let c = $(this).closest('tr').find('td.average');
                        let d = $(this).closest('tr').find('td.remark');
                        let a =  $(this).closest('tr').children('.quarter');
@@ -780,7 +780,7 @@ $(document).on('keypress', '#g_grade', function(e) {
                
                       c.text(average);
                       d.text(remark);
-                    
+                        res(response);
                         
                     },
                     error: err => {

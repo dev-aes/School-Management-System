@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class TeacherController extends Controller
@@ -80,6 +81,7 @@ class TeacherController extends Controller
                 ->join('subjects','grades.subject_id','subjects.id')
                 ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id')
                 ->where('student_grade_id',$student_grade_id->id)
+                ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
 
 
@@ -147,6 +149,32 @@ class TeacherController extends Controller
                             $quarter = 'quarter_4';
                         }
 
+                    //***** Process is_approve data here    
+                        $is_approve = DB::table('grades')
+                        ->select('grades.is_approve')
+                        ->where('student_grade_id',$data['student_id'])
+                        ->where('subject_id', $data['subject_id'])  
+                        ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
+                        ->first();
+                        
+                        //explode is_approve data
+                        $is_approved = explode(",",$is_approve->is_approve);
+                        for($i = 0; $i < count($is_approved); $i++){
+                         if($i == $data['quarter_id']-1)   
+                         $is_approved[$i] = $data['quarter_id'];
+                        }
+         
+                        $is_approves = implode(",",$is_approved);    
+                    //***************************************************** */
+
+         //Check if the teacher is adviser or subject teacher
+         //(auth()->user()->teacher_id
+         $adviser_id = DB::table('sections')->where('adviser_id',$get_subject_teacher->teacher_id)->first();
+         if($adviser_id){   
+            $is_approves = '0,0,0,0';
+           // return response()->json($is_approves); 
+         }
+
          //Update or insert grades of a student on all quarters
             DB::table('grades')
             ->updateOrInsert(
@@ -158,10 +186,13 @@ class TeacherController extends Controller
                 [
                     'grade_level_val'=> $grade_val->grade_val,
                      $quarter => $data['grades'],
+                     'is_approve'=>$is_approves,
                     'created_at'=> now()
                 ]
             );                                
-            return response()->json('sucess');     
+           
+            return response()->json('success'); 
+
         }
     }
 }

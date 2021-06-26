@@ -92,7 +92,7 @@ class GradeController extends Controller
                ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
                ->first();
                
-               //explode is_approve data
+        //explode is_approve data 6/26
                $is_approved = explode(",",$is_approve->is_approve);
                for($i = 0; $i < count($is_approved); $i++){
                 if($i == $data['quarter_id']-1)   
@@ -101,7 +101,7 @@ class GradeController extends Controller
 
                $is_approves = implode(",",$is_approved);
 
-         //Update or insert grades of a student on all quarters
+         //Update or insert grades of a student on all quarters 6/26
             DB::table('grades')
             ->updateOrInsert(
                 [ 
@@ -116,7 +116,7 @@ class GradeController extends Controller
                     'created_at'=> now()
                 ]
             );                                
-            return response()->json($data['quarter_id']-1);          
+            return response()->json('success');  // Edit 6/26        
     } 
 
 }
