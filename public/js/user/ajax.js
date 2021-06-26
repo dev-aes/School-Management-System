@@ -10,20 +10,19 @@ $(() => {
 
     if(window.location.href == route('teacher.dashboard'))
     {
-        let teacher_student_column_data = [
-                                            {data:'student_avatar', render(data) {
-                                                // return `<a href='javascript:void(0)' data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><img class='rounded-circle img-fluid' src='/storage/uploads/student/${data}' alt='student_avatar' width='60'></a>`;
+        displayTeacherStudents()
+        // let teacher_student_column_data = [
+        //                                     {data:'student_avatar', render(data) {
+        //                                         return `<a href='javascript:void(0)' data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><img class='rounded-circle img-fluid' src='/storage/uploads/student/${data}' alt='student_avatar' width='60'></a>`;
+        //                                     }},
+        //                                     {data:'first_name'},
+        //                                     {data:'last_name'},
+        //                                     {data:'gender'},
+        //                                     {data:'section.name'},
+        //                                     {data: 'actions', orderable: false, searchable: false}
+        //                                   ];
 
-                                                return `<button type="button" id='pop' class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>`;
-                                            }},
-                                            {data:'first_name'},
-                                            {data:'last_name'},
-                                            {data:'gender'},
-                                            {data:'section.name'},
-                                            {data: 'actions', orderable: false, searchable: false}
-                                          ];
-
-        crud_index('.teacher_student_DT', 'teacher.dashboard', teacher_student_column_data);
+        // crud_index('.teacher_student_DT', 'teacher.dashboard', teacher_student_column_data);
 
     }
 
@@ -32,9 +31,6 @@ $(() => {
 
 })
 
-var popover = new bootstrap.Popover(document.querySelector('#pop'), {
-    trigger: 'focus'
-  })
 
 
 
@@ -473,20 +469,348 @@ var popover = new bootstrap.Popover(document.querySelector('#pop'), {
 
 // Teacher Dashboard
 
-// function displayTeacherStudents()
-// {
-//     $.ajax({
-//         url: route('teacher.dashboard'),
-//         dataType:'json',
-//         success: students => {
-//             alert('aw');
-//             res(students);
-//         },
-//         error: err => {
-//             res(err);
-//         }
-//     })
-// }
+function displayTeacherStudents()
+{
+    $.ajax({
+        url: route('teacher.dashboard'),
+        dataType:'json',
+        success: sections => {
+            //res(sections);
+
+            let output = ``;
+
+                // Teacher Section
+                output += `
+                                <div class="accordion" id="accordionExample">`;
+
+                                sections.forEach(section => {
+                output += `
+                                    <div class="accordion-item" id='section-${section.id}'>
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sectioncollapse-${section.id}" aria-expanded="true" aria-controls="collapseOne" onclick='t_display_students_by_section_id(${section.id})'>
+                                            Section: <span class='ms-2 text-primary fw-bold text-uppercase'> ${section.name} </section>
+                                            </button>
+                                        </h2>
+                                        <div id="sectioncollapse-${section.id}" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body" id='t_display_students-${section.id}'>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                                }) // foreach closer
+
+
+            output += `    </div>    
+                   `; // closer tab
+
+                    $('#teacher_display_sections_with_students').html(output);
+        },
+        error: err => {
+            res(err);
+        }
+    })
+}
+
+function t_display_students_by_section_id(section)
+{
+    $.ajax({
+        url: route('teacher.t_display_students', section),
+        dataType:'json',
+        success: section_student => {
+            //res(section_student);
+            let output = `<table class='table table-hover table-bordered'>
+                            <thead>
+                                <tr> 
+                                    <th> Student Name </th>
+                                    <th> Gender </th>
+                                    <th>  </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            `;
+                    section_student.student.forEach(student => {
+
+               output +=        `<tr>
+                                    <td> ${student.first_name} ${student.last_name} </td>
+                                    <td> ${student.gender} </td>
+                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${section_student.id}, ${student.id})'> Add Grade </a> </td>
+                                </tr>`
+                    }) // loop closure
+
+                output += `</tbody>
+                            </table>`; // table closure
+
+                    $('#t_display_students-'+ section).html(output); // dynamic id + elemt id
+
+        },
+        error: err => {
+            res(err);
+        }
+    })
+}
+
+// create
+
+function t_assign_grade(section , student)
+{
+    $('#t_assign_grade_to_students_subject').modal('show');
+    $('#t_assign_grade_to_students_subject_header').addClass('bg-primary');
+    $.ajax({
+        url: route('teacher.assign_grade', [section,student]),
+        dataType:'json',
+        success: section_student => {
+            //res(section_student)
+
+            $('#t_grade_level_id').attr('value',section_student[0].grade_level_id); // add grade level id 
+            $('#t_grade_level_name').attr('placeholder', section_student[0].grade_level.name).attr('readonly', true); // display grade level name
+
+            $('#t_section_id').attr('value',section_student[0].id); // add section id
+            $('#t_section_name').attr('placeholder', section_student[0].name).attr('readonly', true); // display section name
+
+            // display student by student id
+            let student_output = `
+                            <table class='table table-sm' id='t_assign_grade_to_subject_students_DT'>
+                                <caption> List of Students </caption>
+                                    <thead style='background:none'>
+                                        <tr>
+                                            <th>  </th>
+                                            <th> Name </th>
+                                            <th> Gender </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                `;
+
+                    student_output +=        `  <tr>
+                                            <td><img class='rounded-circle img-fluid' src='/storage/uploads/student/${section_student[1].student_avatar}' alt='student_avatar' width='30'> </td>
+                                            <td> ${section_student[1].first_name}  ${section_student[1].last_name} </td>
+                                            <td>  ${section_student[1].gender} </td>
+
+                                        </tr>
+                                    `;                 
+
+                $('#t_assign_grade_to_student_subject_display_students').html(student_output); // append output to the user's teacher modal
+
+                $('#t_assign_grade_to_subject_students_DT').DataTable({
+                    pageLength : 3,
+                    lengthMenu: [[3, 10, 20, -1], [3, 10, 20]]
+                }); // convert to dt
+
+
+
+
+                let output = `
+                                <center><img class='rounded-circle' src='/storage/uploads/student/${section_student[1].student_avatar}' alt='student_avatar' width='50'></center>
+                                <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${section_student[1].id}'> Student : ${section_student[1].first_name} ${section_student[1].last_name} </h5>
+
+                                <table class="table table-bordered mt-2 " border="1" id='table_assign_grade_to_subject_student_grade_table'>
+                                <thead style="background: none">
+                                    <tr class="text-center fw-bold">
+                                        <td rowspan="2" style="width:25%">Learning Areas</td>
+                                        <td colspan="4" style="width:25%">Quarter</td>
+                                        <td rowspan="2" style="width:25%">Final Grade</td>
+                                        <td rowspan="2" style="width:25%">Remark</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                             
+
+                                // display student's subjects[]
+                                section_student[2].forEach(subject => {
+
+                                    let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4; // get the total avg of grades by quarter
+                                    let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+                                    let q1 = (subject.quarter_1 == null) ? 0 : subject.quarter_1 ;
+                                    let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
+                                    let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
+                                    let q4 = (subject.quarter_4 == null) ? 0 : subject.quarter_4 ;
+
+                    output += `     <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
+                                        <th >${subject.name}</th>
+                                        <td class='quarter' data-quarter='1' style='width:7%'>${q1}</td>
+                                        <td class='quarter' data-quarter='2' style='width:7%'>${q2}</td>
+                                        <td class='quarter' data-quarter='3' style='width:7%'>${q3}</td>
+                                        <td class='quarter' data-quarter='4' style='width:7%'>${q4}</td>
+                                        <td class='average'>${average}</td>
+                                        <td class='remark'>${remark}</td>
+                                    </tr>
+                            `;
+
+                            })
+
+                            
+                    output += `
+                                    <tr class="text-center fw-bold">
+                                        <td></td>
+                                        <td colspan="4">General Average</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                               
+                                `;
+
+                            //     <form>
+                            //     <input type='number' min='60' name='grade' id='g_grade' data-subject_id='' style='width:100%;display:none'>
+                            // </form>
+
+             
+                    output += `<div class="row mt-2" id="descriptors">
+                                <table class="table table-sm ">
+                                    <thead style="background: none">
+                                        <tr class="fw-bold">
+                                            <th>Descriptors</th>
+                                            <th>Grading Scale</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Outstanding</td>
+                                            <td>90-100</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Very Satisfactory</td>
+                                            <td>85-89</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Satisfactory</td>
+                                            <td>80-84</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fairly Satisfactory</td>
+                                            <td>75-79</td>
+                                            <td>Passed</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Did not Meet Expectations</td>
+                                            <td>Below 75</td>
+                                            <td>Failed</td>
+                                        </tr>
+                                    </tbody>
+                                </table> `;   
+
+
+                        $('#t_assign_grade_to_student_display_encoding_of_grade').html(output);
+   
+
+        },
+        error: err => {
+            res(err);
+        }
+    })
+
+}
+
+$(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
+    // $(this).append(
+    //                 $('#g_grade').css('display', 'block')
+    //                 .attr('data-subject_id',$(this).parent().attr('data-subject'))
+    //                 .attr('data-quarter_id', $(this).attr('data-quarter'))
+    //                 .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
+
+    //               ); // store subject id  && quarter_id  && grade_id to this input field
+
+    $('#g_grade').remove();
+    $(this).append(
+        $(`<input type='number' min='60' name='grade' id='g_grade' style='width:100%;display:block'>`)
+        .attr('data-subject_id',$(this).parent().attr('data-subject'))
+        .attr('data-quarter_id', $(this).attr('data-quarter'))
+        .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
+
+      ); // store subject id  && quarter_id  && grade_id to this input field
+
+
+});
+
+$(document).on('keypress', '#g_grade', function(e) {
+
+    //let teacher_id = $('#teacher_assign_grade_to_student_subject_teacher_id').val();
+    let section_id = $('#t_section_id').attr('value');
+    let student_id = $('#s_student').attr('data-id');
+    let subject_id = $('#g_grade').attr('data-subject_id');
+    let quarter_id = $('#g_grade').attr('data-quarter_id');
+    let grades_id = $('#g_grade').attr('data-grades_id');
+    let grades = $('#g_grade').val();
+    
+    if(e.keyCode == 13)
+    {
+                  $.ajax({
+                    method: 'POST',
+                    url: route('teacher.store_assigned_grade_to_student'),
+                    dataType:'json',
+                    data:{
+                        section_id: section_id,
+                        quarter_id: quarter_id,
+                        student_id: student_id,
+                        subject_id:subject_id,
+                        grades: grades,
+                        grades_id: grades_id,
+                    },
+                    success: response => {
+
+                       let c = $(this).closest('tr').find('td.average');
+                       let d = $(this).closest('tr').find('td.remark');
+                       let a =  $(this).closest('tr').children('.quarter');
+                       let x =  $(this).closest('td').text($(this).val());
+    
+                        var texts = a.map(function() {
+                            return $(this).text();
+                        });
+                    
+                       let q1 = Object.values(texts)[0];
+                       let q2 = Object.values(texts)[1];
+                       let q3 = Object.values(texts)[2];
+                       let q4 = Object.values(texts)[3];
+                    
+                       let average = ( parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4) ) / 4; // get the total avg of grades by quarter
+                       let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+               
+                      c.text(average);
+                      d.text(remark);
+                    
+                        
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                })
+
+                 //    console.log(
+    //                 {
+                     //  teacher_id: teacher_id, adviser ID
+    //                     section_id: section_id,
+    //                     quarter_id: quarter_id,
+    //                     student_id: student_id,
+    //                     subject_id: subject_id,
+    //                     grades: grades,
+    //                     grades_id: grades_id,
+
+
+    //                 }
+    //               )
+        
+                    
+    }
+})
+
+$(document).on('mouseleave', '#g_grade', function(e) {
+    $(this).css('display','none');
+})
+
+
 
 
 // End Teacher Dashboard

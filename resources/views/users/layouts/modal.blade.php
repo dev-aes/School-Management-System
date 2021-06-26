@@ -359,3 +359,90 @@
         </div>
     </div>
 {{--End Add Down Payment to Student Modal--}}
+
+
+
+
+
+
+
+{{--User Teacher ()--}}
+
+
+    {{--Teacher Assign Grade To Student's Subjects--}}
+
+
+
+    
+      {{--Teacher Assign Grade to Student's Subject--}}
+
+        <div class="modal fade "  id="t_assign_grade_to_students_subject" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+            <div class="modal-content ">
+                <div class="modal-header" id="t_assign_grade_to_students_subject_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Add Grade <i class="fas fa-info-circle"></i> </h4>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-body" >
+                    <div class="row justify-content-center">
+                        <div class="card w-100">
+                            <div class="card-body py-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <form onsubmit="false">
+                                            @csrf
+                                            <div class="form-group mb-2">
+                                                <label class="form-label"> Grade Level *</label>
+                                                <input class="form-control" type="hidden" name="grade_level_id" id="t_grade_level_id">
+                                                <input class="form-control" type="text"  id="t_grade_level_name">
+                                            </div>
+
+                                            <div class="form-group mb-2">
+                                                <label class="form-label"> Section *</label>
+                                                <input class="form-control" type="hidden" name="section_id" id="t_section_id">
+                                                <input class="form-control" type="text"  id="t_section_name">
+
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2"></div>
+
+                                    <div class="col-md-6 border p-5">
+                                        <div id="t_assign_grade_to_student_subject_display_students">
+                                            {{--Display Student By Teacher's Section ID--}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mt-3 border p-3" id="t_assign_grade_to_student_display_encoding_of_grade">
+                                        {{--Display Form for encoding Student Grades--}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+      {{--End Teacher Assign Grade--}}
+
+
+
+
+
+
+
+
+
+    {{--End Teacher Assign Grade--}}
+
+
+
+
+
+
+
+
+{{--End User Teacher--}}

@@ -10,6 +10,13 @@
 	<meta name="description" content="School E-cloud Manager">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+	{{--Favicon--}}
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/fav/apple-touch-icon.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/fav/favicon-32x32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href=""{{ asset('images/fav/favicon-16x16.png') }}">
+	<link rel="manifest" href="{{ asset('images/fav/site.webmanifest') }}">
+
+
     {{--Fonts--}}
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -164,16 +171,13 @@
     @routes 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	{{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> --}}
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 	<script src="{{ asset('admin/js/app.js') }}"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    {{-- <script src="sweetalert2.all.min.js"></script> --}}
     <script src="{{ asset('js/prev.js') }}"></script>
-    {{-- <script src="{{ asset('js/ajax.js') }}"></script> --}}
     <script src="{{ asset('js/user/ajax.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 

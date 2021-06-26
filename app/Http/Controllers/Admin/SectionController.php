@@ -89,7 +89,13 @@ class SectionController extends Controller
                 'description' => 'required|string'
             ]);
 
-            $section->update($data);
+            $section = DB::table('sections')
+            ->where('id',$section->id)
+            ->update([
+                'grade_level_id' => $data['grade_level_id'],
+                'name' => $data['name'],
+                'description' => $data['description']
+            ]);
 
             return response()->json('success');
 
