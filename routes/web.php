@@ -348,7 +348,18 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
 // Teacher Dashboard
 
+// for teacher's index
 Route::get('/dashboard/teacher', [UserTeacherController::class , 'index'])->name('teacher.dashboard');
+
+
+// display students by teacher's section
+Route::get('/dashboard/teacher/display_student/{section}', [UserTeacherController::class, 't_display_students'])->name('teacher.t_display_students');
+
+//for creating grade
+Route::get('/dashboard/teacher/assign_grade/{section}/{student}', [UserTeacherController::class, 'create'])->name('teacher.assign_grade');
+
+// for storing grades by teacher's handled students;
+Route::post('/dashboard/teacher/store_grades', [UserTeacherController::class, 'store'])->name('teacher.store_assigned_grade_to_student');
 
 
 

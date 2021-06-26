@@ -2637,6 +2637,8 @@ $('#add_section').on('click', ()=> {
     $('#section_grade_level').html(``);
     $('#section_name').attr('value','');
      $('#section_description').attr('value','');
+     $('#btn_add_section').css('display', 'block');
+     $('#btn_update_section').css('display', 'none');
 
 
     $.ajax({
@@ -2788,6 +2790,9 @@ function editSection(id)
     let name = $('#section_name');
     let description = $('#section_description');
 
+    name.attr('value', ``);
+    description.attr('value',``); // clear all before selecting 
+
     $('#section_modal').modal('show');
     $('#section_modal_label').html(`<h4 class='text-white'> Edit Section <i class="fas fa-edit"></i></h4>`);
     $('#section_modal_header').removeClass('bg-primary').addClass('bg-success');
@@ -2798,6 +2803,7 @@ function editSection(id)
             // console.log(section);
             $('#btn_add_section').css('display', 'none');
             $('#btn_update_section').css('display', 'block').attr('data-id', section[0].id);
+
             name.attr('value', section[0].name);
             description.attr('value', section[0].description);
             $('#section_grade_level').attr('value', section[0].grade_level_id);
