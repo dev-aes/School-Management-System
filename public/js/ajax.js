@@ -665,7 +665,7 @@ $('#add_teacher').on('click', ()=> {
                 url:route('teacher.display_subjects_by_grade_level_id',section_id),
                 dataType:'json',
                 success:subjects => {
-                    res(subjects);
+                   // res(subjects);
                     let output = `<option></option>`;
                     subjects.forEach(subject => {
                         output += `<option value='${subject.id}'>${subject.name} </option>`
@@ -1979,14 +1979,14 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
 
 function teacher_assign_grade_to_subject_create_grade(student,section)
 {
-
+    
     $.ajax({
         url: route('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id', [section]),
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            res(student_subjects[1]);
-   
+            //res(student_subjects[2]);
+            //student_subject[compact_index][student_index][value_index]
 
             let output = `
                            <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
@@ -2012,17 +2012,26 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                             
                             
                     student_subjects[1].forEach(subject => {
-
+                    
                          let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4;
                          let remark = (average > 74) ? 'Passed': 'Failed';
 
             output += `     <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
-                                <th >${subject.name}</th>
-                                <td data-quarter='1' style='width:7%'>${subject.quarter_1}</td>
-                                <td data-quarter='2' style='width:7%'>${subject.quarter_2}</td>
-                                <td data-quarter='3' style='width:7%'>${subject.quarter_3}</td>
-                                <td data-quarter='4' style='width:7%'>${subject.quarter_4}</td>
-                                <td>${average}</td>
+                                <th >${subject.name}</th>`;
+
+                                var result = subject.is_approve.split(',');
+                                
+                 
+                 let q1_color = (result[0] == 1) ? 'p' : ''; 
+                 let q2_color = (result[1] == 2) ? 'p' : '';
+                 let q3_color = (result[2] == 3) ? 'p' : ''; 
+                 let q4_color = (result[3] == 4) ? 'p' : '';      
+                output += `<td data-quarter='1' style='width:7%'><span>${q1_color}</span>${subject.quarter_1}</td>`;
+                  output +=`    <td data-quarter='2' style='width:7%'><span>${q2_color}</span>${subject.quarter_2}</td>
+                                <td data-quarter='3' style='width:7%'><span>${q3_color}</span>${subject.quarter_3}</td>
+                                <td data-quarter='4' style='width:7%'><span>${q4_color}</span>${subject.quarter_4}</td>`;
+                                
+                   output += `  <td>${average}</td>
                                 <td>${remark}</td>
                             </tr>
                       `;
@@ -2350,7 +2359,7 @@ function updateSubject()
                 console.log(response);
                 toastSuccess('Subject Updated')
                 $('.subject_DT').DataTable().draw();
-                subject_form[0].reset();
+                    subject_form[0].reset();
                 $('#subject_modal').modal('hide');
             },
             error: err => {
@@ -2823,6 +2832,7 @@ function updateSection()
             dataType:'json',
             data:section_form.serialize(),
             success: response => {
+               // res(response);
                 if(response == 'success')
                 {   
                     $('.section_DT').DataTable().draw();
@@ -5666,8 +5676,368 @@ function displayPaymentReport() {
     });
 }
 
+
+
 //* --------------> End Payment Report
 
+
+
+/** 
+ * * <------------ Start User Management
+ * TODO CRUD User Management (Completed)
+ */
+
+// create
+$('#add_user').on('click', ()=> {
+
+    $('#user_modal_label').html(`<h4 class='text-white'>Create an Account <i class="fas fa-user-plus"></i></h4>`);
+    $('#user_full_name').attr('value', '').attr('disabled', false);
+    $('#user_email').attr('value', '').attr('disabled', false);
+    $('#user_password').attr('value', '');
+    $('#student_role_div').hide();
+    $('#parent_role_div').hide();
+    $('#user_student_role').attr('value', '').attr('disabled', false);
+    $('#user_parent_role').attr('value', '').attr('disabled', false);
+    $('#btn_add_user').css('display', 'block');
+    $('#btn_update_user').css('display', 'none');
+    $('#user_modal_header').removeClass('bg-success').addClass('bg-primary');
+
+    $('#user_student_id').attr('disabled', false);
+    $('#user_parent_id').attr('disabled', false);
+
+
+    $.ajax({
+        url:route('user.create'),
+        dataType: 'json',
+        success: data => {
+            //console.log(data);
+            let student_data = `<option> </option>`;
+            let roles = `<option> </option>`;
+            let parent_data = `<option> </option>`;
+
+            data[0].forEach( student => {
+                 student_data += `<option value='${student.id}'> ${student.first_name}  ${student.last_name} </option>`;
+            });
+
+            data[1].forEach(role => {
+                roles += `<option value='${role.id}'> ${role.name} </option>`;
+            })
+
+            data[2].forEach(parent => {
+                parent_data += `<option value='${parent.id}'> ${parent.name} </option>`;
+            })
+
+            $('#user_student_id').html(student_data); // display students 
+            $('#user_role').html(roles); // display roles
+            $('#user_parent_id').html(parent_data); // display parents
+
+
+            $('#user_modal_label').html(`Create an Account`);
+            $('#user_modal').modal('show');
+
+        },
+        error: err => {
+            console.log(err);
+        }
+    });
+
+});
+
+// display student info on user modal
+function display_student_info_on_user_modal() {
+    let student_id = $('#user_student_id').val(); // get student_id 
+    $('#user_student_role').attr('value', '');
+    $('#user_parent_id').attr('disabled', true);
+
+    if(student_id > 0)
+    {
+        $.ajax({
+            url: route('user.display_student_info', student_id),
+            dataType:'json',
+            success: student => {
+                // console.log(student);
+                $('#user_full_name').attr('value', `${student.first_name} ${student.last_name}` ).attr('readonly', true);
+                $('#user_email').attr('value', `${student.email}` ).attr('readonly', true);
+                $('#role_div').hide();
+                $('#parent_role_div').hide();
+                $('#student_role_div').show();
+                $('#user_student_role').attr('value', 'Student').attr('readonly', true);
+        
+            },
+            error: err => {
+                console.log(err);
+            }
+        });
+    }
+    else
+    {
+        $('#user_full_name').attr('value', '').attr('readonly', false);
+        $('#user_email').attr('value', '').attr('readonly', false);
+        $('#user_password').attr('value', '');
+        $('#user_role').attr('value','');
+        $('#student_role_div').hide();
+        $('#parent_role_div').hide();
+        $('#role_div').show();
+    }
+}
+
+// display parent info on user modal
+function display_parent_info_on_user_modal() {
+    let parent_id = $('#user_parent_id').val(); // get student_id 
+
+    $('#user_student_id').attr('disabled', true);
+
+    if(parent_id > 0)
+    {
+        $.ajax({
+            url: route('user.display_parent_info', parent_id),
+            dataType:'json',
+            success: parent => {
+                //console.log(parent);
+                $('#user_full_name').attr('value', `${parent.name}` ).attr('readonly', true);
+                $('#user_email').attr('value', `${parent.email}` ).attr('readonly', true);
+                $('#role_div').hide();
+                $('#student_role_div').hide();
+                $('#parent_role_div').show();
+                $('#user_parent_role').attr('value', 'Parent').attr('readonly', true);
+        
+            },
+            error: err => {
+                console.log(err);
+            }
+        });
+    }
+    else
+    {
+        $('#user_full_name').attr('value', '').attr('readonly', false);
+        $('#user_email').attr('value', '').attr('readonly', false);
+        $('#user_password').attr('value', '');
+        $('#user_role').attr('value','');
+        $('#student_role_div').hide();
+        $('#parent_role_div').hide();
+        $('#role_div').show();
+    }
+}
+
+// store
+function createUser()
+{
+    let name = $('#user_full_name');
+    let email = $('#user_email');
+    let password = $('#user_password');
+    let user_role = $('#user_role');
+    let student_role = $('#user_student_role').val();
+    let parent_role = $('#user_parent_role').val();
+
+    let student_id = $('#user_student_id').val();
+    let parent_id = $('#user_parent_id').val();
+
+    
+    if(isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
+    {
+        if(parseInt(student_id)> 0)
+        {
+            $.ajax({
+                method: 'POST',
+                url: route('user.store'),
+                dataType:'json',
+                data:{
+                name: name.val(),
+                email: email.val(),
+                password: password.val(),
+                student_id: student_id,
+                student_role: 2
+                },
+                success: response => {
+                    //console.log(response);
+                    if(response == 'error')
+                    {
+                        return toastr.warning('User already exist') ;
+                    }
+                    $('.user_DT').DataTable().draw();
+                    return toastSuccess('User Created')
+                },
+                error : err => {
+                    console.log(err);
+                }
+            });
+        }
+
+        else if(parseInt(parent_id) > 0)
+        {
+
+            $.ajax({
+                method: 'POST',
+                url: route('user.store'),
+                dataType:'json',
+                data:{
+                name: name.val(),
+                email: email.val(),
+                password: password.val(),
+                parent_id: parent_id,
+                parent_role: 3
+                },
+                success: response => {
+                    if(response == 'error')
+                    {
+                        return toastr.warning('User already exist') ;
+                    }
+
+                    $('.user_DT').DataTable().draw();
+                    return toastSuccess('User Created')
+                },
+                error : err => {
+                    console.log(err);
+                }
+            });
+        }
+        else
+        {
+            $.ajax({
+                method: 'POST',
+                url: route('user.store'),
+                dataType:'json',
+                data:{
+                name: name.val(),
+                email: email.val(),
+                password: password.val(),
+                user_role: user_role.val()
+                },
+                success: response => {
+                    if(response == 'error')
+                    {
+                        return toastr.warning('User already exist') ;
+                    }
+
+                    $('.user_DT').DataTable().draw();
+                    return toastSuccess('User Created')
+                },
+                error : err => {
+                    console.log(err);
+                }
+            });
+        }
+
+    }
+}
+
+// edit
+function editUser(id)
+{
+    $('#user_modal_label').html(`<h4>Edit User <i class="fas fa-user-plus"></i></h4>`);
+    $('#user_full_name').attr('value', '');
+    $('#user_email').attr('value', '');
+    $('#user_password').attr('value', '');
+    $('#student_role_div').hide();
+    $('#user_student_role').attr('value', '');
+    $('#btn_add_user').css('display', 'none');
+    $('#btn_update_user').css('display', 'block');
+    $('#user_modal_header').removeClass('bg-primary').addClass('bg-success');
+
+        $.ajax({
+            url: route('user.edit', id),
+            dataType: 'json',
+            success: user => {
+
+                let student_id = (user.student_id > 0) ? user.name: "";
+                let pareint_id = (user.pareint_id > 0) ? user.name: "";
+
+                $('#user_modal').modal('show');
+                $('#user_modal_label').html(`Edit User`);
+                $('#user_full_name').attr('value', `${user.name}`).attr('disabled', true);
+                $('#user_email').attr('value', `${user.email}`).attr('disabled', true);
+                $('#user_password').attr('value', `${user.password}`);
+                $('#student_role_div').show();
+                $('#role_div').hide();
+                $('#parent_role_div').hide();
+
+                if(user.role_id == 1)
+                {
+                    $('#user_student_role').attr('value', 'Admin').attr('disabled', true); 
+                    
+
+                }
+                else if (user.role_id == 2)
+                {
+                    $('#user_student_role').val('Student').attr('disabled', true); 
+
+                }
+                else
+                {
+                    $('#user_student_role').val('Parent').attr('disabled', true); 
+
+                }
+                
+                $('#user_student_id').attr('value', student_id).attr('disabled', true).html(`<option> ${student_id} </option>`);
+                $('#user_parent_id').attr('value', pareint_id).attr('disabled', true).html(`<option> ${pareint_id} </option>`);
+                $('#btn_update_user').attr('data-id', user.id);
+                
+            },
+            error: err => {
+                console.log(err);
+            }
+        });
+
+}
+
+// update
+function updateUser()
+{
+    let password = $('#user_password');
+    let user_id = $('#btn_update_user').attr('data-id');
+    if(isNotEmpty(password))
+    {
+        $.ajax({
+            method: 'PUT',
+            url: route('user.update', user_id),
+            dataType:'json',
+            data:{password:password.val()},
+            success: response => {
+                (response == 'success') ? toastSuccess('Password Updated') : toastDanger() ;
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        });
+    }
+    
+}
+
+// delete
+function deleteUser(id)
+{
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method: 'DELETE',
+                url: route('user.destroy', id),
+                success: response => {
+                    // console.log(response);
+                    if(response == 'success') {
+                        toastSuccess("User Deleted");
+                        $('.user_DT').DataTable().draw();
+                    } 
+        
+                },
+                error: err => {
+                    console.log(err);
+                    toastDanger();
+                }
+            })
+        }
+      })
+}
+
+//* -------------> END USER()
 
 
 
@@ -6980,488 +7350,6 @@ function createRole()
 
 
  //* ----------> END REPORTING ()
-
-
- /** 
- * * <------------ Start User Management
- * TODO CRUD User Management (Completed)
- */
-
-function display_user_select_box()
-{
-    let selected_box = $('#select_user').val();
-
-    if(selected_box == 'student')
-    {
-        $('#s_student_div').css('display', 'block');
-        $('#p_parent_div').css('display', 'none');
-        $('#t_teacher_div').css('display', 'none');
-
-    }
-
-    if(selected_box == 'parent' )
-    {
-        $('#p_parent_div').css('display', 'block');
-        $('#s_student_div').css('display', 'none');
-        $('#t_teacher_div').css('display', 'none');
-        
-    }
-
-    if(selected_box == 'teacher')
-    {
-        $('#t_teacher_div').css('display', 'block');
-        $('#s_student_div').css('display', 'none');
-        $('#p_parent_div').css('display', 'none');
-    }
-
-    if(selected_box == "")
-    {
-        $('#s_student_div').css('display', 'none');
-        $('#p_parent_div').css('display', 'none');
-        $('#t_teacher_div').css('display', 'none');
-        
-    }
-}
-
-// create
-$('#add_user').on('click', ()=> {
-
-    $('#user_modal_label').html(`<h4 class='text-white'>Create an Account <i class="fas fa-user-plus"></i></h4>`);
-    $('#user_full_name').attr('value', '').attr('disabled', false);
-    $('#user_email').attr('value', '').attr('disabled', false);
-    $('#user_password').attr('value', '');
-
-    $('#student_role_div').hide();
-    $('#parent_role_div').hide();
-    $('#teacher_role_div').hide();
-
-    $('#user_student_role').attr('value', '').attr('disabled', false);
-    $('#user_parent_role').attr('value', '').attr('disabled', false);
-    $('#user_teacher_role').attr('value', '').attr('disabled', false);
-    
-    $('#btn_add_user').css('display', 'block');
-    $('#btn_update_user').css('display', 'none');
-    $('#user_modal_header').removeClass('bg-success').addClass('bg-primary');
-
-    $('#user_student_id').attr('disabled', false);
-    $('#user_parent_id').attr('disabled', false);
-    $('#user_teacher_id').attr('disabled', false);
-
-
-    $.ajax({
-        url:route('user.create'),
-        dataType: 'json',
-        success: data => {
-            //console.log(data);
-            let student_data = `<option> </option>`;
-            let roles = `<option> </option>`;
-            let parent_data = `<option> </option>`;
-            let teacher_data = `<option> </option>`;
-
-            data[0].forEach( student => {
-                 student_data += `<option value='${student.id}'> ${student.first_name}  ${student.last_name} </option>`;
-            });
-
-            data[1].forEach(role => {
-                roles += `<option value='${role.id}'> ${role.name} </option>`;
-            })
-
-            data[2].forEach(parent => {
-                parent_data += `<option value='${parent.id}'> ${parent.name} </option>`;
-            })
-
-            data[3].forEach(teacher => {
-                teacher_data += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
-            })
-            
-
-            $('#user_student_id').html(student_data); // display students 
-            $('#user_role').html(roles); // display roles
-            $('#user_parent_id').html(parent_data); // display parents
-            $('#user_teacher_id').html(teacher_data); // display teachers
-
-
-            $('#user_modal_label').html(`Create an Account`);
-            $('#user_modal').modal('show');
-
-        },
-        error: err => {
-            console.log(err);
-        }
-    });
-
-});
-
-// display teacher info on user modal
-
-function display_teacher_info_on_user_modal()
-{
-    let teacher_id = $('#user_teacher_id').val(); // get teacher_id
-
-    if(teacher_id > 0)
-    {
-        $.ajax({
-            url: route('user.display_teacher_info', teacher_id),
-            dataType:'json',
-            success: teacher => {
-                res(teacher);
-                $('#user_full_name').attr('value', `${teacher.first_name} ${teacher.last_name}` ).attr('readonly', true);
-                $('#user_email').attr('value', `${teacher.email}` ).attr('readonly', true);
-                $('#teacher_role_div').show();
-                $('#user_teacher_role').attr('value', 'Teacher').attr('readonly', true);
-
-                $('#role_div').hide();
-                $('#parent_role_div').hide();
-                $('#student_role_div').hide();
-
-              
-        
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-    }
-    else
-    {
-        $('#user_full_name').attr('value', '').attr('readonly', false);
-        $('#user_email').attr('value', '').attr('readonly', false);
-        $('#user_password').attr('value', '');
-        $('#user_role').attr('value','');
-        $('#student_role_div').hide();
-        $('#parent_role_div').hide();
-        $('#teacher_role_div').hide();
-        $('#role_div').show();
-    }
-}
-
-
-
-// display student info on user modal
-function display_student_info_on_user_modal() {
-    let student_id = $('#user_student_id').val(); // get student_id 
-    $('#user_student_role').attr('value', '');
-    $('#user_parent_id').attr('disabled', true);
-
-    if(student_id > 0)
-    {
-        $.ajax({
-            url: route('user.display_student_info', student_id),
-            dataType:'json',
-            success: student => {
-                // console.log(student);
-                $('#user_full_name').attr('value', `${student.first_name} ${student.last_name}` ).attr('readonly', true);
-                $('#user_email').attr('value', `${student.email}` ).attr('readonly', true);
-                $('#role_div').hide();
-                $('#parent_role_div').hide();
-                $('#student_role_div').show();
-                $('#user_student_role').attr('value', 'Student').attr('readonly', true);
-        
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-    }
-    else
-    {
-        $('#user_full_name').attr('value', '').attr('readonly', false);
-        $('#user_email').attr('value', '').attr('readonly', false);
-        $('#user_password').attr('value', '');
-        $('#user_role').attr('value','');
-        $('#student_role_div').hide();
-        $('#parent_role_div').hide();
-        $('#role_div').show();
-    }
-}
-
-// display parent info on user modal
-function display_parent_info_on_user_modal() {
-    let parent_id = $('#user_parent_id').val(); // get student_id 
-
-    $('#user_student_id').attr('disabled', true);
-
-    if(parent_id > 0)
-    {
-        $.ajax({
-            url: route('user.display_parent_info', parent_id),
-            dataType:'json',
-            success: parent => {
-                //console.log(parent);
-                $('#user_full_name').attr('value', `${parent.name}` ).attr('readonly', true);
-                $('#user_email').attr('value', `${parent.email}` ).attr('readonly', true);
-                $('#role_div').hide();
-                $('#student_role_div').hide();
-                $('#parent_role_div').show();
-                $('#user_parent_role').attr('value', 'Parent').attr('readonly', true);
-        
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-    }
-    else
-    {
-        $('#user_full_name').attr('value', '').attr('readonly', false);
-        $('#user_email').attr('value', '').attr('readonly', false);
-        $('#user_password').attr('value', '');
-        $('#user_role').attr('value','');
-        $('#student_role_div').hide();
-        $('#parent_role_div').hide();
-        $('#role_div').show();
-    }
-}
-
-// store
-function createUser()
-{
-    let name = $('#user_full_name');
-    let email = $('#user_email');
-    let password = $('#user_password');
-    let user_role = $('#user_role');
-    let student_role = $('#user_student_role').val();
-    let parent_role = $('#user_parent_role').val();
-
-    let student_id = $('#user_student_id').val();
-    let parent_id = $('#user_parent_id').val();
-    let teacher_id = $('#user_teacher_id').val();
-
-    
-    if(isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
-    {
-        if(parseInt(student_id)> 0)
-        {
-            
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                student_id: student_id,
-                student_role: 2
-                },
-                success: response => {
-                    //console.log(response);
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-
-        else if(parseInt(parent_id) > 0)
-        {
-
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                parent_id: parent_id,
-                parent_role: 3
-                },
-                success: response => {
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-        else if(parseInt(teacher_id) > 0)
-        {
-
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                teacher_id: teacher_id,
-                teacher_role: 4
-                },
-                success: response => {
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-        else
-        {
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                user_role: user_role.val()
-                },
-                success: response => {
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-
-    }
-}
-
-// edit
-function editUser(id)
-{
-    $('#user_modal_label').html(`<h4>Edit User <i class="fas fa-user-plus"></i></h4>`);
-    $('#user_full_name').attr('value', '');
-    $('#user_email').attr('value', '');
-    $('#user_password').attr('value', '');
-    $('#student_role_div').hide();
-    $('#user_student_role').attr('value', '');
-    $('#btn_add_user').css('display', 'none');
-    $('#btn_update_user').css('display', 'block');
-    $('#user_modal_header').removeClass('bg-primary').addClass('bg-success');
-
-        $.ajax({
-            url: route('user.edit', id),
-            dataType: 'json',
-            success: user => {
-
-                let student_id = (user.student_id > 0) ? user.name: "";
-                let pareint_id = (user.pareint_id > 0) ? user.name: "";
-
-                $('#user_modal').modal('show');
-                $('#user_modal_label').html(`Edit User`);
-                $('#user_full_name').attr('value', `${user.name}`).attr('disabled', true);
-                $('#user_email').attr('value', `${user.email}`).attr('disabled', true);
-                $('#user_password').attr('value', `${user.password}`);
-                $('#student_role_div').show();
-                $('#role_div').hide();
-                $('#parent_role_div').hide();
-
-                if(user.role_id == 1)
-                {
-                    $('#user_student_role').attr('value', 'Admin').attr('disabled', true); 
-                    
-
-                }
-                else if (user.role_id == 2)
-                {
-                    $('#user_student_role').val('Student').attr('disabled', true); 
-
-                }
-                else
-                {
-                    $('#user_student_role').val('Parent').attr('disabled', true); 
-
-                }
-                
-                $('#user_student_id').attr('value', student_id).attr('disabled', true).html(`<option> ${student_id} </option>`);
-                $('#user_parent_id').attr('value', pareint_id).attr('disabled', true).html(`<option> ${pareint_id} </option>`);
-                $('#btn_update_user').attr('data-id', user.id);
-                
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-
-}
-
-// update
-function updateUser()
-{
-    let password = $('#user_password');
-    let user_id = $('#btn_update_user').attr('data-id');
-    if(isNotEmpty(password))
-    {
-        $.ajax({
-            method: 'PUT',
-            url: route('user.update', user_id),
-            dataType:'json',
-            data:{password:password.val()},
-            success: response => {
-                (response == 'success') ? toastSuccess('Password Updated') : toastDanger() ;
-            },
-            error: err => {
-                console.log(err);
-                toastDanger();
-            }
-        });
-    }
-    
-}
-
-// delete
-function deleteUser(id)
-{
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                method: 'DELETE',
-                url: route('user.destroy', id),
-                success: response => {
-                    // console.log(response);
-                    if(response == 'success') {
-                        toastSuccess("User Deleted");
-                        $('.user_DT').DataTable().draw();
-                    } 
-        
-                },
-                error: err => {
-                    console.log(err);
-                    toastDanger();
-                }
-            })
-        }
-      })
-}
-
-//* -------------> END USER()
 
 
 /**

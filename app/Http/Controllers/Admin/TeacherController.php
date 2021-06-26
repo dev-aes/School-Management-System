@@ -616,64 +616,28 @@ public function teacher_destroy_student()
 
              endforeach;
 
-            //$subjects = Subject::whereIn('id', $subject_ids)
-                     //   ->get(); //  subjects handled by the teacher (teacher_ID)
-
-
-             //Get all subjects within the section ---> *refactor
-             //Tables section_subject, sections, subjects
-             //Join there grades per quarter
-             //quarter id, subject_teacher, student
-
 
              $student_grade_id = DB::table('student_grade')->where('student_id',$student_id)->first();
-             //Get all the subjects in a section for grade encoding
-
-             //if Grades table is empty
-
-             $grds = DB::table('grades')->first();
-            //  if(!$grds){
-            //     $subjects = DB::table('subjects')
-            //     ->join('section_subject','subjects.id','section_subject.subject_id')
-            //     ->select('section_subject.subject_id','subjects.name','section_subject.section_id')
-            //     ->where('section_subject.section_id',$section->id)
-            //     ->get();
-            //  }
-
-             //
-
-           //  else{
-
-
             
              $subjects = DB::table('subjects')
                             ->join('section_subject','subjects.id','section_subject.subject_id')
                             ->join('grades','subjects.id','grades.subject_id')
-                            ->select('section_subject.subject_id','subjects.name','grades.grades','grades.id','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.subject_teacher_id')
+                            ->select('section_subject.subject_id','subjects.name','grades.id','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.subject_teacher_id','grades.is_approve')
                             ->where('section_subject.section_id',$section->id)
                             ->where('grades.student_grade_id',$student_grade_id->id)                            
-                            ->get();
-
-          //   }
-
-
-        //   $subject_names = DB::table('subjects')
-        //   ->join('section_subject','subjects.id','section_subject.subject_id')
-        //   ->join('grades','subjects.id','grades.subject_id')
-        //   ->select('subjects.name','section_subject.subject_id','grades.id')
-        //   ->where('section_subject.section_id',$section->id)
-        //   ->where('grades.student_grade_id',$student_grade_id->id) 
-        //   ->distinct()         
-        //   ->get();
-
-          
+                            ->get();          
            
             $student = Student::where('id', request('student_id'))->first(); // get the specific student 
            
-            //Display Grades here
+
+
+             //Get quarter to be approved from is_approved column in grades table
+             foreach ($subjects as $is_approved):
+                $quarters_to_be_approved[] = explode(",",$is_approved->is_approve);
+
+             endforeach;   
+             
                 
-            //
-            $section = $section->subject;
 
 
                          return response()->json([$student, $subjects]); // return subjects[] , student
