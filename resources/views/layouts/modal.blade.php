@@ -584,13 +584,6 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="form-label" for="teacher_assign_grade_to_student_subject_quarter_id">Select Quarter *</label>
-                                            <select class="form-select" name="" id="teacher_assign_grade_to_student_subject_quarter_id">
-                                                {{--Display All Quarters--}}
-                                            </select>
-                                        </div>
-
                                     </form>
                                 </div>
                                 <div class="col-md-2"></div>
