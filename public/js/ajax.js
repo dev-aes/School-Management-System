@@ -7308,6 +7308,7 @@ function createUser()
                 teacher_role: 4
                 },
                 success: response => {
+                    res(response);
                     if(response == 'error')
                     {
                         return toastr.warning('User already exist') ;
