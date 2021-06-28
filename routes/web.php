@@ -104,6 +104,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     // Section add Teacher
 
+    Route::get('/admin/home/section/check_adviser/{section}', [SectionController::class, 'section_get_adviser'])->name('section.get_adviser');
     Route::get('/admin/home/createTeacher', [SectionController::class, 'section_create_teacher'])->name('section.section_create_teacher');
     Route::post('/admin/home/createTeacher', [SectionController::class, 'section_store_teacher'])->name('section.section_store_teacher');
 
@@ -346,7 +347,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
 
 
-//User Teacher Dashboard
+// Teacher Dashboard
 
 // for teacher's index
 Route::get('/dashboard/teacher', [UserTeacherController::class , 'index'])->name('teacher.dashboard');
@@ -360,10 +361,6 @@ Route::get('/dashboard/teacher/assign_grade/{section}/{student}', [UserTeacherCo
 
 // for storing grades by teacher's handled students;
 Route::post('/dashboard/teacher/store_grades', [UserTeacherController::class, 'store'])->name('teacher.store_assigned_grade_to_student');
-
-// for grade approval (ADVISER ONLY)
-
-Route::put('/dashboard/teacher/approve_grade/{id}', [UserTeacherController::class,'approve_grade'])->name('teacher.approve_grade');
 
 
 
