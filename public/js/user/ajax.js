@@ -611,6 +611,7 @@ function t_assign_grade(section , student)
                                         <td colspan="4" style="width:25%">Quarter</td>
                                         <td rowspan="2" style="width:25%">Final Grade</td>
                                         <td rowspan="2" style="width:25%">Remark</td>
+                                        <td rowspan="2" style="width:25%">Action</td>
                                     </tr>
                                     <tr>
                                         <td>1</td>
@@ -628,6 +629,13 @@ function t_assign_grade(section , student)
 
                                     let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4; // get the total avg of grades by quarter
                                     let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+                                    
+                                    let result = subject.is_approve.split(',');
+
+                                    let q1_color = (result[0] == 1) ? 'warning' : ''; 
+                                    let q2_color = (result[1] == 2) ? 'warning' : '';
+                                    let q3_color = (result[2] == 3) ? 'warning' : ''; 
+                                    let q4_color = (result[3] == 4) ? 'warning' : '';
                                     let q1 = (subject.quarter_1 == null) ? 0 : subject.quarter_1 ;
                                     let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
                                     let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
@@ -641,6 +649,9 @@ function t_assign_grade(section , student)
                                         <td class='quarter' data-quarter='4' style='width:7%'>${q4}</td>
                                         <td class='average'>${average}</td>
                                         <td class='remark'>${remark}</td>
+                                        <td>
+                                            <a class='btn  btn-primary' href='javascript:void(0)'> <i class="fas fa-check"></i> </a>
+                                        </td>
                                     </tr>
                             `;
 

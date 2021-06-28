@@ -74,15 +74,30 @@ class TeacherController extends Controller
     {
             if(request()->ajax())
             {
+                $teacher_login_id = auth()->user()->teacher_id;
+
+                $adviser = DB::table('sections')->where('adviser_id',$teacher_login_id)->first();
+
                 //Get id from student_grade
                 $student_grade_id = DB::table('student_grade')->where('student_id',$student->id)->first();
                
-                $grades = DB::table('grades')
-                ->join('subjects','grades.subject_id','subjects.id')
-                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id')
-                ->where('student_grade_id',$student_grade_id->id)
-                ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
-                ->get(); // get subjects, grades by quarter where student id is equal to the param $student
+              //***If Adviser is login all subjects will be displayed otherwise subject handled of a teacher will be displayed***//  
+                if($adviser){
+                    $grades = DB::table('grades')
+                    ->join('subjects','grades.subject_id','subjects.id')
+                    ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id','grades.is_approve')
+                    ->where('student_grade_id',$student_grade_id->id)
+                    ->get(); // get subjects, grades by quarter where student id is equal to the param $student
+                }
+                else{
+                    $grades = DB::table('grades')
+                    ->join('subjects','grades.subject_id','subjects.id')
+                    ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id','grades.is_approve')
+                    ->where('student_grade_id',$student_grade_id->id)
+                    ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
+                    ->get(); // get subjects, grades by quarter where student id is equal to the param $student
+                }
+                //*****************End************************** *//
 
 
                 $section_with_grade_level = Section::with('grade_level')->where('id', $section->id)->first();
