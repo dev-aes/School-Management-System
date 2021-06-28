@@ -2016,23 +2016,28 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                          let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4;
                          let remark = (average > 74) ? 'Passed': 'Failed';
 
-            output += `     <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
-                                <th >${subject.name}</th>`;
+                         let result = subject.is_approve.split(',');
 
-                                var result = subject.is_approve.split(',');
+                         let q1_color = (result[0] == 1) ? 'warning' : ''; 
+                         let q2_color = (result[1] == 2) ? 'warning' : '';
+                         let q3_color = (result[2] == 3) ? 'warning' : ''; 
+                         let q4_color = (result[3] == 4) ? 'warning' : '';
+
+                         let q1 = (subject.quarter_1 == null) ? 0 : subject.quarter_1 ;
+                         let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
+                         let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
+                         let q4 = (subject.quarter_4 == null) ? 0 : subject.quarter_4 ;     
+                         
+
+                  output += ` <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
+                                <th >${subject.name}</th>
+                                <td class='quarter' data-quarter='1' style='width:7%'><span class='text-${q1_color}'>${q1}</span></td>
+                                <td class='quarter' data-quarter='2' style='width:7%'><span class='text-${q1_color}'>${q2}</span></td>
+                                <td class='quarter' data-quarter='3' style='width:7%'><span class='text-${q1_color}'>${q3}</span></td>
+                                <td class='quarter' data-quarter='4' style='width:7%'><span class='text-${q1_color}'>${q4}</span></td>`;
                                 
-                 
-                 let q1_color = (result[0] == 1) ? 'warning' : ''; 
-                 let q2_color = (result[1] == 2) ? 'warning' : '';
-                 let q3_color = (result[2] == 3) ? 'warning' : ''; 
-                 let q4_color = (result[3] == 4) ? 'warning' : '';      
-                output += `<td data-quarter='1' style='width:7%'><span class='text-${q1_color}'>${subject.quarter_1}</span></td>`;
-                  output +=`    <td data-quarter='2' style='width:7%'><span class='text-${q1_color}'>${subject.quarter_2}</span></td>
-                                <td data-quarter='3' style='width:7%'><span class='text-${q1_color}'>${subject.quarter_3}</span></td>
-                                <td data-quarter='4' style='width:7%'><span class='text-${q1_color}'>${subject.quarter_4}</span></td>`;
-                                
-                   output += `  <td>${average}</td>
-                                <td>${remark}</td>
+                   output += `  <td class='average'>${average}</td>
+                                <td class='remark'>${remark}</td>
                             </tr>
                       `;
                     });
@@ -2100,14 +2105,23 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
 }
 
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
+            // $(this).append(
+            //                 $('#g_grade').css('display', 'block')
+            //                 .attr('data-subject_id',$(this).parent().attr('data-subject'))
+            //                 .attr('data-quarter_id', $(this).attr('data-quarter'))
+            //                 .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
+
+            //               ); // store subject id  && quarter_id  && grade_id to this input field
+
+            $('#g_grade').remove();
             $(this).append(
-                            $('#g_grade').css('display', 'block')
-                            .attr('data-subject_id',$(this).parent().attr('data-subject'))
-                            .attr('data-quarter_id', $(this).attr('data-quarter'))
-                            .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
-
-                          ); // store subject id  && quarter_id  && grade_id to this input field
-
+                $(`<input type='number' min='60' name='grade' id='g_grade' style='width:100%;display:block'>`)
+                .attr('data-subject_id',$(this).parent().attr('data-subject'))
+                .attr('data-quarter_id', $(this).attr('data-quarter'))
+                .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
+        
+              ); // store subject id  && quarter_id  && grade_id to this input field
+        
 });
 
 $(document).on('keypress', '#g_grade', function(e) {
@@ -2150,7 +2164,27 @@ $(document).on('keypress', '#g_grade', function(e) {
                     },
                    
                     success: response => {
-                        res(response);
+                        // res(response);
+
+                        let c = $(this).closest('tr').find('td.average');
+                        let d = $(this).closest('tr').find('td.remark');
+                        let a =  $(this).closest('tr').children('.quarter');
+                        let x =  $(this).closest('td').text($(this).val());
+     
+                         var texts = a.map(function() {
+                             return $(this).text();
+                         });
+                     
+                        let q1 = Object.values(texts)[0];
+                        let q2 = Object.values(texts)[1];
+                        let q3 = Object.values(texts)[2];
+                        let q4 = Object.values(texts)[3];
+                     
+                        let average = ( parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4) ) / 4; // get the total avg of grades by quarter
+                        let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+                
+                       c.text(average);
+                       d.text(remark);
                         
                     },
                     error: err => {
