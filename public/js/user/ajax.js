@@ -31,6 +31,8 @@ $(() => {
 
 })
 
+let average_container = []; // student's grade average
+
 
 
 
@@ -631,7 +633,7 @@ function t_assign_grade(section , student)
                                 // display student's subjects[]
                                 section_student[2].forEach(subject => {
 
-                                    let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4; // get the total avg of grades by quarter
+                                    let average = get_average([subject.quarter_1,subject.quarter_2,subject.quarter_3,subject.quarter_4]); // get the total avg of grades by quarter
                                     let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
                                     
                                     let result = subject.is_approve.split(',');
@@ -645,7 +647,9 @@ function t_assign_grade(section , student)
                                     let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
                                     let q4 = (subject.quarter_4 == null) ? 0 : subject.quarter_4 ;
 
-                    output += `     <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
+                                    average_container.push(average); // insert all average per row on average container[]
+
+                    output += `     <tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
                                         <th >${subject.name}</th>
                                         <td class='quarter ${q1_color}' data-quarter='1' style='width:7%'>${q1}</td>
                                         <td class='quarter ${q2_color}' data-quarter='2' style='width:7%'>${q2}</td>
@@ -657,8 +661,9 @@ function t_assign_grade(section , student)
                                             if(section_student[0].adviser_id == section_student[3])
                                             {
 
+
                    output +=            `<td>
-                                            <a class='btn  btn-primary' href='javascript:void(0)' onclick=''> <i class="fas fa-check"></i> </a>
+                                            <a class='btn  btn-primary' href='javascript:void(0)' onclick='adviser_approve_grade(${subject.id})'> <i class="fas fa-check"></i> </a>
                                         </td>
                                     </tr>
                             `;      
@@ -671,17 +676,13 @@ function t_assign_grade(section , student)
                                     <tr class="text-center fw-bold">
                                         <td></td>
                                         <td colspan="4">General Average</td>
-                                        <td></td>
+                                        <td class='final_grade'>${get_average(average_container)}</td>
                                         <td></td>
                                     </tr>
                                     </tbody>
                                 </table>
                                
                                 `;
-
-                            //     <form>
-                            //     <input type='number' min='60' name='grade' id='g_grade' data-subject_id='' style='width:100%;display:none'>
-                            // </form>
 
              
                     output += `<div class="row mt-2" id="descriptors">
@@ -735,14 +736,6 @@ function t_assign_grade(section , student)
 }
 
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
-    // $(this).append(
-    //                 $('#g_grade').css('display', 'block')
-    //                 .attr('data-subject_id',$(this).parent().attr('data-subject'))
-    //                 .attr('data-quarter_id', $(this).attr('data-quarter'))
-    //                 .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
-
-    //               ); // store subject id  && quarter_id  && grade_id to this input field
-
     $('#g_grade').remove();
     $(this).append(
         $(`<input type='number' min='60' name='grade' id='g_grade' style='width:100%;display:block'>`)
@@ -751,7 +744,6 @@ $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .
         .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
 
       ); // store subject id  && quarter_id  && grade_id to this input field
-
 
 });
 
@@ -800,7 +792,9 @@ $(document).on('keypress', '#g_grade', function(e) {
                
                       c.text(average);
                       d.text(remark);
-                        res(response);
+
+                      $('.final_grade').text(get_average(average_container)); // store the final average_grade
+                       toastSuccess("Grade Added");
                         
                     },
                     error: err => {
@@ -830,10 +824,51 @@ $(document).on('mouseleave', '#g_grade', function(e) {
     $(this).css('display','none');
 })
 
-
-
+// for grade approval ( ADMIN & ADVISER ONLY );
+function adviser_approve_grade(grade_id)
+{
+    Swal.fire({
+        title: 'Do you want to approve grade(s)?',
+        text: "Please double check the grades before approval",
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, approved it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+           $.ajax({
+                method: 'PUT',
+                url: route('teacher.approve_grade',grade_id),
+                success: response => {
+                    
+                    if(response == 'success')
+                    {
+                        toastSuccess("Grade(s) Approved");
+                    }
+                },
+                error: err => {
+                    res(err);
+                }
+           })
+        }
+    })
+}
 
 // End Teacher Dashboard
+
+
+
+
+function get_average(array)
+{
+   let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
+   return parseFloat(ave.toFixed(2));
+}
+
+
+
+
 
 /**
  * VALIDATE INPUT FIELD

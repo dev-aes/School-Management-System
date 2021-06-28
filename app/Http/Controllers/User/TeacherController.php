@@ -53,20 +53,24 @@ class TeacherController extends Controller
                 $student_grade_id = DB::table('student_grade')->where('student_id',$student->id)->first();
                
               //***If Adviser is login all subjects will be displayed otherwise subject handled of a teacher will be displayed***//  
-                if($adviser){
+                if($adviser)
+                {
+
                     $grades = DB::table('grades')
-                    ->join('subjects','grades.subject_id','subjects.id')
-                    ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id')
-                    ->where('student_grade_id',$student_grade_id->id)
-                    ->get(); // get subjects, grades by quarter where student id is equal to the param $student
+                                ->join('subjects','grades.subject_id','subjects.id')
+                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id')
+                                ->where('student_grade_id',$student_grade_id->id)
+                                ->get(); // get subjects, grades by quarter where student id is equal to the param $student
                 }
-                else{
+                else
+                {
+
                     $grades = DB::table('grades')
-                    ->join('subjects','grades.subject_id','subjects.id')
-                    ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id')
-                    ->where('student_grade_id',$student_grade_id->id)
-                    ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
-                    ->get(); // get subjects, grades by quarter where student id is equal to the param $student
+                                ->join('subjects','grades.subject_id','subjects.id')
+                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id')
+                                ->where('student_grade_id',$student_grade_id->id)
+                                ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
+                                ->get(); // get subjects, grades by quarter where student id is equal to the param $student
                 }
                 //*****************End************************** *//
 
@@ -188,7 +192,21 @@ class TeacherController extends Controller
                             ]
                         );                                
            
-            return response()->json('success'); 
+            return $this->res();
+
+        }
+    }
+
+    public function approve_grade($id)
+    {
+        if(request()->ajax())
+        {
+            $default = '0,0,0,0';
+            $selected_grade = DB::table('grades')
+                                ->where('id', $id)
+                                ->update(['is_approve' => $default ]);
+
+                                return $this->res();
 
         }
     }
