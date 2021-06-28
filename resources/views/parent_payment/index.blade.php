@@ -23,6 +23,8 @@
                                             <th>Send to</th>
                                             <th>Amount Paid</th>
                                             <th>Official Receipt</th>
+                                            <th>Type</th>
+                                            <th>Screenshot</th>
                                             <th>Remark</th>
                                             <th>Status</th>
                                             <th>Actions</th>
@@ -85,6 +87,7 @@
                                             <th>Amount Paid</th>
                                             <th>Official Receipt</th>
                                             <th>Remark</th>
+                                            <th>Comment</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>

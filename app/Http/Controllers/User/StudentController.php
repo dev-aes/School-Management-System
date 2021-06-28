@@ -21,7 +21,7 @@ class StudentController extends Controller
         $student = auth()->user()->student_id;
 
 
-        $student_subject_teacher = DB::select("SELECT DISTINCT b.first_name, b.last_name , c.name, c.description, b.id as teacher_id ,c.id as subject_id from students a ,teachers b,subjects c, student_teacher d,subject_teacher e where a.id = $student and d.student_id = $student and e.subject_id = c.id and d.teacher_id = e.teacher_id and b.id = e.teacher_id");
+        // $student_subject_teacher = DB::select("SELECT DISTINCT b.first_name, b.last_name , c.name, c.description, b.id as teacher_id ,c.id as subject_id from students a ,teachers b,subjects c, student_teacher d,subject_teacher e where a.id = $student and d.student_id = $student and e.subject_id = c.id and d.teacher_id = e.teacher_id and b.id = e.teacher_id");
 
 
         return view('users.student.index', compact('student_subject_teacher'));

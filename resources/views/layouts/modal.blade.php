@@ -1713,27 +1713,27 @@
                                    <div class="card-body" id="print">
                                     <div class="card-header p-0">
                                         <div class="row">
-                                           <div class="col-md-6">
+                                           <div class="col-6">
                                                <h1 class="display-5">Receipt</h1>
                                                <h5>School name Inc.</h5>
                                                <h5>Juna Subd. Matina Davao City,8000</h5>
                                                <h5>09659212003</h5>
                                                <h5>school.edu.ph</h5>
                                            </div>
-                                           <div class="col-md-6">
-                                               <img class="float-end" src="{{asset('images/logo.png')}}" alt="sample_logo" width="250">
+                                           <div class="col-6">
+                                               <img class="float-end d-none d-lg-block" id="logo_img" src="{{asset('images/logo.png')}}" alt="sample_logo" width="250">
                                            </div>
                                         </div>
                                        </div><br>
                                        <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <h5 >Enrolment Fee No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h5>
                                                 <h5 >Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h5>
                                                 <h5 >Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h5>
                                                 <h5 >Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h5>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <h5>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h5>
                                                 <h5>OR No: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h5>
                                                 <h5>Amount paid: <span class="h5 fw-bold" id="payment_payment_amount"> {{--Display Payment amount--}}</span></h5>
@@ -1743,16 +1743,16 @@
                                       <hr>
                                     <h5>Payment Summary</h5>
                                     <div class="row">
-                                    <div class="col-md-6 border border-dark border-1 p-2">
+                                    <div class="col-6 border border-dark border-1 p-2">
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-12">
                                                 <h5>Fee Details</h5>
                                                 <hr>
                                             </div>
                                         </div>
                                         <div class="row">
                                             {{-- Display Sub Fees and Totals --}}
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <h5>Fee Type</h5>
                                                 <div id="payment_sf_type">
                                                     {{-- display subfees--}}
@@ -1761,7 +1761,7 @@
                                                 <h5 class="fw-bold">Total Discount</h5>
                                                 <h5 class="fw-bold">Total</h5>
                                             </div>
-                                            <div class="col-md-6 text-end">
+                                            <div class="col-6 text-end">
                                                 <h5>Amount</h5>
                                                 <div id="payment_sf_amount">
                                                     {{-- display subfees--}}
@@ -1772,19 +1772,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 border border-dark  p-2">
+                                    <div class="col-6 border border-dark  p-2">
                                         <div class="row">
                                             <h5>Payment Details</h5>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 ">
+                                            <div class="col-6 ">
                                              <h5>Date</h5>
                                             <div class="text-start" id="payment_sf_date">
                                                 {{--Display payment date--}}
                                             </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <h5 class="text-end">Amount</h5>
                                                 <div class="text-end" id="payment_sf_payment">
                                                     {{--display payments amount--}}
@@ -1803,13 +1803,13 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-6">
                                                 <h5>Total Payable</h5>
                                                 <h5>Total Paid</h5>
                                                 <h5>Balance</h5>
                                             </div>
 
-                                            <div class="col-md-6 text-end">
+                                            <div class="col-6 text-end">
                                                 <h5 id="payment_sf_total_payable"></h5>
                                                 <h5 id="payment_sf_total_paid"></h5>
                                                 <h5 id="payment_sf_balance"></h5>
@@ -1817,6 +1817,9 @@
                                         </div>
                                     </div>
                                   </div>
+                                  {{-- <div id="payment_footer">
+                                      <input class="text-center" type="text" id="p_signature" value="Ace Manalo" readonly >
+                                  </div> --}}
                                  </div>
                                  <div class="form-group p-3">
                                     <button class="btn btn-info float-end" onclick="window.print()"> Print <i class="fas fa-print"></i> </button>

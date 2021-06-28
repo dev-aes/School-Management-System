@@ -253,9 +253,13 @@ $(()=> {
 });
 
 let selected = []; // dynamic container for table row_id's
+// for multiple selection
 row_select($('.subject_DT tbody'));
 row_select($('.student_DT tbody'));
 row_select($('.teacher_DT tbody'));
+
+let average_container = []; // student's grade average
+
 
 /** 
  * * <------------ Start Academic Year
@@ -2013,7 +2017,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                             
                     student_subjects[1].forEach(subject => {
                     
-                         let average = (subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4)/4;
+                         let average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
                          let remark = (average > 74) ? 'Passed': 'Failed';
 
                          let result = subject.is_approve.split(',');
@@ -2027,9 +2031,11 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                          let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
                          let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
                          let q4 = (subject.quarter_4 == null) ? 0 : subject.quarter_4 ;     
+
+                         average_container.push(average); // insert all average per row on average container[]
                          
 
-                  output += ` <tr class='s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
+                  output += ` <tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
                                 <th >${subject.name}</th>
                                 <td class='quarter' data-quarter='1' style='width:7%'><span class='text-${q1_color}'>${q1}</span></td>
                                 <td class='quarter' data-quarter='2' style='width:7%'><span class='text-${q1_color}'>${q2}</span></td>
@@ -2046,7 +2052,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                             <tr class="text-center fw-bold">
                                 <td></td>
                                 <td colspan="4">General Average</td>
-                                <td></td>
+                                <td class='final_grade'>${get_average(average_container)}</td>
                                 <td></td>
                             </tr>
                             </tbody>
@@ -2185,6 +2191,10 @@ $(document).on('keypress', '#g_grade', function(e) {
                 
                        c.text(average);
                        d.text(remark);
+
+                       
+                      $('.final_grade').text(get_average(average_container)); // store the final average_grade
+                      toastSuccess("Grade Added");
                         
                     },
                     error: err => {
@@ -6567,6 +6577,10 @@ function display_parent_payment_request()
                 return  `₱ ${data.toLocaleString()}`
             },},
             {data: 'official_receipt'},
+            {data: 'receipt_type'},
+            {data: 'screenshot', render(data) {
+                return `<img id="to_show_receipt" class='img-thumbnail' src='/storage/uploads/receipt/${data}' width='100' alt='${data}'>`;
+            }},
             {data: 'remark'},
             {data: 'status'},
             {data: 'actions'},
@@ -6640,6 +6654,7 @@ function get_payment_declined_payment_request()
             },},
             {data: 'official_receipt'},
             {data: 'remark'},
+            {data: 'comment'},
             {data: 'status', render(data) {
                 return `<span class='badge bg-danger text-uppercase'> ${data} </span> `;
             }},
@@ -6657,29 +6672,69 @@ $(document).on('click', 'a.update', function (e) {
     
     let new_rm = remark.slice(0,-1);
 
-  
     if(confirm(`Do you want to ${new_rm} Payment Request ?`))
     {
-        $.ajax({
-            method: 'PATCH',
-            url: route('parent_payment_request.update_parent_payment_request',payment_request_id),
-            dataType:'json',
-            data:{remark:remark},
-            success: response => {
-                console.log(response);
-                if(response == 'success')
-                {
-                    // after update replenish all the Data Tables in the Parent Payment Request Page
-                  $('#parent_payment_request_DT').DataTable().draw();
-                  $('#parent_approved_payment_request_DT').DataTable().draw();
-                  $('#parent_declined_payment_request_DT').DataTable().draw();
-                  return toastSuccess(`Payment Request ${remark}`);
+
+        if(remark == 'approved')
+        {
+            $.ajax({
+                method: 'PATCH',
+                url: route('parent_payment_request.update_parent_payment_request',payment_request_id),
+                dataType:'json',
+                data:{
+                    remark:remark,
+                },
+                success: response => {
+                    console.log(response);
+                    if(response == 'success')
+                    {
+                        // after update replenish all the Data Tables in the Parent Payment Request Page
+                      $('#parent_payment_request_DT').DataTable().draw();
+                      $('#parent_approved_payment_request_DT').DataTable().draw();
+                      $('#parent_declined_payment_request_DT').DataTable().draw();
+                      return toastSuccess(`Payment Request ${remark}`);
+                    }
+                },
+                error: err => {
+                    console.log(err);
                 }
-            },
-            error: err => {
-                console.log(err);
+            });
+        }
+        else
+        {
+            let comment = prompt("Please add comment *"); // message
+
+            if(comment === null || comment.length == 0)
+            {
+                return alert("Field is required ⚠");
             }
-        });
+           
+            $.ajax({
+                method: 'PATCH',
+                url: route('parent_payment_request.update_parent_payment_request',payment_request_id),
+                dataType:'json',
+                data:{
+                    remark:remark,
+                    comment: comment
+                },
+                success: response => {
+                    console.log(response);
+                    if(response == 'success')
+                    {
+                        // after update replenish all the Data Tables in the Parent Payment Request Page
+                      $('#parent_payment_request_DT').DataTable().draw();
+                      $('#parent_approved_payment_request_DT').DataTable().draw();
+                      $('#parent_declined_payment_request_DT').DataTable().draw();
+                      return toastSuccess(`Payment Request ${remark}`);
+                    }
+                },
+                error: err => {
+                    console.log(err);
+                }
+            });
+        }
+
+        
     }
 });
 
@@ -6717,7 +6772,8 @@ function parent_update_payment_request(student_id , parent_id) {
 // end
 
 // Show Receipt (IMG)
-$('#to_show_receipt').on('click', function() {
+$(document).on('click', '#to_show_receipt', function() {
+
     let image = $(this).attr('src');
     Swal.fire({
         title: '',
@@ -6732,7 +6788,26 @@ $('#to_show_receipt').on('click', function() {
           no-repeat
         `
       })
+
 });
+
+
+// $('#to_show_receipt').on('click', function() {
+//     let image = $(this).attr('src');
+//     Swal.fire({
+//         title: '',
+//         width: "35%",
+//         imageWidth: "400",
+//         imageHeight: "600",
+//         padding: '3em',
+//         imageUrl: `${image}`,
+//         backdrop: `
+//           rgba(0,0,123,0.4)
+//           left top
+//           no-repeat
+//         `
+//       })
+// });
 
 
 //* ----------> End Admin User()
@@ -7969,6 +8044,14 @@ function res(res)
   return  console.log(res);
 
 }
+
+// get average
+function get_average(array)
+{
+   let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
+   return parseFloat(ave.toFixed(2));
+}
+
 
 
 // row select for multiple delete

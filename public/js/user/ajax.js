@@ -144,7 +144,8 @@ let average_container = []; // student's grade average
                                                         icon: 'warning',
                                                         title: 'Oops...',
                                                         text: `Student ${payment_ledgers[1].first_name} ${payment_ledgers[1].last_name} don't have a down payment. You can add down payment below`,
-                                                        footer: `<a class="btn btn-info" href="javascript:void(0)" onclick='parent_create_down_payment_to_student(${payment_ledgers[1].id})'> + Down payment <i class="fas fa-chevron-left"></i></a> `
+                                                        showConfirmButton:false,
+                                                        footer: `<a class="btn btn-info" href="javascript:void(0)" onclick='parent_create_down_payment_to_student(${payment_ledgers[1].id})'> Add Down payment </a> `
                                                     })
                                                 },1500)
                                                 
@@ -370,6 +371,7 @@ let average_container = []; // student's grade average
                                                         <th>Official Receipt</th>
                                                         <th>MOP</th>
                                                         <th>Remark</th>
+                                                        <th>Comment</th>
                                                         <th>Status</th>
                                                         <th>Date</th>
                                                     </tr>
@@ -378,12 +380,14 @@ let average_container = []; // student's grade average
                                                 
                                     payment_history.forEach(history => {
                                         let date = new Date(history.updated_at);
+                                        let comment = (history.comment !== null) ? history.comment : "";  // check if the comment is null
                                         output += `<tr>
                                                         <td> ${history.first_name} ${history.last_name} </td>
                                                         <td> ${history.amount.toLocaleString()} </td>
                                                         <td> ${history.official_receipt} </td>
                                                         <td> ${history.receipt_type} </td>
                                                         <td> ${history.remark} </td>
+                                                        <td> ${comment} </td>
                                                         <td> ${history.status} </td>
                                                         <td> ${date.toLocaleDateString()} </td>
                                                     </tr>`;

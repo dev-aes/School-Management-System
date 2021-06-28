@@ -151,9 +151,14 @@ class ParentPaymentController extends Controller
     {
         if(request()->ajax())
         {
-            $parent_payment->update(['status' => request('remark')]);
+            $remark = request('remark');
+            $comment = request('comment') ?? "";
 
-            $remarks = request('remark');
+            $parent_payment->update([
+                                        'status' => $remark,
+                                        'comment' => $comment
+                                    ]);
+
             $transaction_no = mt_rand(123456,999999);
 
            
@@ -166,7 +171,7 @@ class ParentPaymentController extends Controller
 
             //$message = nl2br("Admin has $remarks your payment request \n Reference No: $transaction_no \n Questions? Feel free to email as at school@email.com ");
             
-            $message = " Admin has $remarks your payment request.Reference No. 00993281.";
+            $message = " Admin has $remark your payment request.Reference No. 00993281.";
 
 
             $apicode = "TR-EONBO872122_3B6T3";

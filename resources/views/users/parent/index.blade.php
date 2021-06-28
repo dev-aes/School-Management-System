@@ -49,20 +49,20 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>Grade Level</th>
+                                    <th>Section</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                               @forelse ($parent_student as $student )
+                               @forelse ($get_parent_students_with_section as $student )
                                @php 
                                 $student_id = $student->id;
                                 $parent_id = auth()->user()->parent_id;
                                @endphp
                                    <tr>
                                        <td colspan="4">{{ $student->first_name }} {{ $student->last_name }}</td>
-                                       <td >Grade {{ $student->grade_level_id }}</td>
+                                       <td > {{ $student->section->name }}</td>
 
                                             @php 
                                                     $check_if_student_has_down_payment = DB::table('student_fee')
