@@ -612,11 +612,6 @@ function t_assign_grade(section , student)
                                         <td rowspan="2" style="width:25%">Learning Areas</td>
                                         <td colspan="4" style="width:25%">Quarter</td>
                                         <td rowspan="2" style="width:25%">Final Grade</td>
-<<<<<<< HEAD
-                                        <td rowspan="2" style="width:25%">Remark</td>
-                                        <td rowspan="2" style="width:25%">Action</td>
-                                    </tr>
-=======
                                         <td rowspan="2" style="width:25%">Remark</td>`;
 
                                         if(section_student[0].adviser_id == section_student[3])
@@ -624,7 +619,6 @@ function t_assign_grade(section , student)
                     output +=          `<td rowspan="2" style="width:25%">Action</td>`;
                                         }
                     output +=      `</tr>
->>>>>>> beta
                                     <tr>
                                         <td>1</td>
                                         <td>2</td>
@@ -644,17 +638,10 @@ function t_assign_grade(section , student)
                                     
                                     let result = subject.is_approve.split(',');
 
-<<<<<<< HEAD
-                                    let q1_color = (result[0] == 1) ? 'warning' : ''; 
-                                    let q2_color = (result[1] == 2) ? 'warning' : '';
-                                    let q3_color = (result[2] == 3) ? 'warning' : ''; 
-                                    let q4_color = (result[3] == 4) ? 'warning' : '';
-=======
                                     let q1_color = (result[0] == 1) ? 'bg-warning' : ''; 
                                     let q2_color = (result[1] == 2) ? 'bg-warning' : '';
                                     let q3_color = (result[2] == 3) ? 'bg-warning' : ''; 
                                     let q4_color = (result[3] == 4) ? 'bg-warning' : '';
->>>>>>> beta
                                     let q1 = (subject.quarter_1 == null) ? 0 : subject.quarter_1 ;
                                     let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
                                     let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
@@ -669,11 +656,6 @@ function t_assign_grade(section , student)
                                         <td class='quarter ${q3_color}' data-quarter='3' style='width:7%'>${q3}</td>
                                         <td class='quarter ${q4_color}' data-quarter='4' style='width:7%'>${q4}</td>
                                         <td class='average'>${average}</td>
-<<<<<<< HEAD
-                                        <td class='remark'>${remark}</td>
-                                        <td>
-                                            <a class='btn  btn-primary' href='javascript:void(0)'> <i class="fas fa-check"></i> </a>
-=======
                                         <td class='remark'>${remark}</td>`;
 
                                             if(section_student[0].adviser_id == section_student[3])
@@ -682,7 +664,6 @@ function t_assign_grade(section , student)
 
                    output +=            `<td>
                                             <a class='btn  btn-primary' href='javascript:void(0)' onclick='adviser_approve_grade(${subject.id})'> <i class="fas fa-check"></i> </a>
->>>>>>> beta
                                         </td>
                                     </tr>
                             `;      

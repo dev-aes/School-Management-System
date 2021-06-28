@@ -53,22 +53,6 @@ class TeacherController extends Controller
                 $student_grade_id = DB::table('student_grade')->where('student_id',$student->id)->first();
                
               //***If Adviser is login all subjects will be displayed otherwise subject handled of a teacher will be displayed***//  
-<<<<<<< HEAD
-                if($adviser){
-                    $grades = DB::table('grades')
-                    ->join('subjects','grades.subject_id','subjects.id')
-                    ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id','grades.is_approve')
-                    ->where('student_grade_id',$student_grade_id->id)
-                    ->get(); // get subjects, grades by quarter where student id is equal to the param $student
-                }
-                else{
-                    $grades = DB::table('grades')
-                    ->join('subjects','grades.subject_id','subjects.id')
-                    ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','subjects.name','subjects.id','grades.is_approve')
-                    ->where('student_grade_id',$student_grade_id->id)
-                    ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
-                    ->get(); // get subjects, grades by quarter where student id is equal to the param $student
-=======
                 if($adviser)
                 {
 
@@ -87,7 +71,6 @@ class TeacherController extends Controller
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
->>>>>>> beta
                 }
                 //*****************End************************** *//
 
