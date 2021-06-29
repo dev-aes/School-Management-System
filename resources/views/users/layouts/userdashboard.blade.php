@@ -93,8 +93,6 @@
                     <i class="hamburger align-self-center"></i>
                 </a>
 
-			
-
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav navbar-align">
 						
@@ -107,23 +105,22 @@
                 			<i class="align-middle" data-feather="settings"></i>
               				</a>
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-								{{-- @if ($student->student_avatar != null)
-									<img src='{{ asset("/storage/uploads/student/$student->student_avatar") }}'' class="avatar img-fluid rounded me-1" alt="" title="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
-								@endif --}}
-
 								<span class="text-dark">{{ Auth::user()->name }}</span>
                             </a>
 							<div class="dropdown-menu dropdown-menu-end">
-								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
-								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+
+								{{--Check if the user is student or parent--}}
+								@if (auth()->user()->hasRole('student')) 
+
+									<a class="dropdown-item" href="javascript:void(0)" onclick="editProfile()"><i class="align-middle me-1" data-feather="user" ></i> Profile</a>
+								@elseif (auth()->user()->hasRole('parent'))
+									<a class="dropdown-item" href="javascript:void(0)" onclick="editProfile()"><i class="align-middle me-1" data-feather="user" ></i> Profile</a>
+								@else
+									<a class="dropdown-item" href="javascript:void(0)" onclick="editProfile()"><i class="align-middle me-1" data-feather="user" ></i> Profile</a>
+								@endif
+
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="pages-settings.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
-								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                              document.getElementById('logout-form').submit();" class="user-settings">
-                                 {{ __('Logout') }}</a>
+								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="user-settings"> {{ __('Logout') }}</a>
 							</div>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf

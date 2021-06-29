@@ -18,11 +18,15 @@ class StudentController extends Controller
     public function index() 
     {
 
-        $student = auth()->user()->student_id;
+        $student = Student::where('id', auth()->user()->student_id)->first();
 
-
-        // $student_subject_teacher = DB::select("SELECT DISTINCT b.first_name, b.last_name , c.name, c.description, b.id as teacher_id ,c.id as subject_id from students a ,teachers b,subjects c, student_teacher d,subject_teacher e where a.id = $student and d.student_id = $student and e.subject_id = c.id and d.teacher_id = e.teacher_id and b.id = e.teacher_id");
-
+        $student_subject_teacher = DB::table('section_subject')
+                                        ->join('teachers', 'teacher_id', 'teachers.id')
+                                        ->join('subjects', 'subject_id', 'subjects.id')
+                                        ->join('sections', 'section_id', 'sections.id')
+                                        ->select('subjects.name', 'subjects.description', 'teachers.first_name' , 'teachers.last_name','teachers.teacher_avatar')
+                                        ->where('section_id', $student->section_id)
+                                        ->get();
 
         return view('users.student.index', compact('student_subject_teacher'));
     }

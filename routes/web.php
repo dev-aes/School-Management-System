@@ -53,6 +53,11 @@ Route::get('/test', function () {
 });
 
 
+
+
+Route::resource('/admin/user', UserController::class)->middleware('auth');
+
+
 // Admin Dashboard
 Route::middleware(['auth', 'admin'])->group(function() {
 
@@ -82,7 +87,6 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::resource('/admin/studentfee', StudentFeeController::class);
     Route::resource('/admin/payment', PaymentController::class);
     Route::resource('/admin/payment_report', PaymentReportController::class);
-    Route::resource('/admin/user', UserController::class);
     Route::resource('/admin/parent', ParentController::class);
     Route::resource('/admin/payment_mode', PaymentModeController::class);
     Route::resource('/admin/section', SectionController::class);
@@ -364,6 +368,9 @@ Route::post('/dashboard/teacher/store_grades', [UserTeacherController::class, 's
 // for grade approval (ADVISER ONLY)
 
 Route::put('/dashboard/teacher/approve_grade/{id}', [UserTeacherController::class,'approve_grade'])->name('teacher.approve_grade');
+
+// update teacher avatar
+Route::patch('/dashboard/user/teacher/{teacher}', [UserTeacherController::class, 'update'])->name('teacher.teacher_update');
 
 
 

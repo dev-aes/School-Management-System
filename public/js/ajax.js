@@ -2099,7 +2099,123 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                                     <td>Failed</td>
                                 </tr>
                             </tbody>
-                        </table> `;   
+                        </table> `;
+                        
+            output +=  `  
+                        <h1 class="fw-bold text-uppercase text-center mb-5"> report on learners observed values</h1>
+                            <table class="table table-bordered">
+                                <thead style="background: none">
+                                    <tr class="fw-bold text-center">
+                                        <td rowspan="2">Core Values</td>
+                                        <td rowspan="2">Behavior Statements</td>
+                                        <td colspan="4">Quarter</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2">1. Makadiyos</td>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2">2. Makatao</td>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2">3. Makakalikasan</td>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2">4. Makabansa</td>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                        <td>.</td>
+                                    </tr>
+
+                                </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-2" id="marking">
+                    <table class="table table-sm ">
+                        <thead style="background: none">
+                            <tr class="fw-bold">
+                                <th>Marking</th>
+                                <th>Non-numerical Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AO</td>
+                                <td>Always Observed</td>
+                            </tr>
+                            <tr>
+                                <td>SO</td>
+                                <td>Sometimes Observed</td>
+                            </tr>
+                            <tr>
+                                <td>RO</td>
+                                <td>Rarely Observed</td>
+                            </tr>
+                            <tr>
+                                <td>NO</td>
+                                <td>Not Observed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>` ;  
         
 
                          $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(output);
