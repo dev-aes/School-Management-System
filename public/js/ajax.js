@@ -249,7 +249,11 @@ $(()=> {
     },false);
    
 
-    
+    // for printing
+    window.onbeforeprint = function() {
+       $('#p_signature').css('display','block');
+       $('#p_label').css('display', 'block');
+    };
 });
 
 let selected = []; // dynamic container for table row_id's
@@ -796,15 +800,16 @@ function createTeacher()  {
         success: teacher => {
         //    res(teacher);
            $('#show_teacher_modal').modal('show');
+           $('#show_teacher_modal_header').addClass('bg-info');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="teacherinfo-tab" data-bs-toggle="tab" data-bs-target="#teacherinfo" type="button" role="tab" aria-controls="teacherinfo" aria-selected="true">Teacher Info</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Subjects Handled</button>
+                            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Assigned Subject</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Section Handled</button>
+                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Assigned Section</button>
                         </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">`;
@@ -4178,7 +4183,7 @@ function addStudentFee()
                     $('#student_fee_fee').attr('placeholder', "").attr('value', '');
                     $('#student_fee_discount').attr('placeholder', "").attr('value', '');
                     $('#student_fee_modal').modal('hide');
-                    $('#student_fee_DT').DataTable().draw();
+                    $('.student_fee_DT').DataTable().draw();
                 }
                 else
                 {

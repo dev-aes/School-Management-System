@@ -117,7 +117,6 @@ class SectionController extends Controller
         if(request()->ajax())
         {
 
-
             return response()->json([Section::all(), Teacher::all()]);
         }
     }

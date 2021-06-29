@@ -532,7 +532,7 @@ function t_display_students_by_section_id(section)
         dataType:'json',
         success: section_student => {
             //res(section_student);
-            let output = `<table class='table table-hover table-bordered'>
+            let output = `<table class='table table-hover table-bordered' id='user_teacher_display_students'>
                             <thead>
                                 <tr> 
                                     <th> Student Name </th>
@@ -555,7 +555,7 @@ function t_display_students_by_section_id(section)
                             </table>`; // table closure
 
                     $('#t_display_students-'+ section).html(output); // dynamic id + elemt id
-
+                    $('#user_teacher_display_students').DataTable();
         },
         error: err => {
             res(err);

@@ -1,5 +1,6 @@
 
-{{--Start SCHOOL Modal--}}
+@if (url()->current() == route('school.index'))
+    {{--Start SCHOOL Modal--}}
 
     <div class="modal fade" id="school_modal" tabindex="-1" role="dialog" aria-labelledby="school_modal_label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
@@ -127,8 +128,11 @@
 
 {{--End SCHOOL Modal--}}
 
+@endif
 
 
+
+@if(url()->current() == route('teacher.index'))
 {{--Start TEACHER Modal--}}
 
     <div class="modal fade" id="teacher_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_modal_label" aria-hidden="true">
@@ -275,8 +279,8 @@
         <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
+                <div class="modal-header" id="show_teacher_modal_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
@@ -611,9 +615,10 @@
 
 {{--End TEACHER Modal--}}
 
+@endif
 
-
-    
+ 
+@if(url()->current() == route('subject.index'))
 {{--Start Subject Modal--}}
 
     <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="subject_modal_label" aria-hidden="true" data-bs-backdrop="static">
@@ -697,9 +702,10 @@
      {{--END SHOW Subject MODAL--}}
 
 {{--End Subject Modal--}}
+@endif
 
 
-
+@if(url()->current() == route('academic_year.index'))
 {{--Start Accademic Year Modal--}}
     <div class="modal fade" id="accademic_year_modal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="accademic_year_modal_label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -736,10 +742,10 @@
 
 
 {{--End Accademic Year Modal--}}
+@endif
 
 
-
-
+@if(url()->current() == route('grade.index'))
 {{-- Start Grade Level Modal --}}
 
     <div class="modal fade" id="grade_level_modal" tabindex="-1" role="dialog" aria-labelledby="grade_level_modal_label" aria-hidden="true">
@@ -869,9 +875,10 @@
 
 
 {{-- END Grade Level Modal --}}
+@endif
 
 
-    
+@if(url()->current() == route('section.index'))
 {{--Start Section Modal--}}
 
     <div class="modal fade" id="section_modal" tabindex="-1" role="dialog" aria-labelledby="section_modal_label" aria-hidden="true">
@@ -1002,7 +1009,7 @@
 
 
 {{--End Section Modal--}}
-
+@endif
 
 
 {{-- Start Grading  Modal --}}
@@ -1051,7 +1058,7 @@
 {{-- END Grading Modal --}}
 
 
-
+@if(url()->current() == route('student.index'))
 {{--Start Student Modal--}}
 
   <div class="modal fade" id="student_modal" tabindex="-1" role="dialog" aria-labelledby="student_modal_label" aria-hidden="true">
@@ -1268,9 +1275,9 @@
   {{--END SHOW Student MODAL--}}
 
 {{--End Student Modal--}}
+@endif
 
-
-
+@if(url()->current() == route('fee.index'))
 {{--Start Fee Modal--}}
 
     <div class="modal fade" id="fee_modal" tabindex="-1" role="dialog" aria-labelledby="fee_modal_label" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
@@ -1355,8 +1362,9 @@
     </div>
 
 {{--End Fee Modal--}}
+@endif
 
-
+@if(url()->current() == route('studentfee.index'))
 {{--Start Student Enrolment Fee Modal--}}
 
   <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="student_fee_modal" tabindex="-1" role="dialog" aria-labelledby="subject_fee_modal_label" aria-hidden="true">
@@ -1576,8 +1584,9 @@
 
 
 {{--End Student Enrolment Fee Modal--}}
+@endif
 
-
+@if(url()->current() == route('payment.index'))
 {{--Student Payments Modal--}}
 
      <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="payment_modal_label" aria-hidden="true">
@@ -1706,7 +1715,6 @@
           </div>
           <div class="modal-body" >
               <div class="card border border-light">
-                  <div class="card-header">
                       <div class="card-body">
                          <div class="row justify-content-center">
                              <div class="card w-100 border border-secondary">
@@ -1817,17 +1825,15 @@
                                         </div>
                                     </div>
                                   </div>
-                                  {{-- <div id="payment_footer">
-                                      <input class="text-center" type="text" id="p_signature" value="Ace Manalo" readonly >
-                                  </div> --}}
+                                        <input class="text-center" type="text" id="p_signature" value="{{ auth()->user()->name }}" readonly  style="display: none">
+                                        <h5 id="p_label" style="display: none">Cashier</h5>
                                  </div>
                                  <div class="form-group p-3">
-                                    <button class="btn btn-info float-end" onclick="window.print()"> Print <i class="fas fa-print"></i> </button>
-                                 </div>
+                                    <button class="btn btn-info float-end" onclick="window.print();"> Print <i class="fas fa-print"></i> </button>
+                                 </div> 
                              </div>
                          </div>
                       </div>
-                  </div>
               </div>
           </div>
       </div>
@@ -1838,8 +1844,9 @@
 
 
 {{--End Student Payments Modal--}}
+@endif
 
-
+@if(url()->current() == route('user.index'))
 {{-- User Modal--}}
 
     <div class="modal fade" id="user_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="user_modal_label" aria-hidden="true">
@@ -1960,9 +1967,10 @@
 
 
 {{--End User Modal--}}
+@endif
 
 
-
+@if(url()->current() == route('parent.index'))
 {{--Parent Modal--}}
 
     <div class="modal fade" id="parent_modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="parent_modal_label" aria-hidden="true">
@@ -2111,7 +2119,7 @@
     
 
 {{--End Parent Modal--}}
-
+@endif
 
 
 
@@ -2159,7 +2167,7 @@
 {{--End Assign Subjects--}}
 
 
-
+@if(url()->current() == route('payment_mode.index'))
 {{--Payment Mode--}}
 
     <div class="modal fade " id="payment_mode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payment_mode" aria-hidden="true">
@@ -2197,8 +2205,9 @@
 
 
 {{--End Payment Mode--}}
+@endif
 
-
+@if(url()->current() == route('role.index'))
 {{--Start Roles ()--}}
 
     <div class="modal fade " id="role_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="role" aria-hidden="true">
@@ -2235,3 +2244,4 @@
     </div>
 
 {{--End Role--}}
+@endif
