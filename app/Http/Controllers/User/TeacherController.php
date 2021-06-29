@@ -151,15 +151,15 @@ class TeacherController extends Controller
 
                     //***** Process is_approve data here    
 
-                        $is_approve = DB::table('grades')
+                        $is_approved = DB::table('grades')
                                         ->select('grades.is_approve')
                                         ->where('student_grade_id',$data['student_id'])
                                         ->where('subject_id', $data['subject_id'])  
                                         ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
                                         ->first();
-                        
+                        //return response()->json($is_approved);
                         //explode is_approve data
-                        $is_approved = explode(",",$is_approve->is_approve);
+                        $is_approved = explode(",",$is_approved->is_approve);
 
                         for($i = 0; $i < count($is_approved); $i++)
                         {

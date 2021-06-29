@@ -32,7 +32,9 @@ class StudentImport implements ToModel,WithHeadingRow,WithValidation
             "contact"  => $row["contact"],
             "facebook"  => $row["facebook"],
             "email"  => $row["email"],
-            "student_avatar"  => $row["student_avatar"]
+            "student_avatar"  => $row["student_avatar"],
+            "lrn" => $row["lrn"],
+            "is_imported" => $row["is_imported"]
         ]);
     }
 

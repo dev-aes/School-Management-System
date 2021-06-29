@@ -919,19 +919,19 @@ $(document).on('keypress', '#g_grade', function(e) {
         if(subject_teacher_id !== ca[0]){
             return toastr.error("You are not authorized to edit the grade. Please ask permission to the subject teacher.");  
         }
-        // console.log(
-        //                     {
-        //                         // teacher_id: teacher_id,
-        //                         section_id: section_id,
-        //                         quarter_id: quarter_id,
-        //                         student_id: student_id,
-        //                         subject_id: subject_id,
-        //                         grades: grades,
-        //                         grades_id: grades_id,
+        console.log(
+                            {
+                                // teacher_id: teacher_id,
+                                section_id: section_id,
+                                quarter_id: quarter_id,
+                                student_id: student_id,
+                                subject_id: subject_id,
+                                grades: grades,
+                                grades_id: grades_id,
         
         
-        //                     }
-        //                   );
+                            }
+                          );
 
                   $.ajax({
                     method: 'POST',
@@ -948,6 +948,7 @@ $(document).on('keypress', '#g_grade', function(e) {
                     
                     success: response => {
 
+                        res(response);
                        let c = $(this).closest('tr').find('td.average');
                        let d = $(this).closest('tr').find('td.remark');
                        let a =  $(this).closest('tr').children('.quarter');
