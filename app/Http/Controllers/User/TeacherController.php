@@ -59,7 +59,7 @@ class TeacherController extends Controller
 
                     $grades = DB::table('grades')
                                 ->join('subjects','grades.subject_id','subjects.id')
-                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id')
+                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id','grades.subject_teacher_id')
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
                 }
@@ -68,7 +68,7 @@ class TeacherController extends Controller
 
                     $grades = DB::table('grades')
                                 ->join('subjects','grades.subject_id','subjects.id')
-                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id')
+                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id','grades.subject_teacher_id')
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
@@ -97,6 +97,12 @@ class TeacherController extends Controller
                 'subject_id'=>'',
                 'grades_id'=>'',
             ]);
+
+
+            $adviser_id = DB::table('sections')->where('adviser_id',auth()->user()->teacher_id)->first();
+            if(!$adviser_id){
+                //return response()->json('Cannot Edit');
+            }
 
 
             $academic_year = DB::table('academic_years')
@@ -145,15 +151,15 @@ class TeacherController extends Controller
 
                     //***** Process is_approve data here    
 
-                        $is_approve = DB::table('grades')
+                        $is_approved = DB::table('grades')
                                         ->select('grades.is_approve')
                                         ->where('student_grade_id',$data['student_id'])
                                         ->where('subject_id', $data['subject_id'])  
                                         ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
                                         ->first();
-                        
+                        //return response()->json($is_approved);
                         //explode is_approve data
-                        $is_approved = explode(",",$is_approve->is_approve);
+                        $is_approved = explode(",",$is_approved->is_approve);
 
                         for($i = 0; $i < count($is_approved); $i++)
                         {

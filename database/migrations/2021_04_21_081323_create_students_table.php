@@ -31,15 +31,7 @@ class CreateStudentsTable extends Migration
             $table->string('facebook');
             $table->string('email');
             $table->string('student_avatar');
-   
-            
-
-
-
-
-
-
-
+            $table->bigInteger('is_imported');
 
             $table->timestamps();
         });

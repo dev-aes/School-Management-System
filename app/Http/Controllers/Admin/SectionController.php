@@ -117,9 +117,22 @@ class SectionController extends Controller
         if(request()->ajax())
         {
 
+<<<<<<< HEAD
+=======
+            //Query current section adviser information
+
+
+>>>>>>> 512006480e3025a84f33831dd047ab789c08eae0
             return response()->json([Section::all(), Teacher::all()]);
         }
     }
+
+    // public function confirm_adviser_section(){
+    //     $adviser = DB::table('sections')->where('id',$data['section_id'])->where('adviser_id',$data['teacher_id'])->first();
+    //     if($adviser){
+    //         return response()->json('');
+    //     }
+    // }
 
     public function section_store_teacher()
     {
@@ -131,19 +144,50 @@ class SectionController extends Controller
                 'teacher_id' => 'required',
                 'section_adviser'=>'',
             ]);
-           
-            $adviser = Section::where('id',$data['section_id'])
-                     ->where('adviser_id',$data['teacher_id'])
-                     ->first();
-
             $data['created_at'] = now();
             
+            //get section advisory of a particular teacher
+            
+            
+                
+
                     if($data['section_adviser'] == '1'){
+                       
+                        $adviser = DB::table('sections')->where('adviser_id',$data['teacher_id'])->first();
+                        //return response()->json($adviser);
+                        if($adviser){
+                            //update former section adviser_id = 0
+                            DB::table('sections')
+                                ->where('adviser_id', $data['teacher_id'])
+                                ->where('id',$adviser->id)
+                                ->update(['adviser_id' => 0]);
+                                //return response()->json('already have adviser');
+                            //add to new section
+                            DB::table('sections')
+                            ->updateOrInsert(
+                                [
+                                    'id' => $data['section_id']
+                                ],
+                                [
+                                    'adviser_id' => $data['teacher_id'],
+                                    'created_at'=>now()
+                                ]  
+
+                         );
+                      }else{
                         DB::table('sections')
-                        ->updateOrInsert(
-                        ['id' => $data['section_id']],
-                        ['adviser_id' => $data['teacher_id'],'created_at'=>now()]
-                    );
+                            ->updateOrInsert(
+                            [
+                                'id' => $data['section_id']
+                            ],
+                            [
+                                'adviser_id' => $data['teacher_id'],
+                                'created_at'=>now()
+                            ]  
+                        );
+                      }
+
+                        
 
                     //Get Section id via student ID
                     $insert_adviser_id = DB::table('student_grade')
@@ -176,6 +220,20 @@ class SectionController extends Controller
                             }
                         
         
+        }
+    }
+
+    function section_get_adviser(Section $section){
+       
+        if(request()->ajax()) {
+//Query current section adviser
+            $adviser = DB::table('sections')
+                    ->join('teachers','sections.adviser_id','=','teachers.id')
+                    ->select('teachers.first_name','teachers.last_name','teachers.teacher_avatar','teachers.id')
+                    ->where('sections.id',$section->id)
+                    ->first(); 
+            
+            return response()->json($section);
         }
     }
 

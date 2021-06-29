@@ -220,6 +220,7 @@ class StudentController extends Controller
             'facebook' => 'required|string',
             'email' => 'required|email',
             'student_avatar' => 'image',
+            'is_imported'=>'',
         ]);
 
         if(request()->ajax())
@@ -306,7 +307,92 @@ class StudentController extends Controller
         {
             $data = $request->validate(['students' => "file|max:5000|mimes:xlsx,csv"]);
             $file = $request->file('students');
+            
             Excel::import(new StudentImport, $file);
+             $imported_students = Student::where('is_imported',1)->get();
+             $ay = AcademicYear::where('status',1)->first();
+             
+             
+             
+             //$adviser = Teachers::where('id',$adviser_id->adviser_id)->first();
+            
+
+            
+             foreach($imported_students as $student){
+                $adviser_id = Section::where('id',$student->section_id)->first();
+                if($adviser_id){
+                    $insert_student = DB::table('student_grade')->insertGetId([
+                        'academic_year_id'=>$ay->id,
+                        'adviser_id'=>$adviser_id->adviser_id,
+                        'student_id'=>$student->id,
+                        'created_at'=>now(),
+                    ]);
+                }
+                else{
+                    $insert_student = DB::table('student_grade')->insertGetId([
+                        'academic_year_id'=>$ay->id,
+                        'student_id'=>$student->id,
+                        'created_at'=>now(),
+                    ]);
+                }
+
+
+                $get_subjects_and_teachers_id = DB::table('section_subject')->where('section_id',$student->section_id)->get();
+   
+                 $get_section_grade_level = DB::table('sections')
+                            ->join('grade_levels','sections.grade_level_id','grade_levels.id')
+                            ->select('grade_levels.grade_val')
+                            ->where('sections.id',$student->section_id)
+                            ->first();
+
+                foreach ($get_subjects_and_teachers_id as $subject_teacher_id):
+                    DB::table('grades')->insert([
+                        'student_grade_id'=>$insert_student,
+                        'subject_id'=>$subject_teacher_id->subject_id,
+                        'subject_teacher_id'=>$subject_teacher_id->teacher_id,
+                        'grade_level_val' => $get_section_grade_level->grade_val,
+                    ]);
+                endforeach;  
+    
+
+     //If no subjects and teachers exist    
+    if($get_subjects_and_teachers_id->count() == 0){
+         DB::table('grades')->insert(['student_grade_id'=>$insert_student]);
+        
+    }
+                // $insert_student_to_grades = DB::table('grades')->insert([
+                //     'student_grade_id'=>$insert_student,
+                //     'created_at'=>now(),
+                // ]);           
+               
+            }
+             
+            Student::where('is_imported',1)->update(['is_imported'=>0]);
+
+             
+
+
+    // *************** //
+
+   
+    
+    
+
+    
+     
+    
+    //Populate grades here
+    
+    
+
+         //if there is already existing section with subjects the newly added student will populate the Grades Table
+        
+       
+
+
+    //************** */
+
+
             return response()->json('success');
         }
     }

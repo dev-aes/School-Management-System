@@ -3090,6 +3090,7 @@ function section_store_teacher()
 
     if(section_id > 0 && teacher_id > 0)
     {
+        // first check if  an adviser
         $.ajax({
             method: 'POST',
             url: route('section.section_store_teacher'),
@@ -3127,6 +3128,21 @@ function section_store_teacher()
     }
 }
 
+
+function select_current_adviser(){
+    let section_id =  $('#section_section_id').val();
+    
+    $.ajax({  
+        url: route('section.get_adviser', section_id),
+        dataType:'json',
+        success: response =>{
+            res(response);
+        },
+        error: err => {
+            res(err);
+        },
+    })
+}
 
 
 

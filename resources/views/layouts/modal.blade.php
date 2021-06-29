@@ -946,7 +946,7 @@
                     
                     <div class="form-group">
                         <label class='form-label'>Select Section *</label>
-                        <select class="" id="section_section_id" name="section_id" style="width: 100%">
+                        <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
                             {{--Select Section--}}
                         </select>
                     </div>
