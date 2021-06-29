@@ -521,6 +521,7 @@ function t_display_students_by_section_id(section)
         dataType:'json',
         success: section_student => {
             //res(section_student);
+           
             let output = `<table class='table table-hover table-bordered'>
                             <thead>
                                 <tr> 
@@ -554,15 +555,19 @@ function t_display_students_by_section_id(section)
 
 // create
 
+
+
 function t_assign_grade(section , student)
 {
+    let i = 0;
     $('#t_assign_grade_to_students_subject').modal('show');
     $('#t_assign_grade_to_students_subject_header').addClass('bg-primary');
     $.ajax({
         url: route('teacher.assign_grade', [section,student]),
         dataType:'json',
         success: section_student => {
-            //res(section_student)
+           
+            document.cookie = ""+section_student[3];
 
             $('#t_grade_level_id').attr('value',section_student[0].grade_level_id); // add grade level id 
             $('#t_grade_level_name').attr('placeholder', section_student[0].grade_level.name).attr('readonly', true); // display grade level name
@@ -599,8 +604,9 @@ function t_assign_grade(section , student)
                     lengthMenu: [[3, 10, 20, -1], [3, 10, 20]]
                 }); // convert to dt
 
+                
 
-
+                
 
                 let output = `
                                 <center><img class='rounded-circle' src='/storage/uploads/student/${section_student[1].student_avatar}' alt='student_avatar' width='50'></center>
@@ -615,6 +621,7 @@ function t_assign_grade(section , student)
                                         <td rowspan="2" style="width:25%">Remark</td>`;
 
                                         if(section_student[0].adviser_id == section_student[3])
+                                        
                                         {
                     output +=          `<td rowspan="2" style="width:25%">Action</td>`;
                                         }
@@ -632,6 +639,7 @@ function t_assign_grade(section , student)
 
                                 // display student's subjects[]
                                 section_student[2].forEach(subject => {
+                                    
 
                                     let average = get_average([subject.quarter_1,subject.quarter_2,subject.quarter_3,subject.quarter_4]); // get the total avg of grades by quarter
                                     let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
@@ -649,7 +657,9 @@ function t_assign_grade(section , student)
 
                                     average_container.push(average); // insert all average per row on average container[]
 
-                    output += `     <tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
+
+                    output += `<tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject_teacher_id=${subject.subject_teacher_id}  
+                     data-subject='${subject.subject_id}'>
                                         <th >${subject.name}</th>
                                         <td class='quarter ${q1_color}' data-quarter='1' style='width:7%'>${q1}</td>
                                         <td class='quarter ${q2_color}' data-quarter='2' style='width:7%'>${q2}</td>
@@ -658,10 +668,11 @@ function t_assign_grade(section , student)
                                         <td class='average'>${average}</td>
                                         <td class='remark'>${remark}</td>`;
 
-                                            if(section_student[0].adviser_id == section_student[3])
+                                            if(section_student[0].adviser_id == section_student[3])//Check if the login teacher is the adviser
                                             {
-
-
+                                                
+                                               
+                                              
                    output +=            `<td>
                                             <a class='btn  btn-primary' href='javascript:void(0)' onclick='adviser_approve_grade(${subject.id})'> <i class="fas fa-check"></i> </a>
                                         </td>
@@ -735,16 +746,23 @@ function t_assign_grade(section , student)
 
 }
 
+
+
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
+    
+    
+   
     $('#g_grade').remove();
     $(this).append(
         $(`<input type='number' min='60' name='grade' id='g_grade' style='width:100%;display:block'>`)
         .attr('data-subject_id',$(this).parent().attr('data-subject'))
         .attr('data-quarter_id', $(this).attr('data-quarter'))
         .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
+        .attr('data-subject_teacher_id',$(this).parent().attr('data-subject_teacher_id'))
+        
 
       ); // store subject id  && quarter_id  && grade_id to this input field
-
+     
 });
 
 $(document).on('keypress', '#g_grade', function(e) {
@@ -755,10 +773,35 @@ $(document).on('keypress', '#g_grade', function(e) {
     let subject_id = $('#g_grade').attr('data-subject_id');
     let quarter_id = $('#g_grade').attr('data-quarter_id');
     let grades_id = $('#g_grade').attr('data-grades_id');
+    let subject_teacher_id = $('#g_grade').attr('data-subject_teacher_id');
     let grades = $('#g_grade').val();
+   
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
     
+
+    
+
+
     if(e.keyCode == 13)
     {
+        if(subject_teacher_id !== ca[0]){
+            return toastr.error("You are not authorized to edit the grade. Please ask permission to the subject teacher.");  
+        }
+        // console.log(
+        //                     {
+        //                         // teacher_id: teacher_id,
+        //                         section_id: section_id,
+        //                         quarter_id: quarter_id,
+        //                         student_id: student_id,
+        //                         subject_id: subject_id,
+        //                         grades: grades,
+        //                         grades_id: grades_id,
+        
+        
+        //                     }
+        //                   );
+
                   $.ajax({
                     method: 'POST',
                     url: route('teacher.store_assigned_grade_to_student'),
@@ -771,8 +814,9 @@ $(document).on('keypress', '#g_grade', function(e) {
                         grades: grades,
                         grades_id: grades_id,
                     },
+                    
                     success: response => {
-                        
+
                        let c = $(this).closest('tr').find('td.average');
                        let d = $(this).closest('tr').find('td.remark');
                        let a =  $(this).closest('tr').children('.quarter');

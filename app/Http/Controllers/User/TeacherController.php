@@ -58,7 +58,7 @@ class TeacherController extends Controller
 
                     $grades = DB::table('grades')
                                 ->join('subjects','grades.subject_id','subjects.id')
-                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id')
+                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id','grades.subject_teacher_id')
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
                 }
@@ -67,7 +67,7 @@ class TeacherController extends Controller
 
                     $grades = DB::table('grades')
                                 ->join('subjects','grades.subject_id','subjects.id')
-                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id')
+                                ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id','grades.subject_teacher_id')
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->where('grades.subject_teacher_id',auth()->user()->teacher_id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
@@ -96,6 +96,12 @@ class TeacherController extends Controller
                 'subject_id'=>'',
                 'grades_id'=>'',
             ]);
+
+
+            $adviser_id = DB::table('sections')->where('adviser_id',auth()->user()->teacher_id)->first();
+            if(!$adviser_id){
+                //return response()->json('Cannot Edit');
+            }
 
 
             $academic_year = DB::table('academic_years')

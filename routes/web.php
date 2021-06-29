@@ -362,7 +362,7 @@ Route::get('/dashboard/teacher/assign_grade/{section}/{student}', [UserTeacherCo
 // for storing grades by teacher's handled students;
 Route::post('/dashboard/teacher/store_grades', [UserTeacherController::class, 'store'])->name('teacher.store_assigned_grade_to_student');
 
-
+Route::put('/dashboard/teacher/approve_grade/{id}', [UserTeacherController::class,'approve_grade'])->name('teacher.approve_grade');
 
 
 
