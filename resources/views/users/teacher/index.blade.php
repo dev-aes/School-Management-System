@@ -1,7 +1,33 @@
 @extends('users.layouts.userdashboard')
 
 @section('avatar')
-<span class="align-middle"><img src="{{ asset('images/avatar2.png') }}" alt="teacher_avatar" width="130"></span>
+<span class="align-middle">
+
+    @php
+         $teacher = DB::table('teachers')->where('id', auth()->user()->teacher_id)->first();
+
+    @endphp
+
+   
+    <form class="teacher_form" enctype="multipart/form-data">
+        @csrf
+
+        @if ($teacher->teacher_avatar == null)
+
+                <div class="form-group">
+                    <img src="{{ asset('images/user_img.png') }}" alt="teacher_avatar" width="130" id="upload_profile">
+                    <input type="file" name="teacher_avatar" id="student_avatar" style="display:none" accept="image/*" onchange="user_change_profile({{$teacher->id}},'.teacher_form', 'teacher.teacher_update')">
+                </div>
+            
+        @else
+                <div class="form-group">
+                    <img src="{{ asset("/storage/uploads/teacher/$teacher->teacher_avatar") }}" alt="teacher_avatar" width="130" id="upload_profile">
+                </div>
+        @endif
+       
+    </form>
+
+</span>
 @endsection
 
 @section('content')

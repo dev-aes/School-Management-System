@@ -24,11 +24,17 @@ class ParentController extends Controller
 
         // $parent_student = $parent::with('students')->get();
 
-        $parent_student = $parent->students;
+        $parent_students = [] ; // parent student_id container 
 
-        // dd($parent_student);
+        foreach($parent->students as $student): 
 
-        return view('users.parent.index', compact('parent_student'));
+                    array_push($parent_students, $student->id);
+        endforeach;
+
+        $get_parent_students_with_section = Student::with('section')->whereIn('id', $parent_students)->get();
+
+
+        return view('users.parent.index', compact('get_parent_students_with_section'));
     }
 
     public function parent_show_payment_ledger(Student $student)

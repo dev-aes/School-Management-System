@@ -10,12 +10,22 @@
     @endphp
 
    
-    <form id="student_form" enctype="multipart/form-data">
+    <form class="student_form" enctype="multipart/form-data">
         @csrf
-        <div class="form-group">
-            <img src="{{ asset('images/user_img.png') }}" alt="student_avatar" width="130" id="upload_profile">
-            <input type="file" name="student_avatar" id="student_avatar" style="display:none" accept="image/*" onchange="student_change_profile({{auth()->user()->student_id}})">
-        </div>
+
+        @if ($student->student_avatar == null)
+
+                <div class="form-group">
+                    <img src="{{ asset('images/user_img.png') }}" alt="student_avatar" width="130" id="upload_profile">
+                    <input type="file" name="student_avatar" id="student_avatar" style="display:none" accept="image/*" onchange="student_change_profile({{$student->id}},'.student_form','student.student_update')">
+                </div>
+            
+        @else
+                <div class="form-group">
+                    <img src="{{ asset("/storage/uploads/student/$student->student_avatar") }}" alt="student_avatar" width="130" id="upload_profile">
+                </div>
+        @endif
+       
     </form>
 
 
@@ -74,7 +84,7 @@
                                     <tr>
                                         <td>{{ $credential->name }}</td>
                                         <td>{{ $credential->description }}</td>
-                                        <td>{{ $credential->first_name }} {{$credential->last_name}}</td>
+                                        <td><img src='{{ asset("/storage/uploads/teacher/$credential->teacher_avatar") }}' width="35"> <span class="ms-2">{{ $credential->first_name }} {{$credential->last_name}}</span></td>
                                     </tr>
                                 @empty
                                     <tr>

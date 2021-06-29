@@ -114,6 +114,7 @@ html {
     }
   }
   */
+  @page{size:auto; margin:5mm;}
   
   @media print {
     body {
@@ -124,7 +125,28 @@ html {
       position: absolute;
       left: 0px;
       top: 0px;
+    
     }
+    #logo_img {
+      display: block !important;
+    }
+
+    #payment_footer {
+      position: fixed;
+      bottom: 0;
+      
+    }
+
+    #p_signature {
+      display: block;
+      border-top: none !important;
+      border-right: none !important;
+      border-left: none !important;
+      position: relative;
+      top: 120% !important;
+      left: 170% !important;
+    }
+
 
     .col-md-1,.col-md-2,.col-md-3,.col-md-4,
     .col-md-5,.col-md-6,.col-md-7,.col-md-8, 

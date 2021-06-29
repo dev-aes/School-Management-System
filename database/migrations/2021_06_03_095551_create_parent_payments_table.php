@@ -22,6 +22,7 @@ class CreateParentPaymentsTable extends Migration
             $table->string('receipt_type');
             $table->string('screenshot');
             $table->string('remark');
+            $table->string('comment')->nullable();
             $table->timestamps();
             $table->string('status')->default("pending");
             $table->bigInteger('seen')->default(0);

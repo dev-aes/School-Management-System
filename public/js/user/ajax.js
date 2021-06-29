@@ -144,7 +144,8 @@ let average_container = []; // student's grade average
                                                         icon: 'warning',
                                                         title: 'Oops...',
                                                         text: `Student ${payment_ledgers[1].first_name} ${payment_ledgers[1].last_name} don't have a down payment. You can add down payment below`,
-                                                        footer: `<a class="btn btn-info" href="javascript:void(0)" onclick='parent_create_down_payment_to_student(${payment_ledgers[1].id})'> + Down payment <i class="fas fa-chevron-left"></i></a> `
+                                                        showConfirmButton:false,
+                                                        footer: `<a class="btn btn-info" href="javascript:void(0)" onclick='parent_create_down_payment_to_student(${payment_ledgers[1].id})'> Add Down payment </a> `
                                                     })
                                                 },1500)
                                                 
@@ -370,6 +371,7 @@ let average_container = []; // student's grade average
                                                         <th>Official Receipt</th>
                                                         <th>MOP</th>
                                                         <th>Remark</th>
+                                                        <th>Comment</th>
                                                         <th>Status</th>
                                                         <th>Date</th>
                                                     </tr>
@@ -378,12 +380,14 @@ let average_container = []; // student's grade average
                                                 
                                     payment_history.forEach(history => {
                                         let date = new Date(history.updated_at);
+                                        let comment = (history.comment !== null) ? history.comment : "";  // check if the comment is null
                                         output += `<tr>
                                                         <td> ${history.first_name} ${history.last_name} </td>
                                                         <td> ${history.amount.toLocaleString()} </td>
                                                         <td> ${history.official_receipt} </td>
                                                         <td> ${history.receipt_type} </td>
                                                         <td> ${history.remark} </td>
+                                                        <td> ${comment} </td>
                                                         <td> ${history.status} </td>
                                                         <td> ${date.toLocaleDateString()} </td>
                                                     </tr>`;
@@ -409,6 +413,14 @@ let average_container = []; // student's grade average
         $('.grades').toggle();
     });
 
+    
+    $('#parent_profile').on('click', ()=> {
+        $('.user_parent_modal').modal('show');
+        $('#user_parent_modal_header').addClass('bg-info');
+        $('#user_parent_modal_label').html(`<h4 class='text-white'> Account <i class="fas fa-user-cog"></i> </h4>`);
+
+    });
+
 // -------> ENd Parent()
 
 
@@ -422,11 +434,10 @@ let average_container = []; // student's grade average
         $('#student_avatar').click();
     });
 
-    function student_change_profile(id) {
-        let form = $('#student_form')[0];
+    function user_change_profile(id, user_form_data, route_name) {
+        let form = $(user_form_data)[0];
         let form_data = new FormData(form);
         form_data.append('_method', 'PATCH');
-
 
         Swal.fire({
             title: 'Do you want to upload profile?',
@@ -440,7 +451,7 @@ let average_container = []; // student's grade average
             if (result.isConfirmed) {
                 $.ajax({
                     method: 'POST',
-                    url: route('student.student_update', id),
+                    url: route(route_name, id),
                     dataType: 'json',
                     data: form_data,
                     processData: false,
@@ -732,7 +743,127 @@ function t_assign_grade(section , student)
                                             <td>Failed</td>
                                         </tr>
                                     </tbody>
-                                </table> `;   
+                                </table>
+                            </div> `;   
+
+
+                                // learner values
+
+                    output += `  
+                                <h1 class="fw-bold text-uppercase text-center mb-5 mt-5"> report on learners observed values</h1>
+                                    <table class="table table-bordered">
+                                        <thead style="background: none">
+                                            <tr class="fw-bold text-center">
+                                                <td rowspan="2">Core Values</td>
+                                                <td rowspan="2">Behavior Statements</td>
+                                                <td colspan="4">Quarter</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>1</td>
+                                                <td>2</td>
+                                                <td>3</td>
+                                                <td>4</td>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td rowspan="2">1. Makadiyos</td>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td rowspan="2">2. Makatao</td>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td rowspan="2">3. Makakalikasan</td>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td rowspan="2">4. Makabansa</td>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                                <td>.</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row mt-2" id="marking">
+                                    <table class="table table-sm ">
+                                        <thead style="background: none">
+                                            <tr class="fw-bold">
+                                                <th>Marking</th>
+                                                <th>Non-numerical Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>AO</td>
+                                                <td>Always Observed</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SO</td>
+                                                <td>Sometimes Observed</td>
+                                            </tr>
+                                            <tr>
+                                                <td>RO</td>
+                                                <td>Rarely Observed</td>
+                                            </tr>
+                                            <tr>
+                                                <td>NO</td>
+                                                <td>Not Observed</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>`
 
 
                         $('#t_assign_grade_to_student_display_encoding_of_grade').html(output);
@@ -903,6 +1034,7 @@ function adviser_approve_grade(grade_id)
 
 
 
+// GLOBAL FUNCTIONS
 
 function get_average(array)
 {
@@ -910,7 +1042,48 @@ function get_average(array)
    return parseFloat(ave.toFixed(2));
 }
 
+function editProfile()
+{
+    $('.end_user_modal').modal('show');
+    $('#end_user_modal_header').addClass('bg-info');
+    $('#end_user_modal_label').html(`<h4 class='text-white'> Account <i class="fas fa-user-cog"></i> </h4>`);
+}
+function update_password(user, inputfield)
+{
+    if(isNotEmpty($(inputfield)))
+    {
+        Swal.fire({
+            title: 'Do you want to update password?',
+            text: "You won't be able to revert this !",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#4085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'PUT',
+                    url: route('user.update', user),
+                    dataType:'json',
+                    data:{password:$(inputfield).val()},
+                    success: response => {
 
+                        $('.end_user_modal').modal('hide');
+                        (response == 'success') 
+                        ? toastSuccess('Password Updated') 
+                        : toastDanger() ;
+                    },
+                    error: err => {
+                        console.log(err);
+                        toastDanger();
+                    }
+                });
+            }
+        })
+    }
+    
+}
 
 
 

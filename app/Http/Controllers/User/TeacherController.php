@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -200,6 +201,23 @@ class TeacherController extends Controller
            
             return $this->res();
 
+        }
+    }
+
+    public function update(Teacher $teacher)
+    {
+        if(request()->ajax())
+        {   
+            $teacher_form_data = request()->validate(['teacher_avatar' => 'image'] );
+
+            if(request()->hasFile('teacher_avatar')) {
+                // check if the request has an image file
+                 $teacher_form_data['teacher_avatar'] = request('teacher_avatar')->getClientOriginalName(); // get only the original file_name 
+                  request('teacher_avatar')->storeAs('uploads/teacher',$teacher_form_data['teacher_avatar'] , 'public' );  // params: fileFolder , fileName , filePath
+                  $teacher->update(['teacher_avatar' => $teacher_form_data['teacher_avatar']]);
+                  return response()->json('success');
+            }
+        
         }
     }
 
