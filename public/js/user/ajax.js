@@ -532,12 +532,8 @@ function t_display_students_by_section_id(section)
         dataType:'json',
         success: section_student => {
             //res(section_student);
-<<<<<<< HEAD
-            let output = `<table class='table table-hover table-bordered' id='user_teacher_display_students'>
-=======
            
             let output = `<table class='table table-hover table-bordered'>
->>>>>>> 512006480e3025a84f33831dd047ab789c08eae0
                             <thead>
                                 <tr> 
                                     <th> Student Name </th>

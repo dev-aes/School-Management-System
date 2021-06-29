@@ -117,12 +117,9 @@ class SectionController extends Controller
         if(request()->ajax())
         {
 
-<<<<<<< HEAD
-=======
             //Query current section adviser information
 
 
->>>>>>> 512006480e3025a84f33831dd047ab789c08eae0
             return response()->json([Section::all(), Teacher::all()]);
         }
     }
