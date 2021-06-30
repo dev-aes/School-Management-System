@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -76,6 +77,11 @@ class AcademicYearController extends Controller
         }
     }
 
-   
+    public  static function getAcademicYear(){
+        return DB::table('academic_years')->where('status',1)->first();
+
+        //Get the objects of AY
+        //$ay = AcademicYearController::getAcademicYear();
+    }
 
 }

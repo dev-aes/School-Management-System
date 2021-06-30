@@ -17,6 +17,7 @@ class CreateSectionTeacherTable extends Migration
             $table->id();
             $table->foreignId('section_id')->constrained('sections')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('teacher_id')->constrained('teachers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ class CreateDescriptionValues extends Migration
         Schema::create('description_values', function (Blueprint $table) {
             $table->id();
             $table->foreignId('values_id')->nullable()->constrained('values')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('desctiption')->default(' ');
+            $table->string('description')->default(' ');
             $table->timestamps();
         });
     }

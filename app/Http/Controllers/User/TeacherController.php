@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\Admin\StudentFeeController;
 
 class TeacherController extends Controller
 {
@@ -35,8 +36,8 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            $students = Section::with('student')->where('id', $section->id)->first();
-
+            //$students = Section::with('student')->where('id', $section->id)->first();
+            $students = StudentFeeController::getStudentHasDownpayment();
             return response()->json($students);
         }
     }

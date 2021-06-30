@@ -70,8 +70,6 @@ class PaymentController extends Controller
                                                 // ->where('status', 'active')
                                                 ->orderBy('status','ASC')
                                                 ->get();
-
-          
             return response()->json($student_fee_id_with_student_name);
         }
     }
