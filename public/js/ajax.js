@@ -7334,118 +7334,36 @@ function createRole()
                                         <td>4</td>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                        <td>Filipino</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                <tbody>`;
 
-                                    <tr>
-                                        <td>English</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                res(student_form);
 
-                                    <tr>
-                                        <td>Math</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                // let average = '';
+                                // let remark = '';
+       
+                                // if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
+                                // {
+                                //    remark = (average > 74) ? 'Passed': 'Failed';
+                                //    average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+       
+                                // }
+                                
+                                
+                                // let result = subject.is_approve.split(',');
 
-                                    <tr>
-                                        <td>Science</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                // let q1_color = (result[0] == 1) ? 'bg-warning' : ''; 
+                                // let q2_color = (result[1] == 2) ? 'bg-warning' : '';
+                                // let q3_color = (result[2] == 3) ? 'bg-warning' : ''; 
+                                // let q4_color = (result[3] == 4) ? 'bg-warning' : '';
+                                // let q1 = (subject.quarter_1 == null) ? '' : subject.quarter_1 ;
+                                // let q2 = (subject.quarter_2 == null) ? '' : subject.quarter_2 ;
+                                // let q3 = (subject.quarter_3 == null) ? '' : subject.quarter_3 ;
+                                // let q4 = (subject.quarter_4 == null) ? '' : subject.quarter_4 ;
 
-                                    <tr>
-                                        <td>Araling Panlipunan</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                // average_container.push(average); // insert all average per row on average container[]
 
-                                    <tr>
-                                        <td>Edukasyon sa Pagpapakatao <br>(Esp)</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th style="border-bottom: 1px solid transparent">MAPEH</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid transparent">Music</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid transparent">Arts</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid transparent">P.E.</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td >Health</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="text-center fw-bold">
-                                        <td></td>
-                                        <td colspan="4">General Average</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
+                                     
+                  output +=     `</tbody>
                             </table>
                             <div class="row mt-2" id="descriptors">
                                 <table class="table table-sm ">

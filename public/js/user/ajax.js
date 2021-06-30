@@ -928,7 +928,7 @@ $(document).on('keypress', '#g_grade', function(e) {
                     
                     success: response => {
 
-                        res(response);
+                        //res(response);
                        let c = $(this).closest('tr').find('td.average');
                        let d = $(this).closest('tr').find('td.remark');
                        let a =  $(this).closest('tr').children('.quarter');
@@ -993,7 +993,7 @@ $(document).on('mouseleave', '#g_grade', function(e) {
 $(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values .values_quarter', function() {
     $('#v_values').remove();
     $(this).append(
-        $(`<input type='text' name='values' id='v_values' style='width:100%;display:block'>`)
+        $(`<input type='text' name='values' id='v_values' style='width:100%;display:block' onkeypress="return /[a-z]/i.test(event.key)">`)
         .attr('data-values_id',$(this).parent().attr('data-values_id'))
         .attr('data-description_id', $(this).parent().attr('data-description_id'))
         .attr('data-student_id',$(this).parent().attr('data-student_id'))
@@ -1040,6 +1040,7 @@ $(document).on('keypress', '#v_values', function(e) {
                 res(response);
                 if(response == 'success')
                 {
+                    $(this).closest('td').text($(this).val());
                     return toastSuccess("Values assigned ");
 
                 }

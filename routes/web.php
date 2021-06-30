@@ -79,6 +79,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
         Route::get('/admin/report/form_138/display_student_record/{student}', [ReportController::class, 'to_form_138_show_by_student_id'])->name('report.to_form_138_show_by_student_id');
 
         Route::resource('/admin/report', ReportController::class);
+        
     // end Report
 
 
