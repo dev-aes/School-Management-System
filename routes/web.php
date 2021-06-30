@@ -28,7 +28,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SubjectStudentController;
-
+use App\Http\Controllers\Admin\ValuesController;
 // User Restful Controllers
 
 use App\Http\Controllers\User\ParentController as UserParentController;
@@ -93,6 +93,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::resource('/admin/grade', GradeController::class);
     Route::resource('/admin/academic_year', AcademicYearController::class);
     Route::resource('/admin/role', RoleController::class);
+    Route::resource('/admin/values', ValuesController::class);
 
 
 
@@ -290,6 +291,12 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::post('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'grade_level_assign_subject_subject_id_store'])->name('grade_level.grade_level_assign_subject_subject_id_store');
     
 
+    // Values and Description
+    Route::post('/admin/values/createDescription', [ValuesController::class, 'store_description'])->name('values.store_description');
+
+    // delete assigned description
+    Route::delete('/admin/values/deleteDescription/{description}', [ValuesController::class, 'values_description_destroy'])->name('values.values_description_destroy');
+
 
 });
 
@@ -370,6 +377,11 @@ Route::put('/dashboard/teacher/approve_grade/{id}', [UserTeacherController::clas
 
 // update teacher avatar
 Route::patch('/dashboard/user/teacher/{teacher}', [UserTeacherController::class, 'update'])->name('teacher.teacher_update');
+
+
+// TEACHER ADVISER
+
+Route::post('/dashboard/teacher/store_values', [UserTeacherController::class, 'teacher_assign_values_to_student'])->name('teacher.teacher_assign_values_to_student');
 
 
 

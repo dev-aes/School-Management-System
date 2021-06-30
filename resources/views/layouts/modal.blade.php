@@ -2245,3 +2245,119 @@
 
 {{--End Role--}}
 @endif
+
+
+@if(url()->current() == route('values.index'))
+
+    {{--Values--}}
+
+        {{--Create--}}
+            <div class="modal fade " id="values_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="values_modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="values_modal_header">
+                    <h5 class="modal-title" id="values_modal_label">{{--Modal Title--}}</h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                    </div>
+
+                    {{--Alert--}}
+                    <div class="alert alert-danger p-3 fade show" id="values_modal_div_err" role="alert" style="display:none">
+                        <ul id="values_modal_err"></ul>
+                    </div>
+
+                    <div class="modal-body">
+                    <form id="values_form" autocomplete="off">
+                        @csrf
+                        <div class="form-group">
+                            <label class='form-label'>Core Values *</label>
+                            <input class="form-control" name="title" type="text" id="values_title" value="">
+                        </div>
+                        
+                    </form>
+                    </div>
+
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_add_values_modal" onclick="createValues()">Submit</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {{--End Create}}
+
+        {{--Edit--}}
+
+            <div class="modal fade " id="edit_values_statement_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="values_statement_modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="edit_values_statement_modal_header">
+                    <h5 class="modal-title" id="edit_values_statement_modal_label">{{--Modal Title--}}</h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                    </div>
+
+                    {{--Alert--}}
+                    <div class="alert alert-danger p-3 fade show" id="edit_values_statement_modal_div_err" role="alert" style="display:none">
+                        <ul id="edit_values_statement_modal_err"></ul>
+                    </div>
+
+                    <div class="modal-body">
+                    <form id="edit_values_statement_form" autocomplete="off">
+                        @csrf
+                        <div class="form-group">
+                            <label for="edit_values_title" class="form-label">Enter Values *</label>
+                            <input class="form-control" name="title" id="edit_values_title" type="text">
+                        </div>
+                    </form>
+                    </div>
+                    <div class="p-3" id="display_assigned_description">
+                        {{--Display assigned descriptions--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="btn_update_values_modal" onclick="updateValues()">Update</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {{--End Edit--}}
+
+        {{--Assign Statement--}}
+            <div class="modal fade " id="values_statement_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="values_statement_modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="values_statement_modal_header">
+                    <h5 class="modal-title" id="values_statement_modal_label">{{--Modal Title--}}</h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                    </div>
+
+                    {{--Alert--}}
+                    <div class="alert alert-danger p-3 fade show" id="values_statement_modal_div_err" role="alert" style="display:none">
+                        <ul id="values_statement_modal_err"></ul>
+                    </div>
+
+                    <div class="modal-body">
+                    <form id="values_statement_form" autocomplete="off" enctype="multipart/form-data">
+                        @csrf
+                        <h4 class="text-muted text-capitalize fw-bold" id="core_values"></h4><br>
+                        <div class="form-group">
+                           <textarea class="form-control" name="description" id="values_description"  rows="3" placeholder="Add statement .."></textarea>
+                        </div>
+                        
+                    </form>
+                    </div>
+
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_add_values_statement" onclick="createDescription()">Submit</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {{--End Assign Statement--}}
+
+    {{--End Values--}}
+
+
+@endif

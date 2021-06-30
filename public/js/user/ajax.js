@@ -533,7 +533,7 @@ function t_display_students_by_section_id(section)
         success: section_student => {
             //res(section_student);
            
-            let output = `<table class='table table-hover table-bordered'>
+            let output = `<table class='table table-hover table-bordered' id='user_teacher_display_students'>
                             <thead>
                                 <tr> 
                                     <th> Student Name </th>
@@ -577,7 +577,6 @@ function t_assign_grade(section , student)
         url: route('teacher.assign_grade', [section,student]),
         dataType:'json',
         success: section_student => {
-           
             document.cookie = ""+section_student[3];
 
             $('#t_grade_level_id').attr('value',section_student[0].grade_level_id); // add grade level id 
@@ -650,10 +649,17 @@ function t_assign_grade(section , student)
 
                                 // display student's subjects[]
                                 section_student[2].forEach(subject => {
-                                    
 
-                                    let average = get_average([subject.quarter_1,subject.quarter_2,subject.quarter_3,subject.quarter_4]); // get the total avg of grades by quarter
-                                    let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+                                    let average = '';
+                                    let remark = '';
+           
+                                    if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
+                                    {
+                                       remark = (average > 74) ? 'Passed': 'Failed';
+                                       average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+           
+                                    }
+                                    
                                     
                                     let result = subject.is_approve.split(',');
 
@@ -661,10 +667,10 @@ function t_assign_grade(section , student)
                                     let q2_color = (result[1] == 2) ? 'bg-warning' : '';
                                     let q3_color = (result[2] == 3) ? 'bg-warning' : ''; 
                                     let q4_color = (result[3] == 4) ? 'bg-warning' : '';
-                                    let q1 = (subject.quarter_1 == null) ? 0 : subject.quarter_1 ;
-                                    let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
-                                    let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
-                                    let q4 = (subject.quarter_4 == null) ? 0 : subject.quarter_4 ;
+                                    let q1 = (subject.quarter_1 == null) ? '' : subject.quarter_1 ;
+                                    let q2 = (subject.quarter_2 == null) ? '' : subject.quarter_2 ;
+                                    let q3 = (subject.quarter_3 == null) ? '' : subject.quarter_3 ;
+                                    let q4 = (subject.quarter_4 == null) ? '' : subject.quarter_4 ;
 
                                     average_container.push(average); // insert all average per row on average container[]
 
@@ -749,123 +755,102 @@ function t_assign_grade(section , student)
 
                                 // learner values
 
-                    output += `  
-                                <h1 class="fw-bold text-uppercase text-center mb-5 mt-5"> report on learners observed values</h1>
-                                    <table class="table table-bordered">
-                                        <thead style="background: none">
-                                            <tr class="fw-bold text-center">
-                                                <td rowspan="2">Core Values</td>
-                                                <td rowspan="2">Behavior Statements</td>
-                                                <td colspan="4">Quarter</td>
-                                            </tr>
+                   
+                    if(section_student[0].adviser_id == section_student[3])//Check if the login teacher is the adviser
+                    {
+            
 
-                                            <tr>
-                                                <td>1</td>
-                                                <td>2</td>
-                                                <td>3</td>
-                                                <td>4</td>
-                                            </tr>
-                                            
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td rowspan="2">1. Makadiyos</td>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
+                        output += `  
+                                   <div class='mt-2 row'>
+                                        <h1 class="fw-bold text-uppercase text-center mb-5 mt-5"> report on learners observed values</h1>
+                                            <table class="table table-bordered" id='teacher_assign_observed_values_to_student'>
+                                                <thead style="background: none">
+                                                    <tr class="fw-bold text-center">
+                                                        <td rowspan="2">Core Values</td>
+                                                        <td rowspan="2">Behavior Statements</td>
+                                                        <td colspan="4">Quarter</td>
+                                                    </tr>
 
-                                            <tr>
-                                                <td rowspan="2">2. Makatao</td>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td rowspan="2">3. Makakalikasan</td>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td rowspan="2">4. Makabansa</td>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, aliquid.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                                <td>.</td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="row mt-2" id="marking">
-                                    <table class="table table-sm ">
-                                        <thead style="background: none">
-                                            <tr class="fw-bold">
-                                                <th>Marking</th>
-                                                <th>Non-numerical Rating</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>AO</td>
-                                                <td>Always Observed</td>
-                                            </tr>
-                                            <tr>
-                                                <td>SO</td>
-                                                <td>Sometimes Observed</td>
-                                            </tr>
-                                            <tr>
-                                                <td>RO</td>
-                                                <td>Rarely Observed</td>
-                                            </tr>
-                                            <tr>
-                                                <td>NO</td>
-                                                <td>Not Observed</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>`
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>2</td>
+                                                        <td>3</td>
+                                                        <td>4</td>
+                                                    </tr>
+                                                    
+                                                </thead>
+                                                <tbody>`;
 
 
+                                                let index = 0;
+                                                section_student[4].forEach(values_description => { // loop core values
+
+
+                       output +=                     `<tr class='v_values' data-description_id='${values_description.description_id}' data-values_id='${values_description.values_id}' data-student_id ='${section_student[1].id}' data-adviser_id='${section_student[0].adviser_id}'>`;        
+                       
+                                                        if(index === values_description.values_id)
+                                                        {
+                       output +=                           `<td style='border-top:1px solid #fff !important'> </td>
+                                                            <td>${values_description.description}</td>
+                                                            <td class='values_quarter' data-quarter='1' style='width:7%'>q</td>
+                                                            <td class='values_quarter' data-quarter='2' style='width:7%'>w</td>
+                                                            <td class='values_quarter' data-quarter='3' style='width:7%'>e</td>
+                                                            <td class='values_quarter' data-quarter='4' style='width:7%'>e</td>`;
+                                                        }
+                                                        else
+                                                        {
+                                                            
+                       output +=                           `<td class='text-capitalize'>${values_description.title}</td>
+                                                            <td>${values_description.description}</td>
+                                                            <td class='values_quarter' data-quarter='1'style='width:7%'>r</td>
+                                                            <td class='values_quarter' data-quarter='2'style='width:7%'>e</td>
+                                                            <td class='values_quarter' data-quarter='3'style='width:7%'>u</td>
+                                                            <td class='values_quarter' data-quarter='4'style='width:7%'>p</td>`;  
+                                                        }
+                       
+                      output +=                       `</tr>
+                                             `;
+
+                                                        index = values_description.values_id;
+
+
+                                            }); // closure
+                                             
+
+                   output +=        `
+                                            </tbody>
+                                            </table>
+                                    </div>
+                                    <div class="row mt-2" id="marking">
+                                        <table class="table table-sm ">
+                                            <thead style="background: none">
+                                                <tr class="fw-bold">
+                                                    <th>Marking</th>
+                                                    <th>Non-numerical Rating</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>AO</td>
+                                                    <td>Always Observed</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>SO</td>
+                                                    <td>Sometimes Observed</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RO</td>
+                                                    <td>Rarely Observed</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NO</td>
+                                                    <td>Not Observed</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>`;
+
+                    }
                         $('#t_assign_grade_to_student_display_encoding_of_grade').html(output);
    
 
@@ -877,12 +862,10 @@ function t_assign_grade(section , student)
 
 }
 
-
+// TODO INSERT GRADE
 
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
     
-    
-   
     $('#g_grade').remove();
     $(this).append(
         $(`<input type='number' min='60' name='grade' id='g_grade' style='width:100%;display:block'>`)
@@ -891,8 +874,8 @@ $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .
         .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
         .attr('data-subject_teacher_id',$(this).parent().attr('data-subject_teacher_id'))
         
-
       ); // store subject id  && quarter_id  && grade_id to this input field
+        
      
 });
 
@@ -910,10 +893,6 @@ $(document).on('keypress', '#g_grade', function(e) {
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
     
-
-    
-
-
     if(e.keyCode == 13)
     {
         if(subject_teacher_id !== ca[0]){
@@ -953,6 +932,8 @@ $(document).on('keypress', '#g_grade', function(e) {
                        let d = $(this).closest('tr').find('td.remark');
                        let a =  $(this).closest('tr').children('.quarter');
                        let x =  $(this).closest('td').text($(this).val());
+                       let remark = '';
+                       let average = '';
     
                         var texts = a.map(function() {
                             return $(this).text();
@@ -963,8 +944,12 @@ $(document).on('keypress', '#g_grade', function(e) {
                        let q3 = Object.values(texts)[2];
                        let q4 = Object.values(texts)[3];
                     
-                       let average = ( parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4) ) / 4; // get the total avg of grades by quarter
-                       let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+                       if(q1 !== '' && q2 !== '' && q3 !=='' && q4 !=='')
+                       {
+                            average = ( parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4) ) / 4; // get the total avg of grades by quarter
+                            remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+
+                       }
                
                       c.text(average);
                       d.text(remark);
@@ -999,6 +984,93 @@ $(document).on('keypress', '#g_grade', function(e) {
 $(document).on('mouseleave', '#g_grade', function(e) {
     $(this).css('display','none');
 })
+
+// END
+
+// TODO INSERT OBSERVED VALUES
+
+$(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values .values_quarter', function() {
+    
+
+
+    $('#v_values').remove();
+    $(this).append(
+        $(`<input type='text' name='values' id='v_values' style='width:100%;display:block'>`)
+        .attr('data-values_id',$(this).parent().attr('data-values_id'))
+        .attr('data-description_id', $(this).parent().attr('data-description_id'))
+        .attr('data-student_id',$(this).parent().attr('data-student_id'))
+        .attr('data-adviser_id',$(this).parent().attr('data-adviser_id'))
+        .attr('data-quarter',$(this).attr('data-quarter'))
+      ); // append values id  && description id  && student id to this input field
+     
+});
+
+$(document).on('keypress', '#v_values', function(e) {
+
+    let student_id = $('#v_values').attr('data-student_id');
+    let adviser_id = $('#v_values').attr('data-adviser_id');
+    // let values_id = $('#v_values').attr('data-values_id');
+    let description_id = $('#v_values').attr('data-description_id');
+    let values = $('#v_values').val();
+    let quarter = $('#v_values').attr('data-quarter');
+
+    if(e.keyCode == 13)
+    {
+
+        console.log({
+            student_id:student_id,
+            description_id:description_id,
+            values:values,
+            quarter: quarter
+        })
+
+        $.ajax({
+            method: 'POST',
+            url: route('teacher.teacher_assign_values_to_student'),
+            dataType:'json',
+            data:
+            {
+                student_id:student_id,
+                adviser_id:adviser_id,
+                // values_id:values_id,
+                description_id:description_id,
+                values:values,
+                quarter:quarter
+            },
+            success: response => {
+                res(response);
+                if(response == 'success')
+                {
+                    return toastSuccess("Values assigned ");
+
+                }
+                if(response == 'error')
+                {
+                    toastDanger();
+                }
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+
+
+     
+
+});
+
+
+
+$(document).on('mouseleave', '#v_values', function(e) {
+    $(this).css('display','none');
+})
+
+
+
+
+
+
 
 // for grade approval ( ADMIN & ADVISER ONLY );
 function adviser_approve_grade(grade_id)
@@ -1107,7 +1179,17 @@ function update_password(user, inputfield)
 /** END Validation FUNCTION */
 
 
-
+function getUnique(array){
+    var uniqueArray = [];
+    
+    // Loop through array values
+    for(var value of array){
+        if(uniqueArray.indexOf(value) === -1){
+            uniqueArray.push(value);
+        }
+    }
+    return uniqueArray;
+}
 
 
 

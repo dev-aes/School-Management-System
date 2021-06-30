@@ -217,11 +217,21 @@ $(()=> {
 
     if(window.location.href == route('role.index'))
     {
-        let role_column_data = [ {data: 'name'}, {data: 'actions'} ];
+        let role_column_data = [ {data: 'name'}, {data: 'actions',  orderable: false, searchable: false} ];
         crud_index('.role_DT', 'role.index', role_column_data); // after loading the Role ; load the Role data
 
         $('#role_title').tagsinput(); 
     }
+
+    if(window.location.href == route('values.index'))
+    {
+        $('#values_title').tagsinput(); 
+
+        let values_column_data = [{data:'id'}, {data: 'title'}, {data: 'actions',  orderable: false, searchable: false} ];
+        crud_index('.values_DT', 'values.index', values_column_data); // after loading the Role ; load the Role data
+    }
+
+
 
 
 
@@ -2021,10 +2031,17 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                             
                             
                     student_subjects[1].forEach(subject => {
-                    
-                         let average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
-                         let remark = (average > 74) ? 'Passed': 'Failed';
+                        
+                         let average = '';
+                         let remark = '';
 
+                         if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
+                         {
+                            remark = (average > 74) ? 'Passed': 'Failed';
+                            average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+
+                         }
+                         
                          let result = subject.is_approve.split(',');
 
                          let q1_color = (result[0] == 1) ? 'warning' : ''; 
@@ -2032,10 +2049,10 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                          let q3_color = (result[2] == 3) ? 'warning' : ''; 
                          let q4_color = (result[3] == 4) ? 'warning' : '';
 
-                         let q1 = (subject.quarter_1 == null) ? 0 : subject.quarter_1 ;
-                         let q2 = (subject.quarter_2 == null) ? 0 : subject.quarter_2 ;
-                         let q3 = (subject.quarter_3 == null) ? 0 : subject.quarter_3 ;
-                         let q4 = (subject.quarter_4 == null) ? 0 : subject.quarter_4 ;     
+                         let q1 = (subject.quarter_1 == null) ? '' : subject.quarter_1 ;
+                         let q2 = (subject.quarter_2 == null) ? '' : subject.quarter_2 ;
+                         let q3 = (subject.quarter_3 == null) ? '' : subject.quarter_3 ;
+                         let q4 = (subject.quarter_4 == null) ? '' : subject.quarter_4 ;     
 
                          average_container.push(average); // insert all average per row on average container[]
                          
@@ -2232,13 +2249,6 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
 }
 
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject td', function() {
-            // $(this).append(
-            //                 $('#g_grade').css('display', 'block')
-            //                 .attr('data-subject_id',$(this).parent().attr('data-subject'))
-            //                 .attr('data-quarter_id', $(this).attr('data-quarter'))
-            //                 .attr('data-grades_id',$(this).parent().attr('data-grades_id'))
-
-            //               ); // store subject id  && quarter_id  && grade_id to this input field
 
             $('#g_grade').remove();
             $(this).append(
@@ -2297,6 +2307,8 @@ $(document).on('keypress', '#g_grade', function(e) {
                         let d = $(this).closest('tr').find('td.remark');
                         let a =  $(this).closest('tr').children('.quarter');
                         let x =  $(this).closest('td').text($(this).val());
+                        let remark = '';
+                        let average = ''
      
                          var texts = a.map(function() {
                              return $(this).text();
@@ -2307,8 +2319,14 @@ $(document).on('keypress', '#g_grade', function(e) {
                         let q3 = Object.values(texts)[2];
                         let q4 = Object.values(texts)[3];
                      
-                        let average = ( parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4) ) / 4; // get the total avg of grades by quarter
-                        let remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+
+                        if(q1 !== '' && q2 !== '' && q3 !=='' && q4 !=='')
+                        {
+                             average = ( parseFloat(q1) + parseFloat(q2) + parseFloat(q3) + parseFloat(q4) ) / 4; // get the total avg of grades by quarter
+                             remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
+
+                        }
+
                 
                        c.text(average);
                        d.text(remark);
@@ -7182,7 +7200,7 @@ function createRole()
     {
         $.ajax({
             method: 'POST',
-            url: route('role.index'),
+            url: route('role.store'),
             dataType:'json',
             data: $('#role_form').serialize(),
             success: response => {
@@ -7602,6 +7620,245 @@ function createRole()
 
 
  //* ----------> END REPORTING ()
+
+
+
+ //** <------------ START VALUES() 
+ // TODO CRUD VALUES Management
+
+
+ //create
+ $('#add_values').on('click', ()=> {
+
+    $('#values_modal').modal('show');
+    $('#values_modal_header').removeClass('bg-success').addClass('bg-primary');
+    $('#values_modal_label').html(`<h4 class='text-white'>Add Values </h4>`)
+
+ });
+
+ //store
+
+ function createValues()
+ {
+    if(isNotEmpty($('#values_title')))
+    {
+        $.ajax({
+            method: 'POST',
+            url: route('values.store'),
+            dataType:'json',
+            data: $('#values_form').serialize(),
+            success: response => {
+                console.log(response);
+                if(response == "success")
+                {
+                    $('#values_form')[0].reset();
+                    $('.values_DT').DataTable().draw();
+                    toastSuccess("Values Added");
+                }
+                if(response == 'error')
+                {
+                    toastr.warning("Values already exist!");
+                }
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
+    }
+ }
+
+ // create description
+ function assign_description(id)
+ {
+     $('#values_statement_modal').modal('show');
+     $('#values_statement_modal_header').addClass('bg-primary');
+     $('#values_statement_modal_label').html(`<h4 class='text-white'> Assign Description </h4>`);
+
+     $.ajax({
+         url:route('values.create'),
+         data:{id:id},
+         dataType:'json',
+         success: value => {
+            $('#core_values').html(value.title);
+            $('#btn_add_values_statement').attr('data-id', value.id);
+         },
+         error: err => {
+             res(err);
+         }
+     })
+ }
+
+ // store description
+ function createDescription()
+ {
+     let description = $('#values_description');
+     let value_id =    $('#btn_add_values_statement').attr('data-id');
+
+     if(isNotEmpty(description))
+     {
+         $.ajax({
+             method: 'POST',
+             url: route('values.store_description'),
+             dataType:'json',
+             data:
+             {
+                 values_id:value_id,
+                 description:description.val()
+             },
+             success: response => {
+                if(response == 'success')
+                {
+                    return toastSuccess("Statement Assigned");
+                }
+             },
+             error: err => {
+                toastDanger();
+                res(err);
+             }
+         })
+     }
+   
+ }
+
+ function editValues(id)
+ {
+     $('#edit_values_statement_modal').modal('show');
+     $('#edit_values_statement_modal_header').addClass('bg-success');
+     $('#edit_values_statement_modal_label').html(`<h4 class='text-white'> Edit Values </h4>`);
+
+     $.ajax({
+         url:route('values.edit', id),
+         dataType:'json',
+         success: values_description => {
+             $('#edit_values_title').attr('value', values_description.title); // populate recent values title to the input field
+             $('#btn_update_values_modal').attr('data-id', values_description.id);  
+
+             let output = `
+                          <table class='table table-sm table-hover'>
+                            <thead style='background:none'>
+                                <tr>
+                                    <th>Behavior Statements</th>
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                           `;
+                    // display behavior statements / descriptions
+                    values_description.descriptions.forEach(description => {
+                 output += `<tr id='description_row-${description.id}'>
+                                <td> ${description.description} </td>
+                                <td> <a class='text-danger' href='javascript:void(0)' onclick='values_description_destroy(${description.id})'> <i class="fas fa-times"></i> </a> </td>
+                            </tr>`
+                    });
+
+
+             $('#display_assigned_description').html(output);
+         },
+         error: err => {
+             res(err);
+         }
+
+     })
+ }
+
+ function updateValues()
+ {
+     let values_id =  $('#btn_update_values_modal').attr('data-id');
+     let value_title =  $('#edit_values_title');
+    
+    if(isNotEmpty(value_title))
+    {
+        $.ajax({
+            method:'PUT',
+            url: route('values.update', values_id),
+            data:
+            {
+                title:value_title.val() 
+            },
+            success: response => {
+                $('.values_DT').DataTable().draw();
+                return toastSuccess("Values Updated");
+
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+     
+ }
+
+ // delete assigned description
+ function values_description_destroy(description)
+ {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'DELETE',
+                    url: route('values.values_description_destroy', description),
+                    success: response => {
+                        if(response == 'success')
+                        {
+                            $('.values_DT').DataTable().draw();
+                            toastSuccess("Assigned Statement Deleted");
+                            $('#description_row-'+description).fadeOut('slow');
+                        }
+                    },
+                    error: err => {
+                        console.log(err);
+                        toastDanger();
+                    }
+                })
+            }
+        })
+ }
+
+ // delete values
+ function deleteValues(id)
+ {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'DELETE',
+                    url: route('values.destroy',id),
+                    success: response => {
+                        if(response == 'success')
+                        {
+                            $('.values_DT').DataTable().draw();
+                            toastSuccess("Values Deleted");
+
+                        }
+                    },
+                    error: err => {
+                        console.log(err);
+                        toastDanger();
+                    }
+                })
+            }
+        })
+ }
+
+ //** -------------> END() */
+
+
+
 
 
  /** 

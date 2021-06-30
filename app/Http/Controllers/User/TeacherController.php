@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Value;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -52,7 +53,20 @@ class TeacherController extends Controller
 
                 //Get id from student_grade
                 $student_grade_id = DB::table('student_grade')->where('student_id',$student->id)->first();
-               
+
+                $core_values = DB::table('descriptions')
+                              ->join('values', 'values_id', 'values.id')
+                              ->select('values.title', 'descriptions.description', DB::raw("values.id as values_id , descriptions.id as description_id"))
+                              ->orderBy('values.id', 'asc')
+                              ->get();
+
+                // $core_values = DB::table('student_values')
+                //                ->join('descriptions', 'description_id', 'descriptions.id')
+                //                ->join('values', 'descriptions.values_id', 'values.id')
+                //                ->select('values.title', 'descriptions.description', DB::raw("values.id as values_id , descriptions.id as description_id"))
+                //                ->orderBy('values.id', 'asc')
+                //                ->get();
+
               //***If Adviser is login all subjects will be displayed otherwise subject handled of a teacher will be displayed***//  
                 if($adviser)
                 {
@@ -62,6 +76,7 @@ class TeacherController extends Controller
                                 ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id','grades.subject_teacher_id')
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
+
                 }
                 else
                 {
@@ -81,7 +96,7 @@ class TeacherController extends Controller
                 $teacher = auth()->user()->teacher_id;
                 
                 
-                return response()->json([$section_with_grade_level, $student,$grades, $teacher]);
+                return response()->json([$section_with_grade_level, $student,$grades, $teacher, $core_values]);
             }
     }
 
@@ -89,6 +104,7 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
+
             $data = request()->validate([
                 'grades' => '',
                 'quarter_id' => '',
@@ -232,6 +248,61 @@ class TeacherController extends Controller
 
                                 return $this->res();
 
+        }
+    }
+
+    // TODO VALUES ()
+
+    public function teacher_assign_values_to_student()
+    {
+        if(request()->ajax())
+        {
+
+            $data = request()->validate([
+                'student_id' => '',
+                'adviser_id' => '',
+                'description_id' => '',
+                'quarter' => '',
+                'values' => ''
+            ]);
+
+
+            $quarter = 0;
+                        
+            if($data['quarter'] == 1)
+            {
+                $quarter = 'q1';
+            }
+            else if($data['quarter'] == 2)
+            {
+                $quarter = 'q2';
+            }
+            else if($data['quarter'] == 3)
+            {
+                $quarter = 'q3';
+            }
+            else
+            {
+                $quarter = 'q4';
+            }
+
+            $ay = get_latest_academic_year(); // get latest academic_year
+
+            DB::table('student_values')
+            ->updateOrInsert(
+                [
+                    'student_id' => $data['student_id'],
+                    'adviser_id' => $data['adviser_id'],
+                    'description_id' => $data['description_id'],
+                    'academic_year_id' => $ay->id
+                ],
+                [
+                    $quarter => $data['values'],
+                    'created_at' => now()
+                ]
+            );
+
+           return $this->res();
         }
     }
 }
