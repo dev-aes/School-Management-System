@@ -808,7 +808,7 @@ function createTeacher()  {
         dataType:'json',
         data: {id:id},
         success: teacher => {
-        //    res(teacher);
+           res(teacher[1]);
            $('#show_teacher_modal').modal('show');
            $('#show_teacher_modal_header').addClass('bg-info');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -1018,7 +1018,7 @@ function teacher_display_students_by_section_id(id)
       url: route('teacher.teacher_display_students_by_section_id',id),
       dataType:'json',
       success: students => {
-          //res(students);
+          res(students);
           let output = `<table class='table table-hover table-bordered'>
                             <thead>
                                 <tr> 
@@ -1952,7 +1952,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             url: route('teacher.teacher_assign_grade_to_subject_display_students_by_section_id', section_id),
             dataType:'json',
             success: students => {
-                 //res(students);
+                 res(students);
                 let output = `
                             <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
                             <caption> List of Students </caption>
@@ -2413,7 +2413,7 @@ $('#subject_modal_header').removeClass('bg-success').addClass('bg-primary');
             res(grade_levels);
             let output=' <option></option>';
             grade_levels.forEach(grade_level => {
-                output += `<option value='${grade_level.grade_val}'>Grade ${grade_level.grade_val} </option>`;
+                output += `<option value='${grade_level.grade_val},${grade_level.id}'>Grade ${grade_level.grade_val}  </option>`;
                 $('#grade_val').html(output);
             })
         },
@@ -2441,7 +2441,7 @@ function createSubject() {
             url: route('subject.store'),
             data: subject_form.serialize(),
             success: response => {
-               // res(response);
+               res(response);
                 toastSuccess('Subject Added');
                 $('.subject_DT').DataTable().draw();
                 subject_form[0].reset();

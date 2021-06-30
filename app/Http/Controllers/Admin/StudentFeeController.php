@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\School;
 use App\Models\Student;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\AcademicYear;
+use App\Http\Controllers\Admin\AcademicYearController;
 
 class StudentFeeController extends Controller
 {
@@ -182,4 +183,24 @@ class StudentFeeController extends Controller
             ->where('student_fee_id', $id)
             ->delete();
     }
+
+
+
+    public static function getStudentHasDownpayment(){
+        $ay = AcademicYearController::getAcademicYear();
+        $students = DB::table('section_adviser_ay')
+                ->join('sections','section_adviser_ay.section_id','sections.id')
+                ->join('students','section_adviser_ay.adviser_id','students.section_id')
+                ->join('student_fee','students.id','student_fee.student_id')
+                ->where('section_adviser_ay.ay_id',$ay->id)
+                ->where('student_fee.has_downpayment',1)
+                ->get();
+
+                return $students;
+        //To access this method just call this StudentFeeController::getStudentHasDownpayment();
+        //Import StudentFeeController first
+        // $student = StudentFeeController::getStudentHasDownpayment();
+
+    }
+
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\Admin\AcademicYearController;
 
 class SectionController extends Controller
 {
@@ -135,6 +136,7 @@ class SectionController extends Controller
     {
         if(request()->ajax())
         {
+            $ay = AcademicYearController::getAcademicYear();
            
             $data = request()->validate([
                 'section_id' => 'required',
@@ -145,21 +147,33 @@ class SectionController extends Controller
             
             //get section advisory of a particular teacher
             
-            
-                
-
                     if($data['section_adviser'] == '1'){
                        
                         $adviser = DB::table('sections')->where('adviser_id',$data['teacher_id'])->first();
-                        //return response()->json($adviser);
+                        
                         if($adviser){
-                            //update former section adviser_id = 0
+
+                            //add data to section_adviser_ay table per AY
+                            DB::table('section_adviser_ay')
+                            ->where('adviser_id', $data['teacher_id'])
+                            ->where('section_id',$adviser->id)//section_id
+                            ->where('ay_id',$ay->id)
+                            ->update(['adviser_id' => NULL,
+                                      'updated_at'=>now() 
+                                    ]);
+                        
+                           // update former section adviser_id = 0
                             DB::table('sections')
                                 ->where('adviser_id', $data['teacher_id'])
-                                ->where('id',$adviser->id)
-                                ->update(['adviser_id' => 0]);
-                                //return response()->json('already have adviser');
+                                ->where('id',$adviser->id)//section_id
+                                ->update(['adviser_id' => 0,
+                                        'updated_at'=>now()
+                                        ]);
+                            //     //return response()->json('already have adviser');
                             //add to new section
+
+                            
+
                             DB::table('sections')
                             ->updateOrInsert(
                                 [
@@ -167,8 +181,22 @@ class SectionController extends Controller
                                 ],
                                 [
                                     'adviser_id' => $data['teacher_id'],
-                                    'created_at'=>now()
+                                    'created_at'=>now(),
+                                    'updated_at'=>now()
                                 ]  
+                            );
+
+                                DB::table('section_adviser_ay')->updateOrInsert(
+                                [
+                                    'section_id' => $data['section_id']
+                                ],
+                                [
+                                    'ay_id'=>$ay->id,
+                                    'adviser_id' => $data['teacher_id'],
+                                    'created_at'=>now(),
+                                    'updated_at'=>now()
+                                ]  
+
 
                          );
                       }else{
@@ -179,7 +207,20 @@ class SectionController extends Controller
                             ],
                             [
                                 'adviser_id' => $data['teacher_id'],
-                                'created_at'=>now()
+                                'created_at'=>now(),
+                                'updated_at'=>now()
+                            ]  
+                        );
+                        DB::table('section_adviser_ay')
+                            ->updateOrInsert(
+                            [
+                                'section_id' => $data['section_id']
+                            ],
+                            [
+                                'adviser_id' => $data['teacher_id'],
+                                'ay_id'=>$ay->id,
+                                'created_at'=>now(),
+                                'updated_at'=>now()
                             ]  
                         );
                       }
@@ -190,7 +231,9 @@ class SectionController extends Controller
                     $insert_adviser_id = DB::table('student_grade')
                     ->leftJoin('students','students.id','student_grade.student_id')
                     ->where('students.section_id',$data['section_id'])
-                    ->update(['adviser_id'=>$data['teacher_id']]);
+                    ->update(['adviser_id'=>$data['teacher_id'],
+                              'student_grade.updated_at'=>now()
+                            ]);
 
                     }
                     
@@ -205,7 +248,9 @@ class SectionController extends Controller
                                     [
                                         'section_id'=>$data['section_id'],
                                         'teacher_id'=> $data['teacher_id'],
-                                        'created_at'=> now()
+                                        'academic_year_id'=>$ay->id,
+                                        'created_at'=> now(),
+                                        'updated_at'=>now()
                                     ],
                                     
                                 );

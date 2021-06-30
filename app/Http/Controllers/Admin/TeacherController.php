@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Admin\StudentFeeController;
+use App\Http\Controllers\Admin\AcademicYearController;
 
 class TeacherController extends Controller
 {
@@ -99,6 +101,7 @@ class TeacherController extends Controller
     
         if(request()->ajax()) {
             
+            $ay = AcademicYearController::getAcademicYear();
             $teacher_subjects = DB::table('section_subject')
                                 ->join('subjects', 'subject_id', 'subjects.id')
                                 ->join('teachers', 'teacher_id', 'teachers.id')
@@ -107,6 +110,8 @@ class TeacherController extends Controller
                                 ->where('teacher_id', $teacher->id)
                                 ->get();
 
+
+            
             return response()->json([$teacher, $teacher->section, $teacher_subjects]); // params (teacher, section, subjects)
         }
     }
@@ -115,7 +120,20 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($section->student); // display students by teacher's section_id
+            $ay = AcademicYearController::getAcademicYear();
+            
+            //Only display students who paid the downpayment
+          //  Join section and students of that section and student fee
+            // $students = DB::table('section_adviser_ay')
+            //     ->join('sections','section_adviser_ay.section_id','sections.id')
+            //     ->join('students','section_adviser_ay.adviser_id','students.section_id')
+            //     ->join('student_fee','students.id','student_fee.student_id')
+            //     ->where('section_adviser_ay.ay_id',$ay->id)
+            //     ->where('student_fee.has_downpayment',1)
+            //     ->get();
+            $students = StudentFeeController::getStudentHasDownpayment();
+
+            return response()->json($students); // display students by teacher's section_id
         }
     }
 
@@ -245,10 +263,7 @@ public function teacher_destroy_student()
         ->where('teacher_id',$input['teacher_id'])
         ->first();
           if(!$sub_id){
-            foreach($input['subject_id'] as $subject_id){
-                
-                
-
+            foreach($input['subject_id'] as $subject_id){    
                 DB::table('subject_teacher')->insert([
                     'teacher_id' => $input['teacher_id'],
                     'subject_id' => $subject_id,
@@ -591,7 +606,10 @@ public function teacher_destroy_student()
      {
          if(request()->ajax())
          {
-             return response()->json($section->student);
+           // $ay = AcademicYearController::getAcademicYear();
+            //get student according to academic year 
+            $students = StudentFeeController::getStudentHasDownpayment();
+            return response()->json($students);
          }
      }
 
@@ -644,17 +662,6 @@ public function teacher_destroy_student()
          }
      }
  
-
-
-
-
-
-
-
-
-
-
-
     public function import(Request $request)
     {
         if(request()->ajax())

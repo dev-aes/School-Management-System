@@ -2,10 +2,11 @@
 namespace App\Http\Controllers\Admin;
 use App\Models\Subject;
 use App\Models\GradeLevel;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use App\Imports\SubjectImport;
-use Yajra\DataTables\DataTables;
 
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -50,6 +51,7 @@ class SubjectController extends Controller
 
     public function store()
     {
+        
         $subject_form_data = request()->validate([
             'name' => 'required|string|unique:subjects',
             'description'=>'required|unique:subjects|string',
@@ -57,9 +59,31 @@ class SubjectController extends Controller
 
         ]);
 
+       
+        
+
         if(request()->ajax()) {
 
-            $subject = Subject::create($subject_form_data);
+            //$subject = Subject::create($subject_form_data);
+
+            $grade_level_val_and_id = explode(",",$subject_form_data['grade_val']);
+            $subject_id = DB::table('subjects')->insertGetId([
+                'name'=>$subject_form_data['name'],
+                'description'=>$subject_form_data['description'],
+                'grade_val'=>$grade_level_val_and_id[0],
+                'created_at'=>now(),
+            ]);
+        
+
+            
+            DB::table('grade_level_subject')->insert([
+                'subject_id'=>$subject_id,
+                'grade_level_id'=>$grade_level_val_and_id[1],
+                'created_at'=>now(),
+            ]);
+
+            //Enter Subject to its corresponding Grade Level
+
            return $this->res();
         }
     }
@@ -128,5 +152,9 @@ class SubjectController extends Controller
         }
     }
 
+
+    public  static function getAcademicYear(){
+        return DB::table('academic_years')->where('status',1)->first();
+    }
    
 }

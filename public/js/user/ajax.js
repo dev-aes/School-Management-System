@@ -531,7 +531,7 @@ function t_display_students_by_section_id(section)
         url: route('teacher.t_display_students', section),
         dataType:'json',
         success: section_student => {
-            //res(section_student);
+            res(section_student);
            
             let output = `<table class='table table-hover table-bordered' id='user_teacher_display_students'>
                             <thead>
@@ -543,12 +543,12 @@ function t_display_students_by_section_id(section)
                             </thead>
                             <tbody>
                             `;
-                    section_student.student.forEach(student => {
+                    section_student.forEach(student => {
 
                output +=        `<tr>
                                     <td> ${student.first_name} ${student.last_name} </td>
                                     <td> ${student.gender} </td>
-                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${section_student.id}, ${student.id})'> Add Grade </a> </td>
+                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${student.section_id}, ${student.id})'> Add Grade </a> </td>
                                 </tr>`
                     }) // loop closure
 
@@ -577,6 +577,7 @@ function t_assign_grade(section , student)
         url: route('teacher.assign_grade', [section,student]),
         dataType:'json',
         success: section_student => {
+           
             document.cookie = ""+section_student[3];
 
             $('#t_grade_level_id').attr('value',section_student[0].grade_level_id); // add grade level id 
@@ -755,7 +756,7 @@ function t_assign_grade(section , student)
 
                                 // learner values
 
-                   
+                                res(section_student[4])
                     if(section_student[0].adviser_id == section_student[3])//Check if the login teacher is the adviser
                     {
             
@@ -792,20 +793,20 @@ function t_assign_grade(section , student)
                                                         {
                        output +=                           `<td style='border-top:1px solid #fff !important'> </td>
                                                             <td>${values_description.description}</td>
-                                                            <td class='values_quarter' data-quarter='1' style='width:7%'>q</td>
-                                                            <td class='values_quarter' data-quarter='2' style='width:7%'>w</td>
-                                                            <td class='values_quarter' data-quarter='3' style='width:7%'>e</td>
-                                                            <td class='values_quarter' data-quarter='4' style='width:7%'>e</td>`;
+                                                            <td class='values_quarter' data-quarter='1' style='width:7%'>${values_description.q1}</td>
+                                                            <td class='values_quarter' data-quarter='2' style='width:7%'>${values_description.q2}</td>
+                                                            <td class='values_quarter' data-quarter='3' style='width:7%'>${values_description.q3}</td>
+                                                            <td class='values_quarter' data-quarter='4' style='width:7%'>${values_description.q4}</td>`;
                                                         }
                                                         else
                                                         {
                                                             
                        output +=                           `<td class='text-capitalize'>${values_description.title}</td>
                                                             <td>${values_description.description}</td>
-                                                            <td class='values_quarter' data-quarter='1'style='width:7%'>r</td>
-                                                            <td class='values_quarter' data-quarter='2'style='width:7%'>e</td>
-                                                            <td class='values_quarter' data-quarter='3'style='width:7%'>u</td>
-                                                            <td class='values_quarter' data-quarter='4'style='width:7%'>p</td>`;  
+                                                            <td class='values_quarter' data-quarter='1'style='width:7%'>${values_description.q1}</td>
+                                                            <td class='values_quarter' data-quarter='2'style='width:7%'>${values_description.q2}</td>
+                                                            <td class='values_quarter' data-quarter='3'style='width:7%'>${values_description.q3}</td>
+                                                            <td class='values_quarter' data-quarter='4'style='width:7%'>${values_description.q4}</td>`;  
                                                         }
                        
                       output +=                       `</tr>
@@ -963,19 +964,19 @@ $(document).on('keypress', '#g_grade', function(e) {
                     }
                 })
 
-                 //    console.log(
-    //                 {
-                     //  teacher_id: teacher_id, adviser ID
-    //                     section_id: section_id,
-    //                     quarter_id: quarter_id,
-    //                     student_id: student_id,
-    //                     subject_id: subject_id,
-    //                     grades: grades,
-    //                     grades_id: grades_id,
+                //     console.log(
+                //     {
+                //       teacher_id: teacher_id, adviser ID
+                //         section_id: section_id,
+                //         quarter_id: quarter_id,
+                //         student_id: student_id,
+                //         subject_id: subject_id,
+                //         grades: grades,
+                //         grades_id: grades_id,
 
 
-    //                 }
-    //               )
+                //     }
+                //   )
         
                     
     }
@@ -990,9 +991,6 @@ $(document).on('mouseleave', '#g_grade', function(e) {
 // TODO INSERT OBSERVED VALUES
 
 $(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values .values_quarter', function() {
-    
-
-
     $('#v_values').remove();
     $(this).append(
         $(`<input type='text' name='values' id='v_values' style='width:100%;display:block'>`)
@@ -1021,7 +1019,8 @@ $(document).on('keypress', '#v_values', function(e) {
             student_id:student_id,
             description_id:description_id,
             values:values,
-            quarter: quarter
+            quarter: quarter,
+            adviser_id:adviser_id
         })
 
         $.ajax({
