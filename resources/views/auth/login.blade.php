@@ -5,20 +5,23 @@
 <br><br><br><br><br><br>
 <div class="container mt-5">
     <div class="row justify-content-center ">
-        <div class="col-md-6 p-5 rounded-left" style="background: #fff ">
-            <div class="company-logo text-center">
-                <h2 class="text-info font-weight-bold">School E-Cloud Manager <i class="fas fa-school"></i> </h2>
-                <img  class='img-fluid' width="500"  src="{{ asset('images/school2.jpg') }}" alt="">
+        <div class="col-lg-6 p-5 rounded-left" style="background: #fff ">
+            <div class="company-logo text-center ">
+                <h3 class="text-info font-weight-bold d-none d-lg-block">School E-Cloud Manager <i class="fas fa-school"></i> </h3>
+                <img  class='img-fluid d-none d-lg-block ' width="500"  src="{{ asset('images/school2.jpg') }}" alt="">
             </div>
         </div>
-        <div class="col-md-6 p-5 rounded-right border-left" style="background: #fff">
+        <div class="col-lg-6 p-5 rounded-right border-left" style="background: #fff">
             <div class="content">
                 <div class="header">
 
                     @if(session('unauthorized'))
-                    <div class="alert alert-danger">
-                        {{session('unauthorized')}}
-                    </div>
+                      <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show" role="alert">
+                            {{session('unauthorized')}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                      </div>
                     @endif
                     
                     <h3 class="text-info">Login</h3>

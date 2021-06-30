@@ -52,6 +52,11 @@ Route::get('/test', function () {
     return view('test.index');
 });
 
+Route::get('/test', function () {
+    return view('test.index');
+});
+
+
 
 
 
