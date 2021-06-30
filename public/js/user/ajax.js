@@ -548,7 +548,7 @@ function t_display_students_by_section_id(section)
                output +=        `<tr>
                                     <td> ${student.first_name} ${student.last_name} </td>
                                     <td> ${student.gender} </td>
-                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${student.section_id}, ${student.id})'> Add Grade </a> </td>
+                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${student.section_id}, ${student.student_id})'> Add Grade </a> </td>
                                 </tr>`
                     }) // loop closure
 
