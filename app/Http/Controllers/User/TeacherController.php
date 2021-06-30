@@ -49,22 +49,38 @@ class TeacherController extends Controller
             if(request()->ajax())
             {
                 $teacher_login_id = auth()->user()->teacher_id;
-
+                $ay = get_latest_academic_year();
                 $adviser = DB::table('sections')->where('adviser_id',$teacher_login_id)->first();
 
                 //Get id from student_grade
                 $student_grade_id = DB::table('student_grade')->where('student_id',$student->id)->first();
 
-                $core_values = DB::table('descriptions')
-                              ->join('values', 'values_id', 'values.id')
-                              ->select('values.title', 'descriptions.description', DB::raw("values.id as values_id , descriptions.id as description_id"))
-                              ->orderBy('values.id', 'asc')
+
+                // $core_values = DB::table('values')
+                //         ->join('descriptions','descriptions.values_id','values.id')
+                //         ->join('student_values','descriptions.id','student_values.description_id')
+                //         ->select('values.title', 'descriptions.description')
+                        // ->where('student_values.student_id',$student_grade_id->student_id)
+                        // ->where('student_values.academic_year_id',$ay->id)
+                //         ->orderBy('values.id','asc')
+                //         ->get();
+                        
+
+                $core_values = DB::table('values')
+                              ->leftJoin('descriptions', 'values.id','descriptions.values_id' )
+                              ->leftJoin('student_values','descriptions.id','student_values.description_id')
+                              //->leftJoin('')
+                              //->select('values.title', 'descriptions.description','student_values.q1', DB::raw("values.id as values_id , descriptions.id as description_id"))
+                            ->select('values.title','student_values.student_id','student_values.adviser_id','student_values.q1','student_values.q2','student_values.q3','student_values.q4','descriptions.description',DB::raw("values.id as values_id , descriptions.id as description_id"))
+                              //->orderBy('values.id', 'asc')
+                              ->where('student_values.student_id',$student_grade_id->student_id)
+                              ->orWhere('student_values.description_id',NULL)
                               ->get();
 
                 // $core_values = DB::table('student_values')
                 //                ->join('descriptions', 'description_id', 'descriptions.id')
                 //                ->join('values', 'descriptions.values_id', 'values.id')
-                //                ->select('values.title', 'descriptions.description', DB::raw("values.id as values_id , descriptions.id as description_id"))
+                //                ->select('values.title', 'descriptions.description','student_values.q1','student_values.q2','student_values.q3','student_values.q4', DB::raw("values.id as values_id , descriptions.id as description_id"))
                 //                ->orderBy('values.id', 'asc')
                 //                ->get();
 
