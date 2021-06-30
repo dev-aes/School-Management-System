@@ -2031,11 +2031,6 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                             
                             
                     student_subjects[1].forEach(subject => {
-<<<<<<< HEAD
-                         
-                         let average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
-                         let remark = (average > 74) ? 'Passed': 'Failed';
-=======
                         
                          let average = '';
                          let remark = '';
@@ -2044,7 +2039,6 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                          {
                             remark = (average > 74) ? 'Passed': 'Failed';
                             average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
->>>>>>> beta
 
                          }
                          
