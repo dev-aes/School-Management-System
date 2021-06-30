@@ -1,5 +1,6 @@
 
-{{--Start SCHOOL Modal--}}
+@if (url()->current() == route('school.index'))
+    {{--Start SCHOOL Modal--}}
 
     <div class="modal fade" id="school_modal" tabindex="-1" role="dialog" aria-labelledby="school_modal_label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
@@ -127,8 +128,11 @@
 
 {{--End SCHOOL Modal--}}
 
+@endif
 
 
+
+@if(url()->current() == route('teacher.index'))
 {{--Start TEACHER Modal--}}
 
     <div class="modal fade" id="teacher_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_modal_label" aria-hidden="true">
@@ -275,8 +279,8 @@
         <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
+                <div class="modal-header" id="show_teacher_modal_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
@@ -609,11 +613,65 @@
       {{--End Teacher Assign Grade--}}
 
 
+      {{--Show Assign Teacher's Subject to Section Modal--}}
+    <div class="modal fade" id="teacher_assign_subject_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_subject_section_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="teacher_assign_subject_section_header">
+            <h5 class="modal-title text-primary" id="teacher_assign_subject_section_label">{{--Modal Title--}}</h5>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+
+            {{--Alert--}}
+            <div class="alert alert-danger p-3 fade show" id="teacher_assign_subject_section_div_err" role="alert" style="display:none">
+                <ul id="teacher_assign_subject_section_err"></ul>
+            </div>
+
+            <div class="modal-body">
+            <form id="teacher_assign_subject_section_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label class='form-label'>Select Teacher </label>
+                    <select class="form-control" name="teacher_id" type="text" id="teacher_assign_subject_section_teacher_id" onchange="display_section_by_teacher()" value="">
+                        {{--display teachers --}}
+                    </select>   
+                   
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Select Section </label>
+                    <select class="form-control" name="section_id" type="text" id="teacher_assign_subject_section_section_id" onchange="display_subject_by_grade_level()" value="">
+                        {{--display sections --}}
+                    </select>   
+                    
+                </div>
+                <div class="form-group">
+                    <label class='form-label'>Select Subjects </label>
+                    <select class="teacher_assign_subjects_to_section_display_subjects" name="subject_id[]" type="text" id="teacher_assign_subject_section_subject_id" multiple style="width:100%">
+                        {{--display subjects --}}
+                    </select>   
+                </div>
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btn_add_subject_to_section_by_teacher_id" onclick="store_subjects_by_grade_level_id()">Submit</button>
+            <button type="button" class="btn btn-success" id="btn_update_subject_to_section_by_teacher_id" style="display:none" onclick="update_subjects_by_grade_level_id()">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    {{--End--}}
+
+
 {{--End TEACHER Modal--}}
 
+@endif
 
-
-    
+ 
+@if(url()->current() == route('subject.index'))
 {{--Start Subject Modal--}}
 
     <div class="modal fade" id="subject_modal" tabindex="-1" role="dialog" aria-labelledby="subject_modal_label" aria-hidden="true" data-bs-backdrop="static">
@@ -697,9 +755,10 @@
      {{--END SHOW Subject MODAL--}}
 
 {{--End Subject Modal--}}
+@endif
 
 
-
+@if(url()->current() == route('academic_year.index'))
 {{--Start Accademic Year Modal--}}
     <div class="modal fade" id="accademic_year_modal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="accademic_year_modal_label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -736,10 +795,10 @@
 
 
 {{--End Accademic Year Modal--}}
+@endif
 
 
-
-
+@if(url()->current() == route('grade.index'))
 {{-- Start Grade Level Modal --}}
 
     <div class="modal fade" id="grade_level_modal" tabindex="-1" role="dialog" aria-labelledby="grade_level_modal_label" aria-hidden="true">
@@ -788,59 +847,6 @@
 
 
 
-
-    {{--Show Assign Teacher's Subject to Section Modal--}}
-    <div class="modal fade" id="teacher_assign_subject_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_subject_section_label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" id="teacher_assign_subject_section_header">
-            <h5 class="modal-title text-primary" id="teacher_assign_subject_section_label">{{--Modal Title--}}</h5>
-            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-            </button>
-            </div>
-
-            {{--Alert--}}
-            <div class="alert alert-danger p-3 fade show" id="teacher_assign_subject_section_div_err" role="alert" style="display:none">
-                <ul id="teacher_assign_subject_section_err"></ul>
-            </div>
-
-            <div class="modal-body">
-            <form id="teacher_assign_subject_section_form" autocomplete="off" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label class='form-label'>Select Teacher </label>
-                    <select class="form-control" name="teacher_id" type="text" id="teacher_assign_subject_section_teacher_id" onchange="display_section_by_teacher()" value="">
-                        {{--display teachers --}}
-                    </select>   
-                   
-                </div>
-                <div class="form-group">
-                    <label class='form-label'>Select Section </label>
-                    <select class="form-control" name="section_id" type="text" id="teacher_assign_subject_section_section_id" onchange="display_subject_by_grade_level()" value="">
-                        {{--display sections --}}
-                    </select>   
-                    
-                </div>
-                <div class="form-group">
-                    <label class='form-label'>Select Subjects </label>
-                    <select class="teacher_assign_subjects_to_section_display_subjects" name="subject_id[]" type="text" id="teacher_assign_subject_section_subject_id" multiple style="width:100%">
-                        {{--display subjects --}}
-                    </select>   
-                </div>
-            </form>
-            </div>
-
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="btn_add_subject_to_section_by_teacher_id" onclick="store_subjects_by_grade_level_id()">Submit</button>
-            <button type="button" class="btn btn-success" id="btn_update_subject_to_section_by_teacher_id" style="display:none" onclick="update_subjects_by_grade_level_id()">Save</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-
-    {{--End--}}
-
      {{--SHOW Grade Level MODAL--}}
     
      <div class="modal fade " id="show_grade_level_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -869,9 +875,10 @@
 
 
 {{-- END Grade Level Modal --}}
+@endif
 
 
-    
+@if(url()->current() == route('section.index'))
 {{--Start Section Modal--}}
 
     <div class="modal fade" id="section_modal" tabindex="-1" role="dialog" aria-labelledby="section_modal_label" aria-hidden="true">
@@ -1002,7 +1009,7 @@
 
 
 {{--End Section Modal--}}
-
+@endif
 
 
 {{-- Start Grading  Modal --}}
@@ -1051,7 +1058,7 @@
 {{-- END Grading Modal --}}
 
 
-
+@if(url()->current() == route('student.index'))
 {{--Start Student Modal--}}
 
   <div class="modal fade" id="student_modal" tabindex="-1" role="dialog" aria-labelledby="student_modal_label" aria-hidden="true">
@@ -1268,9 +1275,9 @@
   {{--END SHOW Student MODAL--}}
 
 {{--End Student Modal--}}
+@endif
 
-
-
+@if(url()->current() == route('fee.index'))
 {{--Start Fee Modal--}}
 
     <div class="modal fade" id="fee_modal" tabindex="-1" role="dialog" aria-labelledby="fee_modal_label" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
@@ -1355,8 +1362,9 @@
     </div>
 
 {{--End Fee Modal--}}
+@endif
 
-
+@if(url()->current() == route('studentfee.index'))
 {{--Start Student Enrolment Fee Modal--}}
 
   <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="student_fee_modal" tabindex="-1" role="dialog" aria-labelledby="subject_fee_modal_label" aria-hidden="true">
@@ -1576,8 +1584,9 @@
 
 
 {{--End Student Enrolment Fee Modal--}}
+@endif
 
-
+@if(url()->current() == route('payment.index'))
 {{--Student Payments Modal--}}
 
      <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="payment_modal_label" aria-hidden="true">
@@ -1706,7 +1715,6 @@
           </div>
           <div class="modal-body" >
               <div class="card border border-light">
-                  <div class="card-header">
                       <div class="card-body">
                          <div class="row justify-content-center">
                              <div class="card w-100 border border-secondary">
@@ -1817,17 +1825,15 @@
                                         </div>
                                     </div>
                                   </div>
-                                  {{-- <div id="payment_footer">
-                                      <input class="text-center" type="text" id="p_signature" value="Ace Manalo" readonly >
-                                  </div> --}}
+                                        <input class="text-center" type="text" id="p_signature" value="{{ auth()->user()->name }}" readonly  style="display: none">
+                                        <h5 id="p_label" style="display: none">Cashier</h5>
                                  </div>
                                  <div class="form-group p-3">
-                                    <button class="btn btn-info float-end" onclick="window.print()"> Print <i class="fas fa-print"></i> </button>
-                                 </div>
+                                    <button class="btn btn-info float-end" onclick="window.print();"> Print <i class="fas fa-print"></i> </button>
+                                 </div> 
                              </div>
                          </div>
                       </div>
-                  </div>
               </div>
           </div>
       </div>
@@ -1838,8 +1844,9 @@
 
 
 {{--End Student Payments Modal--}}
+@endif
 
-
+@if(url()->current() == route('user.index'))
 {{-- User Modal--}}
 
     <div class="modal fade" id="user_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="user_modal_label" aria-hidden="true">
@@ -1960,9 +1967,10 @@
 
 
 {{--End User Modal--}}
+@endif
 
 
-
+@if(url()->current() == route('parent.index'))
 {{--Parent Modal--}}
 
     <div class="modal fade" id="parent_modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="parent_modal_label" aria-hidden="true">
@@ -2111,7 +2119,7 @@
     
 
 {{--End Parent Modal--}}
-
+@endif
 
 
 
@@ -2159,7 +2167,7 @@
 {{--End Assign Subjects--}}
 
 
-
+@if(url()->current() == route('payment_mode.index'))
 {{--Payment Mode--}}
 
     <div class="modal fade " id="payment_mode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="payment_mode" aria-hidden="true">
@@ -2197,8 +2205,9 @@
 
 
 {{--End Payment Mode--}}
+@endif
 
-
+@if(url()->current() == route('role.index'))
 {{--Start Roles ()--}}
 
     <div class="modal fade " id="role_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="role" aria-hidden="true">
@@ -2235,3 +2244,120 @@
     </div>
 
 {{--End Role--}}
+@endif
+
+
+@if(url()->current() == route('values.index'))
+
+    {{--Values--}}
+
+        {{--Create--}}
+            <div class="modal fade " id="values_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="values_modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="values_modal_header">
+                    <h5 class="modal-title" id="values_modal_label">{{--Modal Title--}}</h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                    </div>
+
+                    {{--Alert--}}
+                    <div class="alert alert-danger p-3 fade show" id="values_modal_div_err" role="alert" style="display:none">
+                        <ul id="values_modal_err"></ul>
+                    </div>
+
+                    <div class="modal-body">
+                    <form id="values_form" autocomplete="off">
+                        @csrf
+                        <div class="form-group">
+                            <label class='form-label'>Core Values *</label>
+                            <input class="form-control" name="title" type="text" id="values_title" value="">
+                        </div>
+                        
+                    </form>
+                    </div>
+
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_add_values_modal" onclick="createValues()">Submit</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {{--End Create}}
+
+        {{--Edit--}}
+
+            <div class="modal fade " id="edit_values_statement_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="values_statement_modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="edit_values_statement_modal_header">
+                    <h5 class="modal-title" id="edit_values_statement_modal_label">{{--Modal Title--}}</h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                    </div>
+
+                    {{--Alert--}}
+                    <div class="alert alert-danger p-3 fade show" id="edit_values_statement_modal_div_err" role="alert" style="display:none">
+                        <ul id="edit_values_statement_modal_err"></ul>
+                    </div>
+
+                    <div class="modal-body">
+                    <form id="edit_values_statement_form" autocomplete="off">
+                        @csrf
+                        <div class="form-group">
+                            <label for="edit_values_title" class="form-label">Enter Values *</label>
+                            <input class="form-control" name="title" id="edit_values_title" type="text">
+                        </div>
+                    </form>
+                    </div>
+                    <div class="p-3" id="display_assigned_description">
+                        {{--Display assigned descriptions--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="btn_update_values_modal" onclick="updateValues()">Update</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {{--End Edit--}}
+
+        {{--Assign Statement--}}
+            <div class="modal fade " id="values_statement_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="values_statement_modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="values_statement_modal_header">
+                    <h5 class="modal-title" id="values_statement_modal_label">{{--Modal Title--}}</h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                    </div>
+
+                    {{--Alert--}}
+                    <div class="alert alert-danger p-3 fade show" id="values_statement_modal_div_err" role="alert" style="display:none">
+                        <ul id="values_statement_modal_err"></ul>
+                    </div>
+
+                    <div class="modal-body">
+                    <form id="values_statement_form" autocomplete="off" enctype="multipart/form-data">
+                        @csrf
+                        <h4 class="text-muted text-capitalize fw-bold" id="core_values"></h4><br>
+                        <div class="form-group">
+                           <textarea class="form-control" name="description" id="values_description"  rows="3" placeholder="Add statement .."></textarea>
+                        </div>
+                        
+                    </form>
+                    </div>
+
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_add_values_statement" onclick="createDescription()">Submit</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {{--End Assign Statement--}}
+
+    {{--End Values--}}
+
+
+@endif

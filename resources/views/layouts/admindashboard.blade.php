@@ -161,7 +161,7 @@
                         </a>
 					</li>
 
-					<li class="sidebar-item">
+					<li class="sidebar-item" id="s">
 						<a href="#to_school" data-bs-toggle="collapse" class="sidebar-link collapsed">
 							<i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
                         </a>
@@ -172,9 +172,16 @@
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}"><i class="far fa-credit-card"></i> Mode of Payment</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('academic_year.index')}}"><i class="fas fa-calendar"></i> Academic Year</a></li>
 							<li class="sidebar-item"><a class="sidebar-link" href="{{route('role.index')}}"> <i class="fas fa-key"></i> Roles</a></li>
+							<a href="#to_values" data-bs-toggle="collapse" class="sidebar-link collapsed">
+								<i class="align-middle fas fa-graduation-cap"></i></i><span class="align-middle">Learner Values</span>
+							</a>
+							<ul id="to_values" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#s">
+								<li class="sidebar-item"><a class="sidebar-link" href="{{route('values.index')}}"><i class="fas fa-graduation-cap"></i>Values</a></li>
+							</ul>
 						</ul>
-					</li>
 
+
+					</li>
                 </ul>
 			</div>
 		</nav>

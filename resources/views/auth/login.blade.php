@@ -14,6 +14,13 @@
         <div class="col-md-6 p-5 rounded-right border-left" style="background: #fff">
             <div class="content">
                 <div class="header">
+
+                    @if(session('unauthorized'))
+                    <div class="alert alert-danger">
+                        {{session('unauthorized')}}
+                    </div>
+                    @endif
+                    
                     <h3 class="text-info">Login</h3>
                     <small class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, recusandae!</small>
                 </div>

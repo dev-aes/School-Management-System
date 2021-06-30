@@ -117,6 +117,7 @@ html {
   @page{size:auto; margin:5mm;}
   
   @media print {
+   
     body {
       visibility: hidden;
     }
@@ -131,20 +132,22 @@ html {
       display: block !important;
     }
 
-    #payment_footer {
-      position: fixed;
-      bottom: 0;
-      
-    }
-
+   
     #p_signature {
       display: block;
       border-top: none !important;
       border-right: none !important;
       border-left: none !important;
-      position: relative;
-      top: 120% !important;
-      left: 170% !important;
+      position: absolute;
+      top: 110% !important;
+      left: 58% !important;
+    }
+
+    #p_label {
+      display: block;
+      position: absolute;
+      top: 115% !important;
+      left: 73% !important;
     }
 
 
