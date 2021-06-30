@@ -146,6 +146,7 @@ class SectionController extends Controller
             $data['created_at'] = now();
             
             //get section advisory of a particular teacher
+            
                     if($data['section_adviser'] == '1'){
                        
                         $adviser = DB::table('sections')->where('adviser_id',$data['teacher_id'])->first();
