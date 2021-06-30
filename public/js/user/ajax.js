@@ -531,7 +531,7 @@ function t_display_students_by_section_id(section)
         url: route('teacher.t_display_students', section),
         dataType:'json',
         success: section_student => {
-            //res(section_student);
+            res(section_student);
            
             let output = `<table class='table table-hover table-bordered'>
                             <thead>
@@ -543,12 +543,12 @@ function t_display_students_by_section_id(section)
                             </thead>
                             <tbody>
                             `;
-                    section_student.student.forEach(student => {
+                    section_student.forEach(student => {
 
                output +=        `<tr>
                                     <td> ${student.first_name} ${student.last_name} </td>
                                     <td> ${student.gender} </td>
-                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${section_student.id}, ${student.id})'> Add Grade </a> </td>
+                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${student.section_id}, ${student.id})'> Add Grade </a> </td>
                                 </tr>`
                     }) // loop closure
 
