@@ -72,7 +72,7 @@ class TeacherController extends Controller
                               //->leftJoin('')
                               //->select('values.title', 'descriptions.description','student_values.q1', DB::raw("values.id as values_id , descriptions.id as description_id"))
                             ->select('values.title','student_values.student_id','student_values.adviser_id','student_values.q1','student_values.q2','student_values.q3','student_values.q4','descriptions.description',DB::raw("values.id as values_id , descriptions.id as description_id"))
-                              //->orderBy('values.id', 'asc')
+                              ->orderBy('values.id', 'asc')
                               ->where('student_values.student_id',$student_grade_id->student_id)
                               ->orWhere('student_values.description_id',NULL)
                               ->get();
