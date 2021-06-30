@@ -1969,7 +1969,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
                    output +=        `<tr>
                                         <td> ${student.first_name} ${student.last_name}</td>
                                         <td> <a class='btn btn-sm btn-info' href='javascript:void(0)'
-                                         onclick='teacher_assign_grade_to_subject_create_grade(${student.id}, ${section_id})'> Add Grade </a></td>
+                                         onclick='teacher_assign_grade_to_subject_create_grade(${student.student_id}, ${section_id})'> Add Grade </a></td>
                                      </tr>
                                     `;                 
                                 })
