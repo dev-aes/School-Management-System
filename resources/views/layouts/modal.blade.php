@@ -131,7 +131,6 @@
 @endif
 
 
-
 @if(url()->current() == route('teacher.index'))
 {{--Start TEACHER Modal--}}
 
@@ -274,7 +273,8 @@
         </div>
       </div>
  
-    {{--SHOW Teacher MODAL--}}
+    
+      {{--SHOW Teacher MODAL--}}
     
         <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
@@ -299,375 +299,7 @@
         
      {{--END SHOW Teacher MODAL--}}
 
-
-      {{--Teacher Add Subject MODAL--}}
-    
-        <div class="modal fade " id="teacher_addSubject_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Add Subject <i class="fas fa-plus-circle"></i> </h4>
-                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </div>
-                <div class="modal-body" >
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="card w-75">
-                                        <div class="card-body">
-                                            <form id="teacher_add_subject_form" autocomplete="off" onsubmit="false">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <label class='form-label h3 text-success'>Select Subject</label> <span class="float-end" onclick="back()" role="button">  <i class="fas fa-long-arrow-alt-left"></i> Back </span>
-
-                                                    <div id="teacher_subject">
-                                                        {{--Display Available Subject by grade Level--}}
-                                                    </div>
-
-                                                    <!--
-                                                    <select class="form-select" id="teacher_subject" name="subject_id">
-                                                        {{--Display Available Subject by grade Level--}}
-                                                    </select>
-                                                    -->
-                                                    
-                                                </div>
-                                                <input type="hidden" id="teacher_id" name="teacher_id" >
-                                                <button type="submit" class="btn btn-primary float-end mt-2" onclick="teacher_storeSubject(event)">Submit</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-      
-     {{--END Teacher Add Subject MODAL--}}
-
-     {{--Teacher Add Student--}}
-
-        <div class="modal fade " id="teacher_addStudent_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Add Student <i class="fas fa-plus-circle"></i> </h4>
-                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </div>
-                <div class="modal-body" >
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="card w-75">
-                                        <div class="card-body">
-                                            <form id="teacher_add_student_form" autocomplete="off" onsubmit="false">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <h3 class='form-label text-success'>Select student</h3> <span class="float-end" onclick="back()" role="button">  <i class="fas fa-long-arrow-alt-left"></i> Back </span> <br>
-                                                    <div id="teacher_student">
-                                                        {{--Display Available Student by grade Level--}}
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name='teacher_id' id="_teacher_id">
-                                                <button type="submit" class="btn btn-sm btn-primary float-end mt-2" onclick="teacher_storeStudent(event)">Submit</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-
-     {{-- End Teacher Add Student--}}
-
-      {{-- TEACHER ADD SUBJECT II --}}
-        <div class="modal fade" id="teacher_subject2_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_subject2_modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered " role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="teacher_add_subject2_modal_header">
-                <h5 class="modal-title text-primary" id="teacher_subject2_modal_label">{{--Modal Title--}}</h5>
-                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </button>
-                </div>
-
-                {{--Alert--}}
-                <div class="alert alert-warning fade show" id="teacher_subject2_div_err" role="alert" style="display:none">
-                    <ul id="teacher_subject2_err"></ul>
-                </div>
-                
-                <div class="modal-body">
-                <form id="teacher_subject2_form" autocomplete="off" enctype="multipart/form-data">
-                    @csrf
-                    
-                    <div class="form-group">
-                        <label class='form-label'>Select Teacher</label>
-                        <select class="form-select" id="teacher_subject2_teacher" name="teacher_id" onchange="teacher_teacher_display_grade_level_by_teacher_id()">
-                            {{--Select Teacher--}}
-                        </select>
-                    </div>
-                    <br>
-
-                    <div class="form-group">
-                        <label class="form-label">Grade Level</label>
-                        {{-- <input class="form-control" type="text" id="teacher_subject2_grade_level_id" name="teacher_subject2_grade_level_id" readonly> --}}
-                        
-                        <select class="form-select" id="teacher_subject2_grade_level" name="grade_level_id" onchange="teacher_subject2_display_subjects_by_grade_level()">
-                            {{--Select Teacher--}}
-                        </select>
-                        
-                    </div>
-                    <br>
-                    <label class='form-label'>Select Subject</label>
-                    <div id="teacher_subject2_subject" name="teacher_subject2_subject">
-                        {{--Display Available Subject by Teacher's grade Level--}}
-                    </div>
-                </form>
-                </div>
-        
-                <div class="modal-footer">
-                <button type="button" class="btn btn-primary"  onclick="teacher_subject_2_store_teacher_subject()">Submit</button>
-                </div>
-            </div>
-            </div>
-        </div>
-      {{--End Teacher Add Subject II--}}
-
-      {{-- TEACHER ADD STUDENT II --}}
-      
-            <div class="modal fade" id="teacher_student2_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_student2_modal" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered " role="document">
-                <div class="modal-content">
-                    <div class="modal-header" id="teacher_add_student2_modal_header">
-                    <h5 class="modal-title text-primary" id="teacher_student2_modal_label">{{--Modal Title--}}</h5>
-                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                    </div>
-
-                    {{--Alert--}}
-                    <div class="alert alert-warning fade show" id="teacher_student_div_err" role="alert" style="display:none">
-                        <ul id="teacher_student2_err"></ul>
-                    </div>
-                    
-                    <div class="modal-body">
-                    <form id="teacher_student2_form" autocomplete="off" enctype="multipart/form-data">
-                        @csrf
-                        
-                        <div class="form-group">
-                            <label class='form-label'>Select Teacher</label>
-                            <select class="form-select" id="teacher_student_teacher" name="teacher_id" onchange="teacher_student2_display_grade_level()">
-                                {{--Select Teacher--}}
-                            </select>
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label class="form-label">Grade Level</label>
-                            <input class="form-control" type="text" id="teacher_student2_grade_level_id" name="teacher_student2_grade_level_id" readonly>
-                        </div>
-                        <br>
-                        <label class='form-label'>Select Student</label>
-                        <div id="teacher_student2_subject">
-                            {{--Display Available Student by Teacher's grade Level--}}
-                        </div>
-                    </form>
-                    </div>
-            
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"  onclick="teacher_student2_store_teacher_subject()">Submit</button>
-                    </div>
-                </div>
-                </div>
-            </div>
-                
-      {{--End Teacher Add STUDENT II--}}
-        
-
-
-      {{--Teacher Assign Section--}}
-
-        <div class="modal fade" id="teacher_assign_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_section_label" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="teacher_assign_section_header">
-                <h5 class="modal-title text-primary" id="teacher_assign_section_label">{{--Modal Title--}}</h5>
-                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </button>
-                </div>
-
-                {{--Alert--}}
-                <div class="alert alert-danger p-3 fade show" id="teacher_assign_section_div_err" role="alert" style="display:none">
-                    <ul id="teacher_assign_section_err"></ul>
-                </div>
-
-                <div class="modal-body">
-                <form id="teacher_assign_section_form" autocomplete="off" enctype="multipart/form-data">
-                    @csrf
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class='form-label'>Select Teacher</label>
-                                <select class="form-select" id="teacher_assign_section_teacher_id" name="teacher_id" onchange="teacher_assign_section_display_section()">
-                                    {{--Display all Teachers --}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class='form-label'>Select Section</label>
-                            <select class="form-select" id="teacher_assign_section_section_id" name="section_id">
-                              {{-- Display all the Sections assigned to teacher ID --}}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="teacher_assign_section_display_subjects">
-                                {{--Display all the subjects assigned to teacher ID --}}
-                            </div>
-                        </div>
-                        {{--<div class="col-md-6">
-                            <label class='form-label'>Select Student</label>
-                            <select class="form-select" id="teacher_assign_section_student_id" name="student_id">
-                                Display all the Students By Teacher's Grade Level_id 
-                            </select>
-                        </div>--}}
-                    </div>
-                   
-                    
-                </form>
-                </div>
-
-                <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_add_grade" onclick="teacher_assign_section()">Submit</button>
-                {{-- <button type="button" class="btn btn-success" id="btn_update_grade" style="display:none" onclick="updateGrade()">Save</button> --}}
-                </div>
-            </div>
-            </div>
-        </div>
-
-      {{--End Teacher Assign Subject to Student--}}
-
-
-      {{--Teacher Assign Grade to Student's Subject--}}
-
-      <div class="modal fade "  id="teacher_assign_grade_to_student_subject_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content ">
-              <div class="modal-header" id="teacher_assign_grade_to_student_subject_header">
-                    <h4 class="modal-title text-white" id="myLargeModalLabel">Add Grade <i class="fas fa-info-circle"></i> </h4>
-                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-              </div>
-              <div class="modal-body" >
-                <div class="row justify-content-center">
-                    <div class="card w-100">
-                        <div class="card-body py-3">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <form onsubmit="false">
-                                        @csrf
-                                        <div class="form-group mb-2">
-                                            <label class="form-label" for="grade_assign_grade_to_student_subject_teacher_id">Select Grade Level*</label>
-                                            <select class="form-select" name="" id="grade_assign_grade_to_student_subject_teacher_id" onchange="grade_assign_grade_to_student_subject_display_section()">
-                                                {{--Display Teacher--}}
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="teacher_assign_grade_to_student_subject_section_id">Select Section *</label>
-                                            <select class="form-select" name="" id="teacher_assign_grade_to_student_subject_section_id" onchange="teacher_assign_grade_to_student_subject_display_students_by_section_id()">
-                                                {{--Display Section by Teacher ID--}}
-                                            </select>
-                                        </div>
-
-                                    </form>
-                                </div>
-                                <div class="col-md-2"></div>
-
-                                <div class="col-md-6 border p-5">
-                                    <div id="teacher_assign_grade_to_student_subject_display_students">
-                                         {{--Display Student By Teacher's Section ID--}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center mt-3 border p-3" id="teacher_assign_grade_to_student_display_encoding_of_grade">
-                                    {{--Display Form for encoding Student Grades--}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-          </div>
-        </div>
-      </div>
-
-
-      {{--End Teacher Assign Grade--}}
-
-
-      {{--Show Assign Teacher's Subject to Section Modal--}}
-    <div class="modal fade" id="teacher_assign_subject_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_subject_section_label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" id="teacher_assign_subject_section_header">
-            <h5 class="modal-title text-primary" id="teacher_assign_subject_section_label">{{--Modal Title--}}</h5>
-            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-            </button>
-            </div>
-
-            {{--Alert--}}
-            <div class="alert alert-danger p-3 fade show" id="teacher_assign_subject_section_div_err" role="alert" style="display:none">
-                <ul id="teacher_assign_subject_section_err"></ul>
-            </div>
-
-            <div class="modal-body">
-            <form id="teacher_assign_subject_section_form" autocomplete="off" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label class='form-label'>Select Teacher </label>
-                    <select class="form-control" name="teacher_id" type="text" id="teacher_assign_subject_section_teacher_id" onchange="display_section_by_teacher()" value="">
-                        {{--display teachers --}}
-                    </select>   
-                   
-                </div>
-                <div class="form-group">
-                    <label class='form-label'>Select Section </label>
-                    <select class="form-control" name="section_id" type="text" id="teacher_assign_subject_section_section_id" onchange="display_subject_by_grade_level()" value="">
-                        {{--display sections --}}
-                    </select>   
-                    
-                </div>
-                <div class="form-group">
-                    <label class='form-label'>Select Subjects </label>
-                    <select class="teacher_assign_subjects_to_section_display_subjects" name="subject_id[]" type="text" id="teacher_assign_subject_section_subject_id" multiple style="width:100%">
-                        {{--display subjects --}}
-                    </select>   
-                </div>
-            </form>
-            </div>
-
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="btn_add_subject_to_section_by_teacher_id" onclick="store_subjects_by_grade_level_id()">Submit</button>
-            <button type="button" class="btn btn-success" id="btn_update_subject_to_section_by_teacher_id" style="display:none" onclick="update_subjects_by_grade_level_id()">Save</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-
-    {{--End--}}
-
-
 {{--End TEACHER Modal--}}
-
 @endif
 
  
@@ -682,7 +314,6 @@
               <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
               </button>
             </div>
-            <h1>EDITED 6/25/21</h1>
             {{--Alert--}}
             <div class="alert alert-danger p-3 fade show" id="subject_div_err" role="alert" style="display:none">
                 <ul id="subject_err"></ul>
@@ -923,61 +554,6 @@
         </div>
         </div>
     </div>
-
-
-    {{--Section Add Teacher Modal--}}
-        <div class="modal fade" id="section_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="section_teacher_modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered " role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="section_teacher_modal_header">
-                <h5 class="modal-title text-primary" id="section_teacher_modal_label">{{--Modal Title--}}</h5>
-                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </button>
-                </div>
-
-                {{--Alert--}}
-                <div class="alert alert-warning fade show" id="section_teacher_div_err" role="alert" style="display:none">
-                    <ul id="section_teacher_err"></ul>
-                </div>
-                
-                <div class="modal-body">
-                <form id="section_teacher_form" autocomplete="off" enctype="multipart/form-data">
-                    @csrf
-                    
-                    <div class="form-group">
-                        <label class='form-label'>Select Section *</label>
-                        <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
-                            {{--Select Section--}}
-                        </select>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label class='form-label'>Select Teacher *</label>
-                        <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
-                            {{--Select Teacher--}}
-                        </select>
-                    </div>
-
-
-                    <div class="form-group mt-2" >
-                        <label class="form-label" for="section_adviser">Option</label>
-                        <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
-                            <option ></option>
-                            <option value='1'>Adviser</option>
-                            <option value='2'>Subject Teacher</option>
-                        </select>
-                    </div>
-                </form>
-                </div>
-        
-                <div class="modal-footer">
-                <button type="button" class="btn btn-primary"  onclick=" section_store_teacher()">Submit</button>
-                </div>
-            </div>
-            </div>
-        </div>
-
-    {{--End Section Add Teacher Modal--}}
 
     {{--Show Section Modal--}}
 
@@ -2021,53 +1597,6 @@
         </div>
     </div>
 
-
-    {{-- Parent ADD STUDENT II --}}
-      
-        <div class="modal fade" id="parent_student_modal" tabindex="-1" role="dialog" aria-labelledby="parent_student_modal" aria-hidden="true">
-            <div class="modal-dialog " role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title text-primary" id="parent_student_modal_label">{{--Modal Title--}}</h5>
-                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </button>
-                </div>
-
-                {{--Alert--}}
-                <div class="alert alert-warning fade show" id="parent_student_div_err" role="alert" style="display:none">
-                    <ul id="parent_student_err"></ul>
-                </div>
-                
-                <div class="modal-body">
-                <form id="parent_student_form" autocomplete="off" enctype="multipart/form-data">
-                    @csrf
-                    
-                    <div class="form-group">
-                        <label class='form-label'>Select Parent</label>
-                        <select class="" id="parent_parent_id" name="parent_id" style="width: 100%">
-                            {{--Select Parent--}}
-                        </select>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label class='form-label'>Select Student</label>
-                        <select class="" id="parent_student_id" name="student_id" style="width: 100%">
-                            {{--Select Student--}}
-                        </select>
-                    </div>
-                </form>
-                </div>
-        
-                <div class="modal-footer">
-                <button type="button" class="btn btn-primary"  onclick="parent_student_store()">Submit</button>
-                </div>
-            </div>
-            </div>
-        </div>
-        
-    {{--End Parent Add STUDENT II--}}
-
-
     {{--Show Parent --}}
     
     <div class="modal fade" id="show_parent_modal" tabindex="-1" role="dialog" aria-labelledby="show_parent_modal" aria-hidden="true">
@@ -2361,3 +1890,219 @@
 
 
 @endif
+
+
+{{--GLOBAL MODAL--}}
+
+ {{--TEACHERS--}}
+
+    {{--Teacher Assign Grade to Student's Subject--}}
+
+        <div class="modal fade "  id="teacher_assign_grade_to_student_subject_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+            <div class="modal-content ">
+                <div class="modal-header" id="teacher_assign_grade_to_student_subject_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Add Grade <i class="fas fa-info-circle"></i> </h4>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-body" >
+                    <div class="row justify-content-center">
+                        <div class="card w-100">
+                            <div class="card-body py-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <form onsubmit="false">
+                                            @csrf
+                                            <div class="form-group mb-2">
+                                                <label class="form-label" for="grade_assign_grade_to_student_subject_teacher_id">Select Grade Level *</label>
+                                                <select name="" id="grade_assign_grade_to_student_subject_teacher_id" onchange="grade_assign_grade_to_student_subject_display_section()" style="width:100%">
+                                                    {{--Display Teacher--}}
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="form-label" for="teacher_assign_grade_to_student_subject_section_id">Select Section *</label>
+                                                <select name="" id="teacher_assign_grade_to_student_subject_section_id" onchange="teacher_assign_grade_to_student_subject_display_students_by_section_id()" style="width:100%">
+                                                    {{--Display Section by Teacher ID--}}
+                                                </select>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2"></div>
+
+                                    <div class="col-md-6 border p-5">
+                                        <div id="teacher_assign_grade_to_student_subject_display_students">
+                                            {{--Display Student By Teacher's Section ID--}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center mt-3 border p-3" id="teacher_assign_grade_to_student_display_encoding_of_grade">
+                                        {{--Display Form for encoding Student Grades--}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+    {{--End Teacher Assign Grade--}}
+
+
+    {{--Show Assign Teacher's Subject to Section Modal--}}
+        <div class="modal fade" id="teacher_assign_subject_section_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_assign_subject_section_label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="teacher_assign_subject_section_header">
+                <h5 class="modal-title text-primary" id="teacher_assign_subject_section_label">{{--Modal Title--}}</h5>
+                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                </button>
+                </div>
+
+                {{--Alert--}}
+                <div class="alert alert-danger p-3 fade show" id="teacher_assign_subject_section_div_err" role="alert" style="display:none">
+                    <ul id="teacher_assign_subject_section_err"></ul>
+                </div>
+
+                <div class="modal-body">
+                <form id="teacher_assign_subject_section_form" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label class='form-label'>Select Teacher </label>
+                        <select name="teacher_id" type="text" id="teacher_assign_subject_section_teacher_id" onchange="display_section_by_teacher()" style="width:100%">
+                            {{--display teachers --}}
+                        </select>   
+                    
+                    </div>
+                    <div class="form-group">
+                        <label class='form-label'>Select Section </label>
+                        <select name="section_id" type="text" id="teacher_assign_subject_section_section_id" onchange="display_subject_by_grade_level()" style="width:100%">
+                            {{--display sections --}}
+                        </select>   
+                        
+                    </div>
+                    <div class="form-group">
+                        <label class='form-label'>Select Subjects </label>
+                        <select class="teacher_assign_subjects_to_section_display_subjects" name="subject_id[]" type="text" id="teacher_assign_subject_section_subject_id" multiple style="width:100%">
+                            {{--display subjects --}}
+                        </select>   
+                    </div>
+                </form>
+                </div>
+
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_add_subject_to_section_by_teacher_id" onclick="store_subjects_by_grade_level_id()">Submit</button>
+                <button type="button" class="btn btn-success" id="btn_update_subject_to_section_by_teacher_id" style="display:none" onclick="update_subjects_by_grade_level_id()">Save</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+    {{--End--}}
+ 
+ {{--SECTION--}}
+    {{--Section Add Teacher Modal--}}
+        <div class="modal fade" id="section_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="section_teacher_modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="section_teacher_modal_header">
+                <h5 class="modal-title text-primary" id="section_teacher_modal_label">{{--Modal Title--}}</h5>
+                <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+                </button>
+                </div>
+
+                {{--Alert--}}
+                <div class="alert alert-warning fade show" id="section_teacher_div_err" role="alert" style="display:none">
+                    <ul id="section_teacher_err"></ul>
+                </div>
+                
+                <div class="modal-body">
+                <form id="section_teacher_form" autocomplete="off" enctype="multipart/form-data">
+                    @csrf
+                    
+                    <div class="form-group">
+                        <label class='form-label'>Select Section *</label>
+                        <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
+                            {{--Select Section--}}
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class='form-label'>Select Teacher *</label>
+                        <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
+                            {{--Select Teacher--}}
+                        </select>
+                    </div>
+
+
+                    <div class="form-group mt-2" >
+                        <label class="form-label" for="section_adviser">Option</label>
+                        <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
+                            <option ></option>
+                            <option value='1'>Adviser</option>
+                            <option value='2'>Subject Teacher</option>
+                        </select>
+                    </div>
+                </form>
+                </div>
+        
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  onclick=" section_store_teacher()">Submit</button>
+                </div>
+            </div>
+            </div>
+        </div>
+{{--End Section Add Teacher Modal--}}
+
+ {{--STUDENT--}}
+
+{{-- Parent ADD STUDENT  --}}
+    
+    <div class="modal fade" id="parent_student_modal" tabindex="-1" role="dialog" aria-labelledby="parent_student_modal" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="parent_student_modal_header">
+            <h4 class="modal-title text-white" id="parent_student_modal_label">{{--Modal Title--}}</h4>
+            <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+
+            {{--Alert--}}
+            <div class="alert alert-warning fade show" id="parent_student_div_err" role="alert" style="display:none">
+                <ul id="parent_student_err"></ul>
+            </div>
+            
+            <div class="modal-body">
+            <form id="parent_student_form" autocomplete="off" enctype="multipart/form-data">
+                @csrf
+                
+                <div class="form-group">
+                    <label class='form-label'>Select Parent</label>
+                    <select id="parent_parent_id" name="parent_id" style="width: 100%">
+                        {{--Select Parent--}}
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label class='form-label'>Select Student</label>
+                    <select id="parent_student_id" name="student_id" style="width: 100%">
+                        {{--Select Student--}}
+                    </select>
+                </div>
+            </form>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  onclick="parent_student_store()">Submit</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{{--End Parent Add STUDENT --}}
+
+{{--END GLOBAL MODAL--}}

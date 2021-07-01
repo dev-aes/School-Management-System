@@ -27,7 +27,8 @@ class GradeLevelFactory extends Factory
           'name' => 'grade 1',
           'grade_val' => 1,
           'description' => 'g1',
-          'months_no' => '10'
+          'months_no' => '10',
+          'academic_year_id'=> '1'
         ];
  
     }

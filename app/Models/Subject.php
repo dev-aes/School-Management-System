@@ -7,7 +7,6 @@ use App\Models\Teacher;
 use App\Models\GradeLevel;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Contracts\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,9 +17,8 @@ class Subject extends Model
 
      protected $guarded = [];
 
-    //protected $fillable = ['name', 'description', 'grade_level_id'];
 
-    // protected static $logAttributes = ['name', 'description'];
+    //protected static $logAttributes = ['name', 'description'];
 
     // public function getActivitylogOptions(): LogOptions
     // {
@@ -42,6 +40,11 @@ class Subject extends Model
          return $this->belongsToMany(Teacher::class);
      }
 
+     public function grade_level()
+     {
+         return $this->belongsToMany(GradeLevel::class);
+     }
+
     // public function getCreatedAtAttribute($value) {
     //     //return Carbon::parse($value)->format('m-d-Y h:iA');
     //     return Carbon::parse($value)->diffForHumans();
@@ -52,9 +55,5 @@ class Subject extends Model
     //     return Carbon::parse($value)->diffForHumans();
     // }
 
-    public function grade_level()
-    {
-        //return $this->belongsTo(GradeLevel::class, 'grade_level_id');
-        return $this->belongsToMany(GradeLevel::class);
-    }
+   
 }

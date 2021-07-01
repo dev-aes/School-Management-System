@@ -80,13 +80,20 @@ class TeacherController extends Controller
             'teacher_avatar' => 'image',
 
         ]);
-        if(request()->ajax()) {
-            if(request()->hasFile('teacher_avatar')) {
+
+        if(request()->ajax()) 
+        {
+            if(request()->hasFile('teacher_avatar')) 
+            {
                   // check if the request has an image file
                     $teacher_form_data['teacher_avatar'] = request('teacher_avatar')->getClientOriginalName(); // get only the original file_name 
                     request('teacher_avatar')->storeAs('uploads/teacher', $teacher_form_data['teacher_avatar'], 'public' );  // params: fileFolder , fileName , filePath
-                    return response()->json(Teacher::create($teacher_form_data));
             }
+
+            Teacher::create($teacher_form_data);
+
+            return response()->json('success');
+
         }
     }
 
@@ -655,7 +662,7 @@ public function teacher_destroy_student()
                             ->select('section_subject.subject_id','subjects.name','grades.id','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.subject_teacher_id','grades.is_approve')
                             ->where('section_subject.section_id',$section->id)
                             ->where('grades.student_grade_id',$student_grade_id->id)                            
-                            ->get();          
+                            ->get(); 
            
             $student = Student::where('id', request('student_id'))->first(); // get the specific student 
            
@@ -667,9 +674,6 @@ public function teacher_destroy_student()
 
              endforeach;   
              
-                
-
-
                          return response()->json([$student, $subjects, $core_values]); // return subjects[] , student
          }
      }

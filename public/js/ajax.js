@@ -23,10 +23,7 @@ $(()=> {
                                     {data: 'actions', orderable: false, searchable: false} ];
 
             crud_index('.teacher_DT', 'teacher.index', teacher_column_data); // after loading the teacher page ; load the teacher data
-
-            $('.teacher_assign_subjects_to_section_display_subjects').select2({
-                dropdownParent: $('#teacher_assign_subject_section_modal')
-            });
+  
     }
 
 
@@ -55,7 +52,7 @@ $(()=> {
     if(window.location.href == route('section.index'))
     {
 
-        let section_column_data = [ {data: 'name'}, {data: 'description'}, {data: 'actions', orderable: false, searchable: false} ];
+        let section_column_data = [{data: 'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions', orderable: false, searchable: false} ];
         crud_index('.section_DT', 'section.index', section_column_data); // after loading the section page ; load the section data
 
         $('#section_section_id').select2({
@@ -232,9 +229,6 @@ $(()=> {
     }
 
 
-
-
-
     if(navigator.onLine)
     {
         $('.online_check').html(`<p class='ms-5'>Online <i class="fas fa-circle text-success"></i> </p>`)
@@ -264,6 +258,48 @@ $(()=> {
        $('#p_signature').css('display','block');
        $('#p_label').css('display', 'block');
     };
+
+
+
+    // select 2 UI FOR DISPLAYING Search box in select input field
+
+        $('.teacher_assign_subjects_to_section_display_subjects').select2({
+            dropdownParent: $('#teacher_assign_subject_section_modal')
+        });
+
+        $('#teacher_assign_grade_to_student_subject_section_id').select2({
+            
+            dropdownParent: $('#teacher_assign_grade_to_student_subject_modal')
+        });
+
+        $('#grade_assign_grade_to_student_subject_teacher_id').select2({
+            dropdownParent: $('#teacher_assign_grade_to_student_subject_modal')
+        });
+
+        $('#teacher_assign_subject_section_teacher_id').select2({
+            dropdownParent: $('#teacher_assign_subject_section_modal')
+
+        });
+        
+        $('#teacher_assign_subject_section_section_id').select2({
+            dropdownParent: $('#teacher_assign_subject_section_modal')
+
+        });
+
+        $('#parent_parent_id').select2({
+            dropdownParent: $('#parent_student_modal')
+
+        });
+
+        $('#parent_student_id').select2({
+            dropdownParent: $('#parent_student_modal')
+
+        });
+
+
+
+
+
 });
 
 let selected = []; // dynamic container for table row_id's
@@ -1808,27 +1844,6 @@ function teacher_assign_section_display_section()
                 })
                 $('#teacher_assign_section_section_id').html(section_output);
 
-
-              
-                // display students
-                // let student_output = `<option> </option>`;
-                // data[1].forEach(student => {
-                //     student_output += `<option value='${student.id}'> ${student.first_name} ${student.last_name}</option>`;
-                // });
-                // $('#teacher_assign_section_student_id').html(student_output);
-
-                  // display subjects
-                //   let subject_output = `<h5 class='mt-3'> Select Subject </h5>`;
-                //   data[2].forEach(subject => {
-                //       subject_output +=`<div class='form-check form-check-inline mt-2'>
-                //                             <input class="form-check-input" type="checkbox" name='subject_id[]' value="${subject.id}" id="subject_id-${subject.id}">
-                //                             <h4 class="form-check-label text-muted" for="flexCheckDefault">
-                //                             ${subject.name}
-                //                             </h4>
-                //                         </div>`;
-                //   });
-                //   $('#teacher_assign_section_display_subjects').html(subject_output);
-
             },
             error: err => {
                 console.log(err);
@@ -1957,7 +1972,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             url: route('teacher.teacher_assign_grade_to_subject_display_students_by_section_id', section_id),
             dataType:'json',
             success: students => {
-                 res(students);
+                 //res(students);
                 let output = `
                             <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
                             <caption> List of Students </caption>
@@ -1974,7 +1989,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
                    output +=        `<tr>
                                         <td> ${student.first_name} ${student.last_name}</td>
                                         <td> <a class='btn btn-sm btn-info' href='javascript:void(0)'
-                                         onclick='teacher_assign_grade_to_subject_create_grade(${student.student_id}, ${section_id})'> Add Grade </a></td>
+                                         onclick='teacher_assign_grade_to_subject_create_grade(${student.student_id}, ${section_id} , ${student.adviser_id})'> Add Grade </a></td>
                                      </tr>
                                     `;                 
                                 })
@@ -2001,7 +2016,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
 
 // Create Grade
 
-function teacher_assign_grade_to_subject_create_grade(student,section)
+function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 {
     
     $.ajax({
@@ -2009,7 +2024,10 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
+<<<<<<< HEAD
             res(student_subjects[1]);
+=======
+>>>>>>> beta
 
             let output = `
                            <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
@@ -2128,7 +2146,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
 
             output +=  `  
                         <h1 class="fw-bold text-uppercase text-center mb-5"> report on learners observed values</h1>
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id='teacher_assign_observed_values_to_student'>
                                 <thead style="background: none">
                                     <tr class="fw-bold text-center">
                                         <td rowspan="2">Core Values</td>
@@ -2146,29 +2164,35 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
                                 </thead>
                                 <tbody>`;
 
+                                res(student_subjects);
                                 let index = 0; // counter
                                 student_subjects[2].forEach(student_values => {
 
+                                    let q1 = (student_values.q1 == null) ? "" : student_values.q1;
+                                    let q2 = (student_values.q2 == null) ? "" : student_values.q2;
+                                    let q3 = (student_values.q3 == null) ? "" : student_values.q3;
+                                    let q4 = (student_values.q4 == null) ? "" : student_values.q4;
 
-            output +=               `<tr class='v_values' data-description_id='${student_values.description_id}' data-values_id='${student_values.values_id}' data-student_id ='${student_subjects[0].id}' data-adviser_id='${student_subjects[0].adviser_id}'>`;
+
+            output +=               `<tr class='v_values' data-description_id='${student_values.description_id}' data-values_id='${student_values.values_id}' data-student_id ='${student_subjects[0].id}' data-adviser_id='${adviser}'>`;
                                         if(index === student_values.values_id)
                                         {
             output +=                      `<td style='border-top:1px solid #fff !important'> </td>
                                             <td>${student_values.description}</td>
-                                            <td class='values_quarter' data-quarter='1' style='width:7%'>${student_values.q1}</td>
-                                            <td class='values_quarter' data-quarter='2' style='width:7%'>${student_values.q2}</td>
-                                            <td class='values_quarter' data-quarter='3' style='width:7%'>${student_values.q3}</td>
-                                            <td class='values_quarter' data-quarter='4' style='width:7%'>${student_values.q4}</td>`;
+                                            <td class='values_quarter' data-quarter='1' style='width:7%'>${q1}</td>
+                                            <td class='values_quarter' data-quarter='2' style='width:7%'>${q2}</td>
+                                            <td class='values_quarter' data-quarter='3' style='width:7%'>${q3}</td>
+                                            <td class='values_quarter' data-quarter='4' style='width:7%'>${q4}</td>`;
                                         }
                                         else
                                         {
                                             
             output +=                      `<td class='text-capitalize'>${student_values.title}</td>
                                             <td>${student_values.description}</td>
-                                            <td class='values_quarter' data-quarter='1'style='width:7%'>${student_values.q1}</td>
-                                            <td class='values_quarter' data-quarter='2'style='width:7%'>${student_values.q2}</td>
-                                            <td class='values_quarter' data-quarter='3'style='width:7%'>${student_values.q3}</td>
-                                            <td class='values_quarter' data-quarter='4'style='width:7%'>${student_values.q4}</td>`;  
+                                            <td class='values_quarter' data-quarter='1'style='width:7%'>${q1}</td>
+                                            <td class='values_quarter' data-quarter='2'style='width:7%'>${q2}</td>
+                                            <td class='values_quarter' data-quarter='3'style='width:7%'>${q3}</td>
+                                            <td class='values_quarter' data-quarter='4'style='width:7%'>${q4}</td>`;  
                                         }
         
             output +=               `</tr>`; 
@@ -2221,7 +2245,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         }
     })
 }
-
+// TODO ADMIN  TEACHER ASSIGN GRADE TO STUDENT
 $(document).on('dblclick', '#table_assign_grade_to_subject_student_grade_table .s_subject .quarter', function() {
 
             $('#g_grade').remove();
@@ -2323,6 +2347,82 @@ $(document).on('keypress', '#g_grade', function(e) {
 $(document).on('mouseleave', '#g_grade', function(e) {
     $(this).css('display','none');
 })
+
+
+
+// TODO ADMIN TEACHER ASSIGN VALUES TO STUDENT
+
+$(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values .values_quarter', function() {
+    $('#v_values').remove();
+    $(this).append(
+        $(`<input type='text' name='values' id='v_values' style='width:100%;display:block' onkeypress="return /[a-z]/i.test(event.key)">`)
+        .attr('data-values_id',$(this).parent().attr('data-values_id'))
+        .attr('data-description_id', $(this).parent().attr('data-description_id'))
+        .attr('data-student_id',$(this).parent().attr('data-student_id'))
+        .attr('data-adviser_id',$(this).parent().attr('data-adviser_id'))
+        .attr('data-quarter',$(this).attr('data-quarter'))
+      ); // append values id  && description id  && student id to this input field
+     
+});
+
+$(document).on('keypress', '#v_values', function(e) {
+
+    let student_id = $('#v_values').attr('data-student_id');
+    let adviser_id = $('#v_values').attr('data-adviser_id');
+    let description_id = $('#v_values').attr('data-description_id');
+    let values = $('#v_values').val();
+    let quarter = $('#v_values').attr('data-quarter');
+
+    if(e.keyCode == 13)
+    {
+
+        console.log({
+            student_id:student_id,
+            description_id:description_id,
+            values:values,
+            quarter: quarter,
+            adviser_id:adviser_id
+        })
+
+        $.ajax({
+            method: 'POST',
+            url: route('teacher.teacher_assign_values_to_student'),
+            dataType:'json',
+            data:
+            {
+                student_id:student_id,
+                adviser_id:adviser_id,
+                // values_id:values_id,
+                description_id:description_id,
+                values:values,
+                quarter:quarter
+            },
+            success: response => {
+                res(response);
+                if(response == 'success')
+                {
+                    $(this).closest('td').text($(this).val());
+                    return toastSuccess("Values assigned ");
+
+                }
+                if(response == 'error')
+                {
+                    toastDanger();
+                }
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+
+});
+
+
+$(document).on('mouseleave', '#v_values', function(e) {
+    $(this).css('display','none');
+})
+
 
 
 //* ---------> END TEACHER MANAGEMENT 
@@ -3336,7 +3436,7 @@ function createStudent() {
    let student_guardian_contact = $('#student_guardian_contact');
    let student_guardian_facebook = $('#student_guardian_facebook');
 
-   if(isNotEmpty(student_lrn)&& isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_section) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email) && isNotEmpty(student_avatar) && isNotEmpty(student_guardian_name) && isNotEmpty(student_guardian_contact) && isNotEmpty(student_guardian_facebook))
+   if(isNotEmpty(student_lrn)&& isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_section) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email))
    {
         $.ajax({
             method:'POST',
@@ -3504,107 +3604,6 @@ function createStudent() {
 }
 
 
-// display_student_teacher_subject
-$('.display_student_teacher_subject').change(function () {
-        
-    let student_teacher_subject_id = $(this).val();
-    $.ajax({
-        url: route('student.teacher_subject', student_teacher_subject_id),
-        success: teachers => {
-            console.log(teachers);
-           let output = ``;
-           teachers.forEach(teacher => {
-                output += `
-                        <div class="form-check" id="add_student_teacher_id">
-                            <input class="form-check-input" type="radio" id="${teacher.id}" name='student_teacher_id' value='${teacher.id}'>
-                            <label class="form-check-label" for="teacher-${teacher.id}">
-                                ${teacher.first_name} ${teacher.last_name}
-                            </label>
-                        </div>`;
-            });
-            $('.display_student_teacher').html(output);
-        },
-        error: err => {
-            console.log(err);
-        }
-    })
-})
-
-
-// store student_subject
-
-function create_student_subject(event) {
-    event.preventDefault();
-    let student_id = $('#add_student_id').attr('value');
-    let student_teacher_subject_id = $('.display_student_teacher_subject').val();
-    let student_teacher_id = '';
-    
-    $('input[name="student_teacher_id"]:checked').each(function() {
-        student_teacher_id = $(this).val();
-     });
-
-    if(confirm("Do you want to add subject?"))
-    {
-        $.ajax({
-            method: 'POST',
-            url: route('student.store_teacher_subject'),
-            data:{
-                student_id: student_id,
-                subject_id : student_teacher_subject_id,
-                teacher_id : student_teacher_id
-            },
-            success: response => {
-                if(response == 'success')
-                {
-                    showStudent(student_id);
-                    toastSuccess('Subject & Teacher Assigned')
-                      let data = `
-                      <tr> 
-                          <td> ${response.subject} </td>
-                          <td> ${response.teacher} </td> 
-                          <td> <a class='text-danger' href='javascript:void(0)' onclick='delete_student_teacher_subject()'> <i class="fas fa-times"></i> </a></td>
-                      </tr>`;
-                      $('#display_student_teacher_subjects').append(data); // display new added data
-                }
-                else
-                {
-                    alert('student already have this subject');
-                }
-
-            },
-            error : err => {
-                console.log(err);
-            }
-        });
-    }
-
-} 
-
-// delete student_subject
-function delete_student_teacher_subject(student_teacher_subject_id, student_id)
-{
-    
-    if(confirm("Do you want to delete?"))
-    {
-        $.ajax({
-            method: 'DELETE',
-            url: route('student.delete_teacher_subject', student_teacher_subject_id),
-            data: {id:student_teacher_subject_id},
-            success: response => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Deleted Successfully',
-                  });
-                  showStudent(student_id);
-            },
-            error: err => {
-                console.log(err);
-            }
-        })
-    }
-}
-
-
 // edit
  function editStudent(id) {
     $.ajax({
@@ -3684,7 +3683,7 @@ function delete_student_teacher_subject(student_teacher_subject_id, student_id)
    let student_guardian_contact = $('#student_guardian_contact');
    let student_guardian_facebook = $('#student_guardian_facebook');
 
-   if(isNotEmpty(student_lrn) && isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_grade_level) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email) && isNotEmpty(student_guardian_name) && isNotEmpty(student_guardian_contact) && isNotEmpty(student_guardian_facebook))
+   if(isNotEmpty(student_lrn) && isNotEmpty(student_first_name) && isNotEmpty(student_middle_name) && isNotEmpty(student_last_name) && isNotEmpty(student_birth_date) && isNotEmpty(student_gender) && isNotEmpty(student_grade_level) && isNotEmpty(student_nationality) && isNotEmpty(student_city) && isNotEmpty(student_city) && isNotEmpty(student_province) && isNotEmpty(student_country) && isNotEmpty(student_address) && isNotEmpty(student_contact) && isNotEmpty(student_facebook) && isNotEmpty(student_email))
    {
         $.ajax({
             method:'POST',
@@ -6470,8 +6469,9 @@ $('#student_add_parent').on('click', () => {
 
     $('#parent_parent_id').attr('value', '');
     $('#parent_student_id').attr('value', '');
-    $('#parent_student_modal_label').html(`Assign Student to Parent`);
     $('#parent_student_modal').modal('show');
+    $('#parent_student_modal_label').html(`Assign Student to Parent <i class="fas fa-user-friends"></i>`);
+    $('#parent_student_modal_header').addClass('bg-info');
 
     $.ajax({
         url: route('parent.parent_display_student'),
@@ -6587,7 +6587,7 @@ function AdminDashBoardDisplayUser()
             $('#dashboard_display_user').html(output);
 
 
-            // display activity logs
+            //display activity logs
             let output2 = ``;
             users[1].forEach(activity => {
                 
@@ -6872,31 +6872,78 @@ function parent_update_payment_request(student_id , parent_id) {
 
     let payment_request_remark = $('#payment_request_remark').val();
 
-    $.ajax({
-        method:'PUT',
-        url: route('parent_payment_request.update', [student_id, parent_id]),
-        dataType:'json',
-        data:
-        {
-            student_id: student_id,
-            parent_id: parent_id,
-            remark: payment_request_remark
-        },
-        success: response => {
-            if(response == 'success')
-            {
-                toastSuccess(`Payment Request ${payment_request_remark}`);
+    let rm = $('#payment_request_remark :selected').text();
 
-                setTimeout(() => {
-                    window.location.href = route('parent_payment_request.index');
-                },1300)
-            }
-        },
-        error: err => {
-            console.log(err);
-            toastDanger();
+    if(confirm(`Do you want to ${rm} payment request ?`))
+    {
+        if(payment_request_remark == 'approved')
+        {
+            $.ajax({
+                method:'PUT',
+                url: route('parent_payment_request.update', [student_id, parent_id]),
+                dataType:'json',
+                data:
+                {
+                    student_id: student_id,
+                    parent_id: parent_id,
+                    remark: payment_request_remark
+                },
+                success: response => {
+                    if(response == 'success')
+                    {
+                        toastSuccess(`Payment Request ${payment_request_remark}`);
+        
+                        setTimeout(() => {
+                            window.location.href = route('parent_payment_request.index');
+                        },1300)
+                    }
+                },
+                error: err => {
+                    console.log(err);
+                    toastDanger();
+                }
+            });
         }
-    });
+        else
+        {
+            let comment = prompt("Please add comment *"); // message
+
+            if(comment === null || comment.length == 0)
+            {
+                return alert("Field is required ⚠");
+            }
+
+            $.ajax({
+                method:'PUT',
+                url: route('parent_payment_request.update', [student_id, parent_id]),
+                dataType:'json',
+                data:
+                {
+                    student_id: student_id,
+                    parent_id: parent_id,
+                    remark: payment_request_remark,
+                    comment: comment
+                },
+                success: response => {
+                    if(response == 'success')
+                    {
+                        toastSuccess(`Payment Request ${payment_request_remark}`);
+        
+                        setTimeout(() => {
+                            window.location.href = route('parent_payment_request.index');
+                        },1300)
+                    }
+                },
+                error: err => {
+                    console.log(err);
+                    toastDanger();
+                }
+            });
+
+        }
+       
+    }
+   
 }
 // end
 
