@@ -80,13 +80,20 @@ class TeacherController extends Controller
             'teacher_avatar' => 'image',
 
         ]);
-        if(request()->ajax()) {
-            if(request()->hasFile('teacher_avatar')) {
+
+        if(request()->ajax()) 
+        {
+            if(request()->hasFile('teacher_avatar')) 
+            {
                   // check if the request has an image file
                     $teacher_form_data['teacher_avatar'] = request('teacher_avatar')->getClientOriginalName(); // get only the original file_name 
                     request('teacher_avatar')->storeAs('uploads/teacher', $teacher_form_data['teacher_avatar'], 'public' );  // params: fileFolder , fileName , filePath
-                    return response()->json(Teacher::create($teacher_form_data));
             }
+
+            Teacher::create($teacher_form_data);
+
+            return response()->json('success');
+
         }
     }
 

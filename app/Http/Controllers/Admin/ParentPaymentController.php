@@ -112,6 +112,9 @@ class ParentPaymentController extends Controller
     public function update(ParentModel $parent, Student $student)
     {
         
+        $remarks = request('remark');
+        $comment = request('comment') ?? "";
+
 
 
         $latest_pending_payment =   ParentPayment::where('parent_id', $parent->id)
@@ -119,9 +122,10 @@ class ParentPaymentController extends Controller
                                                     ->where('status', 'pending')
                                                     ->first();
 
-                                    $latest_pending_payment->update(['status' => request('remark')]);
+                                    $latest_pending_payment->update([
+                                                                        'status' => $remarks,
+                                                                        'comment' => $comment]);
 
-        $remarks = request('remark');
         $transaction_no = mt_rand(123456,999999);
         // $num = "09162646505";
         // $num = "09951460049";

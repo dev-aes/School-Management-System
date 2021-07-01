@@ -83,17 +83,19 @@ class StudentController extends Controller
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
             'email' => 'required|email',
-            'student_avatar' => 'required|image',
+            'student_avatar' => 'image',
         ]);
 
         if(request()->ajax()) 
         {
-            if(request()->hasFile('student_avatar')) {
+            if(request()->hasFile('student_avatar')) 
+            {
                 // check if the request has an imagefile
 
                 $student_form_data['student_avatar'] = request('student_avatar')->getClientOriginalName(); // get the original file name
                 request('student_avatar')->storeAs('uploads/student', $student_form_data['student_avatar'], 'public' ); // params: fileFolder, fileName , filePath
-
+                
+            }
                //Insert student data here
                 $student_data = Student::create($student_form_data);
                 
@@ -101,63 +103,63 @@ class StudentController extends Controller
                 $ay_id = AcademicYear::select('id')->where('status',1)->first();
 
 
-        DB::table('student_subject_teacher')
-        ->updateOrInsert(
-            [ 'section_id' => $student_data->section_id],
-            ['student_id' => $student_data->id]
-        );
+                DB::table('student_subject_teacher')
+                ->updateOrInsert(
+                    [ 'section_id' => $student_data->section_id],
+                    ['student_id' => $student_data->id]
+                );
 
 
-        //Insert ay_id, student_id, adviser_id on student_grade    
-        $academic_year = AcademicYear::where('status',1)->first();
+                //Insert ay_id, student_id, adviser_id on student_grade    
+                $academic_year = AcademicYear::where('status',1)->first();
 
-        //Get Adviser ID through section_id
-        $adviser_id = Section::where('id',$student_form_data['section_id'])->first();
-        //$adviser = Teachers::where('id',$adviser_id->adviser_id)->first();
-        
-        $student_grade_id = DB::table('student_grade')->insertGetId([
-            'academic_year_id'=>$academic_year->id,
-            'adviser_id'=>$adviser_id->adviser_id,
-            'student_id'=>$student_data->id
-        ]);
-    
+                //Get Adviser ID through section_id
+                $adviser_id = Section::where('id',$student_form_data['section_id'])->first();
+                //$adviser = Teachers::where('id',$adviser_id->adviser_id)->first();
+                
+                $student_grade_id = DB::table('student_grade')->insertGetId([
+                    'academic_year_id'=>$academic_year->id,
+                    'adviser_id'=>$adviser_id->adviser_id,
+                    'student_id'=>$student_data->id
+                ]);
+            
         
          
         
-        //Populate grades here
-        $get_subjects_and_teachers_id = DB::table('section_subject')->where('section_id',$student_form_data['section_id'])->get();
-       
-        $get_section_grade_level = DB::table('sections')
-                                ->join('grade_levels','sections.grade_level_id','grade_levels.id')
-                                ->select('grade_levels.grade_val')
-                                ->where('sections.id',$student_data->section_id)
-                                ->first();
+                //Populate grades here
+                $get_subjects_and_teachers_id = DB::table('section_subject')->where('section_id',$student_form_data['section_id'])->get();
+            
+                $get_section_grade_level = DB::table('sections')
+                                        ->join('grade_levels','sections.grade_level_id','grade_levels.id')
+                                        ->select('grade_levels.grade_val')
+                                        ->where('sections.id',$student_data->section_id)
+                                        ->first();
 
             
         
 
-         //If no subjects and teachers exist    
-        if($get_subjects_and_teachers_id->count() == 0){
-             DB::table('grades')->insert(['student_grade_id'=>$student_grade_id]);
-            
-        }
+                //If no subjects and teachers exist    
+                if($get_subjects_and_teachers_id->count() == 0)
+                {
+                    DB::table('grades')->insert(['student_grade_id'=>$student_grade_id]);
+                    
+                }
         
 
-             //if there is already existing section with subjects the newly added student will populate the Grades Table
-            
-             foreach ($get_subjects_and_teachers_id as $subject_teacher_id):
-                DB::table('grades')->insert([
-                    'student_grade_id'=>$student_grade_id,
-                    'subject_id'=>$subject_teacher_id->subject_id,
-                    'subject_teacher_id'=>$subject_teacher_id->teacher_id,
-                    'grade_level_val' => $get_section_grade_level->grade_val,
-                ]);
-            endforeach;    
-        
-
-            return response()->json('success');
+                //if there is already existing section with subjects the newly added student will populate the Grades Table
                 
-            }
+                foreach ($get_subjects_and_teachers_id as $subject_teacher_id):
+                    DB::table('grades')->insert([
+                        'student_grade_id'=>$student_grade_id,
+                        'subject_id'=>$subject_teacher_id->subject_id,
+                        'subject_teacher_id'=>$subject_teacher_id->teacher_id,
+                        'grade_level_val' => $get_section_grade_level->grade_val,
+                    ]);
+                endforeach;    
+            
+
+                return response()->json('success');
+                
         }
 
     }
