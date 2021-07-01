@@ -798,7 +798,7 @@
 @endif
 
 
-@if(url()->current() == route('grade.index'))
+@if(url()->current() == route('grade_level.index'))
 {{-- Start Grade Level Modal --}}
 
     <div class="modal fade" id="grade_level_modal" tabindex="-1" role="dialog" aria-labelledby="grade_level_modal_label" aria-hidden="true">

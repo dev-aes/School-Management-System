@@ -548,7 +548,7 @@ function t_display_students_by_section_id(section)
                output +=        `<tr>
                                     <td> ${student.first_name} ${student.last_name} </td>
                                     <td> ${student.gender} </td>
-                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${student.section_id}, ${student.id})'> Add Grade </a> </td>
+                                    <td> <a class='btn btn-sm btn-info' href='javascript:void(0)' onclick='t_assign_grade(${student.section_id}, ${student.student_id})'> Add Grade </a> </td>
                                 </tr>`
                     }) // loop closure
 
@@ -656,8 +656,8 @@ function t_assign_grade(section , student)
            
                                     if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
                                     {
-                                       remark = (average > 74) ? 'Passed': 'Failed';
                                        average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+                                       remark = (average > 74) ? 'Passed': 'Failed';
            
                                     }
                                     
@@ -783,7 +783,7 @@ function t_assign_grade(section , student)
                                                 <tbody>`;
 
 
-                                                let index = 0;
+                                                let index = 0; // counter
                                                 section_student[4].forEach(values_description => { // loop core values
 
 

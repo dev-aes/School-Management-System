@@ -628,6 +628,8 @@ public function teacher_destroy_student()
 
              $subject_ids = []; // container for subject id
 
+             
+
              foreach($get_subject_ids as $subject_id): 
 
                     array_push($subject_ids, $subject_id->subject_id);
@@ -636,6 +638,16 @@ public function teacher_destroy_student()
 
 
              $student_grade_id = DB::table('student_grade')->where('student_id',$student_id)->first();
+
+             $core_values = DB::table('values')
+                              ->leftJoin('descriptions', 'values.id','descriptions.values_id' )
+                              ->leftJoin('student_values','descriptions.id','student_values.description_id')
+                       
+                            ->select('values.title','student_values.student_id','student_values.adviser_id','student_values.q1','student_values.q2','student_values.q3','student_values.q4','descriptions.description',DB::raw("values.id as values_id , descriptions.id as description_id"))
+                              ->orderBy('values.id', 'asc')
+                              ->where('student_values.student_id',$student_grade_id->student_id)
+                              ->orWhere('student_values.description_id',NULL)
+                              ->get(); // get student core values
             
              $subjects = DB::table('subjects')
                             ->join('section_subject','subjects.id','section_subject.subject_id')
@@ -658,7 +670,7 @@ public function teacher_destroy_student()
                 
 
 
-                         return response()->json([$student, $subjects]); // return subjects[] , student
+                         return response()->json([$student, $subjects, $core_values]); // return subjects[] , student
          }
      }
  

@@ -63,7 +63,17 @@ class ReportController extends Controller
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
 
-            return $this->res($student_grades);
+            $core_values = DB::table('values')
+                                ->leftJoin('descriptions', 'values.id','descriptions.values_id' )
+                                ->leftJoin('student_values','descriptions.id','student_values.description_id')
+                                ->select('values.title','student_values.student_id','student_values.adviser_id','student_values.q1','student_values.q2','student_values.q3','student_values.q4','descriptions.description',DB::raw("values.id as values_id , descriptions.id as description_id"))
+                                ->orderBy('values.id', 'asc')
+                                ->where('student_values.student_id',$student_grade_id->student_id)
+                                ->orWhere('student_values.description_id',NULL)
+                                ->get(); // display student core values
+            
+            return response()->json([$student_grades, $core_values]);
+          
         }
     }
 }
