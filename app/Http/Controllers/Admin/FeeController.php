@@ -60,11 +60,13 @@ class FeeController extends Controller
 
                        if(!$fee->count() > 0) 
                        {
+                           $ay = get_latest_academic_year();
                             $inputs = ['grade_level_id' => $data['grade_level_id'],
                                     'description' => $description,
-                                    'amount' => $amount];
+                                    'amount' => $amount,
+                                    'academic_year_id' => $ay->id];
 
-                            Fee::create($inputs);
+                            DB::table('fees')->insert($inputs);
                             // update the total sub fee in the grade_levels_table
                             DB::update("UPDATE grade_levels SET total_amount = total_amount + $amount WHERE id = $data[grade_level_id]");
                         }

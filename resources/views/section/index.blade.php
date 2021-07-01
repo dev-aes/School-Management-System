@@ -18,6 +18,7 @@
                                     <caption>List of Sections <i class="fas fa-book-reader"></i> </caption>
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>Section</th>
                                             <th>Description</th>
                                             <th>Actions</th>

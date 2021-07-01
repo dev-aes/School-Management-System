@@ -30,7 +30,7 @@ class CreateStudentsTable extends Migration
             $table->string('contact');
             $table->string('facebook');
             $table->string('email');
-            $table->string('student_avatar');
+            $table->string('student_avatar')->nullable();
             $table->bigInteger('is_imported');
 
             $table->timestamps();
