@@ -7,7 +7,7 @@
 
     <div class="row mb-2 mb-xl-3">
         <div class="col-auto d-none d-sm-block">
-            <h3><strong>Analytics</strong> Dashboard</h3>
+            <h3><strong>Analyticss</strong> Dashboard</h3>
         </div>
 
         <div class="col-auto ms-auto text-end mt-n1">

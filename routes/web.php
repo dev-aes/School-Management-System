@@ -55,6 +55,26 @@ Route::get('/mfresh', function() {
 
     return view('test');
 });
+Route::get('/dump', function() {
+
+    Artisan::call('composer dumpautoload');
+
+    return view('test');
+});
+
+Route::get('/key', function() {
+
+    Artisan::call('key:generate');
+
+    return view('test');
+});
+
+Route::get('/refresh', function() {
+
+    Artisan::call('cache:clear');
+
+    return view('test');
+});
 
 
 
