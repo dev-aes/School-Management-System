@@ -149,11 +149,11 @@
 					</li>
 
 
-					<li class="sidebar-item">
+					{{-- <li class="sidebar-item">
 						<a class="sidebar-link" href="javascript:void(0)" title="coming soon">
 							<i class="align-middle" data-feather="monitor"></i> <span class="align-middle">POS & Inventory</span>
                         </a>
-					</li>
+					</li> --}}
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('report.index') }}" title="coming soon">
@@ -372,15 +372,11 @@
 	{{--Toastr--}}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-	{{--Auto Fill Js--}}
-	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js" integrity="sha512-TToQDr91fBeG4RE5RjMl/tqNAo35hSRR4cbIFasiV2AAMQ6yKXXYhdSdEpUcRE6bqsTiB+FPLPls4ZAFMoK5WA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
-
 	{{--Tags--}}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
 
 	{{--E-one--}}
     <script src="{{ asset('js/eone.min.js') }}"></script>
-
 
 
 	{{--Scripts--}}

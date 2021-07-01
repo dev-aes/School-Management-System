@@ -48,7 +48,7 @@
                                     <select class="form-select" id="payment_request_remark" type="text" value={{$parent_payment_request->remark}}>
                                         <option value="pending">Pending</option>
                                         <option value="approved">Approve</option>
-                                        <option value="decline">Decline</option>
+                                        <option value="declined">Decline</option>
                                     </select>
                                 </div>
 

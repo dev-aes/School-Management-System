@@ -18,6 +18,7 @@ class CreateFeesTable extends Migration
             $table->foreignId('grade_level_id')->constrained('grade_levels')->onUpdate('cascade')->onDelete('cascade');
             $table->string('description');
             $table->float('amount');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

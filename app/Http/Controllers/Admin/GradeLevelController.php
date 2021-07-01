@@ -51,6 +51,10 @@ class GradeLevelController extends Controller
             
             $months_no = School::all('months_no')->first();
             $grade_level_form_data['months_no'] =  $months_no->months_no;
+            $ay = get_latest_academic_year();
+            $grade_level_form_data['academic_year_id'] = $ay->id;
+
+
             if(request()->ajax()) 
             {
                 return response()->json(GradeLevel::create($grade_level_form_data));
@@ -146,22 +150,6 @@ class GradeLevelController extends Controller
                               'subject_id' => $subject_id,
                               'created_at' => now()
                                ]);
-
-                    //Before inserting new subject we must get the section of every student   
-                    
-                    
-                    // $student_grade_ids =  DB::table('grades')->select('student_grade_id')->distinct()->get();
-                    
-                    // foreach($student_grade_ids as $id):
-                    //     DB::table('grades')
-                    //     ->insert([
-                    //         'student_grade_id'=>$id->student_grade_id,
-                    //         'subject_id' => $subject_id,  
-                    //         'grade_level_val'=>$grade_level_id, 
-                    //     ]);    
-                    // endforeach;         
-
-                          
 
                 }
 

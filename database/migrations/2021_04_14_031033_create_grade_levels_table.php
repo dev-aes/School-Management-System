@@ -20,6 +20,7 @@ class CreateGradeLevelsTable extends Migration
             $table->string('description');
             $table->float('total_amount')->default(0);
             $table->bigInteger('months_no');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

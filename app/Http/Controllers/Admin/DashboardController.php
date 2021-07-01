@@ -63,16 +63,13 @@ class DashboardController extends Controller
 
 
 
-        // $activity_logs = Activity::where('subject_type', '!=', 'App\Models\ParentPayment')->latest()->take(5)->get(); // get the latest 5 activity logs
-        // $parent_payments_log = DB::select("SELECT al.id, al.description, al.properties, al.parent_id, al.student_id, al.created_at, pp.seen FROM activity_log al INNER JOIN parent_payments pp ON al.parent_id = pp.parent_id  WHERE al.student_id = pp.student_id AND al.causer_id !=1 GROUP BY pp.id ORDER BY pp.seen LIMIT 5"); // get the latest parent payment request
+        $activity_logs = Activity::where('subject_type', '!=', 'App\Models\ParentPayment')->latest()->take(5)->get(); // get the latest 5 activity logs
+        $parent_payments_log = DB::select("SELECT al.id, al.description, al.properties, al.parent_id, al.student_id, al.created_at, pp.seen FROM activity_log al INNER JOIN parent_payments pp ON al.parent_id = pp.parent_id  WHERE al.student_id = pp.student_id AND al.causer_id !=1 GROUP BY pp.id ORDER BY pp.seen LIMIT 5"); // get the latest parent payment request
 
 
-        // // dd($parent_payments_log);
-        // $payment_notif_count = ParentPayment::where('seen', '0')->count(); // count the parent payment request
+         // dd($parent_payments_log);
+         $payment_notif_count = ParentPayment::where('seen', '0')->count(); // count the parent payment request
 
-
-
-        
 
         $monthly_sales = DB::table('payment_ledger') // get all the monthly sales
                          ->join('payments', 'payment_id', 'payments.id')
@@ -97,13 +94,13 @@ class DashboardController extends Controller
         if(request()->ajax())
         {
              //display only if there is a payment request from the parent
-            // if(count($parent_payments_log) > 0 )
-            // {
-            //      return response()->json([$latest_users, $activity_logs, $payment_notif_count, $parent_payments_log]);
-            // }
+            if(count($parent_payments_log) > 0 )
+            {
+                 return response()->json([$latest_users, $activity_logs, $payment_notif_count, $parent_payments_log]);
+            }
 
-            // return response()->json([$latest_users, $activity_logs, $payment_notif_count]);
-            return response()->json([$latest_users]);
+             return response()->json([$latest_users, $activity_logs, $payment_notif_count]);
+
         }
 
         return view('home', compact(['users',
@@ -120,8 +117,8 @@ class DashboardController extends Controller
                                     'g6',
                                     'yearly_sales',
                                     'months',
-                                    'sales',
-                                    'latest_users']));
+                                    'sales'
+                                    ]));
 
     }
 

@@ -14,20 +14,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GradeLevel extends Model
 {
-    //use HasFactory, LogsActivity;
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $guarded = [];
 
 
-    // public function getActivitylogOptions(): LogOptions
-    // {
-    //     return LogOptions::defaults()
-    //     ->logOnly(['name', 'description'])
-    //     ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} grade level")
-    //     ->useLogName('gradelevel');
-    //     // Chain fluent methods for configuration options
-    // }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly(['name', 'description'])
+        ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} grade level")
+        ->useLogName('gradelevel');
+        // Chain fluent methods for configuration options
+    }
 
     public function student()
     {
