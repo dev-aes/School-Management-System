@@ -2009,7 +2009,6 @@ function teacher_assign_grade_to_subject_create_grade(student,section)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
-            //res(student_subjects);
 
             let output = `
                            <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
