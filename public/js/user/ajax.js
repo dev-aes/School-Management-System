@@ -11,18 +11,6 @@ $(() => {
     if(window.location.href == route('teacher.dashboard'))
     {
         displayTeacherStudents()
-        // let teacher_student_column_data = [
-        //                                     {data:'student_avatar', render(data) {
-        //                                         return `<a href='javascript:void(0)' data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><img class='rounded-circle img-fluid' src='/storage/uploads/student/${data}' alt='student_avatar' width='60'></a>`;
-        //                                     }},
-        //                                     {data:'first_name'},
-        //                                     {data:'last_name'},
-        //                                     {data:'gender'},
-        //                                     {data:'section.name'},
-        //                                     {data: 'actions', orderable: false, searchable: false}
-        //                                   ];
-
-        // crud_index('.teacher_student_DT', 'teacher.dashboard', teacher_student_column_data);
 
     }
 
@@ -885,19 +873,35 @@ function t_assign_grade(section , student)
                                         <td class='average'>${average}</td>
                                         <td class='remark'>${remark}</td>`;
 
-                                            if(section_student[0].adviser_id == section_student[3])//Check if the login teacher is the adviser
-                                            {
-                                                
-                                               
-                                              
-                   output +=            `<td>
-                                            <a class='btn  btn-primary' href='javascript:void(0)' onclick='adviser_approve_grade(${subject.id})'> <i class="fas fa-check"></i> </a>
-                                        </td>
-                                    </tr>
-                            `;      
-                                            }
 
-                            })
+                                if(section_student[0].adviser_id == section_student[3]) //Check if the login teacher is the adviser
+                                {
+                                    if(subject.is_approve == "0,0,0,0") // checking for is_approved
+                                    {
+                     
+                       output +=          `<td>
+                                                <a class='btn  btn-light' href='javascript:void(0)' disabled> <i class="fas fa-check"></i> </a>
+                                           </td>`;
+                                    }
+
+                                    else
+                                    {
+                                        
+                       output +=            `<td>
+                                                <a class='btn  btn-primary' href='javascript:void(0)' onclick='adviser_approve_grade(${subject.id})'> <i class="fas fa-check"></i> </a>
+                                            </td>`;
+
+                                    }
+
+
+
+                                }
+
+
+                   output += `       </tr>
+                                    ;    `
+
+                            }) // loop closure
 
                             
                     output += `

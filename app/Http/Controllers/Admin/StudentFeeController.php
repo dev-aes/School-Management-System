@@ -191,7 +191,7 @@ class StudentFeeController extends Controller
         
         $students = DB::table('section_adviser_ay')
                     ->join('sections','section_adviser_ay.section_id','sections.id')
-                    ->join('students','section_adviser_ay.adviser_id','students.section_id')
+                    ->join('students','section_adviser_ay.section_id','students.section_id')
                     ->join('student_fee','students.id','student_fee.student_id')
                     ->where('section_adviser_ay.ay_id',$ay->id)
                     ->where('student_fee.has_downpayment',1)

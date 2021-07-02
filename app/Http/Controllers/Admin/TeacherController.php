@@ -76,7 +76,7 @@ class TeacherController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:teachers',
             'teacher_avatar' => 'image',
 
         ]);
@@ -165,7 +165,7 @@ class TeacherController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|unique:teachers|email',
             'teacher_avatar' => 'image',
         ]);
 

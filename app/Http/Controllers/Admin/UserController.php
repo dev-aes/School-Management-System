@@ -39,7 +39,7 @@ class UserController extends Controller
         if(request()->ajax())
         {   
             $students = Student::all();
-            $roles = Role::where('name', '!=', 'student')->where('name', '!=', 'parent')->get();
+            $roles = Role::whereIn('name', ['admin','registrar','cashier'])->get();
             $parents = ParentModel::all();
             $teachers = Teacher::all();
 

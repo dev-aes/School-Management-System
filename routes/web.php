@@ -60,11 +60,11 @@ Route::get('/test', function () {
 
 
 
-Route::resource('/admin/user', UserController::class)->middleware('auth');
+Route::resource('/admin/user', UserController::class)->middleware('auth'); // only auth because of reusing of updating avatar function
 
 
 // Admin Dashboard
-Route::middleware(['auth', 'admin'])->group(function() {
+Route::middleware(['auth'])->group(function() {
 
     //DASHBOARD 
         Route::resource('/home', DashboardController::class);
@@ -318,6 +318,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
 
 
+Route::middleware('auth')->group(function() {
 
 
  // Student Dashboard
@@ -393,13 +394,9 @@ Route::patch('/dashboard/user/teacher/{teacher}', [UserTeacherController::class,
 Route::post('/dashboard/teacher/store_values', [UserTeacherController::class, 'teacher_assign_values_to_student'])->name('teacher.teacher_assign_values_to_student');
 
 
-
-
-
-
-
-
 // End Teacher Dashboard
+
+});
 
 
 

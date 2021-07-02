@@ -82,7 +82,7 @@ class StudentController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|unique:students|email',
             'student_avatar' => 'image',
         ]);
 
