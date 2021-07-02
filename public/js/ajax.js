@@ -162,6 +162,19 @@ $(()=> {
        let user_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'role.name'}, {data: 'actions', orderable: false, searchable: false} ];
 
        crud_index('.user_DT', 'user.index',user_column_data); // after loading the User page ; load the User  data
+
+       
+        $('#user_teacher_id').select2({
+            dropdownParent: $('#user_modal')
+        });
+
+        $('#user_student_id').select2({
+            dropdownParent: $('#user_modal')
+        });
+
+        $('#user_parent_id').select2({
+            dropdownParent: $('#user_modal')
+        });
     }
 
     
@@ -286,6 +299,16 @@ $(()=> {
 
         });
 
+        $('#section_section_id').select2({
+            dropdownParent: $('#section_teacher_modal')
+
+        });
+        
+        $('#section_teacher_id').select2({
+            dropdownParent: $('#section_teacher_modal')
+
+        });
+
         $('#parent_parent_id').select2({
             dropdownParent: $('#parent_student_modal')
 
@@ -295,6 +318,9 @@ $(()=> {
             dropdownParent: $('#parent_student_modal')
 
         });
+
+
+
 
 
 
@@ -2476,12 +2502,11 @@ $('#btn_add_subject').css('display', 'block');
 $('#btn_update_subject').css('display', 'none');
 $('#subject_modal_header').removeClass('bg-success').addClass('bg-primary');
 
-
     $.ajax({
         url: route('subject.create'),
         dataType:'json',
         success: grade_levels => {
-            res(grade_levels);
+            //res(grade_levels);
             let output=' <option></option>';
             grade_levels.forEach(grade_level => {
                 output += `<option value='${grade_level.grade_val},${grade_level.id}'>Grade ${grade_level.grade_val}  </option>`;
@@ -2512,11 +2537,10 @@ function createSubject() {
             url: route('subject.store'),
             data: subject_form.serialize(),
             success: response => {
-               res(response);
+               //res(response);
                 toastSuccess('Subject Added');
                 $('.subject_DT').DataTable().draw();
                 subject_form[0].reset();
-                //$('#subject_modal').modal('hide');
                 $('#subject_div_err').css('display', 'none');
                 $('#subject_err').html('');
             },
@@ -3092,10 +3116,11 @@ function updateSection()
             dataType:'json',
             data:section_form.serialize(),
             success: response => {
-               // res(response);
+            //    res(response);
                 if(response == 'success')
                 {   
                     $('.section_DT').DataTable().draw();
+                    $('#section_modal').modal('hide');
                     return toastSuccess("Section Updated");
                 }
             },
@@ -3191,7 +3216,7 @@ function section_store_teacher()
 
             },
             success: response => {
-                res(response);
+                //res(response);
                 if(response == "success")
                 {
                    return toastSuccess("Teacher Assigned");
@@ -3207,30 +3232,60 @@ function section_store_teacher()
 
             },
             error: err => {
-                console.log(err);
+               toastDanger();
+               res(err);
             }
         })
     }
     else
     {
-        toastr.warning("Please select a section/teacher");
+        toastr.warning("Please select a section and teacher");
     }
 }
 
 
 function select_current_adviser(){
     let section_id =  $('#section_section_id').val();
+
+    if(section_id > 0)
+    {
+        $.ajax({  
+            url: route('section.get_adviser', section_id),
+            dataType:'json',
+            success: response =>{
+                //res(response);
+                let output = '';
     
-    $.ajax({  
-        url: route('section.get_adviser', section_id),
-        dataType:'json',
-        success: response =>{
-            res(response);
-        },
-        error: err => {
-            res(err);
-        },
-    })
+                                if(response !== 'empty_adviser')
+                                {
+    
+                   output +=    ` <center><img class='img-thumbnail rounded-cirlce' src='/storage/uploads/teacher/${response.teacher_avatar}' alt='adviser' width='110'  title='Adviser - ${response.first_name}'></center> <br> <p class='text-center m-0'> [Current Adviser] </p>
+                                <p class='text-center text-info'> ${response.first_name} ${response.last_name} </p> `;
+                                }
+    
+                                else
+                                {
+    
+                   output +=    ` <center><img class='img-thumbnail rounded-cirlce' src='/images/no_photo.png' alt='' width='110'></center> 
+                   <br> <p class='text-center m-0'> [No Adviser] </p>
+                   `;
+    
+                                }
+                
+    
+                                $('#section_display_current_adviser').html(output);
+            },
+            error: err => {
+                res(err);
+            },
+        })
+    }
+    else
+    {
+        $('#section_display_current_adviser').html(``);
+    }
+    
+   
 }
 
 
@@ -5885,7 +5940,7 @@ $('#add_user').on('click', ()=> {
         url:route('user.create'),
         dataType: 'json',
         success: data => {
-            //console.log(data);
+            res(data);
             let student_data = `<option> </option>`;
             let roles = `<option> </option>`;
             let parent_data = `<option> </option>`;
@@ -7566,7 +7621,7 @@ function createRole()
             dataType:'json',
             data: $('#values_form').serialize(),
             success: response => {
-                console.log(response);
+                //console.log(response);
                 if(response == "success")
                 {
                     $('#values_form')[0].reset();
@@ -7627,6 +7682,7 @@ function createRole()
              success: response => {
                 if(response == 'success')
                 {
+                    description.val('');
                     return toastSuccess("Statement Assigned");
                 }
              },
@@ -7850,6 +7906,7 @@ $('#add_user').on('click', ()=> {
         dataType: 'json',
         success: data => {
             //console.log(data);
+            //res(data);
             let student_data = `<option> </option>`;
             let roles = `<option> </option>`;
             let parent_data = `<option> </option>`;
@@ -7910,6 +7967,8 @@ function display_teacher_info_on_user_modal()
                 $('#role_div').hide();
                 $('#parent_role_div').hide();
                 $('#student_role_div').hide();
+                $('#user_display_user_avatar').html(`<center> <img class='img-thumbnail rounded-circle' src='/storage/uploads/teacher/${teacher.teacher_avatar}' alt='student_avatar' width='150'> </center>`)
+
 
               
         
@@ -7929,6 +7988,7 @@ function display_teacher_info_on_user_modal()
         $('#parent_role_div').hide();
         $('#teacher_role_div').hide();
         $('#role_div').show();
+        $('#user_display_user_avatar').html(``);
     }
 }
 
@@ -7953,6 +8013,7 @@ function display_student_info_on_user_modal() {
                 $('#parent_role_div').hide();
                 $('#student_role_div').show();
                 $('#user_student_role').attr('value', 'Student').attr('readonly', true);
+                $('#user_display_user_avatar').html(`<center> <img class='img-thumbnail rounded-circle' src='/storage/uploads/student/${student.student_avatar}' alt='student_avatar' width='150'> </center>`)
         
             },
             error: err => {
@@ -7969,6 +8030,7 @@ function display_student_info_on_user_modal() {
         $('#student_role_div').hide();
         $('#parent_role_div').hide();
         $('#role_div').show();
+        $('#user_display_user_avatar').html('');
     }
 }
 

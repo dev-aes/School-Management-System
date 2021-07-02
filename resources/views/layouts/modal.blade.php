@@ -1444,10 +1444,9 @@
                 @csrf
 
                 <div class="row">
-                    <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class='form-label'>Select User</label>
+                        <div class="form-group mb-3">
+                            <label class='form-label'>Select User *</label>
                             <select class="form-select" id="select_user" onchange="display_user_select_box()">
                                <option></option>
                                <option value="student">Student</option>
@@ -1455,36 +1454,37 @@
                                <option value="teacher">Teacher</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6">
 
+                        {{--HIDDEN--}}
                         <div class="form-group" style="display:none" id="p_parent_div">
-                            <label class='form-label'>Select Parent</label>
-                            <select class="form-select" id="user_parent_id" name="parent_id"  onchange="display_parent_info_on_user_modal()">
+                            <label class='form-label'>Select Parent *</label>
+                            <select  id="user_parent_id" name="parent_id"  onchange="display_parent_info_on_user_modal()" style="width:100%">
                                 {{--Display Parent--}}
                             </select>
                             <div id="parentHelp" class="form-text text-success">Select only for parent's account registration</div>
                         </div>
 
                         <div class="form-group" style="display:none" id="s_student_div">
-                            <label class='form-label'>Select Student</label>
-                            <select class="form-select" id="user_student_id" name="student_id" onchange="display_student_info_on_user_modal()">
+                            <label class='form-label'>Select Student *</label>
+                            <select  id="user_student_id" name="student_id" onchange="display_student_info_on_user_modal()" style="width:100%">
                                 {{--Display Student--}}
                             </select>
                             <div class="form-text text-success">Select only for student's account registration</div>
                         </div>
 
                         <div class="form-group" style="display:none" id="t_teacher_div">
-                            <label class='form-label'>Select Teacher</label>
-                            <select class="form-select" id="user_teacher_id" name="teacher_id"  onchange="display_teacher_info_on_user_modal()">
+                            <label class='form-label'>Select Teacher *</label>
+                            <select  id="user_teacher_id" name="teacher_id"  onchange="display_teacher_info_on_user_modal()" style="width:100%">
                                 {{--Display Teacher--}}
                             </select>
                             <div class="form-text text-success">Select only for teacher's account registration</div>
                         </div>
 
+                    </div>
+                    <div class="col-md-6">  
+                        <div id="user_display_user_avatar">
+                            {{--Display Selected User's Avatar--}}
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -2024,29 +2024,39 @@
                 <form id="section_teacher_form" autocomplete="off" enctype="multipart/form-data">
                     @csrf
                     
-                    <div class="form-group">
-                        <label class='form-label'>Select Section *</label>
-                        <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
-                            {{--Select Section--}}
-                        </select>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label class='form-label'>Select Teacher *</label>
-                        <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
-                            {{--Select Teacher--}}
-                        </select>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class='form-label'>Select Section *</label>
+                                <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
+                                    {{--Select Section--}}
+                                </select>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label class='form-label'>Select Teacher *</label>
+                                <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
+                                    {{--Select Teacher--}}
+                                </select>
+                            </div>
 
+                            <div class="form-group mt-2" >
+                                <label class="form-label" for="section_adviser">Option</label>
+                                <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
+                                    <option ></option>
+                                    <option value='1'>Adviser</option>
+                                    <option value='2'>Subject Teacher</option>
+                                </select>
+                            </div>
 
-                    <div class="form-group mt-2" >
-                        <label class="form-label" for="section_adviser">Option</label>
-                        <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
-                            <option ></option>
-                            <option value='1'>Adviser</option>
-                            <option value='2'>Subject Teacher</option>
-                        </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="section_display_current_adviser">
+                                {{--Display Current Adviser--}}
+                            </div>
+                        </div>
                     </div>
+                   
                 </form>
                 </div>
         
@@ -2063,7 +2073,7 @@
 {{-- Parent ADD STUDENT  --}}
     
     <div class="modal fade" id="parent_student_modal" tabindex="-1" role="dialog" aria-labelledby="parent_student_modal" aria-hidden="true">
-        <div class="modal-dialog " role="document">
+        <div class="modal-dialog modal-dialog-centered " role="document">
         <div class="modal-content">
             <div class="modal-header" id="parent_student_modal_header">
             <h4 class="modal-title text-white" id="parent_student_modal_label">{{--Modal Title--}}</h4>
@@ -2097,7 +2107,7 @@
             </div>
 
             <div class="modal-footer">
-            <button type="button" class="btn btn-primary"  onclick="parent_student_store()">Submit</button>
+            <button type="button" class="btn btn-info"  onclick="parent_student_store()">Submit</button>
             </div>
         </div>
         </div>

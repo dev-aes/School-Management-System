@@ -408,11 +408,210 @@ let average_container = []; // student's grade average
         });
     }
 
-    $('#show_grades').on('click', function() {
-        $('.stud_name').html($(this).attr('data-name'));
-        $('.grades').toggle();
-    });
+    function parent_show_student_grade(student)
+    {
 
+        $('#parent_student_grade_modal').modal('show');
+        $('#parent_student_grade_modal_header').addClass('bg-info');
+        $('#parent_student_grade_modal_label').text('Student Record');
+        $.ajax({
+            url: route('parent.parent_student_grade', student),
+            dataType:'json',
+            success: student_form => {
+               let output = `
+                               <h1 class="fw-bold text-uppercase text-center mb-5"> report on learning progress and achievement</h1>
+                               <table class="table table-bordered " border="1">
+                                   <thead style="background: none">
+                                       <tr class="text-center fw-bold">
+                                           <td rowspan="2" style="width:25%">Learning Areas</td>
+                                           <td colspan="4" style="width:25%">Quarter</td>
+                                           <td rowspan="2" style="width:25%">Final Grade</td>
+                                           <td rowspan="2" style="width:25%">Remark</td>
+                                       </tr>
+                                       <tr>
+                                           <td>1</td>
+                                           <td>2</td>
+                                           <td>3</td>
+                                           <td>4</td>
+                                       </tr>
+                                   </thead>
+                                   <tbody>`;
+   
+                                   //res(student_form);
+   
+                                   // display student subject and assigned grades
+                                   student_form[0].forEach(student_subject_grade => {
+   
+                                   let average = '';
+                                   let remark = '';
+          
+                                   if(student_subject_grade.quarter_1 !== null && student_subject_grade.quarter_2 !== null &&student_subject_grade.quarter_3 !== null && student_subject_grade.quarter_4 !== null)
+                                   {
+                                      average = get_average([student_subject_grade.quarter_1 + student_subject_grade.quarter_2 + student_subject_grade.quarter_3 + student_subject_grade.quarter_4])/4;
+                                      remark = (average > 74) ? 'Passed': 'Failed';
+   
+          
+                                   }
+                                   
+                                   let q1 = (student_subject_grade.quarter_1 == null) ? '' : student_subject_grade.quarter_1 ;
+                                   let q2 = (student_subject_grade.quarter_2 == null) ? '' : student_subject_grade.quarter_2 ;
+                                   let q3 = (student_subject_grade.quarter_3 == null) ? '' : student_subject_grade.quarter_3 ;
+                                   let q4 = (student_subject_grade.quarter_4 == null) ? '' : student_subject_grade.quarter_4 ;
+   
+                                    average_container.push(average); // insert all average per row on average container[]
+   
+                   output +=           `<tr>
+                                           <th >${student_subject_grade.name}</th>
+                                           <td class='quarter' data-quarter='1' style='width:7%'>${q1}</td>
+                                           <td class='quarter' data-quarter='2' style='width:7%'>${q2}</td>
+                                           <td class='quarter ' data-quarter='3' style='width:7%'>${q3}</td>
+                                           <td class='quarter ' data-quarter='4' style='width:7%'>${q4}</td>
+                                           <td class='average'>${average}</td>
+                                           <td class='remark'>${remark}</td>
+                                        </tr>`    
+   
+                                   }); // closure
+   
+                     output +=     `</tbody>
+                               </table>
+                               <div class="row mt-3" id="descriptors">
+                                   <table class="table table-sm ">
+                                       <thead style="background: none">
+                                           <tr class="fw-bold">
+                                               <th>Descriptors</th>
+                                               <th>Grading Scale</th>
+                                               <th>Remarks</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           <tr>
+                                               <td>Outstanding</td>
+                                               <td>90-100</td>
+                                               <td>Passed</td>
+                                           </tr>
+                                           <tr>
+                                               <td>Very Satisfactory</td>
+                                               <td>85-89</td>
+                                               <td>Passed</td>
+                                           </tr>
+                                           <tr>
+                                               <td>Satisfactory</td>
+                                               <td>80-84</td>
+                                               <td>Passed</td>
+                                           </tr>
+                                           <tr>
+                                               <td>Fairly Satisfactory</td>
+                                               <td>75-79</td>
+                                               <td>Passed</td>
+                                           </tr>
+                                           <tr>
+                                               <td>Did not Meet Expectations</td>
+                                               <td>Below 75</td>
+                                               <td>Failed</td>
+                                           </tr>
+                                       </tbody>
+                                   </table>
+                               </div>`;
+   
+                               // learner values
+                 output +=    `<div class="row mt-5" id="obsereved_values">
+                                   <h1 class="fw-bold text-uppercase text-center mb-5"> report on learner's observed values</h1>
+                                   <table class="table table-bordered">
+                                       <thead style="background: none">
+                                           <tr class="fw-bold text-center">
+                                               <td rowspan="2">Core Values</td>
+                                               <td rowspan="2">Behavior Statements</td>
+                                               <td colspan="4">Quarter</td>
+                                           </tr>
+   
+                                           <tr>
+                                               <td>1</td>
+                                               <td>2</td>
+                                               <td>3</td>
+                                               <td>4</td>
+                                           </tr>
+                                           
+                                       </thead>
+                                       <tbody>`;
+   
+                                       //display student's assigned values
+   
+                                let index = 0; // counter
+                                student_form[1].forEach(student_values => {
+               output +=                   `<tr>`;
+   
+                                       if(index === student_values.values_id)
+                                       {
+               output +=                  `<td style='border-top:1px solid #fff !important'> </td>
+                                           <td>${student_values.description}</td>
+                                           <td class='values_quarter' data-quarter='1' style='width:7%'>${student_values.q1}</td>
+                                           <td class='values_quarter' data-quarter='2' style='width:7%'>${student_values.q2}</td>
+                                           <td class='values_quarter' data-quarter='3' style='width:7%'>${student_values.q3}</td>
+                                           <td class='values_quarter' data-quarter='4' style='width:7%'>${student_values.q4}</td>`;
+                                       }
+                                       else
+                                       {
+                                           
+               output +=                   `<td class='text-capitalize'>${student_values.title}</td>
+                                           <td>${student_values.description}</td>
+                                           <td class='values_quarter' data-quarter='1'style='width:7%'>${student_values.q1}</td>
+                                           <td class='values_quarter' data-quarter='2'style='width:7%'>${student_values.q2}</td>
+                                           <td class='values_quarter' data-quarter='3'style='width:7%'>${student_values.q3}</td>
+                                           <td class='values_quarter' data-quarter='4'style='width:7%'>${student_values.q4}</td>`;  
+                                       }
+   
+   
+               output +=                  `</tr>`; 
+   
+                                       index = student_values.values_id;
+   
+                                }); // closure 
+                                
+                                
+   
+               output +=              `</tbody>
+                                   </table>
+                               </div>
+   
+                               <div class="row mt-2" id="marking">
+                               <table class="table table-sm ">
+                                   <thead style="background: none">
+                                       <tr class="fw-bold">
+                                           <th>Marking</th>
+                                           <th>Non-numerical Rating</th>
+                                       </tr>
+                                   </thead>
+                                   <tbody>
+                                       <tr>
+                                           <td>AO</td>
+                                           <td>Always Observed</td>
+                                       </tr>
+                                       <tr>
+                                           <td>SO</td>
+                                           <td>Sometimes Observed</td>
+                                       </tr>
+                                       <tr>
+                                           <td>RO</td>
+                                           <td>Rarely Observed</td>
+                                       </tr>
+                                       <tr>
+                                           <td>NO</td>
+                                           <td>Not Observed</td>
+                                       </tr>
+                                   </tbody>
+                               </table>
+                           </div>
+               
+                            `;
+   
+                            $('#parent_student_display_student_record').html(output);
+   
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
     
     $('#parent_profile').on('click', ()=> {
         $('.user_parent_modal').modal('show');
@@ -531,7 +730,7 @@ function t_display_students_by_section_id(section)
         url: route('teacher.t_display_students', section),
         dataType:'json',
         success: section_student => {
-            res(section_student);
+           // res(section_student);
            
             let output = `<table class='table table-hover table-bordered' id='user_teacher_display_students'>
                             <thead>
@@ -756,7 +955,7 @@ function t_assign_grade(section , student)
 
                                 // learner values
 
-                                res(section_student[4])
+                                //res(section_student[4])
                     if(section_student[0].adviser_id == section_student[3])//Check if the login teacher is the adviser
                     {
             
@@ -786,10 +985,10 @@ function t_assign_grade(section , student)
                                                 let index = 0; // counter
                                                 section_student[4].forEach(values_description => { // loop core values
 
-                                                    let q1 = (student_values.q1 == null) ? "" : student_values.q1;
-                                                    let q2 = (student_values.q2 == null) ? "" : student_values.q2;
-                                                    let q3 = (student_values.q3 == null) ? "" : student_values.q3;
-                                                    let q4 = (student_values.q4 == null) ? "" : student_values.q4;
+                                                    let q1 = (values_description.q1 == null) ? "" : values_description.q1;
+                                                    let q2 = (values_description.q2 == null) ? "" : values_description.q2;
+                                                    let q3 = (values_description.q3 == null) ? "" : values_description.q3;
+                                                    let q4 = (values_description.q4 == null) ? "" : values_description.q4;
                 
 
 
@@ -905,19 +1104,6 @@ $(document).on('keypress', '#g_grade', function(e) {
         if(subject_teacher_id !== ca[0]){
             return toastr.error("You are not authorized to edit the grade. Please ask permission to the subject teacher.");  
         }
-        console.log(
-                            {
-                                // teacher_id: teacher_id,
-                                section_id: section_id,
-                                quarter_id: quarter_id,
-                                student_id: student_id,
-                                subject_id: subject_id,
-                                grades: grades,
-                                grades_id: grades_id,
-        
-        
-                            }
-                          );
 
                   $.ajax({
                     method: 'POST',
@@ -970,19 +1156,7 @@ $(document).on('keypress', '#g_grade', function(e) {
                     }
                 })
 
-                //     console.log(
-                //     {
-                //       teacher_id: teacher_id, adviser ID
-                //         section_id: section_id,
-                //         quarter_id: quarter_id,
-                //         student_id: student_id,
-                //         subject_id: subject_id,
-                //         grades: grades,
-                //         grades_id: grades_id,
-
-
-                //     }
-                //   )
+                // res({ section_id: section_id, quarter_id: quarter_id, student_id: student_id, subject_id: subject_id, grades: grades, grades_id: grades_id} );
         
                     
     }
@@ -999,7 +1173,7 @@ $(document).on('mouseleave', '#g_grade', function(e) {
 $(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values .values_quarter', function() {
     $('#v_values').remove();
     $(this).append(
-        $(`<input type='text' name='values' id='v_values' style='width:100%;display:block' onkeypress="return /[a-z]/i.test(event.key)">`)
+        $(`<input type='text' name='values' id='v_values' style='width:100%;display:block' onkeypress="return /[a-z]/i.test(event.key)" oninput="this.value = this.value.toUpperCase()">`)
         .attr('data-values_id',$(this).parent().attr('data-values_id'))
         .attr('data-description_id', $(this).parent().attr('data-description_id'))
         .attr('data-student_id',$(this).parent().attr('data-student_id'))
@@ -1020,15 +1194,6 @@ $(document).on('keypress', '#v_values', function(e) {
 
     if(e.keyCode == 13)
     {
-
-        console.log({
-            student_id:student_id,
-            description_id:description_id,
-            values:values,
-            quarter: quarter,
-            adviser_id:adviser_id
-        })
-
         $.ajax({
             method: 'POST',
             url: route('teacher.teacher_assign_values_to_student'),
@@ -1043,7 +1208,7 @@ $(document).on('keypress', '#v_values', function(e) {
                 quarter:quarter
             },
             success: response => {
-                res(response);
+                //res(response);
                 if(response == 'success')
                 {
                     $(this).closest('td').text($(this).val());
@@ -1059,6 +1224,9 @@ $(document).on('keypress', '#v_values', function(e) {
                 res(err);
             }
         })
+
+        // console.log({ student_id:student_id, description_id:description_id, values:values, quarter: quarter, adviser_id:adviser_id })
+
     }
 
 

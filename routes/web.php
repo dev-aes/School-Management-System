@@ -354,6 +354,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     Route::get('/dashboard/payment/{payment}', [UserParentController::class, 'parent_show_payment'])->name('parent.parent_payment_show');
 
+      // get student grade form
+    Route::get('/admin/dashboard/parent/display_student_record/{student}', [UserParentController::class, 'parent_student_grade'])->name('parent.parent_student_grade');
+
 
 
 // End Parent Dashboard
