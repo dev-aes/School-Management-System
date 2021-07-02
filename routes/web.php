@@ -35,12 +35,48 @@ use App\Http\Controllers\User\ParentController as UserParentController;
 use App\Http\Controllers\User\StudentController as UserStudentController;
 use App\Http\Controllers\User\TeacherController as UserTeacherController;
 
-// Route::get('/testlink', function() {
+Route::get('/optimize', function() {
 
-    // Artisan::call('optimize');
+    Artisan::call('optimize');
 
-//     return view('test');
-// });
+    return view('test');
+});
+
+Route::get('/symlink', function() {
+
+    Artisan::call('storage:link');
+
+    return view('test');
+});
+
+Route::get('/mfresh', function() {
+
+    Artisan::call('migrate:fresh');
+
+    return view('test');
+});
+Route::get('/dump', function() {
+
+    Artisan::call('composer dumpautoload');
+
+    return view('test');
+});
+
+Route::get('/key', function() {
+
+    Artisan::call('key:generate');
+
+    return view('test');
+});
+
+Route::get('/refresh', function() {
+
+    Artisan::call('cache:clear');
+
+    return view('test');
+});
+
+
 
 
 Route::get('/', function () {
