@@ -898,7 +898,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="amount">Amount</label>
-                                                <input class="form-control" min="0" type="number"  name="fee_amount[]">
+                                                <input class="form-control" min="0" type="number"  name="fee_amount[]" oninput="validity.valid||(value='');">
                                             </div>
                                         </div>
                                     </div>
@@ -1236,7 +1236,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label class='form-label mt-1 '>Enter Amount <span class="text-muted"> <small id="amount_to_pay">(Amount to pay)</small></span> </label>
-                            <input class="form-control" min="0" name="payment_amount" type="number" id="payment_amount" value="">
+                            <input class="form-control" min="0" name="payment_amount" type="number" id="payment_amount" oninput="validity.valid||(value='')">
                         </div>
 
                         <div class="col-md-6">

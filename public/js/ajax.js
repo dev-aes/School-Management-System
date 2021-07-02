@@ -4015,7 +4015,7 @@ function add_extra_sub_fee(event) {
                                 <div class="form-group">
                                     <i class="fas fa-minus-circle float-end " id='minus_sub_fee' role='button'></i>
                                     <label class="form-label" for="amount">Amount</label>
-                                    <input class="form-control" type="number"  name="fee_amount[]">
+                                    <input class="form-control" type="number" min='0'  name="fee_amount[]" oninput="validity.valid||(value='');">
                                 </div>
                             </div>
                         </div>
@@ -4480,7 +4480,6 @@ function payment_display_discount_input_field()
     let output = ``;
     if(payment_discount == "percentage")
     {
-
         // percentage
         output += `  <div class="form-group">
                         <label class="form-label">Select Percentage Discount</label>
@@ -5397,7 +5396,7 @@ function payment_display_discount_input_field()
     {
         output += `  <div class="form-group">
                         <label class="form-label">Enter Cash Discount</label>
-                        <input type='number' min='0' class="form-control" name="payment_discount" id="payment_payment_discount_cash" onInput='payment_display_cash_discount()'>
+                        <input type='number' min='0' class="form-control" name="payment_discount" id="payment_payment_discount_cash" onInput="validity.valid||(value='');payment_display_cash_discount();">
                      </div>
                      
                      <div class="form-group">
@@ -5439,6 +5438,7 @@ function payment_display_payment_discount() {
 }
 
 function payment_display_cash_discount() {
+   
     let payment_amount = $('#payment_amount').val();
     let payment_discount = $('#payment_payment_discount_cash').val();
 
