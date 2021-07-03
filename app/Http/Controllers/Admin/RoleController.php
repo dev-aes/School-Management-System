@@ -56,6 +56,26 @@ class RoleController extends Controller
         }
     }
 
+    public function edit(Role $role)
+    {
+        if(request()->ajax())
+        {
+            return response()->json($role);
+        }
+    }
+
+    public function update(Role $role)
+    {
+        if(request()->ajax())
+        {
+            $data = request()->validate(['title' => 'required|alpha']);
+
+            $role->update($data);
+
+            return $this->res();
+        }
+    }
+
     public function destroy(Role $role)
     {
         if(request()->ajax())

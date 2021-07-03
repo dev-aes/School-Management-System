@@ -6660,22 +6660,6 @@ $(document).on('click', '#to_show_receipt', function() {
 });
 
 
-// $('#to_show_receipt').on('click', function() {
-//     let image = $(this).attr('src');
-//     Swal.fire({
-//         title: '',
-//         width: "35%",
-//         imageWidth: "400",
-//         imageHeight: "600",
-//         padding: '3em',
-//         imageUrl: `${image}`,
-//         backdrop: `
-//           rgba(0,0,123,0.4)
-//           left top
-//           no-repeat
-//         `
-//       })
-// });
 
 
 //* ----------> End Admin User()
@@ -6905,6 +6889,10 @@ $('#add_role').on('click', ()=> {
     $('#role_modal').modal('show');
     $('#role_modal_label').html(`<h4 class='text-white'> Add Role <i class="fas fa-users-cog"></i> </h4>`);
     $('#role_modal_header').removeClass('bg-success').addClass('bg-primary');
+    $('#role_title').attr('value', '');
+    $('#btn_update_role').css('display','none');
+    $('#btn_add_role').css('display','block');
+
 });
 
 function createRole()
@@ -6936,6 +6924,55 @@ function createRole()
     }
 }
 
+function editRole(role)
+{
+    $('#role_modal').modal('show');
+    $('#role_modal_label').html(`<h4 class='text-white'> Edit Role <i class="fas fa-edit"></i> </h4>`);
+    $('#role_modal_header').removeClass('bg-primary').addClass('bg-success');
+    $('#btn_update_role').css('display','block');
+    $('#btn_add_role').css('display','none');
+    $('.bootstrap-tagsinput').hide();
+    $('#role_title').show();
+
+
+    $.ajax({
+        url: route('role.edit', role),
+        dataType:'json',
+        success: role => {
+           $('#role_title').val(role.name);
+           $('#btn_update_role').attr('data-id', role.id);
+        },
+        error: err => {
+
+        }
+    })
+}
+
+function updateRole()
+{
+    let id = $('#btn_update_role').attr('data-id');
+
+    if(isNotEmpty($('#role_title')))
+    {
+        $.ajax({
+            method:'PUT',
+            url: route('role.update', id),
+            dataType:'json',
+            data:{title: $('#role_title').val()},
+            success: response => {
+                if(response == 'success')
+                {
+                    $('.role_DT').DataTable().draw();
+                    toastSuccess("Role Updated");
+                }
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+}
+
 
 
 // * -------------> END Role()
@@ -6952,67 +6989,53 @@ function createRole()
 
     if(ay > 0)
     {
-        $.ajax({
-            url: route('report.display_students_by_ay', ay),
-            dataType:'json',
-            success: students => {
-                // res(students);
-                let output =    `
-                                <table class='table table-bordered table-hover mt-5' id='report_student_DT'>
-                                  <caption>List of Students </caption>
-                                    <thead>
-                                        <tr>
-                                             <td>First Name</td>
-                                             <td>Last Name</td>
-                                             <td>Gender</td>
-                                             <td>Section</td>
-                                             <td>Action</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+        let output =    `
+                        <table class='table table-bordered table-hover mt-5' id='report_student_DT'>
+                            <caption>List of Students </caption>
+                            <thead>
+                                <tr>
+                                    <td>First Name</td>
+                                    <td>Last Name</td>
+                                    <td>Gender</td>
+                                    <td>Section</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                    </tbody>
-                                    </table>
+                            </tbody>
+                        </table>
 
-                                    <div class='row' id='report_display_students_by_ay_id'>
+                            <div class='row' id='report_display_students_by_ay_id'>
+
+                            </div>
+            `;
 
 
-                                    </div>
-                                    `;
-                 
-    
-                $('#report_display_data').html(output);
-
-                $('#report_student_DT').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    retrieve: true,
-                    responsive: {
-                        details: {
-                            display: $.fn.dataTable.Responsive.display.modal( {
-                                    // test
-                            } ),
-                            renderer: $.fn.dataTable.Responsive.renderer.tableAll()
-                        }
-                    },
-                    autoWidth: false,
-                    ajax : route('report.display_students_by_ay', ay),
-                    columns: [
-                        {data: 'first_name'},
-                        {data: 'last_name'},
-                        {data: 'gender'},
-                        {data: 'section.name'},
-                        {data: 'actions'},
-                    ]
-                });
-
-              
-
-            },
-            error: err => {
-                res(err);
+            $('#report_display_data').html(output);
+            $('#report_student_DT').DataTable({
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                        // test
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
             }
-        });
+            },
+            autoWidth: false,
+            ajax : route('report.display_students_by_ay', ay),
+            columns: [
+            {data: 'first_name'},
+            {data: 'last_name'},
+            {data: 'gender'},
+            {data: 'section.name'},
+            {data: 'actions'},
+            ]
+            });
+
     }
     else
     {
@@ -7223,6 +7246,117 @@ function createRole()
              res(err);
          }
      })
+ }
+
+ function report_display_payments_by_ay()
+ {
+    let ay = $('#report_ay').val();
+
+    if(ay > 0)
+    {
+        let output =    `
+                                <table class='table table-bordered table-hover mt-5' id='report_payment_DT'>
+                                    <caption>List of Payments </caption>
+                                    <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td> Enrolment No.</td>
+                                            <td>Transaction No.</td>
+                                            <td>Amount</td>
+                                            <td>Remark</td>
+                                            <td>Official Receipt</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                 </table>
+
+                    `;
+
+
+                        $('#report_display_data').html(output);
+                        $('#report_payment_DT').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        retrieve: true,
+                        responsive: {
+                            details: {
+                                display: $.fn.dataTable.Responsive.display.modal( {
+                                        // test
+                                } ),
+                                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                            }
+                        },
+                        autoWidth: false,
+                        ajax : route('report.display_payments_by_ay', ay),
+                        columns: [
+                            {data: 'id'},
+                            {data: 'student_fee_id'},
+                            {data: 'transaction_no'},
+                            {data: 'amount'},
+                            {data: 'remarks'},
+                            {data: 'official_receipt'},
+                        ]
+                        });
+
+    }
+ }
+
+ function report_display_teachers_by_ay()
+ {
+    let ay = $('#report_ay').val();
+
+    if(ay > 0)
+    {
+        let output =    `
+                                <table class='table table-bordered table-hover mt-5' id='report_teacher_DT'>
+                                    <caption>List of Teachers </caption>
+                                    <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td></td>
+                                            <td>First Name</td>
+                                            <td>Last Name</td>
+                                            <td>Gender</td>
+                                          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                 </table>
+
+                    `;
+
+                        $('#report_display_data').html(output);
+                        $('#report_teacher_DT').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        retrieve: true,
+                        responsive: {
+                            details: {
+                                display: $.fn.dataTable.Responsive.display.modal( {
+                                        // test
+                                } ),
+                                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                            }
+                        },
+                        autoWidth: false,
+                        ajax : route('report.display_teachers_by_ay', ay),
+                        columns: [
+                            {data: 'id'},
+                            {data: 'teacher_avatar', render(data) {
+                                return `<img class='rounded-circle' src='/storage/uploads/teacher/${data}' alt='teacher_avatar' width='75'>`
+                            }},
+                            {data: 'first_name'},
+                            {data: 'last_name'},
+                            {data: 'gender'},
+                           
+                        ]
+                        });
+
+    }
  }
 
  function report_reset()
@@ -7482,7 +7616,7 @@ function createRole()
 
 function display_user_select_box()
 {
-    let selected_box = $('#select_user').val();
+    let selected_box = $('#select_user :selected').text();
 
     if(selected_box == 'student')
     {
@@ -7507,7 +7641,9 @@ function display_user_select_box()
         $('#p_parent_div').css('display', 'none');
     }
 
-    if(selected_box == "")
+    
+
+    if($('#select_user').val() == "")
     {
         $('#s_student_div').css('display', 'none');
         $('#p_parent_div').css('display', 'none');
@@ -7550,6 +7686,7 @@ $('#add_user').on('click', ()=> {
             let roles = `<option> </option>`;
             let parent_data = `<option> </option>`;
             let teacher_data = `<option> </option>`;
+            let end_user = `<option> </option>`;
 
             data[0].forEach( student => {
                  student_data += `<option value='${student.id}'> ${student.first_name}  ${student.last_name} </option>`;
@@ -7566,8 +7703,14 @@ $('#add_user').on('click', ()=> {
             data[3].forEach(teacher => {
                 teacher_data += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
             })
-            
 
+            data[4].forEach(enduser => {
+                end_user += ` 
+                                <option value="${enduser.id}">${enduser.name}</option>
+                            `
+            })
+            
+            $('.user_display_enduser').html(end_user);
             $('#user_student_id').html(student_data); // display students 
             $('#user_role').html(roles); // display roles
             $('#user_parent_id').html(parent_data); // display parents
@@ -7724,6 +7867,8 @@ function createUser()
     let parent_id = $('#user_parent_id').val();
     let teacher_id = $('#user_teacher_id').val();
 
+    let student_or_teacher_or_parent_id = $('#select_user').val();
+
     
     if(isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
     {
@@ -7739,7 +7884,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 student_id: student_id,
-                student_role: 2
+                student_role: student_or_teacher_or_parent_id
                 },
                 success: response => {
                     //console.log(response);
@@ -7768,7 +7913,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 parent_id: parent_id,
-                parent_role: 3
+                parent_role: student_or_teacher_or_parent_id
                 },
                 success: response => {
                     if(response == 'error')
@@ -7796,7 +7941,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 teacher_id: teacher_id,
-                teacher_role: 4
+                teacher_role: student_or_teacher_or_parent_id
                 },
                 success: response => {
                     res(response);

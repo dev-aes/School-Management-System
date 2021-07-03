@@ -1447,11 +1447,8 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class='form-label'>Select User *</label>
-                            <select class="form-select" id="select_user" onchange="display_user_select_box()">
-                               <option></option>
-                               <option value="student">Student</option>
-                               <option value="parent">Parent</option>
-                               <option value="teacher">Teacher</option>
+                            <select class="form-select user_display_enduser" id="select_user" onchange="display_user_select_box()">
+                                {{--Display Student Parent and Teacher category--}}
                             </select>
                         </div>
 

@@ -80,20 +80,8 @@ Route::get('/refresh', function() {
 
 
 Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
-
-
-Route::get('/test', function () {
-    return view('test.index');
+    return redirect()->route('login');
 });
-
-Route::get('/test', function () {
-    return view('test.index');
-});
-
-
-
 
 
 Route::resource('/admin/user', UserController::class)->middleware('auth'); // only auth because of reusing of updating avatar function
@@ -113,6 +101,14 @@ Route::middleware(['auth'])->group(function() {
 
          // get student grade form
         Route::get('/admin/report/form_138/display_student_record/{student}', [ReportController::class, 'to_form_138_show_by_student_id'])->name('report.to_form_138_show_by_student_id');
+
+        // get payment list by academic year
+        Route::get('/admin/report/display_payment/academic_year/{academic_year}',[ReportController::class, 'report_display_payments_by_ay'])->name('report.display_payments_by_ay');
+
+        // get teacher list by academic year
+
+        Route::get('/admin/report/display_teacher/academic_year/{academic_year}',[ReportController::class, 'report_display_teachers_by_ay'])->name('report.display_teachers_by_ay');
+
 
         Route::resource('/admin/report', ReportController::class);
         

@@ -24,11 +24,27 @@
                       </div>
                     @endif
                     
-                    <h3 class="text-info">Login</h3>
-                    <small class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, recusandae!</small>
+                    <h3 class="text-info">Login </h3>
                 </div>
                 <br>
                 <form method="POST" action="{{ route('login') }}">
+                    @if($errors->any())
+                        <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show" role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                  @endif 
+
+
+                   
+
                     @csrf
                     <div class="form-group">
                         <label class="text-muted" for="">Email *</label>

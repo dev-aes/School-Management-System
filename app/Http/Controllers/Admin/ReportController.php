@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,5 +76,49 @@ class ReportController extends Controller
             return response()->json([$student_grades, $core_values]);
           
         }
+    }
+
+    public function report_display_payments_by_ay(AcademicYear $academic_year)
+    {
+       if(request()->ajax())
+       {
+            $ay = get_latest_academic_year();
+
+            $payments = DB::table('payments')
+                            ->join('student_fee', 'payments.student_fee_id', 'student_fee.id')
+                            ->select('payments.*')
+                            ->where('student_fee.academic_year_id', $ay->id)
+                            ->get();
+
+            return DataTables::of($payments)
+                   ->addIndexColumn()
+                   ->make(true);
+       }
+    }
+
+    public function report_display_teachers_by_ay(AcademicYear $academic_year)
+    {
+       if(request()->ajax())
+       {
+            $ay = get_latest_academic_year();
+
+            $teachers = DB::table('grades')
+                        ->join('student_grade', 'student_grade_id', 'student_grade.id')
+                        ->select('grades.subject_teacher_id')
+                        ->where('student_grade.academic_year_id', $ay->id)
+                        ->get();
+
+            $teachers_ids = [];
+
+            foreach($teachers as $teacher):  // get all subject teacher's id
+                    array_push($teachers_ids, $teacher->subject_teacher_id);
+            endforeach;
+
+            $get_teachers_by_ay = Teacher::whereIn('id', $teachers_ids)->get();
+
+            return DataTables::of($get_teachers_by_ay)
+                   ->addIndexColumn()
+                   ->make(true);
+       }
     }
 }

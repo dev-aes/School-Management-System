@@ -83,4 +83,6 @@ class LoginController extends Controller
     {
          User::where('id', $user->id)->update(['status' => 1]);
     }
+
+  
 }

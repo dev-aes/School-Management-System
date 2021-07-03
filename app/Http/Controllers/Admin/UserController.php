@@ -40,11 +40,12 @@ class UserController extends Controller
         {   
             $students = Student::all();
             $roles = Role::whereIn('name', ['admin','registrar','cashier'])->get();
+            $enduser = Role::whereIn('name', ['student', 'parent', 'teacher'])->get();
             $parents = ParentModel::all();
             $teachers = Teacher::all();
 
 
-            return response()->json([ $students,$roles,$parents,$teachers ]);
+            return response()->json([ $students,$roles,$parents,$teachers, $enduser ]);
         }
     }
 
