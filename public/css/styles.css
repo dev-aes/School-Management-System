@@ -242,7 +242,8 @@ table{
   color:rgb(92, 99, 106);
 }
 thead {
-  background: rgb(217, 217, 217);
+  /* background: rgb(217, 217, 217); */
+  background: rgb(247, 247, 252);
 }
 
 .selected {
