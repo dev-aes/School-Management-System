@@ -12,12 +12,7 @@ use App\Http\Controllers\Controller;
 
 class ParentController extends Controller
 {
-
-    public function __construct() 
-    {
-        $this->middleware(['auth' , 'parent']);
-    }
-
+ 
     public function index() 
     {
         $parent = ParentModel::where('id', auth()->user()->parent_id)->first();

@@ -14,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ParentPaymentController extends Controller
 {
+   
     public function index() 
     {
         $parent_payment_request = DB::table('parent_payments')

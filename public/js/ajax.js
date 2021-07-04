@@ -18,30 +18,31 @@ $(()=> {
 
      if(window.location.href == route('teacher.index'))
     {
-    
+        let column = 'first_name';
         let teacher_column_data = [ {data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'city'}, {data: 'contact'}, {data: 'teacher_avatar'},
                                     {data: 'actions', orderable: false, searchable: false} ];
 
-            crud_index('.teacher_DT', 'teacher.index', teacher_column_data); // after loading the teacher page ; load the teacher data
+            crud_index('.teacher_DT', 'teacher.index', teacher_column_data, column); // after loading the teacher page ; load the teacher data
   
     }
 
 
      if(window.location.href == route('subject.index'))
     {
+        let column = 'name';
         let subject_column_data = [ {data:'id'}, {data:'name'}, {data:'description'}, {data:'actions',  orderable: false, searchable: false} ];
 
-        crud_index('.subject_DT', 'subject.index', subject_column_data); // after loading the subject page ; load the subject data
+        crud_index('.subject_DT', 'subject.index', subject_column_data, column); // after loading the subject page ; load the subject data
 
     }
 
 
      if(window.location.href == route('grade_level.index')) 
     {
-     
+        let column = 'name';
         let grade_level_column_data = [ {data:'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions'} ];
 
-        crud_index('.grade_level_DT', 'grade_level.index', grade_level_column_data); // after loading the grade level page ; load the grade level data
+        crud_index('.grade_level_DT', 'grade_level.index', grade_level_column_data, column); // after loading the grade level page ; load the grade level data
 
         $('.grade_level_assign_subject_subject_id').select2({
             dropdownParent: $('#grade_level_assign_subject')
@@ -51,9 +52,9 @@ $(()=> {
 
     if(window.location.href == route('section.index'))
     {
-
+        let column = 'name';
         let section_column_data = [{data: 'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions', orderable: false, searchable: false} ];
-        crud_index('.section_DT', 'section.index', section_column_data); // after loading the section page ; load the section data
+        crud_index('.section_DT', 'section.index', section_column_data, column); // after loading the section page ; load the section data
 
         $('#section_section_id').select2({
             dropdownParent: $('#section_teacher_modal')
@@ -67,28 +68,32 @@ $(()=> {
 
     if(window.location.href == route('student.index')) 
     {
+        let column = 'first_name';
         let student_column_data = [{data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'name'}, {data: 'address'}, {data: 'contact'},
                                    {data: 'student_avatar'}, {data: 'actions'},
                                   ];
         
-         crud_index('.student_DT', 'student.index', student_column_data); // after loading the student Information page ; load the Student Information data
+         crud_index('.student_DT', 'student.index', student_column_data, column); // after loading the student Information page ; load the Student Information data
     }
 
 
     if(window.location.href == route('fee.index'))
     {
+        let column = 'name';
         let fee_column_data = [ {data: 'name'},
                                 {data: 'total_amount', render(data) {
                                 return  `₱ ${data.toLocaleString()}`
                                 },},
                                 {data: 'actions'} ]
 
-        crud_index('.fee_DT', 'fee.index', fee_column_data); // after loading the Fee Information page ; load the Fee Information data
+        crud_index('.fee_DT', 'fee.index', fee_column_data, column); // after loading the Fee Information page ; load the Fee Information data
     }
 
 
     if(window.location.href == route('studentfee.index'))
     {
+        let column = 'student_name';
+
         let student_fee_column_data = [
                                         {data: 'id'},
                                         {data: 'student_name'},
@@ -123,7 +128,7 @@ $(()=> {
                                         {data: 'actions'},
                                       ]
 
-            crud_index('.student_fee_DT', 'studentfee.index', student_fee_column_data); // after loading the StudentFee Information page ; load the Student Fee Information data
+            crud_index('.student_fee_DT', 'studentfee.index', student_fee_column_data, column); // after loading the StudentFee Information page ; load the Student Fee Information data
             
             $('#student_fee_student_id').select2({
                 dropdownParent: $('#student_fee_modal')
@@ -134,6 +139,8 @@ $(()=> {
 
     if(window.location.href == route('payment.index'))
     {
+        let column = 'first_name';
+
         let payment_column_data = [
                                     {data: 'id'},
                                     {data: 'first_name'},
@@ -143,7 +150,7 @@ $(()=> {
                                     },},
                                     {data: 'actions'}
                                   ];
-        crud_index('.payment_DT', 'payment.index', payment_column_data); // after loading the Payment Information page ; load the Payment Fee Information data
+        crud_index('.payment_DT', 'payment.index', payment_column_data, column); // after loading the Payment Information page ; load the Payment Fee Information data
 
         $('#payment_student_fee_id').select2({
             dropdownParent: $('#payment_modal')
@@ -159,9 +166,10 @@ $(()=> {
 
     if(window.location.href == route('user.index'))
     {
+       let column = 'name';
        let user_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'role.name'}, {data: 'actions', orderable: false, searchable: false} ];
 
-       crud_index('.user_DT', 'user.index',user_column_data); // after loading the User page ; load the User  data
+       crud_index('.user_DT', 'user.index',user_column_data, column); // after loading the User page ; load the User  data
 
        
         $('#user_teacher_id').select2({
@@ -180,9 +188,11 @@ $(()=> {
     
     if(window.location.href == route('parent.index'))
     {
+        let column = 'name';
+
         let parent_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'contact'}, {data: 'facebook'}, {data: 'actions'} ];
 
-        crud_index('.parent_DT', 'parent.index', parent_column_data); // after loading the Parent page ; load the Parent  data
+        crud_index('.parent_DT', 'parent.index', parent_column_data, column); // after loading the Parent page ; load the Parent  data
     }
 
 
@@ -195,20 +205,27 @@ $(()=> {
 
     if(window.location.href == route('payment_mode.index'))
     {
+        let column = 'title';
+
         $('#payment_mode_title').tagsinput();
 
         let payment_mode_column_data = [
                                             {data: 'id'},
                                             {data: 'title'},
+                                            {data: 'created_at', render(data){
+                                                let date = new Date(data);
+                                                return date.toLocaleDateString();
+                                            }},
                                             {data: 'actions'}
                                         ];
 
-        crud_index('.payment_mode_DT','payment_mode.index', payment_mode_column_data ); // after loading the  payment mode ; load the payment mode data
+        crud_index('.payment_mode_DT','payment_mode.index', payment_mode_column_data, column ); // after loading the  payment mode ; load the payment mode data
     }
 
 
     if(window.location.href == route('academic_year.index'))
     {
+        let column = 'academic_year';
         $('#accademic_year').tagsinput();
        
         let ay_column_data = [
@@ -220,25 +237,27 @@ $(()=> {
                               {data: 'actions', orderable: false, searchable: false}
                               ];
                             
-        crud_index('.academic_year_DT','academic_year.index', ay_column_data); // after loading the  Academic Year  ; load the  Academic Year data
+        crud_index('.academic_year_DT','academic_year.index', ay_column_data, column); // after loading the  Academic Year  ; load the  Academic Year data
 
     }
 
 
     if(window.location.href == route('role.index'))
     {
+        let column = 'name';
         let role_column_data = [ {data: 'name'}, {data: 'actions',  orderable: false, searchable: false} ];
-        crud_index('.role_DT', 'role.index', role_column_data); // after loading the Role ; load the Role data
+        crud_index('.role_DT', 'role.index', role_column_data, column); // after loading the Role ; load the Role data
 
         $('#role_title').tagsinput(); 
     }
 
     if(window.location.href == route('values.index'))
     {
+        let column = 'title';
         $('#values_title').tagsinput(); 
 
         let values_column_data = [{data:'id'}, {data: 'title'}, {data: 'actions',  orderable: false, searchable: false} ];
-        crud_index('.values_DT', 'values.index', values_column_data); // after loading the Role ; load the Role data
+        crud_index('.values_DT', 'values.index', values_column_data, column); // after loading the Role ; load the Role data
     }
 
 
@@ -883,10 +902,10 @@ function createTeacher()  {
                             <button class="nav-link active" id="teacherinfo-tab" data-bs-toggle="tab" data-bs-target="#teacherinfo" type="button" role="tab" aria-controls="teacherinfo" aria-selected="true">Teacher Info</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Assigned Subject</button>
+                            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Subject</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Assigned Section</button>
+                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Section</button>
                         </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">`;
@@ -938,8 +957,9 @@ function createTeacher()  {
 
                          <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="profile-tab">
                             <ul class='list-group'><br><br>
-                                <h3 class='text-muted text-center'> Subjects Handled </h3> <br>
-                                <table class='table'> 
+                                <h3 class='text-muted text-center'> Assigned Subjects </h3> <br>
+                                <div class='table-responsive'>
+                                <table class='table table-hover'> 
                                 <thead> 
                                     <tr> 
                                         <th> Subject </th>
@@ -969,6 +989,7 @@ function createTeacher()  {
                     output += `    
                                 </tbody>
                                 </table>
+                                </div>
                                 </ul>
                             </div>`;
 
@@ -1097,7 +1118,7 @@ function teacher_display_students_by_section_id(id)
                         `;
             students.forEach(student => {
                 output += `<tr>
-                            <td> ${student.first_name} ${student.last_name} </td>
+                            <td><img class='rounded-circle me-2' src='/storage/uploads/student/${student.student_avatar}' width='35'>${student.first_name} ${student.last_name} </td>
                             <td> ${student.gender} </td>
                           </tr>`
             }) // loop closure
@@ -2000,7 +2021,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             success: students => {
                  //res(students);
                 let output = `
-                            <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
+                            <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT mt-5'>
                             <caption> List of Students </caption>
                                 <thead style='background:none'>
                                     <tr>
@@ -2054,7 +2075,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
             let output = `
                            <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
                            <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${student_subjects[0].id}'> Student : ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
-                            <table class="table table-bordered mt-2 " border="1" id='table_assign_grade_to_subject_student_grade_table'>
+                           <div class='table-responsive'>
+                            <table class="table table-bordered mt-2" border="1" id='table_assign_grade_to_subject_student_grade_table'>
                             <thead style="background: none">
                                 <tr class="text-center fw-bold">
                                     <td rowspan="2" style="width:25%">Learning Areas</td>
@@ -2120,6 +2142,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                             </tr>
                             </tbody>
                         </table>
+                        </div>
                         <form>
                             <input type='number' min='60' name='grade' id='g_grade' data-subject_id='' style='width:100%;display:none'>
                         </form>
@@ -2127,7 +2150,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                         
             output += `<div class="row mt-2" id="descriptors">
-                        <table class="table table-sm ">
+                        <div class='table-responsive'>
+                        <table class="table table-hover">
                             <thead style="background: none">
                                 <tr class="fw-bold">
                                     <th>Descriptors</th>
@@ -2162,12 +2186,14 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                                     <td>Failed</td>
                                 </tr>
                             </tbody>
-                        </table> `;
+                        </table>
+                        </div> `;
                         
                         // Observed Values
 
             output +=  `  
-                        <h1 class="fw-bold text-uppercase text-center mb-5"> report on learners observed values</h1>
+                        <h3 class="fw-bold text-uppercase text-center mb-5 mt-3"> report on learners observed values</h3>
+                            <div class='table-responsive'>
                             <table class="table table-bordered" id='teacher_assign_observed_values_to_student'>
                                 <thead style="background: none">
                                     <tr class="fw-bold text-center">
@@ -2186,7 +2212,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                                 </thead>
                                 <tbody>`;
 
-                                res(student_subjects);
+                                //res(student_subjects);
                                 let index = 0; // counter
                                 student_subjects[2].forEach(student_values => {
 
@@ -2228,10 +2254,12 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
               output +=        `</tbody>
                         </table>
+                        </div>
                     </div>
 
                     <div class="row mt-2" id="marking">
-                    <table class="table table-sm ">
+                    <div class='table-responsive'>
+                    <table class="table ">
                         <thead style="background: none">
                             <tr class="fw-bold">
                                 <th>Marking</th>
@@ -2257,6 +2285,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>` ;  
         
 
@@ -3596,6 +3625,7 @@ function createStudent() {
              // display student_subjects
 
              output += `<div class="tab-pane fade py-5" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
+                                        <div class='table-responsive'>
                                         <table class='table table-hover'>
                                         <caption> List of Subjects </caption>
                                          <thead>
@@ -3618,11 +3648,13 @@ function createStudent() {
                                             
           output += `                     </tbody>
                                         </table>
+                                     </div>
                           </div>
                                 `;
 
             // display student_parents
           output +=     `<div class="tab-pane fade py-5" id="guardians" role="tabpanel" aria-labelledby="guardians-tab">
+                            <div class='table-responsive'>
                             <table class='table table-hover'>
                               <caption> List of Guardians </caption>
                                 <thead>
@@ -3643,7 +3675,10 @@ function createStudent() {
                                        </tr>`
                         })                 
 
-         output +=      `</div>
+         output +=      ` </tbody>
+                         </table>
+                         </div>
+                       </div>
                     </div>`; // closer
               
             $('#show_student_info').html(output);
@@ -8275,16 +8310,22 @@ function crud_delete(element,route_name,msg,dt)
 }
 
 // crud index / read / select all
-function crud_index(dt,route_name,data) {
+function crud_index(dt,route_name,data, column) {
     
     $(dt).DataTable({
         processing: false,
         serverSide: true,
         retrieve: true,
+        autoWidth: false,
+        ajax: route(route_name),
+        columns:data,
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {
-                        // test
+                      header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+ data[column];
+                      }
                 } ),
                 renderer: $.fn.dataTable.Responsive.renderer.tableAll()
             }
@@ -8294,9 +8335,6 @@ function crud_index(dt,route_name,data) {
                 $(row).addClass('selected');
             }
         },
-        autoWidth: false,
-        ajax: route(route_name),
-        columns:data
         
     });
 }

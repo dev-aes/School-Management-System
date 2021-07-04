@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ReportController extends Controller
 {
+    
     public function index()
     {
         $academic_years = AcademicYear::all();

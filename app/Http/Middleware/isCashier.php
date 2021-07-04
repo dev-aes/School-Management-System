@@ -16,9 +16,12 @@ class isCashier
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!$request->user()->hasRole('cashier'))  {
+        if($request->user()->hasRole('cashier') || $request->user()->hasRole('admin'))  {
+            return $next($request);
+        }
+        else
+        {
             abort(404);
         }
-        return $next($request);
     }
 }

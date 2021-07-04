@@ -12,6 +12,7 @@ use App\Models\Grade;
 
 class GradeController extends Controller
 {
+
     public function index()
     {
         if(request()->ajax())

@@ -14,11 +14,6 @@ use Yajra\DataTables\Facades\DataTables;
 class GradeLevelController extends Controller
 {
 
-    public function __construct() 
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         if(request()->ajax()) {
@@ -27,8 +22,9 @@ class GradeLevelController extends Controller
                 ->addColumn('actions', function($row) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showGradeLevel" onclick="showGradeLevel('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editGradeLevel" onclick="editGradeLevel('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="AddSubject" class="btn btn-secondary btn-sm assignSubject" onclick="assign_subject('.$row->id.')"><i class="fas fa-plus-circle"></i> Assign Subject</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteGradeLevel" onclick="deleteGradeLevel('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                  
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteGradeLevel" onclick="deleteGradeLevel('.$row->id.')"><i class="fas fa-trash"></i> Delete</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="AddSubject" class="btn btn-secondary btn-sm assignSubject" onclick="assign_subject('.$row->id.')"><i class="fas fa-plus-circle"></i> Add Subject</a>';
 
                     return $btn;
            })

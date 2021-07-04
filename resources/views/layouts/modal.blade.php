@@ -135,7 +135,7 @@
 {{--Start TEACHER Modal--}}
 
     <div class="modal fade" id="teacher_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_modal_label" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg  modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header bg-primary" id="teacher_modal_header">
               <h5 class="modal-title text-white" id="teacher_modal_label">{{--Modal Title--}}</h5>
@@ -274,30 +274,30 @@
       </div>
  
     
-      {{--SHOW Teacher MODAL--}}
-    
-        <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header" id="show_teacher_modal_header">
-                        <h4 class="modal-title text-white" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
-                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </div>
-                <div class="modal-body" >
-                    <div class="row justify-content-center">
-                        <div class="card w-75">
-                            <div class="card-body py-5">
-                                <div id="show_teacher_info">
-                                </div>
+    {{--SHOW Teacher MODAL--}}
+
+    <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" id="show_teacher_modal_header">
+                    <h4 class="modal-title text-white" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </div>
+            <div class="modal-body" >
+                <div class="row justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div id="show_teacher_info">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-        
-     {{--END SHOW Teacher MODAL--}}
+        </div>
+    </div>
+    
+    {{--END SHOW Teacher MODAL--}}
 
 {{--End TEACHER Modal--}}
 @endif
@@ -835,7 +835,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-10">
                             <div class="card w-100">
-                                <div class="card-body p-6">
+                                <div class="card-body">
                                     <div id="show_student_info">
                                         
                                     </div>
@@ -872,7 +872,7 @@
 
             <div class="modal-body">
                 <div class="row justify-content-center">
-                    <div class="card w-50">
+                    <div class="card w-100">
                         <div class="card-body">
                             <form id="fee_form" autocomplete="off" onsubmit="false">
                                 @csrf
@@ -1928,7 +1928,7 @@
                                     </div>
                                     <div class="col-md-2"></div>
 
-                                    <div class="col-md-6 border p-5">
+                                    <div class="col-md-6 border p-3 mt-3">
                                         <div id="teacher_assign_grade_to_student_subject_display_students">
                                             {{--Display Student By Teacher's Section ID--}}
                                         </div>

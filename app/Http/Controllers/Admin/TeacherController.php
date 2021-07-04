@@ -10,6 +10,7 @@ use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use App\Imports\TeacherImport;
 use App\Models\SubjectStudent;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -20,11 +21,6 @@ use App\Http\Controllers\Admin\AcademicYearController;
 
 class TeacherController extends Controller
 {
-    public function __construct() 
-    {
-        $this->middleware('auth');
-    }
-
     
     public function index()
     {
@@ -131,13 +127,7 @@ class TeacherController extends Controller
             
             //Only display students who paid the downpayment
           //  Join section and students of that section and student fee
-            // $students = DB::table('section_adviser_ay')
-            //     ->join('sections','section_adviser_ay.section_id','sections.id')
-            //     ->join('students','section_adviser_ay.adviser_id','students.section_id')
-            //     ->join('student_fee','students.id','student_fee.student_id')
-            //     ->where('section_adviser_ay.ay_id',$ay->id)
-            //     ->where('student_fee.has_downpayment',1)
-            //     ->get();
+   
             $students = StudentFeeController::getStudentHasDownpayment();
 
             return response()->json($students); // display students by teacher's section_id
@@ -165,7 +155,7 @@ class TeacherController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|unique:teachers|email',
+            'email' => Rule::unique('teachers')->ignore($teacher),
             'teacher_avatar' => 'image',
         ]);
 

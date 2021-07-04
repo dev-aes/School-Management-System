@@ -13,6 +13,7 @@ use App\Models\GradeLevel;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
 {
+    
     public function index()
     {
         
@@ -220,7 +222,7 @@ class StudentController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|email',
+            'email' => Rule::unique('students')->ignore($student),
             'student_avatar' => 'image',
             'is_imported'=>'',
         ]);

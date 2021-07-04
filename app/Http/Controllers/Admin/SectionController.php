@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AcademicYearController;
 
 class SectionController extends Controller
 {
+   
     public function index()
     {
         if(request()->ajax()) {

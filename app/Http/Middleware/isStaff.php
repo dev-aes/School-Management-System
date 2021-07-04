@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class isRegistrar
+class isStaff
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,12 @@ class isRegistrar
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->user()->hasRole('registrar') || $request->user()->hasRole('admin'))  {
+        if($request->user()->hasRole('admin') || $request->user()->hasRole('registrar') || $request->user()->hasRole('cashier') )  {
             return $next($request);
         }
         else
         {
             abort(404);
         }
-        
     }
 }
