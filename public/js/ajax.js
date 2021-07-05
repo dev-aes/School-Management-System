@@ -104,20 +104,27 @@ $(()=> {
                                         {data: 'id'},
                                         {data: 'student_name'},
                                         {data: `amount_payable`, render(data) {
-                                            return  `₱ ${data.toLocaleString()}`
+                                            //  let value = parseFloat(data).toFixed(2);
+                                             let value =  roundoff(data);
+                                             return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'months_no'},
                                         {data: 'downpayment'},
                                         {data: 'paid', render(data) {
-                                            // return  `₱ ${data.toLocaleString()}` ?? ""
-                                            return (data ? `₱ ${data.toFixed(2)}` : "0" )
+                                            // let value = parseFloat(data).toFixed(2);
+                                            let value =  roundoff(data);
+                                            return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'total_balance', render(data) {
-                                            // return  `₱ ${data.toLocaleString()}` ?? ""
-                                            return (data ? `₱ ${data.toFixed(2)}` : "0" )
+                                            // let value = parseFloat(data).toFixed(2);
+                                            let value =  roundoff(data);
+                                             return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'monthly_payment', render(data) {
-                                            return (data ? `₱ ${data.toFixed(2)}` : "0" )
+                                            // let value = parseFloat(data).toFixed(2);
+                                            let value =  roundoff(data);
+                                            return (data ? `₱ ${value}` : "0" )
+
                                         },},
                                         {data: 'status', render(data) {
                                             if(data == 'active')
@@ -4252,7 +4259,7 @@ function student_fee_display_discounted_fee_by_student_id()
 
     if(student_fee_discount !== "" && student_fee_fee !== "")
     {
-      $('#student_fee_fee').attr('value', total.toFixed(2));
+      $('#student_fee_fee').attr('value', roundoff(total));
     }
     
 
@@ -4330,11 +4337,11 @@ function showStudentFee(id)
             //sub fees
             let subfees = ``;
             let amount = ``;
-            let total = `₱ ${studentfee[2].total.toFixed(2)}` || "0";
+            let total = `₱ ${roundoff(studentfee[2].total)}` || "0";
             studentfee[1].forEach(fee => {
                 
                 subfees += `<h5 > ${fee.description} </h5>`;           
-                amount += `<h5 > ₱ ${fee.amount.toFixed(2)} </h5>`;
+                amount += `<h5 > ₱ ${roundoff(fee.amount)} </h5>`;
             
             });
       
@@ -4344,10 +4351,10 @@ function showStudentFee(id)
 
             // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-             $('#sf_display_discounted_total').text(`₱ ${studentfee[0].total_fee.toFixed(2)}`);
+             $('#sf_display_discounted_total').text(`₱ ${roundoff(studentfee[0].total_fee)}`);
 
 
-             let discounted_total = `₱ ${studentfee[0].total_fee.toFixed(2)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+             let discounted_total = `₱ ${roundoff(studentfee[0].total_fee)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
 
             $('#sf_type').html(subfees);
             $('#sf_amount').html(amount);
@@ -4377,16 +4384,18 @@ function showStudentFee(id)
                 
                 const date = new Date(payment.created_at);
                 const d = date.toLocaleDateString('default', { month: 'long' });
-                payments += `<h5> ₱ ${payment.amount.toFixed(2)} </h5>`;
+                payments += `<h5> ₱ ${roundoff(payment.amount)} </h5>`;
+
+
                 dates += `<h5> ${d} - ${payment.remarks}</h5>`;
             });
             $('#sf_payment').html(payments);
             $('#sf_date').html(dates);
 
             // display payments total ,  total paid and total balance
-            $('#sf_payment_total').text(`₱ ${studentfee[4][0].paid.toFixed(2)}`)
-            $('#sf_total_paid').text(`₱ ${studentfee[4][0].paid.toFixed(2)}`);
-            $('#sf_balance').text(`₱ ${studentfee[4][0].total_balance.toFixed(2)}`);
+            $('#sf_payment_total').text(`₱ ${roundoff(studentfee[4][0].paid)}`)
+            $('#sf_total_paid').text(`₱ ${roundoff(studentfee[4][0].paid)}`);
+            $('#sf_balance').text(`₱ ${roundoff(studentfee[4][0].total_balance)}`);
             
 
 
@@ -4453,17 +4462,17 @@ function showPayment(id) {
 
             // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-             $('#payment_sf_total_discounted_amount').text(`₱ ${payment[1].total_fee.toFixed(2)}`);
+             $('#payment_sf_total_discounted_amount').text(`₱ ${roundoff(payment[1].total_fee)}`);
 
 
-            let discounted_total = `₱ ${payment[1].total_fee.toFixed(2)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+            let discounted_total = `₱ ${roundoff(payment[1].total_fee)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
        
             //display payment info
             $('#show_payment_modal').modal('show');
             $('#show_payment_modal_header').addClass('bg-secondary');
             $('#payment_date').text(`${d}`);
             $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
-            $('#payment_payment_amount').text(`₱ ${payment[0].amount.toFixed(2)}`);
+            $('#payment_payment_amount').text(`₱ ${roundoff(payment[0].amount)}`);
             $('#payment_payment_remarks').text(`${payment[0].remarks}`);
 
             // display student info
@@ -4478,23 +4487,23 @@ function showPayment(id) {
             let fee_amount = ``;
             payment[2].forEach(subfee => {
                 fee_type += `<h5 > ${subfee.description} </h5>`
-                fee_amount += `<h5 >₱ ${subfee.amount.toFixed(2)} </h5>`
+                fee_amount += `<h5 >₱ ${roundoff(subfee.amount)} </h5>`
             });
         
 
             $('#payment_sf_type').html(fee_type);
             $('#payment_sf_amount').html(fee_amount);
-            $('#payment_sf_total').text(`₱ ${payment[4].subtotal.toFixed(2)}`)
+            $('#payment_sf_total').text(`₱ ${roundoff(payment[4].subtotal)}`)
 
             // Payment details
 
             $('#payment_sf_date').html(`<h5> ${d} </h5>`)
-            $('#payment_sf_payment').html(`<h5>₱ ${payment[0].amount.toFixed(2)}</h5>`)
-            $('#payment_sf_payment_total').html(`<h5>₱ ${payment[0].amount.toFixed(2)} </h5>`)
+            $('#payment_sf_payment').html(`<h5>₱ ${roundoff(payment[0].amount)}</h5>`)
+            $('#payment_sf_payment_total').html(`<h5>₱ ${roundoff(payment[0].amount)} </h5>`)
 
-            $('#payment_sf_total_payable').text(`₱ ${payment[3][0].amount_payable.toFixed(2)}`);
-            $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toFixed(2)}`);
-            $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toFixed(2)}`);
+            $('#payment_sf_total_payable').text(`₱ ${roundoff(payment[3][0].amount_payable)}`);
+            $('#payment_sf_total_paid').text(`₱ ${roundoff(payment[3].paid)}`);
+            $('#payment_sf_balance').text(`₱ ${roundoff(payment[3].total_balance)}`);
 
 
         },
@@ -5471,7 +5480,7 @@ function payment_display_payment_discount() {
 
     if(payment_discount > 0)
     {
-        $('#payment_payment_discounted_amount').attr('value', total.toFixed(2));
+        $('#payment_payment_discounted_amount').attr('value', roundoff(total));
 
     }
     else
@@ -7806,7 +7815,9 @@ function display_teacher_info_on_user_modal()
             url: route('user.display_teacher_info', teacher_id),
             dataType:'json',
             success: teacher => {
-                res(teacher);
+                //res(teacher);
+                let teacher_avatar = img_catch(teacher.teacher_avatar, `storage/uploads/student/${student.teacher_avatar}`, 150);
+
                 $('#user_full_name').attr('value', `${teacher.first_name} ${teacher.last_name}` ).attr('readonly', true);
                 $('#user_email').attr('value', `${teacher.email}` ).attr('readonly', true);
                 $('#teacher_role_div').show();
@@ -7815,7 +7826,7 @@ function display_teacher_info_on_user_modal()
                 $('#role_div').hide();
                 $('#parent_role_div').hide();
                 $('#student_role_div').hide();
-                $('#user_display_user_avatar').html(`<center> <img class='img-thumbnail rounded-circle' src='/storage/uploads/teacher/${teacher.teacher_avatar}' alt='student_avatar' width='150'> </center>`)
+                $('#user_display_user_avatar').html(`<center>${teacher_avatar}</center>`)
 
 
               
@@ -7855,13 +7866,14 @@ function display_student_info_on_user_modal() {
             dataType:'json',
             success: student => {
                 // console.log(student);
+                let student_avatar = img_catch(student.student_avatar, `storage/uploads/student/${student.student_avatar}`, 150);
                 $('#user_full_name').attr('value', `${student.first_name} ${student.last_name}` ).attr('readonly', true);
                 $('#user_email').attr('value', `${student.email}` ).attr('readonly', true);
                 $('#role_div').hide();
                 $('#parent_role_div').hide();
                 $('#student_role_div').show();
                 $('#user_student_role').attr('value', 'Student').attr('readonly', true);
-                $('#user_display_user_avatar').html(`<center> <img class='img-thumbnail rounded-circle' src='/storage/uploads/student/${student.student_avatar}' alt='student_avatar' width='150'> </center>`)
+                $('#user_display_user_avatar').html(`<center> ${student_avatar} </center>`)
         
             },
             error: err => {
@@ -8276,7 +8288,9 @@ function res(res)
 function get_average(array)
 {
    let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
-   return parseFloat(ave.toFixed(2));
+//    return parseFloat(ave.toFixed(2));
+
+   return parseFloat(roundoff(ave));
 }
 
 function img_catch(img, directory, width='75')
@@ -8296,6 +8310,13 @@ function format_date(date)
     let formatted_date = new Date(date);
     
     return formatted_date.toLocaleDateString();
+}
+
+function roundoff(data)
+{
+    let number =  Math.round((data + Number.EPSILON) * 100) / 100;
+
+    return number;
 }
 
 // row select for multiple delete
