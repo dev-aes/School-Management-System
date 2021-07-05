@@ -19,7 +19,10 @@ $(()=> {
      if(window.location.href == route('teacher.index'))
     {
         let column = 'first_name';
-        let teacher_column_data = [ {data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'city'}, {data: 'contact'}, {data: 'teacher_avatar'},
+        let teacher_column_data = [ {data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'city'}, {data: 'contact'}, 
+                                    {data: 'teacher_avatar', render(data){
+                                       return img_catch(data, `storage/uploads/teacher/${data}`);
+                                    }},
                                     {data: 'actions', orderable: false, searchable: false} ];
 
             crud_index('.teacher_DT', 'teacher.index', teacher_column_data, column); // after loading the teacher page ; load the teacher data
@@ -70,7 +73,10 @@ $(()=> {
     {
         let column = 'first_name';
         let student_column_data = [{data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'name'}, {data: 'address'}, {data: 'contact'},
-                                   {data: 'student_avatar'}, {data: 'actions'},
+                                   {data: 'student_avatar', render(data){
+                                    return img_catch(data, `storage/uploads/student/${data}`);
+                                 }}, 
+                                   {data: 'actions'},
                                   ];
         
          crud_index('.student_DT', 'student.index', student_column_data, column); // after loading the student Information page ; load the Student Information data
@@ -104,14 +110,14 @@ $(()=> {
                                         {data: 'downpayment'},
                                         {data: 'paid', render(data) {
                                             // return  `₱ ${data.toLocaleString()}` ?? ""
-                                            return (data ? `₱ ${data.toLocaleString()}` : "0" )
+                                            return (data ? `₱ ${data.toFixed(2)}` : "0" )
                                         },},
                                         {data: 'total_balance', render(data) {
                                             // return  `₱ ${data.toLocaleString()}` ?? ""
-                                            return (data ? `₱ ${data.toLocaleString()}` : "0" )
+                                            return (data ? `₱ ${data.toFixed(2)}` : "0" )
                                         },},
                                         {data: 'monthly_payment', render(data) {
-                                            return (data ? `₱ ${data.toLocaleString()}` : "0" )
+                                            return (data ? `₱ ${data.toFixed(2)}` : "0" )
                                         },},
                                         {data: 'status', render(data) {
                                             if(data == 'active')
@@ -894,7 +900,8 @@ function createTeacher()  {
         dataType:'json',
         data: {id:id},
         success: teacher => {
-           res(teacher[1]);
+          // res(teacher[1]);
+           let teacher_avatar = img_catch(teacher[0].teacher_avatar,`storage/uploads/teacher/${teacher[0].teacher_avatar}`, 250);
            $('#show_teacher_modal').modal('show');
            $('#show_teacher_modal_header').addClass('bg-info');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -914,7 +921,7 @@ function createTeacher()  {
                                 <div class='row'>
                                     <div class='col-md-6 mb-5'>
                                         <br>
-                                        <center><img class='rounded-circle' src='/storage/uploads/teacher/${teacher[0].teacher_avatar}' alt='teacher_avatar' width='250'></center>
+                                        <center>${teacher_avatar}</center>
                                     </div>
 
                                     <div class='col-md-6'>
@@ -3034,11 +3041,11 @@ function showSection(id)
                         // display assigned teachers
 
                     section.teacher.forEach(teacher => {
-                     
+                        let teacher_avatar = img_catch(teacher.teacher_avatar, `storage/uploads/teacher/${teacher.teacher_avatar}`);
                         output+= `
                                 <tr> 
                                     <td>${teacher.first_name} ${teacher.last_name}</td>
-                                    <td> <img class='rounded-circle' src='/storage/uploads/teacher/${teacher.teacher_avatar}' title='${teacher.first_name}' alt='teacher_avatar' width='50'> </td>
+                                    <td> ${teacher_avatar} </td>
                                 </tr>
                                   `;
                     });
@@ -3060,11 +3067,11 @@ function showSection(id)
 
 
                         section.student.forEach(student => {
-                    
+                            let student_avatar = img_catch(student.student_avatar, `storage/uploads/student/${student.student_avatar}`);
                             output+= `
                                     <tr> 
                                         <td>${student.first_name} ${student.last_name}</td>
-                                        <td><img class='rounded-circle' src='/storage/uploads/student/${student.student_avatar}' title='${student.first_name}' alt='student_avatar' width='50'></td>
+                                        <td>${student_avatar}</td>
                                     </tr>
                                         `;
                         });
@@ -3283,11 +3290,12 @@ function select_current_adviser(){
             success: response =>{
                 //res(response);
                 let output = '';
-    
+                let adviser = img_catch(response.teacher_avatar, `storage/uploads/teacher/${response.teacher_avatar}`, 110);
+
                                 if(response !== 'empty_adviser')
                                 {
     
-                   output +=    ` <center><img class='img-thumbnail rounded-cirlce' src='/storage/uploads/teacher/${response.teacher_avatar}' alt='adviser' width='110'  title='Adviser - ${response.first_name}'></center> <br> <p class='text-center m-0'> [Current Adviser] </p>
+                   output +=    ` <center>${adviser} <br> <p class='text-center m-0'> [Current Adviser] </p>
                                 <p class='text-center text-info'> ${response.first_name} ${response.last_name} </p> `;
                                 }
     
@@ -3558,6 +3566,8 @@ function createStudent() {
         data: {id:id},
         success: student => {
             //res(student);
+           let student_avatar = img_catch(student[0].student_avatar,`storage/uploads/student/${student[0].student_avatar}`, 250);
+
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="studentinfo-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true">Student Info</button>
@@ -3576,7 +3586,7 @@ function createStudent() {
                                     <div class='row'>
                                         <div class='col-md-6 mb-5'>
                                         <br>
-                                            <center><img class='rounded-circle img-fluid' src='/storage/uploads/student/${student[0].student_avatar}' alt='student_avatar' width='250'></center>
+                                            <center>${student_avatar}</center>
                                         </div>
 
                                         <div class='col-md-6'>
@@ -4242,7 +4252,7 @@ function student_fee_display_discounted_fee_by_student_id()
 
     if(student_fee_discount !== "" && student_fee_fee !== "")
     {
-      $('#student_fee_fee').attr('value', total);
+      $('#student_fee_fee').attr('value', total.toFixed(2));
     }
     
 
@@ -4320,11 +4330,11 @@ function showStudentFee(id)
             //sub fees
             let subfees = ``;
             let amount = ``;
-            let total = `₱ ${studentfee[2].total.toLocaleString()}` || "0";
+            let total = `₱ ${studentfee[2].total.toFixed(2)}` || "0";
             studentfee[1].forEach(fee => {
                 
                 subfees += `<h5 > ${fee.description} </h5>`;           
-                amount += `<h5 > ₱ ${fee.amount.toLocaleString()} </h5>`;
+                amount += `<h5 > ₱ ${fee.amount.toFixed(2)} </h5>`;
             
             });
       
@@ -4334,10 +4344,10 @@ function showStudentFee(id)
 
             // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-             $('#sf_display_discounted_total').text(`₱ ${studentfee[0].total_fee.toLocaleString()}`);
+             $('#sf_display_discounted_total').text(`₱ ${studentfee[0].total_fee.toFixed(2)}`);
 
 
-             let discounted_total = `₱ ${studentfee[0].total_fee.toLocaleString()}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+             let discounted_total = `₱ ${studentfee[0].total_fee.toFixed(2)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
 
             $('#sf_type').html(subfees);
             $('#sf_amount').html(amount);
@@ -4367,16 +4377,17 @@ function showStudentFee(id)
                 
                 const date = new Date(payment.created_at);
                 const d = date.toLocaleDateString('default', { month: 'long' });
-                payments += `<h5> ₱ ${payment.amount.toLocaleString()} </h5>`;
+                payments += `<h5> ₱ ${payment.amount.toFixed(2)} </h5>`;
                 dates += `<h5> ${d} - ${payment.remarks}</h5>`;
             });
             $('#sf_payment').html(payments);
             $('#sf_date').html(dates);
 
             // display payments total ,  total paid and total balance
-            $('#sf_payment_total').text(`₱ ${studentfee[4][0].paid.toLocaleString()}`)
-            $('#sf_total_paid').text(`₱ ${studentfee[4][0].paid.toLocaleString()}`);
-            $('#sf_balance').text(`₱ ${studentfee[4][0].total_balance.toLocaleString()}`);
+            $('#sf_payment_total').text(`₱ ${studentfee[4][0].paid.toFixed(2)}`)
+            $('#sf_total_paid').text(`₱ ${studentfee[4][0].paid.toFixed(2)}`);
+            $('#sf_balance').text(`₱ ${studentfee[4][0].total_balance.toFixed(2)}`);
+            
 
 
         },
@@ -4442,17 +4453,17 @@ function showPayment(id) {
 
             // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-             $('#payment_sf_total_discounted_amount').text(`₱ ${payment[1].total_fee.toLocaleString()}`);
+             $('#payment_sf_total_discounted_amount').text(`₱ ${payment[1].total_fee.toFixed(2)}`);
 
 
-            let discounted_total = `₱ ${payment[1].total_fee.toLocaleString()}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+            let discounted_total = `₱ ${payment[1].total_fee.toFixed(2)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
        
             //display payment info
             $('#show_payment_modal').modal('show');
             $('#show_payment_modal_header').addClass('bg-secondary');
             $('#payment_date').text(`${d}`);
             $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
-            $('#payment_payment_amount').text(`₱ ${payment[0].amount.toLocaleString()}`);
+            $('#payment_payment_amount').text(`₱ ${payment[0].amount.toFixed(2)}`);
             $('#payment_payment_remarks').text(`${payment[0].remarks}`);
 
             // display student info
@@ -4467,23 +4478,23 @@ function showPayment(id) {
             let fee_amount = ``;
             payment[2].forEach(subfee => {
                 fee_type += `<h5 > ${subfee.description} </h5>`
-                fee_amount += `<h5 >₱ ${subfee.amount.toLocaleString()} </h5>`
+                fee_amount += `<h5 >₱ ${subfee.amount.toFixed(2)} </h5>`
             });
         
 
             $('#payment_sf_type').html(fee_type);
             $('#payment_sf_amount').html(fee_amount);
-            $('#payment_sf_total').text(`₱ ${payment[4].subtotal.toLocaleString()}`)
+            $('#payment_sf_total').text(`₱ ${payment[4].subtotal.toFixed(2)}`)
 
             // Payment details
 
             $('#payment_sf_date').html(`<h5> ${d} </h5>`)
-            $('#payment_sf_payment').html(`<h5>₱ ${payment[0].amount.toLocaleString()}</h5>`)
-            $('#payment_sf_payment_total').html(`<h5>₱ ${payment[0].amount.toLocaleString()} </h5>`)
+            $('#payment_sf_payment').html(`<h5>₱ ${payment[0].amount.toFixed(2)}</h5>`)
+            $('#payment_sf_payment_total').html(`<h5>₱ ${payment[0].amount.toFixed(2)} </h5>`)
 
-            $('#payment_sf_total_payable').text(`₱ ${payment[3][0].amount_payable.toLocaleString()}`);
-            $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toLocaleString()}`);
-            $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toLocaleString()}`);
+            $('#payment_sf_total_payable').text(`₱ ${payment[3][0].amount_payable.toFixed(2)}`);
+            $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toFixed(2)}`);
+            $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toFixed(2)}`);
 
 
         },
@@ -5460,7 +5471,7 @@ function payment_display_payment_discount() {
 
     if(payment_discount > 0)
     {
-        $('#payment_payment_discounted_amount').attr('value', total);
+        $('#payment_payment_discounted_amount').attr('value', total.toFixed(2));
 
     }
     else
@@ -5481,7 +5492,7 @@ function payment_display_cash_discount() {
 
     if(payment_discount > 0)
     {
-        $('#payment_payment_discounted_amount').attr('value', total);
+        $('#payment_payment_discounted_amount').attr('value', total.toFixed());
 
     }
     else
@@ -7029,6 +7040,8 @@ function updateRole()
                             <caption>List of Students </caption>
                             <thead>
                                 <tr>
+                                    <td>LRN</td>
+                                    <td> </td>
                                     <td>First Name</td>
                                     <td>Last Name</td>
                                     <td>Gender</td>
@@ -7063,6 +7076,10 @@ function updateRole()
             autoWidth: false,
             ajax : route('report.display_students_by_ay', ay),
             columns: [
+            {data: 'lrn'},
+            {data: 'student_avatar', render(data){
+                return img_catch(data,`storage/uploads/student/${data}`);
+            }},
             {data: 'first_name'},
             {data: 'last_name'},
             {data: 'gender'},
@@ -7300,6 +7317,7 @@ function updateRole()
                                             <td>Amount</td>
                                             <td>Remark</td>
                                             <td>Official Receipt</td>
+                                            <td>Date</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -7315,6 +7333,14 @@ function updateRole()
                         processing: true,
                         serverSide: true,
                         retrieve: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'csvHtml5',
+                            'pdfHtml5',
+                            'print'
+                        ],
                         responsive: {
                             details: {
                                 display: $.fn.dataTable.Responsive.display.modal( {
@@ -7332,6 +7358,9 @@ function updateRole()
                             {data: 'amount'},
                             {data: 'remarks'},
                             {data: 'official_receipt'},
+                            {data:'created_at', render(data){
+                                return format_date(data);
+                            }}
                         ]
                         });
 
@@ -7354,6 +7383,7 @@ function updateRole()
                                             <td>First Name</td>
                                             <td>Last Name</td>
                                             <td>Gender</td>
+                                            <td>Created At</td>
                                           
                                         </tr>
                                     </thead>
@@ -7382,12 +7412,14 @@ function updateRole()
                         columns: [
                             {data: 'id'},
                             {data: 'teacher_avatar', render(data) {
-                                return `<img class='rounded-circle' src='/storage/uploads/teacher/${data}' alt='teacher_avatar' width='75'>`
+                               return img_catch(data,`storage/uploads/teacher/${data}`); // for catching nullable images
                             }},
                             {data: 'first_name'},
                             {data: 'last_name'},
                             {data: 'gender'},
-                           
+                            {data:'created_at', render(data){
+                                return format_date(data);
+                            }}
                         ]
                         });
 
@@ -7651,39 +7683,49 @@ function updateRole()
 
 function display_user_select_box()
 {
-    let selected_box = $('#select_user :selected').text();
+    let selected_box = $('#select_user :selected').attr('data-val');
 
-    if(selected_box == 'student')
+
+    if(selected_box === 'student')
     {
         $('#s_student_div').css('display', 'block');
         $('#p_parent_div').css('display', 'none');
         $('#t_teacher_div').css('display', 'none');
+        $('#user_student_id').attr('disabled', false).val('');
 
     }
 
-    if(selected_box == 'parent' )
+    if(selected_box === 'parent' )
     {
+
         $('#p_parent_div').css('display', 'block');
         $('#s_student_div').css('display', 'none');
         $('#t_teacher_div').css('display', 'none');
+        $('#user_parent_id').attr('disabled', false).val('');
+
         
     }
 
-    if(selected_box == 'teacher')
+    if(selected_box === 'teacher')
     {
+
         $('#t_teacher_div').css('display', 'block');
         $('#s_student_div').css('display', 'none');
         $('#p_parent_div').css('display', 'none');
+        $('#user_teacher_id').attr('disabled', false).val('');
+
     }
 
-    
 
     if($('#select_user').val() == "")
     {
+
         $('#s_student_div').css('display', 'none');
         $('#p_parent_div').css('display', 'none');
         $('#t_teacher_div').css('display', 'none');
-        
+        $('#user_full_name').attr('value', '').attr('readonly', false);
+        $('#user_email').attr('value', '').attr('readonly', false);
+        $('#user_display_user_avatar').css('display', 'none');
     }
 }
 
@@ -7695,14 +7737,6 @@ $('#add_user').on('click', ()=> {
     $('#user_email').attr('value', '').attr('disabled', false);
     $('#user_password').attr('value', '');
 
-    $('#student_role_div').hide();
-    $('#parent_role_div').hide();
-    $('#teacher_role_div').hide();
-
-    $('#user_student_role').attr('value', '').attr('disabled', false);
-    $('#user_parent_role').attr('value', '').attr('disabled', false);
-    $('#user_teacher_role').attr('value', '').attr('disabled', false);
-    
     $('#btn_add_user').css('display', 'block');
     $('#btn_update_user').css('display', 'none');
     $('#user_modal_header').removeClass('bg-success').addClass('bg-primary');
@@ -7710,6 +7744,11 @@ $('#add_user').on('click', ()=> {
     $('#user_student_id').attr('disabled', false);
     $('#user_parent_id').attr('disabled', false);
     $('#user_teacher_id').attr('disabled', false);
+
+    // reset
+    $('#user_full_name').val('');
+    $('#user_email').val('');
+    $('#user_password').val('');
 
 
     $.ajax({
@@ -7721,14 +7760,13 @@ $('#add_user').on('click', ()=> {
             let roles = `<option> </option>`;
             let parent_data = `<option> </option>`;
             let teacher_data = `<option> </option>`;
-            let end_user = `<option> </option>`;
 
             data[0].forEach( student => {
                  student_data += `<option value='${student.id}'> ${student.first_name}  ${student.last_name} </option>`;
             });
 
             data[1].forEach(role => {
-                roles += `<option value='${role.id}'> ${role.name} </option>`;
+                roles += `<option value='${role.id}' data-val='${role.name}'> ${role.name} </option>`;
             })
 
             data[2].forEach(parent => {
@@ -7739,15 +7777,9 @@ $('#add_user').on('click', ()=> {
                 teacher_data += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
             })
 
-            data[4].forEach(enduser => {
-                end_user += ` 
-                                <option value="${enduser.id}">${enduser.name}</option>
-                            `
-            })
-            
-            $('.user_display_enduser').html(end_user);
+     
             $('#user_student_id').html(student_data); // display students 
-            $('#user_role').html(roles); // display roles
+            $('#select_user').html(roles); // display roles
             $('#user_parent_id').html(parent_data); // display parents
             $('#user_teacher_id').html(teacher_data); // display teachers
 
@@ -7894,18 +7926,16 @@ function createUser()
     let name = $('#user_full_name');
     let email = $('#user_email');
     let password = $('#user_password');
-    let user_role = $('#user_role');
-    let student_role = $('#user_student_role').val();
-    let parent_role = $('#user_parent_role').val();
 
     let student_id = $('#user_student_id').val();
     let parent_id = $('#user_parent_id').val();
     let teacher_id = $('#user_teacher_id').val();
 
-    let student_or_teacher_or_parent_id = $('#select_user').val();
+    let selected_role = $('#select_user').val(); // for role selection
 
+    let select_user = $('#select_user');
     
-    if(isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
+    if(isNotEmpty(select_user) && isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
     {
         if(parseInt(student_id)> 0)
         {
@@ -7919,7 +7949,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 student_id: student_id,
-                student_role: student_or_teacher_or_parent_id
+                student_role: selected_role
                 },
                 success: response => {
                     //console.log(response);
@@ -7927,6 +7957,11 @@ function createUser()
                     {
                         return toastr.warning('User already exist') ;
                     }
+                       // reset
+                    $('#user_full_name').val('');
+                    $('#user_email').val('');
+                    $('#user_password').val('');
+
                     $('.user_DT').DataTable().draw();
                     return toastSuccess('User Created')
                 },
@@ -7948,7 +7983,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 parent_id: parent_id,
-                parent_role: student_or_teacher_or_parent_id
+                parent_role: selected_role
                 },
                 success: response => {
                     if(response == 'error')
@@ -7976,7 +8011,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 teacher_id: teacher_id,
-                teacher_role: student_or_teacher_or_parent_id
+                teacher_role: selected_role
                 },
                 success: response => {
                     res(response);
@@ -8003,7 +8038,7 @@ function createUser()
                 name: name.val(),
                 email: email.val(),
                 password: password.val(),
-                user_role: user_role.val()
+                user_role: selected_role
                 },
                 success: response => {
                     if(response == 'error')
@@ -8244,7 +8279,24 @@ function get_average(array)
    return parseFloat(ave.toFixed(2));
 }
 
+function img_catch(img, directory, width='75')
+{
+    if(img == null || img == "")
+    {
+        return `<img class='rounded-circle' src='/images/noimg.jpg' width='${width}'> `;
+    }
+    else
+    {
+        return `<img class='rounded-cirle' src='/${directory}' width='${width}'>`;
+    }
+}
 
+function format_date(date)
+{
+    let formatted_date = new Date(date);
+    
+    return formatted_date.toLocaleDateString();
+}
 
 // row select for multiple delete
 function row_select(val)

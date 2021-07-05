@@ -32,6 +32,7 @@
                                     </div>
                                  </form>
                             </div>
+                            <br><br>
                             <div class="row">
                                 <div id="report_display_data">
                                     {{--Display Selected Data --}}

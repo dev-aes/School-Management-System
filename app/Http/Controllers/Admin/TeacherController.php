@@ -31,10 +31,10 @@ class TeacherController extends Controller
 
             return DataTables::of($teachers)
                    ->addIndexColumn()
-                   ->addColumn('teacher_avatar', function($row) {
-                        $img = "<img class='img-thumbnail' src='/storage/uploads/teacher/$row->teacher_avatar' alt='teacher_avatar' width='100'>";
-                        return $img;
-                   })
+                //    ->addColumn('teacher_avatar', function($row) {
+                //         $img = "<img class='img-thumbnail' src='/storage/uploads/teacher/$row->teacher_avatar' alt='teacher_avatar' width='100'>";
+                //         return $img;
+                //    })
                    ->addColumn('actions', function($row) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm  showTeacher" onclick="showTeacher('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary  btn-sm editTeacher" onclick="editTeacher('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
@@ -42,7 +42,7 @@ class TeacherController extends Controller
     
                     return $btn;
                })
-                ->rawColumns(['teacher_avatar' , 'actions'])
+                ->rawColumns(['actions'])
                 ->make(true);
         }
         

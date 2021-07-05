@@ -86,7 +86,11 @@
                     <div class="row">
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
-                            <small><a class="font-italic ml-5 text-muted " href="javascript:void(0)">Forgot your password ?</a></small>
+                            @if (Route::has('password.request'))
+
+                            <small><a class="font-italic ml-5 text-muted " href="{{ route('password.request') }}">Forgot Your Password ?</a></small>
+                            
+                            @endif 
                         </div>
                     </div>
 

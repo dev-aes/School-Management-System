@@ -76,7 +76,13 @@ html {
 */
 
 .select2-results__option--highlighted {
-  background-color: #495057 !important;
+  /* background-color: gray !important; */
+  height: 100% !important;
+
+}
+
+.select2-results__option {
+  list-style: "" !important;
 }
 
   /* .minus_sub_fee {

@@ -157,7 +157,7 @@
 								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('fee.index') }}">Fee management</a></li>
 								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('studentfee.index') }}">Student fee</a></li>
 								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment.index') }}">Payment</a></li>
-								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment_report.index') }}">Payment Report</a></li>
+								{{-- <li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment_report.index') }}">Payment Report</a></li> --}}
 							</ul>
 						</li>
 

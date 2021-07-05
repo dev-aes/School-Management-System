@@ -1446,7 +1446,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label class='form-label'>Select User *</label>
+                            <label class='form-label'>Select Role *</label>
                             <select class="form-select user_display_enduser" id="select_user" onchange="display_user_select_box()">
                                 {{--Display Student Parent and Teacher category--}}
                             </select>
@@ -1499,33 +1499,7 @@
                     <input class="form-control " name="user_password" type="password" id="user_password" value="">
                 </div>
 
-                <div class="role_wrapper">
-                    {{--Admin--}}
-                    <div class="form-group col-md-5" id="role_div">
-                        <label for="form-label">Role</label>
-                        <select class="form-select" name="user_role" id="user_role">
-                        </select>
-                    </div>
-
-                    {{--Student--}}
-                    <div class="form-group" id='student_role_div'>
-                        <label class='form-label'>Role </label>
-                        <input class="form-control " name="user_role" type="text" id="user_student_role"  disabled>
-                    </div>
-                    
-                    {{--Parent--}}
-                    <div class="form-group" id='parent_role_div'>
-                        <label class='form-label'>Role </label>
-                        <input class="form-control " name="user_role" type="text" id="user_parent_role"  disabled>
-                    </div>  
-
-                     {{--Teacher--}}
-                     <div class="form-group" id='teacher_role_div'>
-                        <label class='form-label'>Role </label>
-                        <input class="form-control " name="user_role" type="text" id="user_teacher_role"  disabled>
-                    </div>  
-
-                </div>
+                
             </form>
             </div>
 

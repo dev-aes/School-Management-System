@@ -40,10 +40,6 @@ class StudentController extends Controller
 
             return DataTables::of($students)
                    ->addIndexColumn()
-                   ->addColumn('student_avatar', function($row) {
-                        $img = "<img class='img-thumbnail' src='/storage/uploads/student/$row->student_avatar' alt='student_avatar' width='100'>";
-                        return $img;
-                   })
                    ->addColumn('actions', function($row) {
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showStudent" onclick="showStudent('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                         $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editStudent" onclick="editStudent('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
@@ -51,7 +47,7 @@ class StudentController extends Controller
         
                         return $btn;
                    })
-                   ->rawColumns(['student_avatar' , 'actions'])
+                   ->rawColumns(['actions'])
                    ->make(true);
         }
 
