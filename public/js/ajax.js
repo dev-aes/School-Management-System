@@ -7751,9 +7751,9 @@ $('#add_user').on('click', ()=> {
     $('#user_teacher_id').attr('disabled', false);
 
     // reset
-    $('#user_full_name').val('');
-    $('#user_email').val('');
-    $('#user_password').val('');
+    $('#user_full_name').attr('value','');
+    $('#user_email').attr('value','');
+    $('#user_password').attr('value','');
 
 
     $.ajax({

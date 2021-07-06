@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -26,5 +27,33 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+
+    public function redirectPath()
+    {
+        if (Gate::allows('admin')) {
+            return route('home.index');
+        }
+
+        if (Gate::allows('registrar')) {
+            return route('home.index');
+        }
+
+        if (Gate::allows('cashier')) {
+            return route('home.index');
+        }
+
+        if (Gate::allows('student')) {
+            return route('student.dashboard');
+        }
+
+        if (Gate::allows('parent')) {
+            return route('parent.dashboard');
+        }
+
+        if (Gate::allows('teacher')) {
+            return route('teacher.dashboard');
+        }
+       
+    }
 }
