@@ -213,6 +213,9 @@
 
 	{{--Monthly Sale--}}
 	<script>
+
+window.onload = function() {
+    
 		const my_chart = document.getElementById('chart_ms');
 
 		const chart_ms = new Chart(my_chart,{
@@ -285,7 +288,7 @@
             nextArrow: "<span title=\"Next month\">&raquo;</span>",
         });
     });
-
+}
 
 
 	</script>
