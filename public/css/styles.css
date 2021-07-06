@@ -76,7 +76,13 @@ html {
 */
 
 .select2-results__option--highlighted {
-  background-color: #495057 !important;
+  /* background-color: gray !important; */
+  height: 100% !important;
+
+}
+
+.select2-results__option {
+  list-style: "" !important;
 }
 
   /* .minus_sub_fee {
@@ -242,7 +248,8 @@ table{
   color:rgb(92, 99, 106);
 }
 thead {
-  background: rgb(217, 217, 217);
+  /* background: rgb(217, 217, 217); */
+  background: rgb(247, 247, 252);
 }
 
 .selected {

@@ -41,9 +41,9 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn  btn-outline-info" href="javascript:void(0)" id="imp_teacher"><i class="fas fa-upload"></i> Import</a>
-                <a class="btn  btn-outline-info" href="javascript:void(0)" id="exp_subject"><i class="fas fa-file-export"></i> Export</a>
-                <a class="btn  btn-outline-danger" href="javascript:void(0)" id="delete_all_subject"><i class="fas fa-trash-alt"></i> Delete Record</a>
+                <a class="btn  btn-outline-info d-block d-sm-inline-block" href="javascript:void(0)" id="imp_teacher"><i class="fas fa-upload"></i> Import</a>
+                <a class="btn  btn-outline-info d-block d-sm-inline-block" href="javascript:void(0)" id="exp_subject"><i class="fas fa-file-export"></i> Export</a>
+                <a class="btn  btn-outline-danger d-block d-sm-inline-block" href="javascript:void(0)" id="delete_all_subject"><i class="fas fa-trash-alt"></i> Delete Record</a>
             </div>
         </div>
     </div>

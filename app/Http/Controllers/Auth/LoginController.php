@@ -48,11 +48,11 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $credentials = $request->only('email', 'password');
-        if(Auth::attempt($credentials) && Gate::allows('admin')) {
-            $request->session()->regenerate();
-            $this->isOnline($user);
-            return redirect(route('home.index'));
-        }
+        // if(Auth::attempt($credentials) && Gate::allows('admin')) {
+        //     $request->session()->regenerate();
+        //     $this->isOnline($user);
+        //     return redirect(route('home.index'));
+        // }
 
         if(Auth::attempt($credentials) && Gate::allows('parent')) {
             $request->session()->regenerate();
@@ -71,10 +71,18 @@ class LoginController extends Controller
             $this->isOnline($user);
             return redirect(route('teacher.dashboard'));
         }
+
+        if(Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $this->isOnline($user);
+            return redirect(route('home.index'));
+        }
     }
 
     public function isOnline($user)
     {
          User::where('id', $user->id)->update(['status' => 1]);
     }
+
+  
 }

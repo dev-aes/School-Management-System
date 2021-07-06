@@ -7,8 +7,6 @@
 
 {{-- CONTAINER --}}
 <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         {{-- <a class="btn btn-primary" href="#"><i class="fas fa-file-import"></i></a> --}}
@@ -45,13 +43,11 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn  btn-outline-info" href="javascript:void(0)" id="imp_student"><i class="fas fa-upload"></i> Import</a>
-                <a class="btn  btn-outline-info" href="javascript:void(0)" id="exp_student"><i class="fas fa-file-export"></i> Export</a>
-                <a class="btn  btn-outline-danger" href="javascript:void(0)" id="delete_all_student"><i class="fas fa-trash-alt"></i> Delete Record</a>
+                <a class="btn  btn-outline-info d-block d-sm-inline-block" href="javascript:void(0)" id="imp_student"><i class="fas fa-upload"></i> Import</a>
+                <a class="btn  btn-outline-info d-block d-sm-inline-block" href="javascript:void(0)" id="exp_student"><i class="fas fa-file-export"></i> Export</a>
+                <a class="btn  btn-outline-danger d-block d-sm-inline-block" href="javascript:void(0)" id="delete_all_student"><i class="fas fa-trash-alt"></i> Delete Record</a>
 
-            </div>
-        </div>
-    </div>
+</div>
 {{--End CONTAINER--}}
   
 

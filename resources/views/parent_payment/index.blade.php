@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="text-center text-primary update text-uppercase" id="payment_info">Payment Request Information <i class="fas fa-info-circle"></i></h1>
+                        <h2 class="text-center text-primary update text-uppercase" id="payment_info">Payment Request Information <i class="fas fa-info-circle"></i></h2>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-info" id="parent_payment_request_DT" >
@@ -45,7 +45,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="text-center text-primary update text-uppercase" id="">Approved Request <i class="fas fa-check-circle"></i></h1>
+                        <h2 class="text-center text-success update text-uppercase" id="">Approved Request <i class="fas fa-check-circle"></i></h2>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped  table-success" id="parent_approved_payment_request_DT">
@@ -75,7 +75,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="text-center text-primary update text-uppercase" id="">Declined Request <i class="fas fa-times-circle"></i></h1>
+                        <h2 class="text-center text-danger update text-uppercase" id="">Declined Request <i class="fas fa-times-circle"></i></h2>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-danger" id="parent_declined_payment_request_DT">

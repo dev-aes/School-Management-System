@@ -18,30 +18,34 @@ $(()=> {
 
      if(window.location.href == route('teacher.index'))
     {
-    
-        let teacher_column_data = [ {data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'city'}, {data: 'contact'}, {data: 'teacher_avatar'},
+        let column = 'first_name';
+        let teacher_column_data = [ {data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'city'}, {data: 'contact'}, 
+                                    {data: 'teacher_avatar', render(data){
+                                       return img_catch(data, `storage/uploads/teacher/${data}`);
+                                    }},
                                     {data: 'actions', orderable: false, searchable: false} ];
 
-            crud_index('.teacher_DT', 'teacher.index', teacher_column_data); // after loading the teacher page ; load the teacher data
+            crud_index('.teacher_DT', 'teacher.index', teacher_column_data, column); // after loading the teacher page ; load the teacher data
   
     }
 
 
      if(window.location.href == route('subject.index'))
     {
+        let column = 'name';
         let subject_column_data = [ {data:'id'}, {data:'name'}, {data:'description'}, {data:'actions',  orderable: false, searchable: false} ];
 
-        crud_index('.subject_DT', 'subject.index', subject_column_data); // after loading the subject page ; load the subject data
+        crud_index('.subject_DT', 'subject.index', subject_column_data, column); // after loading the subject page ; load the subject data
 
     }
 
 
      if(window.location.href == route('grade_level.index')) 
     {
-     
+        let column = 'name';
         let grade_level_column_data = [ {data:'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions'} ];
 
-        crud_index('.grade_level_DT', 'grade_level.index', grade_level_column_data); // after loading the grade level page ; load the grade level data
+        crud_index('.grade_level_DT', 'grade_level.index', grade_level_column_data, column); // after loading the grade level page ; load the grade level data
 
         $('.grade_level_assign_subject_subject_id').select2({
             dropdownParent: $('#grade_level_assign_subject')
@@ -51,9 +55,9 @@ $(()=> {
 
     if(window.location.href == route('section.index'))
     {
-
+        let column = 'name';
         let section_column_data = [{data: 'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions', orderable: false, searchable: false} ];
-        crud_index('.section_DT', 'section.index', section_column_data); // after loading the section page ; load the section data
+        crud_index('.section_DT', 'section.index', section_column_data, column); // after loading the section page ; load the section data
 
         $('#section_section_id').select2({
             dropdownParent: $('#section_teacher_modal')
@@ -67,46 +71,60 @@ $(()=> {
 
     if(window.location.href == route('student.index')) 
     {
+        let column = 'first_name';
         let student_column_data = [{data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'name'}, {data: 'address'}, {data: 'contact'},
-                                   {data: 'student_avatar'}, {data: 'actions'},
+                                   {data: 'student_avatar', render(data){
+                                    return img_catch(data, `storage/uploads/student/${data}`);
+                                 }}, 
+                                   {data: 'actions'},
                                   ];
         
-         crud_index('.student_DT', 'student.index', student_column_data); // after loading the student Information page ; load the Student Information data
+         crud_index('.student_DT', 'student.index', student_column_data, column); // after loading the student Information page ; load the Student Information data
     }
 
 
     if(window.location.href == route('fee.index'))
     {
+        let column = 'name';
         let fee_column_data = [ {data: 'name'},
                                 {data: 'total_amount', render(data) {
                                 return  `₱ ${data.toLocaleString()}`
                                 },},
                                 {data: 'actions'} ]
 
-        crud_index('.fee_DT', 'fee.index', fee_column_data); // after loading the Fee Information page ; load the Fee Information data
+        crud_index('.fee_DT', 'fee.index', fee_column_data, column); // after loading the Fee Information page ; load the Fee Information data
     }
 
 
     if(window.location.href == route('studentfee.index'))
     {
+        let column = 'student_name';
+
         let student_fee_column_data = [
                                         {data: 'id'},
                                         {data: 'student_name'},
                                         {data: `amount_payable`, render(data) {
-                                            return  `₱ ${data.toLocaleString()}`
+                                            //  let value = parseFloat(data).toFixed(2);
+                                             let value =  roundoff(data);
+                                             return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'months_no'},
                                         {data: 'downpayment'},
                                         {data: 'paid', render(data) {
-                                            // return  `₱ ${data.toLocaleString()}` ?? ""
-                                            return (data ? `₱ ${data.toLocaleString()}` : "0" )
+                                            // let value = parseFloat(data).toFixed(2);
+                                            let value =  roundoff(data);
+                                            return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'total_balance', render(data) {
-                                            // return  `₱ ${data.toLocaleString()}` ?? ""
-                                            return (data ? `₱ ${data.toLocaleString()}` : "0" )
+                                            // let value = parseFloat(data).toFixed(2);
+                                            let value =  roundoff(data);
+                                             return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'monthly_payment', render(data) {
-                                            return (data ? `₱ ${data.toLocaleString()}` : "0" )
+                                            // let value = parseFloat(data).toFixed(2);
+                                            let value =  roundoff(data);
+                                            return (data ? `₱ ${value}` : "0" )
+
                                         },},
                                         {data: 'status', render(data) {
                                             if(data == 'active')
@@ -123,7 +141,7 @@ $(()=> {
                                         {data: 'actions'},
                                       ]
 
-            crud_index('.student_fee_DT', 'studentfee.index', student_fee_column_data); // after loading the StudentFee Information page ; load the Student Fee Information data
+            crud_index('.student_fee_DT', 'studentfee.index', student_fee_column_data, column); // after loading the StudentFee Information page ; load the Student Fee Information data
             
             $('#student_fee_student_id').select2({
                 dropdownParent: $('#student_fee_modal')
@@ -134,6 +152,8 @@ $(()=> {
 
     if(window.location.href == route('payment.index'))
     {
+        let column = 'first_name';
+
         let payment_column_data = [
                                     {data: 'id'},
                                     {data: 'first_name'},
@@ -143,7 +163,7 @@ $(()=> {
                                     },},
                                     {data: 'actions'}
                                   ];
-        crud_index('.payment_DT', 'payment.index', payment_column_data); // after loading the Payment Information page ; load the Payment Fee Information data
+        crud_index('.payment_DT', 'payment.index', payment_column_data, column); // after loading the Payment Information page ; load the Payment Fee Information data
 
         $('#payment_student_fee_id').select2({
             dropdownParent: $('#payment_modal')
@@ -159,17 +179,33 @@ $(()=> {
 
     if(window.location.href == route('user.index'))
     {
+       let column = 'name';
        let user_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'role.name'}, {data: 'actions', orderable: false, searchable: false} ];
 
-       crud_index('.user_DT', 'user.index',user_column_data); // after loading the User page ; load the User  data
+       crud_index('.user_DT', 'user.index',user_column_data, column); // after loading the User page ; load the User  data
+
+       
+        $('#user_teacher_id').select2({
+            dropdownParent: $('#user_modal')
+        });
+
+        $('#user_student_id').select2({
+            dropdownParent: $('#user_modal')
+        });
+
+        $('#user_parent_id').select2({
+            dropdownParent: $('#user_modal')
+        });
     }
 
     
     if(window.location.href == route('parent.index'))
     {
+        let column = 'name';
+
         let parent_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'contact'}, {data: 'facebook'}, {data: 'actions'} ];
 
-        crud_index('.parent_DT', 'parent.index', parent_column_data); // after loading the Parent page ; load the Parent  data
+        crud_index('.parent_DT', 'parent.index', parent_column_data, column); // after loading the Parent page ; load the Parent  data
     }
 
 
@@ -182,20 +218,27 @@ $(()=> {
 
     if(window.location.href == route('payment_mode.index'))
     {
+        let column = 'title';
+
         $('#payment_mode_title').tagsinput();
 
         let payment_mode_column_data = [
                                             {data: 'id'},
                                             {data: 'title'},
+                                            {data: 'created_at', render(data){
+                                                let date = new Date(data);
+                                                return date.toLocaleDateString();
+                                            }},
                                             {data: 'actions'}
                                         ];
 
-        crud_index('.payment_mode_DT','payment_mode.index', payment_mode_column_data ); // after loading the  payment mode ; load the payment mode data
+        crud_index('.payment_mode_DT','payment_mode.index', payment_mode_column_data, column ); // after loading the  payment mode ; load the payment mode data
     }
 
 
     if(window.location.href == route('academic_year.index'))
     {
+        let column = 'academic_year';
         $('#accademic_year').tagsinput();
        
         let ay_column_data = [
@@ -207,25 +250,27 @@ $(()=> {
                               {data: 'actions', orderable: false, searchable: false}
                               ];
                             
-        crud_index('.academic_year_DT','academic_year.index', ay_column_data); // after loading the  Academic Year  ; load the  Academic Year data
+        crud_index('.academic_year_DT','academic_year.index', ay_column_data, column); // after loading the  Academic Year  ; load the  Academic Year data
 
     }
 
 
     if(window.location.href == route('role.index'))
     {
+        let column = 'name';
         let role_column_data = [ {data: 'name'}, {data: 'actions',  orderable: false, searchable: false} ];
-        crud_index('.role_DT', 'role.index', role_column_data); // after loading the Role ; load the Role data
+        crud_index('.role_DT', 'role.index', role_column_data, column); // after loading the Role ; load the Role data
 
         $('#role_title').tagsinput(); 
     }
 
     if(window.location.href == route('values.index'))
     {
+        let column = 'title';
         $('#values_title').tagsinput(); 
 
         let values_column_data = [{data:'id'}, {data: 'title'}, {data: 'actions',  orderable: false, searchable: false} ];
-        crud_index('.values_DT', 'values.index', values_column_data); // after loading the Role ; load the Role data
+        crud_index('.values_DT', 'values.index', values_column_data, column); // after loading the Role ; load the Role data
     }
 
 
@@ -286,6 +331,16 @@ $(()=> {
 
         });
 
+        $('#section_section_id').select2({
+            dropdownParent: $('#section_teacher_modal')
+
+        });
+        
+        $('#section_teacher_id').select2({
+            dropdownParent: $('#section_teacher_modal')
+
+        });
+
         $('#parent_parent_id').select2({
             dropdownParent: $('#parent_student_modal')
 
@@ -295,6 +350,9 @@ $(()=> {
             dropdownParent: $('#parent_student_modal')
 
         });
+
+
+
 
 
 
@@ -849,7 +907,8 @@ function createTeacher()  {
         dataType:'json',
         data: {id:id},
         success: teacher => {
-           res(teacher[1]);
+          // res(teacher[1]);
+           let teacher_avatar = img_catch(teacher[0].teacher_avatar,`storage/uploads/teacher/${teacher[0].teacher_avatar}`, 250);
            $('#show_teacher_modal').modal('show');
            $('#show_teacher_modal_header').addClass('bg-info');
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -857,10 +916,10 @@ function createTeacher()  {
                             <button class="nav-link active" id="teacherinfo-tab" data-bs-toggle="tab" data-bs-target="#teacherinfo" type="button" role="tab" aria-controls="teacherinfo" aria-selected="true">Teacher Info</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Assigned Subject</button>
+                            <button class="nav-link" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab" aria-controls="subjects" aria-selected="false">Subject</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Assigned Section</button>
+                            <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#sections" type="button" role="tab" aria-controls="sections" aria-selected="false">Section</button>
                         </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">`;
@@ -869,7 +928,7 @@ function createTeacher()  {
                                 <div class='row'>
                                     <div class='col-md-6 mb-5'>
                                         <br>
-                                        <center><img class='rounded-circle' src='/storage/uploads/teacher/${teacher[0].teacher_avatar}' alt='teacher_avatar' width='250'></center>
+                                        <center>${teacher_avatar}</center>
                                     </div>
 
                                     <div class='col-md-6'>
@@ -912,8 +971,9 @@ function createTeacher()  {
 
                          <div class="tab-pane fade" id="subjects" role="tabpanel" aria-labelledby="profile-tab">
                             <ul class='list-group'><br><br>
-                                <h3 class='text-muted text-center'> Subjects Handled </h3> <br>
-                                <table class='table'> 
+                                <h3 class='text-muted text-center'> Assigned Subjects </h3> <br>
+                                <div class='table-responsive'>
+                                <table class='table table-hover'> 
                                 <thead> 
                                     <tr> 
                                         <th> Subject </th>
@@ -943,6 +1003,7 @@ function createTeacher()  {
                     output += `    
                                 </tbody>
                                 </table>
+                                </div>
                                 </ul>
                             </div>`;
 
@@ -1071,7 +1132,7 @@ function teacher_display_students_by_section_id(id)
                         `;
             students.forEach(student => {
                 output += `<tr>
-                            <td> ${student.first_name} ${student.last_name} </td>
+                            <td><img class='rounded-circle me-2' src='/storage/uploads/student/${student.student_avatar}' width='35'>${student.first_name} ${student.last_name} </td>
                             <td> ${student.gender} </td>
                           </tr>`
             }) // loop closure
@@ -1974,7 +2035,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             success: students => {
                  //res(students);
                 let output = `
-                            <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT'>
+                            <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT mt-5'>
                             <caption> List of Students </caption>
                                 <thead style='background:none'>
                                     <tr>
@@ -2028,7 +2089,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
             let output = `
                            <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
                            <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${student_subjects[0].id}'> Student : ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
-                            <table class="table table-bordered mt-2 " border="1" id='table_assign_grade_to_subject_student_grade_table'>
+                           <div class='table-responsive'>
+                            <table class="table table-bordered mt-2" border="1" id='table_assign_grade_to_subject_student_grade_table'>
                             <thead style="background: none">
                                 <tr class="text-center fw-bold">
                                     <td rowspan="2" style="width:25%">Learning Areas</td>
@@ -2094,6 +2156,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                             </tr>
                             </tbody>
                         </table>
+                        </div>
                         <form>
                             <input type='number' min='60' name='grade' id='g_grade' data-subject_id='' style='width:100%;display:none'>
                         </form>
@@ -2101,7 +2164,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                         
             output += `<div class="row mt-2" id="descriptors">
-                        <table class="table table-sm ">
+                        <div class='table-responsive'>
+                        <table class="table table-hover">
                             <thead style="background: none">
                                 <tr class="fw-bold">
                                     <th>Descriptors</th>
@@ -2136,12 +2200,14 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                                     <td>Failed</td>
                                 </tr>
                             </tbody>
-                        </table> `;
+                        </table>
+                        </div> `;
                         
                         // Observed Values
 
             output +=  `  
-                        <h1 class="fw-bold text-uppercase text-center mb-5"> report on learners observed values</h1>
+                        <h3 class="fw-bold text-uppercase text-center mb-5 mt-3"> report on learners observed values</h3>
+                            <div class='table-responsive'>
                             <table class="table table-bordered" id='teacher_assign_observed_values_to_student'>
                                 <thead style="background: none">
                                     <tr class="fw-bold text-center">
@@ -2160,7 +2226,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                                 </thead>
                                 <tbody>`;
 
-                                res(student_subjects);
+                                //res(student_subjects);
                                 let index = 0; // counter
                                 student_subjects[2].forEach(student_values => {
 
@@ -2202,10 +2268,12 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
               output +=        `</tbody>
                         </table>
+                        </div>
                     </div>
 
                     <div class="row mt-2" id="marking">
-                    <table class="table table-sm ">
+                    <div class='table-responsive'>
+                    <table class="table ">
                         <thead style="background: none">
                             <tr class="fw-bold">
                                 <th>Marking</th>
@@ -2231,6 +2299,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>` ;  
         
 
@@ -2475,12 +2544,11 @@ $('#btn_add_subject').css('display', 'block');
 $('#btn_update_subject').css('display', 'none');
 $('#subject_modal_header').removeClass('bg-success').addClass('bg-primary');
 
-
     $.ajax({
         url: route('subject.create'),
         dataType:'json',
         success: grade_levels => {
-            res(grade_levels);
+            //res(grade_levels);
             let output=' <option></option>';
             grade_levels.forEach(grade_level => {
                 output += `<option value='${grade_level.grade_val},${grade_level.id}'>Grade ${grade_level.grade_val}  </option>`;
@@ -2511,11 +2579,10 @@ function createSubject() {
             url: route('subject.store'),
             data: subject_form.serialize(),
             success: response => {
-               res(response);
+               //res(response);
                 toastSuccess('Subject Added');
                 $('.subject_DT').DataTable().draw();
                 subject_form[0].reset();
-                //$('#subject_modal').modal('hide');
                 $('#subject_div_err').css('display', 'none');
                 $('#subject_err').html('');
             },
@@ -2981,11 +3048,11 @@ function showSection(id)
                         // display assigned teachers
 
                     section.teacher.forEach(teacher => {
-                     
+                        let teacher_avatar = img_catch(teacher.teacher_avatar, `storage/uploads/teacher/${teacher.teacher_avatar}`);
                         output+= `
                                 <tr> 
                                     <td>${teacher.first_name} ${teacher.last_name}</td>
-                                    <td> <img class='rounded-circle' src='/storage/uploads/teacher/${teacher.teacher_avatar}' title='${teacher.first_name}' alt='teacher_avatar' width='50'> </td>
+                                    <td> ${teacher_avatar} </td>
                                 </tr>
                                   `;
                     });
@@ -3007,11 +3074,11 @@ function showSection(id)
 
 
                         section.student.forEach(student => {
-                    
+                            let student_avatar = img_catch(student.student_avatar, `storage/uploads/student/${student.student_avatar}`);
                             output+= `
                                     <tr> 
                                         <td>${student.first_name} ${student.last_name}</td>
-                                        <td><img class='rounded-circle' src='/storage/uploads/student/${student.student_avatar}' title='${student.first_name}' alt='student_avatar' width='50'></td>
+                                        <td>${student_avatar}</td>
                                     </tr>
                                         `;
                         });
@@ -3091,10 +3158,11 @@ function updateSection()
             dataType:'json',
             data:section_form.serialize(),
             success: response => {
-               // res(response);
+            //    res(response);
                 if(response == 'success')
                 {   
                     $('.section_DT').DataTable().draw();
+                    $('#section_modal').modal('hide');
                     return toastSuccess("Section Updated");
                 }
             },
@@ -3190,7 +3258,7 @@ function section_store_teacher()
 
             },
             success: response => {
-                res(response);
+                //res(response);
                 if(response == "success")
                 {
                    return toastSuccess("Teacher Assigned");
@@ -3206,30 +3274,61 @@ function section_store_teacher()
 
             },
             error: err => {
-                console.log(err);
+               toastDanger();
+               res(err);
             }
         })
     }
     else
     {
-        toastr.warning("Please select a section/teacher");
+        toastr.warning("Please select a section and teacher");
     }
 }
 
 
 function select_current_adviser(){
     let section_id =  $('#section_section_id').val();
+
+    if(section_id > 0)
+    {
+        $.ajax({  
+            url: route('section.get_adviser', section_id),
+            dataType:'json',
+            success: response =>{
+                //res(response);
+                let output = '';
+                let adviser = img_catch(response.teacher_avatar, `storage/uploads/teacher/${response.teacher_avatar}`, 110);
+
+                                if(response !== 'empty_adviser')
+                                {
     
-    $.ajax({  
-        url: route('section.get_adviser', section_id),
-        dataType:'json',
-        success: response =>{
-            res(response);
-        },
-        error: err => {
-            res(err);
-        },
-    })
+                   output +=    ` <center>${adviser} <br> <p class='text-center m-0'> [Current Adviser] </p>
+                                <p class='text-center text-info'> ${response.first_name} ${response.last_name} </p> `;
+                                }
+    
+                                else
+                                {
+    
+                   output +=    ` <center><img class='img-thumbnail rounded-cirlce' src='/images/no_photo.png' alt='' width='110'></center> 
+                   <br> <p class='text-center m-0'> [No Adviser] </p>
+                   `;
+    
+                                }
+                
+    
+                                $('#section_display_current_adviser').html(output);
+            },
+            error: err => {
+                res(err);
+            },
+        })
+    }
+    else
+    {
+        $('#section_display_current_adviser').html(``);
+    }
+    
+   
 }
 
 
@@ -3474,6 +3573,8 @@ function createStudent() {
         data: {id:id},
         success: student => {
             //res(student);
+           let student_avatar = img_catch(student[0].student_avatar,`storage/uploads/student/${student[0].student_avatar}`, 250);
+
            let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="studentinfo-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true">Student Info</button>
@@ -3492,7 +3593,7 @@ function createStudent() {
                                     <div class='row'>
                                         <div class='col-md-6 mb-5'>
                                         <br>
-                                            <center><img class='rounded-circle img-fluid' src='/storage/uploads/student/${student[0].student_avatar}' alt='student_avatar' width='250'></center>
+                                            <center>${student_avatar}</center>
                                         </div>
 
                                         <div class='col-md-6'>
@@ -3541,6 +3642,7 @@ function createStudent() {
              // display student_subjects
 
              output += `<div class="tab-pane fade py-5" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
+                                        <div class='table-responsive'>
                                         <table class='table table-hover'>
                                         <caption> List of Subjects </caption>
                                          <thead>
@@ -3563,11 +3665,13 @@ function createStudent() {
                                             
           output += `                     </tbody>
                                         </table>
+                                     </div>
                           </div>
                                 `;
 
             // display student_parents
           output +=     `<div class="tab-pane fade py-5" id="guardians" role="tabpanel" aria-labelledby="guardians-tab">
+                            <div class='table-responsive'>
                             <table class='table table-hover'>
                               <caption> List of Guardians </caption>
                                 <thead>
@@ -3588,7 +3692,10 @@ function createStudent() {
                                        </tr>`
                         })                 
 
-         output +=      `</div>
+         output +=      ` </tbody>
+                         </table>
+                         </div>
+                       </div>
                     </div>`; // closer
               
             $('#show_student_info').html(output);
@@ -3959,7 +4066,7 @@ function add_extra_sub_fee(event) {
                                 <div class="form-group">
                                     <i class="fas fa-minus-circle float-end " id='minus_sub_fee' role='button'></i>
                                     <label class="form-label" for="amount">Amount</label>
-                                    <input class="form-control" type="number"  name="fee_amount[]">
+                                    <input class="form-control" type="number" min='0'  name="fee_amount[]" oninput="validity.valid||(value='');">
                                 </div>
                             </div>
                         </div>
@@ -4152,7 +4259,7 @@ function student_fee_display_discounted_fee_by_student_id()
 
     if(student_fee_discount !== "" && student_fee_fee !== "")
     {
-      $('#student_fee_fee').attr('value', total);
+      $('#student_fee_fee').attr('value', roundoff(total));
     }
     
 
@@ -4230,11 +4337,11 @@ function showStudentFee(id)
             //sub fees
             let subfees = ``;
             let amount = ``;
-            let total = `₱ ${studentfee[2].total.toLocaleString()}` || "0";
+            let total = `₱ ${roundoff(studentfee[2].total)}` || "0";
             studentfee[1].forEach(fee => {
                 
                 subfees += `<h5 > ${fee.description} </h5>`;           
-                amount += `<h5 > ₱ ${fee.amount.toLocaleString()} </h5>`;
+                amount += `<h5 > ₱ ${roundoff(fee.amount)} </h5>`;
             
             });
       
@@ -4244,10 +4351,10 @@ function showStudentFee(id)
 
             // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-             $('#sf_display_discounted_total').text(`₱ ${studentfee[0].total_fee.toLocaleString()}`);
+             $('#sf_display_discounted_total').text(`₱ ${roundoff(studentfee[0].total_fee)}`);
 
 
-             let discounted_total = `₱ ${studentfee[0].total_fee.toLocaleString()}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+             let discounted_total = `₱ ${roundoff(studentfee[0].total_fee)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
 
             $('#sf_type').html(subfees);
             $('#sf_amount').html(amount);
@@ -4277,16 +4384,19 @@ function showStudentFee(id)
                 
                 const date = new Date(payment.created_at);
                 const d = date.toLocaleDateString('default', { month: 'long' });
-                payments += `<h5> ₱ ${payment.amount.toLocaleString()} </h5>`;
+                payments += `<h5> ₱ ${roundoff(payment.amount)} </h5>`;
+
+
                 dates += `<h5> ${d} - ${payment.remarks}</h5>`;
             });
             $('#sf_payment').html(payments);
             $('#sf_date').html(dates);
 
             // display payments total ,  total paid and total balance
-            $('#sf_payment_total').text(`₱ ${studentfee[4][0].paid.toLocaleString()}`)
-            $('#sf_total_paid').text(`₱ ${studentfee[4][0].paid.toLocaleString()}`);
-            $('#sf_balance').text(`₱ ${studentfee[4][0].total_balance.toLocaleString()}`);
+            $('#sf_payment_total').text(`₱ ${roundoff(studentfee[4][0].paid)}`)
+            $('#sf_total_paid').text(`₱ ${roundoff(studentfee[4][0].paid)}`);
+            $('#sf_balance').text(`₱ ${roundoff(studentfee[4][0].total_balance)}`);
+            
 
 
         },
@@ -4352,17 +4462,17 @@ function showPayment(id) {
 
             // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-             $('#payment_sf_total_discounted_amount').text(`₱ ${payment[1].total_fee.toLocaleString()}`);
+             $('#payment_sf_total_discounted_amount').text(`₱ ${roundoff(payment[1].total_fee)}`);
 
 
-            let discounted_total = `₱ ${payment[1].total_fee.toLocaleString()}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+            let discounted_total = `₱ ${roundoff(payment[1].total_fee)}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
        
             //display payment info
             $('#show_payment_modal').modal('show');
             $('#show_payment_modal_header').addClass('bg-secondary');
             $('#payment_date').text(`${d}`);
             $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
-            $('#payment_payment_amount').text(`₱ ${payment[0].amount.toLocaleString()}`);
+            $('#payment_payment_amount').text(`₱ ${roundoff(payment[0].amount)}`);
             $('#payment_payment_remarks').text(`${payment[0].remarks}`);
 
             // display student info
@@ -4377,23 +4487,23 @@ function showPayment(id) {
             let fee_amount = ``;
             payment[2].forEach(subfee => {
                 fee_type += `<h5 > ${subfee.description} </h5>`
-                fee_amount += `<h5 >₱ ${subfee.amount.toLocaleString()} </h5>`
+                fee_amount += `<h5 >₱ ${roundoff(subfee.amount)} </h5>`
             });
         
 
             $('#payment_sf_type').html(fee_type);
             $('#payment_sf_amount').html(fee_amount);
-            $('#payment_sf_total').text(`₱ ${payment[4].subtotal.toLocaleString()}`)
+            $('#payment_sf_total').text(`₱ ${roundoff(payment[4].subtotal)}`)
 
             // Payment details
 
             $('#payment_sf_date').html(`<h5> ${d} </h5>`)
-            $('#payment_sf_payment').html(`<h5>₱ ${payment[0].amount.toLocaleString()}</h5>`)
-            $('#payment_sf_payment_total').html(`<h5>₱ ${payment[0].amount.toLocaleString()} </h5>`)
+            $('#payment_sf_payment').html(`<h5>₱ ${roundoff(payment[0].amount)}</h5>`)
+            $('#payment_sf_payment_total').html(`<h5>₱ ${roundoff(payment[0].amount)} </h5>`)
 
-            $('#payment_sf_total_payable').text(`₱ ${payment[3][0].amount_payable.toLocaleString()}`);
-            $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toLocaleString()}`);
-            $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toLocaleString()}`);
+            $('#payment_sf_total_payable').text(`₱ ${roundoff(payment[3][0].amount_payable)}`);
+            $('#payment_sf_total_paid').text(`₱ ${roundoff(payment[3].paid)}`);
+            $('#payment_sf_balance').text(`₱ ${roundoff(payment[3].total_balance)}`);
 
 
         },
@@ -4424,7 +4534,6 @@ function payment_display_discount_input_field()
     let output = ``;
     if(payment_discount == "percentage")
     {
-
         // percentage
         output += `  <div class="form-group">
                         <label class="form-label">Select Percentage Discount</label>
@@ -5341,7 +5450,7 @@ function payment_display_discount_input_field()
     {
         output += `  <div class="form-group">
                         <label class="form-label">Enter Cash Discount</label>
-                        <input type='number' min='0' class="form-control" name="payment_discount" id="payment_payment_discount_cash" onInput='payment_display_cash_discount()'>
+                        <input type='number' min='0' class="form-control" name="payment_discount" id="payment_payment_discount_cash" onInput="validity.valid||(value='');payment_display_cash_discount();">
                      </div>
                      
                      <div class="form-group">
@@ -5371,7 +5480,7 @@ function payment_display_payment_discount() {
 
     if(payment_discount > 0)
     {
-        $('#payment_payment_discounted_amount').attr('value', total);
+        $('#payment_payment_discounted_amount').attr('value', roundoff(total));
 
     }
     else
@@ -5383,6 +5492,7 @@ function payment_display_payment_discount() {
 }
 
 function payment_display_cash_discount() {
+   
     let payment_amount = $('#payment_amount').val();
     let payment_discount = $('#payment_payment_discount_cash').val();
 
@@ -5391,7 +5501,7 @@ function payment_display_cash_discount() {
 
     if(payment_discount > 0)
     {
-        $('#payment_payment_discounted_amount').attr('value', total);
+        $('#payment_payment_discounted_amount').attr('value', total.toFixed());
 
     }
     else
@@ -5853,365 +5963,6 @@ function displayPaymentReport() {
 
 
 //* --------------> End Payment Report
-
-
-
-/** 
- * * <------------ Start User Management
- * TODO CRUD User Management (Completed)
- */
-
-// create
-$('#add_user').on('click', ()=> {
-
-    $('#user_modal_label').html(`<h4 class='text-white'>Create an Account <i class="fas fa-user-plus"></i></h4>`);
-    $('#user_full_name').attr('value', '').attr('disabled', false);
-    $('#user_email').attr('value', '').attr('disabled', false);
-    $('#user_password').attr('value', '');
-    $('#student_role_div').hide();
-    $('#parent_role_div').hide();
-    $('#user_student_role').attr('value', '').attr('disabled', false);
-    $('#user_parent_role').attr('value', '').attr('disabled', false);
-    $('#btn_add_user').css('display', 'block');
-    $('#btn_update_user').css('display', 'none');
-    $('#user_modal_header').removeClass('bg-success').addClass('bg-primary');
-
-    $('#user_student_id').attr('disabled', false);
-    $('#user_parent_id').attr('disabled', false);
-
-
-    $.ajax({
-        url:route('user.create'),
-        dataType: 'json',
-        success: data => {
-            //console.log(data);
-            let student_data = `<option> </option>`;
-            let roles = `<option> </option>`;
-            let parent_data = `<option> </option>`;
-
-            data[0].forEach( student => {
-                 student_data += `<option value='${student.id}'> ${student.first_name}  ${student.last_name} </option>`;
-            });
-
-            data[1].forEach(role => {
-                roles += `<option value='${role.id}'> ${role.name} </option>`;
-            })
-
-            data[2].forEach(parent => {
-                parent_data += `<option value='${parent.id}'> ${parent.name} </option>`;
-            })
-
-            $('#user_student_id').html(student_data); // display students 
-            $('#user_role').html(roles); // display roles
-            $('#user_parent_id').html(parent_data); // display parents
-
-
-            $('#user_modal_label').html(`Create an Account`);
-            $('#user_modal').modal('show');
-
-        },
-        error: err => {
-            console.log(err);
-        }
-    });
-
-});
-
-// display student info on user modal
-function display_student_info_on_user_modal() {
-    let student_id = $('#user_student_id').val(); // get student_id 
-    $('#user_student_role').attr('value', '');
-    $('#user_parent_id').attr('disabled', true);
-
-    if(student_id > 0)
-    {
-        $.ajax({
-            url: route('user.display_student_info', student_id),
-            dataType:'json',
-            success: student => {
-                // console.log(student);
-                $('#user_full_name').attr('value', `${student.first_name} ${student.last_name}` ).attr('readonly', true);
-                $('#user_email').attr('value', `${student.email}` ).attr('readonly', true);
-                $('#role_div').hide();
-                $('#parent_role_div').hide();
-                $('#student_role_div').show();
-                $('#user_student_role').attr('value', 'Student').attr('readonly', true);
-        
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-    }
-    else
-    {
-        $('#user_full_name').attr('value', '').attr('readonly', false);
-        $('#user_email').attr('value', '').attr('readonly', false);
-        $('#user_password').attr('value', '');
-        $('#user_role').attr('value','');
-        $('#student_role_div').hide();
-        $('#parent_role_div').hide();
-        $('#role_div').show();
-    }
-}
-
-// display parent info on user modal
-function display_parent_info_on_user_modal() {
-    let parent_id = $('#user_parent_id').val(); // get student_id 
-
-    $('#user_student_id').attr('disabled', true);
-
-    if(parent_id > 0)
-    {
-        $.ajax({
-            url: route('user.display_parent_info', parent_id),
-            dataType:'json',
-            success: parent => {
-                //console.log(parent);
-                $('#user_full_name').attr('value', `${parent.name}` ).attr('readonly', true);
-                $('#user_email').attr('value', `${parent.email}` ).attr('readonly', true);
-                $('#role_div').hide();
-                $('#student_role_div').hide();
-                $('#parent_role_div').show();
-                $('#user_parent_role').attr('value', 'Parent').attr('readonly', true);
-        
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-    }
-    else
-    {
-        $('#user_full_name').attr('value', '').attr('readonly', false);
-        $('#user_email').attr('value', '').attr('readonly', false);
-        $('#user_password').attr('value', '');
-        $('#user_role').attr('value','');
-        $('#student_role_div').hide();
-        $('#parent_role_div').hide();
-        $('#role_div').show();
-    }
-}
-
-// store
-function createUser()
-{
-    let name = $('#user_full_name');
-    let email = $('#user_email');
-    let password = $('#user_password');
-    let user_role = $('#user_role');
-    let student_role = $('#user_student_role').val();
-    let parent_role = $('#user_parent_role').val();
-
-    let student_id = $('#user_student_id').val();
-    let parent_id = $('#user_parent_id').val();
-
-    
-    if(isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
-    {
-        if(parseInt(student_id)> 0)
-        {
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                student_id: student_id,
-                student_role: 2
-                },
-                success: response => {
-                    //console.log(response);
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-
-        else if(parseInt(parent_id) > 0)
-        {
-
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                parent_id: parent_id,
-                parent_role: 3
-                },
-                success: response => {
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-        else
-        {
-            $.ajax({
-                method: 'POST',
-                url: route('user.store'),
-                dataType:'json',
-                data:{
-                name: name.val(),
-                email: email.val(),
-                password: password.val(),
-                user_role: user_role.val()
-                },
-                success: response => {
-                    if(response == 'error')
-                    {
-                        return toastr.warning('User already exist') ;
-                    }
-
-                    $('.user_DT').DataTable().draw();
-                    return toastSuccess('User Created')
-                },
-                error : err => {
-                    console.log(err);
-                }
-            });
-        }
-
-    }
-}
-
-// edit
-function editUser(id)
-{
-    $('#user_modal_label').html(`<h4>Edit User <i class="fas fa-user-plus"></i></h4>`);
-    $('#user_full_name').attr('value', '');
-    $('#user_email').attr('value', '');
-    $('#user_password').attr('value', '');
-    $('#student_role_div').hide();
-    $('#user_student_role').attr('value', '');
-    $('#btn_add_user').css('display', 'none');
-    $('#btn_update_user').css('display', 'block');
-    $('#user_modal_header').removeClass('bg-primary').addClass('bg-success');
-
-        $.ajax({
-            url: route('user.edit', id),
-            dataType: 'json',
-            success: user => {
-
-                let student_id = (user.student_id > 0) ? user.name: "";
-                let pareint_id = (user.pareint_id > 0) ? user.name: "";
-
-                $('#user_modal').modal('show');
-                $('#user_modal_label').html(`Edit User`);
-                $('#user_full_name').attr('value', `${user.name}`).attr('disabled', true);
-                $('#user_email').attr('value', `${user.email}`).attr('disabled', true);
-                $('#user_password').attr('value', `${user.password}`);
-                $('#student_role_div').show();
-                $('#role_div').hide();
-                $('#parent_role_div').hide();
-
-                if(user.role_id == 1)
-                {
-                    $('#user_student_role').attr('value', 'Admin').attr('disabled', true); 
-                    
-
-                }
-                else if (user.role_id == 2)
-                {
-                    $('#user_student_role').val('Student').attr('disabled', true); 
-
-                }
-                else
-                {
-                    $('#user_student_role').val('Parent').attr('disabled', true); 
-
-                }
-                
-                $('#user_student_id').attr('value', student_id).attr('disabled', true).html(`<option> ${student_id} </option>`);
-                $('#user_parent_id').attr('value', pareint_id).attr('disabled', true).html(`<option> ${pareint_id} </option>`);
-                $('#btn_update_user').attr('data-id', user.id);
-                
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-
-}
-
-// update
-function updateUser()
-{
-    let password = $('#user_password');
-    let user_id = $('#btn_update_user').attr('data-id');
-    if(isNotEmpty(password))
-    {
-        $.ajax({
-            method: 'PUT',
-            url: route('user.update', user_id),
-            dataType:'json',
-            data:{password:password.val()},
-            success: response => {
-                (response == 'success') ? toastSuccess('Password Updated') : toastDanger() ;
-            },
-            error: err => {
-                console.log(err);
-                toastDanger();
-            }
-        });
-    }
-    
-}
-
-// delete
-function deleteUser(id)
-{
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                method: 'DELETE',
-                url: route('user.destroy', id),
-                success: response => {
-                    // console.log(response);
-                    if(response == 'success') {
-                        toastSuccess("User Deleted");
-                        $('.user_DT').DataTable().draw();
-                    } 
-        
-                },
-                error: err => {
-                    console.log(err);
-                    toastDanger();
-                }
-            })
-        }
-      })
-}
-
-//* -------------> END USER()
 
 
 
@@ -6964,22 +6715,6 @@ $(document).on('click', '#to_show_receipt', function() {
 });
 
 
-// $('#to_show_receipt').on('click', function() {
-//     let image = $(this).attr('src');
-//     Swal.fire({
-//         title: '',
-//         width: "35%",
-//         imageWidth: "400",
-//         imageHeight: "600",
-//         padding: '3em',
-//         imageUrl: `${image}`,
-//         backdrop: `
-//           rgba(0,0,123,0.4)
-//           left top
-//           no-repeat
-//         `
-//       })
-// });
 
 
 //* ----------> End Admin User()
@@ -7209,6 +6944,10 @@ $('#add_role').on('click', ()=> {
     $('#role_modal').modal('show');
     $('#role_modal_label').html(`<h4 class='text-white'> Add Role <i class="fas fa-users-cog"></i> </h4>`);
     $('#role_modal_header').removeClass('bg-success').addClass('bg-primary');
+    $('#role_title').attr('value', '');
+    $('#btn_update_role').css('display','none');
+    $('#btn_add_role').css('display','block');
+
 });
 
 function createRole()
@@ -7240,6 +6979,55 @@ function createRole()
     }
 }
 
+function editRole(role)
+{
+    $('#role_modal').modal('show');
+    $('#role_modal_label').html(`<h4 class='text-white'> Edit Role <i class="fas fa-edit"></i> </h4>`);
+    $('#role_modal_header').removeClass('bg-primary').addClass('bg-success');
+    $('#btn_update_role').css('display','block');
+    $('#btn_add_role').css('display','none');
+    $('.bootstrap-tagsinput').hide();
+    $('#role_title').show();
+
+
+    $.ajax({
+        url: route('role.edit', role),
+        dataType:'json',
+        success: role => {
+           $('#role_title').val(role.name);
+           $('#btn_update_role').attr('data-id', role.id);
+        },
+        error: err => {
+
+        }
+    })
+}
+
+function updateRole()
+{
+    let id = $('#btn_update_role').attr('data-id');
+
+    if(isNotEmpty($('#role_title')))
+    {
+        $.ajax({
+            method:'PUT',
+            url: route('role.update', id),
+            dataType:'json',
+            data:{title: $('#role_title').val()},
+            success: response => {
+                if(response == 'success')
+                {
+                    $('.role_DT').DataTable().draw();
+                    toastSuccess("Role Updated");
+                }
+            },
+            error: err => {
+                res(err);
+            }
+        })
+    }
+}
+
 
 
 // * -------------> END Role()
@@ -7256,67 +7044,59 @@ function createRole()
 
     if(ay > 0)
     {
-        $.ajax({
-            url: route('report.display_students_by_ay', ay),
-            dataType:'json',
-            success: students => {
-                // res(students);
-                let output =    `
-                                <table class='table table-bordered table-hover mt-5' id='report_student_DT'>
-                                  <caption>List of Students </caption>
-                                    <thead>
-                                        <tr>
-                                             <td>First Name</td>
-                                             <td>Last Name</td>
-                                             <td>Gender</td>
-                                             <td>Section</td>
-                                             <td>Action</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+        let output =    `
+                        <table class='table table-bordered table-hover mt-5' id='report_student_DT'>
+                            <caption>List of Students </caption>
+                            <thead>
+                                <tr>
+                                    <td>LRN</td>
+                                    <td> </td>
+                                    <td>First Name</td>
+                                    <td>Last Name</td>
+                                    <td>Gender</td>
+                                    <td>Section</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                    </tbody>
-                                    </table>
+                            </tbody>
+                        </table>
 
-                                    <div class='row' id='report_display_students_by_ay_id'>
+                            <div class='row' id='report_display_students_by_ay_id'>
+
+                            </div>
+            `;
 
 
-                                    </div>
-                                    `;
-                 
-    
-                $('#report_display_data').html(output);
-
-                $('#report_student_DT').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    retrieve: true,
-                    responsive: {
-                        details: {
-                            display: $.fn.dataTable.Responsive.display.modal( {
-                                    // test
-                            } ),
-                            renderer: $.fn.dataTable.Responsive.renderer.tableAll()
-                        }
-                    },
-                    autoWidth: false,
-                    ajax : route('report.display_students_by_ay', ay),
-                    columns: [
-                        {data: 'first_name'},
-                        {data: 'last_name'},
-                        {data: 'gender'},
-                        {data: 'section.name'},
-                        {data: 'actions'},
-                    ]
-                });
-
-              
-
-            },
-            error: err => {
-                res(err);
+            $('#report_display_data').html(output);
+            $('#report_student_DT').DataTable({
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                        // test
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
             }
-        });
+            },
+            autoWidth: false,
+            ajax : route('report.display_students_by_ay', ay),
+            columns: [
+            {data: 'lrn'},
+            {data: 'student_avatar', render(data){
+                return img_catch(data,`storage/uploads/student/${data}`);
+            }},
+            {data: 'first_name'},
+            {data: 'last_name'},
+            {data: 'gender'},
+            {data: 'section.name'},
+            {data: 'actions'},
+            ]
+            });
+
     }
     else
     {
@@ -7529,6 +7309,132 @@ function createRole()
      })
  }
 
+ function report_display_payments_by_ay()
+ {
+    let ay = $('#report_ay').val();
+
+    if(ay > 0)
+    {
+        let output =    `
+                                <table class='table table-bordered table-hover mt-5' id='report_payment_DT'>
+                                    <caption>List of Payments </caption>
+                                    <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td> Enrolment No.</td>
+                                            <td>Transaction No.</td>
+                                            <td>Amount</td>
+                                            <td>Remark</td>
+                                            <td>Official Receipt</td>
+                                            <td>Date</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                 </table>
+
+                    `;
+
+
+                        $('#report_display_data').html(output);
+                        $('#report_payment_DT').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        retrieve: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'csvHtml5',
+                            'pdfHtml5',
+                            'print'
+                        ],
+                        responsive: {
+                            details: {
+                                display: $.fn.dataTable.Responsive.display.modal( {
+                                        // test
+                                } ),
+                                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                            }
+                        },
+                        autoWidth: false,
+                        ajax : route('report.display_payments_by_ay', ay),
+                        columns: [
+                            {data: 'id'},
+                            {data: 'student_fee_id'},
+                            {data: 'transaction_no'},
+                            {data: 'amount'},
+                            {data: 'remarks'},
+                            {data: 'official_receipt'},
+                            {data:'created_at', render(data){
+                                return format_date(data);
+                            }}
+                        ]
+                        });
+
+    }
+ }
+
+ function report_display_teachers_by_ay()
+ {
+    let ay = $('#report_ay').val();
+
+    if(ay > 0)
+    {
+        let output =    `
+                                <table class='table table-bordered table-hover mt-5' id='report_teacher_DT'>
+                                    <caption>List of Teachers </caption>
+                                    <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td></td>
+                                            <td>First Name</td>
+                                            <td>Last Name</td>
+                                            <td>Gender</td>
+                                            <td>Created At</td>
+                                          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                 </table>
+
+                    `;
+
+                        $('#report_display_data').html(output);
+                        $('#report_teacher_DT').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        retrieve: true,
+                        responsive: {
+                            details: {
+                                display: $.fn.dataTable.Responsive.display.modal( {
+                                        // test
+                                } ),
+                                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                            }
+                        },
+                        autoWidth: false,
+                        ajax : route('report.display_teachers_by_ay', ay),
+                        columns: [
+                            {data: 'id'},
+                            {data: 'teacher_avatar', render(data) {
+                               return img_catch(data,`storage/uploads/teacher/${data}`); // for catching nullable images
+                            }},
+                            {data: 'first_name'},
+                            {data: 'last_name'},
+                            {data: 'gender'},
+                            {data:'created_at', render(data){
+                                return format_date(data);
+                            }}
+                        ]
+                        });
+
+    }
+ }
+
  function report_reset()
  {
      $('#report_display_data').html(``);
@@ -7565,7 +7471,7 @@ function createRole()
             dataType:'json',
             data: $('#values_form').serialize(),
             success: response => {
-                console.log(response);
+                //console.log(response);
                 if(response == "success")
                 {
                     $('#values_form')[0].reset();
@@ -7626,6 +7532,7 @@ function createRole()
              success: response => {
                 if(response == 'success')
                 {
+                    description.val('');
                     return toastSuccess("Statement Assigned");
                 }
              },
@@ -7785,37 +7692,49 @@ function createRole()
 
 function display_user_select_box()
 {
-    let selected_box = $('#select_user').val();
+    let selected_box = $('#select_user :selected').attr('data-val');
 
-    if(selected_box == 'student')
+
+    if(selected_box === 'student')
     {
         $('#s_student_div').css('display', 'block');
         $('#p_parent_div').css('display', 'none');
         $('#t_teacher_div').css('display', 'none');
+        $('#user_student_id').attr('disabled', false).val('');
 
     }
 
-    if(selected_box == 'parent' )
+    if(selected_box === 'parent' )
     {
+
         $('#p_parent_div').css('display', 'block');
         $('#s_student_div').css('display', 'none');
         $('#t_teacher_div').css('display', 'none');
+        $('#user_parent_id').attr('disabled', false).val('');
+
         
     }
 
-    if(selected_box == 'teacher')
+    if(selected_box === 'teacher')
     {
+
         $('#t_teacher_div').css('display', 'block');
         $('#s_student_div').css('display', 'none');
         $('#p_parent_div').css('display', 'none');
+        $('#user_teacher_id').attr('disabled', false).val('');
+
     }
 
-    if(selected_box == "")
+
+    if($('#select_user').val() == "")
     {
+
         $('#s_student_div').css('display', 'none');
         $('#p_parent_div').css('display', 'none');
         $('#t_teacher_div').css('display', 'none');
-        
+        $('#user_full_name').attr('value', '').attr('readonly', false);
+        $('#user_email').attr('value', '').attr('readonly', false);
+        $('#user_display_user_avatar').css('display', 'none');
     }
 }
 
@@ -7827,14 +7746,6 @@ $('#add_user').on('click', ()=> {
     $('#user_email').attr('value', '').attr('disabled', false);
     $('#user_password').attr('value', '');
 
-    $('#student_role_div').hide();
-    $('#parent_role_div').hide();
-    $('#teacher_role_div').hide();
-
-    $('#user_student_role').attr('value', '').attr('disabled', false);
-    $('#user_parent_role').attr('value', '').attr('disabled', false);
-    $('#user_teacher_role').attr('value', '').attr('disabled', false);
-    
     $('#btn_add_user').css('display', 'block');
     $('#btn_update_user').css('display', 'none');
     $('#user_modal_header').removeClass('bg-success').addClass('bg-primary');
@@ -7843,12 +7754,17 @@ $('#add_user').on('click', ()=> {
     $('#user_parent_id').attr('disabled', false);
     $('#user_teacher_id').attr('disabled', false);
 
+    // reset
+    $('#user_full_name').val('');
+    $('#user_email').val('');
+    $('#user_password').val('');
+
 
     $.ajax({
         url:route('user.create'),
         dataType: 'json',
         success: data => {
-            //console.log(data);
+           
             let student_data = `<option> </option>`;
             let roles = `<option> </option>`;
             let parent_data = `<option> </option>`;
@@ -7859,7 +7775,7 @@ $('#add_user').on('click', ()=> {
             });
 
             data[1].forEach(role => {
-                roles += `<option value='${role.id}'> ${role.name} </option>`;
+                roles += `<option value='${role.id}' data-val='${role.name}'> ${role.name} </option>`;
             })
 
             data[2].forEach(parent => {
@@ -7869,20 +7785,19 @@ $('#add_user').on('click', ()=> {
             data[3].forEach(teacher => {
                 teacher_data += `<option value='${teacher.id}'> ${teacher.first_name} ${teacher.last_name} </option>`;
             })
-            
 
+     
             $('#user_student_id').html(student_data); // display students 
-            $('#user_role').html(roles); // display roles
+            $('#select_user').html(roles); // display roles
             $('#user_parent_id').html(parent_data); // display parents
             $('#user_teacher_id').html(teacher_data); // display teachers
 
-
-            $('#user_modal_label').html(`Create an Account`);
             $('#user_modal').modal('show');
 
         },
         error: err => {
             console.log(err);
+            toastDanger();
         }
     });
 
@@ -7900,7 +7815,9 @@ function display_teacher_info_on_user_modal()
             url: route('user.display_teacher_info', teacher_id),
             dataType:'json',
             success: teacher => {
-                res(teacher);
+                //res(teacher);
+                let teacher_avatar = img_catch(teacher.teacher_avatar, `storage/uploads/student/${student.teacher_avatar}`, 150);
+
                 $('#user_full_name').attr('value', `${teacher.first_name} ${teacher.last_name}` ).attr('readonly', true);
                 $('#user_email').attr('value', `${teacher.email}` ).attr('readonly', true);
                 $('#teacher_role_div').show();
@@ -7909,6 +7826,8 @@ function display_teacher_info_on_user_modal()
                 $('#role_div').hide();
                 $('#parent_role_div').hide();
                 $('#student_role_div').hide();
+                $('#user_display_user_avatar').html(`<center>${teacher_avatar}</center>`)
+
 
               
         
@@ -7928,6 +7847,7 @@ function display_teacher_info_on_user_modal()
         $('#parent_role_div').hide();
         $('#teacher_role_div').hide();
         $('#role_div').show();
+        $('#user_display_user_avatar').html(``);
     }
 }
 
@@ -7946,12 +7866,14 @@ function display_student_info_on_user_modal() {
             dataType:'json',
             success: student => {
                 // console.log(student);
+                let student_avatar = img_catch(student.student_avatar, `storage/uploads/student/${student.student_avatar}`, 150);
                 $('#user_full_name').attr('value', `${student.first_name} ${student.last_name}` ).attr('readonly', true);
                 $('#user_email').attr('value', `${student.email}` ).attr('readonly', true);
                 $('#role_div').hide();
                 $('#parent_role_div').hide();
                 $('#student_role_div').show();
                 $('#user_student_role').attr('value', 'Student').attr('readonly', true);
+                $('#user_display_user_avatar').html(`<center> ${student_avatar} </center>`)
         
             },
             error: err => {
@@ -7968,6 +7890,7 @@ function display_student_info_on_user_modal() {
         $('#student_role_div').hide();
         $('#parent_role_div').hide();
         $('#role_div').show();
+        $('#user_display_user_avatar').html('');
     }
 }
 
@@ -8015,16 +7938,16 @@ function createUser()
     let name = $('#user_full_name');
     let email = $('#user_email');
     let password = $('#user_password');
-    let user_role = $('#user_role');
-    let student_role = $('#user_student_role').val();
-    let parent_role = $('#user_parent_role').val();
 
     let student_id = $('#user_student_id').val();
     let parent_id = $('#user_parent_id').val();
     let teacher_id = $('#user_teacher_id').val();
 
+    let selected_role = $('#select_user').val(); // for role selection
+
+    let select_user = $('#select_user');
     
-    if(isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
+    if(isNotEmpty(select_user) && isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(password))
     {
         if(parseInt(student_id)> 0)
         {
@@ -8038,7 +7961,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 student_id: student_id,
-                student_role: 2
+                student_role: selected_role
                 },
                 success: response => {
                     //console.log(response);
@@ -8046,6 +7969,11 @@ function createUser()
                     {
                         return toastr.warning('User already exist') ;
                     }
+                       // reset
+                    $('#user_full_name').val('');
+                    $('#user_email').val('');
+                    $('#user_password').val('');
+
                     $('.user_DT').DataTable().draw();
                     return toastSuccess('User Created')
                 },
@@ -8067,7 +7995,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 parent_id: parent_id,
-                parent_role: 3
+                parent_role: selected_role
                 },
                 success: response => {
                     if(response == 'error')
@@ -8095,7 +8023,7 @@ function createUser()
                 email: email.val(),
                 password: password.val(),
                 teacher_id: teacher_id,
-                teacher_role: 4
+                teacher_role: selected_role
                 },
                 success: response => {
                     res(response);
@@ -8122,7 +8050,7 @@ function createUser()
                 name: name.val(),
                 email: email.val(),
                 password: password.val(),
-                user_role: user_role.val()
+                user_role: selected_role
                 },
                 success: response => {
                     if(response == 'error')
@@ -8360,10 +8288,36 @@ function res(res)
 function get_average(array)
 {
    let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
-   return parseFloat(ave.toFixed(2));
+//    return parseFloat(ave.toFixed(2));
+
+   return parseFloat(roundoff(ave));
 }
 
+function img_catch(img, directory, width='75')
+{
+    if(img == null || img == "")
+    {
+        return `<img class='rounded-circle' src='/images/noimg.jpg' width='${width}'> `;
+    }
+    else
+    {
+        return `<img class='rounded-cirle' src='/${directory}' width='${width}'>`;
+    }
+}
 
+function format_date(date)
+{
+    let formatted_date = new Date(date);
+    
+    return formatted_date.toLocaleDateString();
+}
+
+function roundoff(data)
+{
+    let number =  Math.round((data + Number.EPSILON) * 100) / 100;
+
+    return number;
+}
 
 // row select for multiple delete
 function row_select(val)
@@ -8429,16 +8383,22 @@ function crud_delete(element,route_name,msg,dt)
 }
 
 // crud index / read / select all
-function crud_index(dt,route_name,data) {
+function crud_index(dt,route_name,data, column) {
     
     $(dt).DataTable({
         processing: false,
         serverSide: true,
         retrieve: true,
+        autoWidth: false,
+        ajax: route(route_name),
+        columns:data,
         responsive: {
             details: {
                 display: $.fn.dataTable.Responsive.display.modal( {
-                        // test
+                      header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+ data[column];
+                      }
                 } ),
                 renderer: $.fn.dataTable.Responsive.renderer.tableAll()
             }
@@ -8448,9 +8408,6 @@ function crud_index(dt,route_name,data) {
                 $(row).addClass('selected');
             }
         },
-        autoWidth: false,
-        ajax: route(route_name),
-        columns:data
         
     });
 }

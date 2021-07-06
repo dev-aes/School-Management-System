@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class FeeController extends Controller
 {
+
     public function index()
     {
         if(request()->ajax()) {

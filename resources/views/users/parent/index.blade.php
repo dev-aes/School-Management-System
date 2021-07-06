@@ -119,7 +119,7 @@
                                                History <i class="fas fa-history"></i>
                                             </a> |
 
-                                            <a href="javascript:void(0)" class="btn btn-sm btn-secondary" id="show_grades" data-name='{{$student->first_name}} {{$student->last_name}}'>Grades</a>
+                                            <a href="javascript:void(0)" class="btn btn-sm btn-secondary" onclick="parent_show_student_grade({{$student_id}})">Grades</a>
                                         </td>
                                    </tr>
                                @empty
@@ -138,89 +138,5 @@
          {{--Display Parent Payment History--}}
      </div>
 
-     <div class="grades" style="display:none">
-
-            <div class="row" id="grades">
-                <div class="col-md-12">
-                    <div class="card w-100">
-                        <div class="card-body">
-                        <h3 class="text-muted">Student Grade</h3>
-                        <br>
-                            <table class="table table-hover table-bordered table-sm">
-                                <caption>First Grading</caption>
-                                <thead class="bg-info text-white">
-                                    <tr>
-                                        <th>Student Name:</th>
-                                        <th>Filipino</th>
-                                        <th>English</th>
-                                        <th>Math</th>
-                                        <th>Science</th>
-                                        <th>Hekasi</th>
-                                        <th>Aral Pan</th>
-                                        <th>Average</th>
-                                        <th>Remark</th>
-                    
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="stud_name">Ace Manalo </td>
-                                        <td>80</td>
-                                        <td>85</td>
-                                        <td>88</td>
-                                        <td>90</td>
-                                        <td>92</td>
-                                        <td>83</td>
-                                        <td>86.8</td>
-                                        <td>Passed</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" id="grades">
-                <div class="col-md-12">
-                <div class="card w-100">
-                    <div class="card-body">
-                    <h3 class="text-muted"></h3>
-                    <br>
-                        <table class="table table-hover table-bordered table-sm">
-                            <caption>Second Grading</caption>
-                            <thead class="bg-info text-white">
-                                <tr>
-                                    <th>Student Name:</th>
-                                    <th>Filipino</th>
-                                    <th>English</th>
-                                    <th>Math</th>
-                                    <th>Science</th>
-                                    <th>Hekasi</th>
-                                    <th>Aral Pan</th>
-                                    <th>Average</th>
-                                    <th>Remark</th>
-                
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="stud_name">Ace Manalo </td>
-                                    <td>88</td>
-                                    <td>85</td>
-                                    <td>81</td>
-                                    <td>89</td>
-                                    <td>87</td>
-                                    <td>80</td>
-                                    <td>82.8</td>
-                                    <td>Passed</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                </div>
-            </div>
-     </div>
 </div>
 @endsection

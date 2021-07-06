@@ -80,64 +80,72 @@ Route::get('/refresh', function() {
 
 
 Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
-
-
-Route::get('/test', function () {
-    return view('test.index');
-});
-
-Route::get('/test', function () {
-    return view('test.index');
+    return redirect()->route('login');
 });
 
 
-
-
-
-Route::resource('/admin/user', UserController::class)->middleware('auth');
-
+Route::resource('/admin/user', UserController::class)->middleware('auth'); // only auth because of reusing of updating avatar function
+Route::resource('/home', DashboardController::class)->middleware(['auth', 'staff']); // middleware for admin, registrar & cashier
 
 // Admin Dashboard
-Route::middleware(['auth', 'admin'])->group(function() {
-
-    //DASHBOARD 
-        Route::resource('/home', DashboardController::class);
-    // End Dashboard
-
-    // Reports
-
-        // display students enroled in a particula academic year
-        Route::get('/admin/report/display_student/academic_year/{academic_year}', [ReportController::class, 'report_display_students_by_ay'])->name('report.display_students_by_ay');
-
-         // get student grade form
-        Route::get('/admin/report/form_138/display_student_record/{student}', [ReportController::class, 'to_form_138_show_by_student_id'])->name('report.to_form_138_show_by_student_id');
-
-        Route::resource('/admin/report', ReportController::class);
-        
-    // end Report
-
+Route::middleware(['auth','admin'])->group(function() {
 
 
     Route::resource('/admin/school', SchoolController::class);
+    Route::resource('/admin/academic_year', AcademicYearController::class);
+    Route::resource('/admin/role', RoleController::class);
+
+
+            
+    // student truncate all records
+    Route::post('/admin/student/truncateStudent', [StudentController::class , 'truncate'])->name('student.truncate');
+    //student display teacher subject
+    Route::get('/admin/student/teacher/{id}', [StudentController::class, 'display_student_teacher_subject'])->name('student.teacher_subject');
+    //student store student teacher (assign teacher to a student)
+    Route::post('/admin/student/createTeacher', [StudentController::class, 'store_student_teacher_subject'])->name('student.store_teacher_subject');
+    // student delete subject_teacher
+    Route::delete('/admin/student/deleteTeacher/{id}', [StudentController::class, 'delete_student_teacher_subject'])->name('student.delete_teacher_subject');
+
+        
+});
+
+Route::middleware(['auth','registrar'])->group(function() {
+
+    Route::resource('/admin/report', ReportController::class);
     Route::resource('/admin/teacher', TeacherController::class);
     Route::resource('/admin/subject', SubjectController::class);
     Route::resource('/admin/grade_level',GradeLevelController::class );
     Route::resource('/admin/student', StudentController::class);
-    Route::resource('/admin/fee', FeeController::class);
-    Route::resource('/admin/studentfee', StudentFeeController::class);
-    Route::resource('/admin/payment', PaymentController::class);
-    Route::resource('/admin/payment_report', PaymentReportController::class);
     Route::resource('/admin/parent', ParentController::class);
     Route::resource('/admin/payment_mode', PaymentModeController::class);
     Route::resource('/admin/section', SectionController::class);
     Route::resource('/admin/grade', GradeController::class);
-    Route::resource('/admin/academic_year', AcademicYearController::class);
-    Route::resource('/admin/role', RoleController::class);
     Route::resource('/admin/values', ValuesController::class);
 
+    // display students enroled in a particula academic year
+    Route::get('/admin/report/display_student/academic_year/{academic_year}', [ReportController::class, 'report_display_students_by_ay'])->name('report.display_students_by_ay');
 
+    // get student grade form
+    Route::get('/admin/report/form_138/display_student_record/{student}', [ReportController::class, 'to_form_138_show_by_student_id'])->name('report.to_form_138_show_by_student_id');
+
+    // get payment list by academic year
+    Route::get('/admin/report/display_payment/academic_year/{academic_year}',[ReportController::class, 'report_display_payments_by_ay'])->name('report.display_payments_by_ay');
+
+    // get teacher list by academic year
+
+    Route::get('/admin/report/display_teacher/academic_year/{academic_year}',[ReportController::class, 'report_display_teachers_by_ay'])->name('report.display_teachers_by_ay');
+
+
+    //Grade Level Assign Subjects
+    Route::get('/admin/gradeLevel/addSubjects/{grade_level}', [GradeLevelController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
+    Route::post('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'grade_level_assign_subject_subject_id_store'])->name('grade_level.grade_level_assign_subject_subject_id_store');
+    
+
+    // Values and Description
+    Route::post('/admin/values/createDescription', [ValuesController::class, 'store_description'])->name('values.store_description');
+
+    // delete assigned description
+    Route::delete('/admin/values/deleteDescription/{description}', [ValuesController::class, 'values_description_destroy'])->name('values.values_description_destroy');
 
     //Grade()  Assign Grade to Subject 
     //display students and grades
@@ -147,30 +155,23 @@ Route::middleware(['auth', 'admin'])->group(function() {
     
     Route::post('/admin/home/createGrade', [GradeController::class, 'store'])->name('grade.grade_store_subject');
 
-
-
     // Section add Teacher
 
     Route::get('/admin/home/section/check_adviser/{section}', [SectionController::class, 'section_get_adviser'])->name('section.get_adviser');
     Route::get('/admin/home/createTeacher', [SectionController::class, 'section_create_teacher'])->name('section.section_create_teacher');
     Route::post('/admin/home/createTeacher', [SectionController::class, 'section_store_teacher'])->name('section.section_store_teacher');
 
-    
-    // teacher assign subject to student 
 
-        //( Display all Teachers)
-        Route::get('/admin/home/teacher/display_teachers', [TeacherController::class, 'teacher_assign_subject_to_student_display_teachers'])->name('teacher.teacher_assign_subject_to_student_display_teachers');
+// teacher assign subject to student 
 
-        // (Display all Section by Teachers ID)
-        //Route::get('/admin/home/teacher/display_teachers/display_sections/{teacher}', [TeacherController::class, 'teacher_assign_subject_to_student_display_sections'])->name('teacher.teacher_assign_subject_to_student_display_sections');
-        Route::get('/admin/home/teacher/display_teachers/display_sections', [TeacherController::class, 'teacher_assign_sections_display_sections'])->name('teacher.teacher_assign_section_display_sections');
+    //( Display all Teachers)
+    Route::get('/admin/home/teacher/display_teachers', [TeacherController::class, 'teacher_assign_subject_to_student_display_teachers'])->name('teacher.teacher_assign_subject_to_student_display_teachers');
+
+// (Display all Section by Teachers ID)
+
+    Route::get('/admin/home/teacher/display_teachers/display_sections', [TeacherController::class, 'teacher_assign_sections_display_sections'])->name('teacher.teacher_assign_section_display_sections');
 
 
-        //Teacher Assign Grade to Student
-        
-
-    // End
-    
 
     //Display subjects and teachers of student
     Route::get('/admin/home/student/{id}', [StudentController::class, 'display_student_subjects_and_teachers'])->name('student.student_display_subjects_teachers');
@@ -188,7 +189,6 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     
     //End
-
 
 
     // teacher add subject2
@@ -248,30 +248,6 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::post('/admin/teacher/addgrade', [GradeController::class, 'store'])->name('grade.teacher_store_student_grade');
     
 
-    // student truncate all records
-    Route::post('/admin/student/truncateStudent', [StudentController::class , 'truncate'])->name('student.truncate');
-    //student display teacher subject
-    Route::get('/admin/student/teacher/{id}', [StudentController::class, 'display_student_teacher_subject'])->name('student.teacher_subject');
-    //student store student teacher (assign teacher to a student)
-    Route::post('/admin/student/createTeacher', [StudentController::class, 'store_student_teacher_subject'])->name('student.store_teacher_subject');
-    // student delete subject_teacher
-    Route::delete('/admin/student/deleteTeacher/{id}', [StudentController::class, 'delete_student_teacher_subject'])->name('student.delete_teacher_subject');
-
-
-    // display sub fee by grade_level_id
-    Route::get('/admin/fee/grade_level/{grade_level}', [FeeController::class, 'displaySubFeeByGradeLevelID'])->name('fee.display_sub_fee_by_grade_level_id');
-
-
-    //Student Fee display grade_level by student _id
-    Route::get('/admin/studentfee/student/{student}', [StudentFeeController::class, 'displayGradeLevelByStudentID'])->name('studentfee.display_grade_level_by_student_id');
-
-
-
-    // Payment display total balance by student_id
-    Route::get('/admin/payment/student_fee/{id}', [PaymentController::class, 'displayTotalBalanceByStudentID'])->name('payment.display_total_balance_by_student_id');
-
-
-
     //Admin- User display student info 
 
     Route::get('/admin/user/student/{student}', [UserController::class, 'display_student_info'])->name('user.display_student_info');
@@ -296,144 +272,140 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     Route::delete('/admin/home/parent/deleteStudent/{parent}/{student}', [ParentController::class, 'parent_destroy_student'])->name('parent.parent_destroy_student');
 
-    // Admin Display Parent Payment Request by parent_id && student_id
-
-    Route::get('/admin/payment_request/parent/{parent}/student/{student}', [ParentPaymentController::class, 'edit'])->name('parent_payment_request.edit');
-
-    // Admin Update Payment Request By Parent_id and Student_id
-
-    Route::put('/admin/payment_request/parent/{parent}/student/{student}', [ParentPaymentController::class, 'update'])->name('parent_payment_request.update');
-
-    // Admin Udpate Payment Request by Payment_request_ID
-    Route::patch('/admin/payment_request/{parent_payment}', [ParentPaymentController::class, 'admin_update'])->name('parent_payment_request.update_parent_payment_request');
-
-    // Display all Pending Parent Payment Request
-    Route::get('/admin/payment_request', [ParentPaymentController::class, 'index'])->name('parent_payment_request.index');
-
-    // Display all Approved Parent Payment Request
-    Route::get('/admin/payment_request/approved', [ParentPaymentController::class, 'get_payment_approved_payment_request'])->name('parent_payment_request.get_payment_approved_payment_request');
-
-    // Display all Declined Parent Payment Request
-    Route::get('/admin/payment_request/declined', [ParentPaymentController::class, 'get_payment_declined_payment_request'])->name('parent_payment_request.get_payment_declined_payment_request');
-    Route::get('/admin/payment_request/declined', [ParentPaymentController::class, 'get_payment_declined_payment_request'])->name('parent_payment_request.get_payment_declined_payment_request');
-    
-    
-
-
 
     // IMPORTABLES [students, subjects , teachers]
     Route::post('/admin/student/importStudent', [StudentController::class, 'import'])->name('student.import');
     Route::post('/admin/subject/importSubject', [SubjectController::class, 'import'])->name('subject.import');
     Route::post('/admin/teacher/importTeacher', [TeacherController::class, 'import'])->name('teacher.import');
 
+});
 
 
-    //Grade Level Assign Subjects
-    Route::get('/admin/gradeLevel/addSubjects/{grade_level}', [GradeLevelController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
-    Route::post('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'grade_level_assign_subject_subject_id_store'])->name('grade_level.grade_level_assign_subject_subject_id_store');
+Route::middleware(['auth','cashier'])->group(function() {
+
+    Route::resource('/admin/fee', FeeController::class);
+    Route::resource('/admin/studentfee', StudentFeeController::class);
+    Route::resource('/admin/payment', PaymentController::class);
+    Route::resource('/admin/payment_report', PaymentReportController::class);
+
     
+    // display sub fee by grade_level_id
+    Route::get('/admin/fee/grade_level/{grade_level}', [FeeController::class, 'displaySubFeeByGradeLevelID'])->name('fee.display_sub_fee_by_grade_level_id');
 
-    // Values and Description
-    Route::post('/admin/values/createDescription', [ValuesController::class, 'store_description'])->name('values.store_description');
+    //Student Fee display grade_level by student _id
+    Route::get('/admin/studentfee/student/{student}', [StudentFeeController::class, 'displayGradeLevelByStudentID'])->name('studentfee.display_grade_level_by_student_id');
 
-    // delete assigned description
-    Route::delete('/admin/values/deleteDescription/{description}', [ValuesController::class, 'values_description_destroy'])->name('values.values_description_destroy');
+    // Payment display total balance by student_id
+    Route::get('/admin/payment/student_fee/{id}', [PaymentController::class, 'displayTotalBalanceByStudentID'])->name('payment.display_total_balance_by_student_id');
 
+     // Admin Display Parent Payment Request by parent_id && student_id
+
+     Route::get('/admin/payment_request/parent/{parent}/student/{student}', [ParentPaymentController::class, 'edit'])->name('parent_payment_request.edit');
+
+     // Admin Update Payment Request By Parent_id and Student_id
+ 
+     Route::put('/admin/payment_request/parent/{parent}/student/{student}', [ParentPaymentController::class, 'update'])->name('parent_payment_request.update');
+ 
+     // Admin Udpate Payment Request by Payment_request_ID
+     Route::patch('/admin/payment_request/{parent_payment}', [ParentPaymentController::class, 'admin_update'])->name('parent_payment_request.update_parent_payment_request');
+ 
+     // Display all Pending Parent Payment Request
+     Route::get('/admin/payment_request', [ParentPaymentController::class, 'index'])->name('parent_payment_request.index');
+ 
+     // Display all Approved Parent Payment Request
+     Route::get('/admin/payment_request/approved', [ParentPaymentController::class, 'get_payment_approved_payment_request'])->name('parent_payment_request.get_payment_approved_payment_request');
+ 
+     // Display all Declined Parent Payment Request
+     Route::get('/admin/payment_request/declined', [ParentPaymentController::class, 'get_payment_declined_payment_request'])->name('parent_payment_request.get_payment_declined_payment_request');
+     Route::get('/admin/payment_request/declined', [ParentPaymentController::class, 'get_payment_declined_payment_request'])->name('parent_payment_request.get_payment_declined_payment_request');
+     
 
 });
 
 
 
-// User check for online / offline status
-
-// Route::put('/admin/home/{user}', [UserController::class, 'isOnline'])->name('user.isOnline');
-
-// Display Users On Admin Dashboard
 
 
 
 
+    //? Student Dashboard
+Route::middleware('auth','student')->group(function() {
+
+       Route::get('/dashboard/student', [UserStudentController::class , 'index'])->name('student.dashboard');
+       Route::patch('/dashboard/user/student/{student}', [UserStudentController::class, 'update'])->name('student.student_update');
+   
+});
 
 
 
- // Student Dashboard
-
-    Route::get('/dashboard/student', [UserStudentController::class , 'index'])->name('student.dashboard');
-    Route::patch('/dashboard/user/student/{student}', [UserStudentController::class, 'update'])->name('student.student_update');
-
-
- // End Student Dashboard
-
-
-
- // Parent Dashboard
-
-    Route::get('/dashboard/parent', [UserParentController::class , 'index'])->name('parent.dashboard');
-
-
-    // Parent Create Downpayment or Monthly Payment by student id
-    // Parent Show Payment_ledger by student id (CREATE / PAY MONTHLY PAYMENT)
-
-    Route::get('/dashboard/parent/{student}', [UserParentController::class, 'parent_show_payment_ledger'])->name('parent.parent_show_payment_ledger');
-
-    // Parent add payment to Student  (STORE MONTHLY PAYMENT)
-    Route::post('/dashboard/parent', [UserParentController::class, 'parent_store_payment_to_student'])->name('parent.parent_store_payment_to_student');
-
-    // Parent add downpayment to Student (STORE DOWN PAYMENT)
-    Route::post('/dashboard/parent/store_downpayment', [UserParentController::class, 'parent_store_down_payment_to_student'])->name('parent.parent_store_down_payment_to_student');
-
-    // Parent Show Payment History by student id and parent id
-
-    Route::get('/dashboard/parent/{parent}/{student}', [UserParentController::class, 'parent_show_payment_history'])->name('parent.parent_show_payment_history');
-
-    // Parent Show Payment Receipt / Details by Payment_id
-
-    Route::get('/dashboard/payment/{payment}', [UserParentController::class, 'parent_show_payment'])->name('parent.parent_payment_show');
-
-
-
-// End Parent Dashboard
-
-
-
-
-
-
-
-// Teacher Dashboard
-
-// for teacher's index
-Route::get('/dashboard/teacher', [UserTeacherController::class , 'index'])->name('teacher.dashboard');
-
-
-// display students by teacher's section
-Route::get('/dashboard/teacher/display_student/{section}', [UserTeacherController::class, 't_display_students'])->name('teacher.t_display_students');
-
-//for creating grade
-Route::get('/dashboard/teacher/assign_grade/{section}/{student}', [UserTeacherController::class, 'create'])->name('teacher.assign_grade');
-
-// for storing grades by teacher's handled students;
-Route::post('/dashboard/teacher/store_grades', [UserTeacherController::class, 'store'])->name('teacher.store_assigned_grade_to_student');
-
-Route::put('/dashboard/teacher/approve_grade/{id}', [UserTeacherController::class,'approve_grade'])->name('teacher.approve_grade');
-
-// update teacher avatar
-Route::patch('/dashboard/user/teacher/{teacher}', [UserTeacherController::class, 'update'])->name('teacher.teacher_update');
-
-
-// TEACHER ADVISER
-
-Route::post('/dashboard/teacher/store_values', [UserTeacherController::class, 'teacher_assign_values_to_student'])->name('teacher.teacher_assign_values_to_student');
-
-
-
-
-
-
-
-
-// End Teacher Dashboard
-
+    //? Parent Dashboard
+Route::middleware('auth', 'parent')->group(function() {
+   
+   
+       Route::get('/dashboard/parent', [UserParentController::class , 'index'])->name('parent.dashboard');
+   
+   
+       // Parent Create Downpayment or Monthly Payment by student id
+       // Parent Show Payment_ledger by student id (CREATE / PAY MONTHLY PAYMENT)
+   
+       Route::get('/dashboard/parent/{student}', [UserParentController::class, 'parent_show_payment_ledger'])->name('parent.parent_show_payment_ledger');
+   
+       // Parent add payment to Student  (STORE MONTHLY PAYMENT)
+       Route::post('/dashboard/parent', [UserParentController::class, 'parent_store_payment_to_student'])->name('parent.parent_store_payment_to_student');
+   
+       // Parent add downpayment to Student (STORE DOWN PAYMENT)
+       Route::post('/dashboard/parent/store_downpayment', [UserParentController::class, 'parent_store_down_payment_to_student'])->name('parent.parent_store_down_payment_to_student');
+   
+       // Parent Show Payment History by student id and parent id
+   
+       Route::get('/dashboard/parent/{parent}/{student}', [UserParentController::class, 'parent_show_payment_history'])->name('parent.parent_show_payment_history');
+   
+       // Parent Show Payment Receipt / Details by Payment_id
+   
+       Route::get('/dashboard/payment/{payment}', [UserParentController::class, 'parent_show_payment'])->name('parent.parent_payment_show');
+   
+         // get student grade form
+       Route::get('/admin/dashboard/parent/display_student_record/{student}', [UserParentController::class, 'parent_student_grade'])->name('parent.parent_student_grade');
+   
+   
+     // End Parent Dashboard
+   
+});
+   
+   
+    //? Teacher Dashboard
+Route::middleware('auth', 'teacher')->group(function() {
+   
+   
+   
+       // for teacher's index
+       Route::get('/dashboard/teacher', [UserTeacherController::class , 'index'])->name('teacher.dashboard');
+   
+   
+       // display students by teacher's section
+       Route::get('/dashboard/teacher/display_student/{section}', [UserTeacherController::class, 't_display_students'])->name('teacher.t_display_students');
+   
+       //for creating grade
+       Route::get('/dashboard/teacher/assign_grade/{section}/{student}', [UserTeacherController::class, 'create'])->name('teacher.assign_grade');
+   
+       // for storing grades by teacher's handled students;
+       Route::post('/dashboard/teacher/store_grades', [UserTeacherController::class, 'store'])->name('teacher.store_assigned_grade_to_student');
+   
+       Route::put('/dashboard/teacher/approve_grade/{id}', [UserTeacherController::class,'approve_grade'])->name('teacher.approve_grade');
+   
+       // update teacher avatar
+       Route::patch('/dashboard/user/teacher/{teacher}', [UserTeacherController::class, 'update'])->name('teacher.teacher_update');
+   
+   
+       // TEACHER ADVISER
+   
+       Route::post('/dashboard/teacher/store_values', [UserTeacherController::class, 'teacher_assign_values_to_student'])->name('teacher.teacher_assign_values_to_student');
+   
+   
+       // End Teacher Dashboard
+   
+});
+   
 
 
 Auth::routes(['register' => false]);

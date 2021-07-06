@@ -25,13 +25,14 @@
                                         <br>
                                         <center>
                                             <button type="button" class="btn btn-primary" onclick="report_display_students_by_ay()">Student List</button>
-                                            <button type="button" class="btn btn-success">Teacher List</button>
-                                            <button type="button" class="btn btn-info">Payment List</button>
+                                            <button type="button" class="btn btn-success" onclick="report_display_teachers_by_ay()">Teacher List</button>
+                                            <button type="button" class="btn btn-info" onclick="report_display_payments_by_ay()">Payment List</button>
                                             <button type="button" class="btn btn-secondary" onclick="report_reset()"><i class="fas fa-sync-alt"></i></button>
                                         </center>
                                     </div>
                                  </form>
                             </div>
+                            <br><br>
                             <div class="row">
                                 <div id="report_display_data">
                                     {{--Display Selected Data --}}

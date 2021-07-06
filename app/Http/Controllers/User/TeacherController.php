@@ -39,6 +39,7 @@ class TeacherController extends Controller
         {
             //$students = Section::with('student')->where('id', $section->id)->first();
             $students = StudentFeeController::getStudentHasDownpayment();
+
             return response()->json($students);
         }
     }
@@ -58,8 +59,7 @@ class TeacherController extends Controller
                 $core_values = DB::table('values')
                               ->leftJoin('descriptions', 'values.id','descriptions.values_id' )
                               ->leftJoin('student_values','descriptions.id','student_values.description_id')
-                       
-                            ->select('values.title','student_values.student_id','student_values.adviser_id','student_values.q1','student_values.q2','student_values.q3','student_values.q4','descriptions.description',DB::raw("values.id as values_id , descriptions.id as description_id"))
+                              ->select('values.title','student_values.student_id','student_values.adviser_id','student_values.q1','student_values.q2','student_values.q3','student_values.q4','descriptions.description',DB::raw("values.id as values_id , descriptions.id as description_id"))
                               ->orderBy('values.id', 'asc')
                               ->where('student_values.student_id',$student_grade_id->student_id)
                               ->orWhere('student_values.description_id',NULL)

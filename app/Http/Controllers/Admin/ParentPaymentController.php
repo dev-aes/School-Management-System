@@ -7,11 +7,14 @@ use App\Models\ParentModel;
 use App\Models\ParentPayment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Mail\sendMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class ParentPaymentController extends Controller
 {
+   
     public function index() 
     {
         $parent_payment_request = DB::table('parent_payments')
@@ -117,36 +120,23 @@ class ParentPaymentController extends Controller
 
 
 
+
         $latest_pending_payment =   ParentPayment::where('parent_id', $parent->id)
                                                     ->where('student_id', $student->id)
                                                     ->where('status', 'pending')
                                                     ->first();
 
-                                    $latest_pending_payment->update([
-                                                                        'status' => $remarks,
-                                                                        'comment' => $comment]);
+        $latest_pending_payment->update([
+                                            'status' => $remarks,
+                                            'comment' => $comment]);
 
-        $transaction_no = mt_rand(123456,999999);
-        // $num = "09162646505";
-        // $num = "09951460049";
-        // $num = "09659312003";
-        $num = "09760872122";
+        $parent_email = $parent->email;
+        $title = "Cashier";
+        $body = "Your payment request has been $remarks";
+        
 
+        $this->sendEmail($parent_email, $title , $body);
 
-        // $message = nl2br("Admin has $remarks your payment request \n Reference No: $transaction_no \n Questions? Feel free to email as at school@email.com ");
-          
-        // $message .= "Reference No: $transaction_no ";
-        // $message .= "Questions? Feel free to email as at school@email.com ";
-        //$message = "Admin has $remarks your payment request. Reference No: $transaction_no";
-
-        $message = " Admin has $remarks your payment request.Reference No. 00993281.";
-
-        $apicode = "TR-EONBO872122_3B6T3";
-        $pw = "d8y7b2]aa]";
-
-
-
-        $this->itexmo($num,$message,$apicode,$pw);
         return response()->json('success');
 
     }
@@ -157,31 +147,21 @@ class ParentPaymentController extends Controller
         {
             $remark = request('remark');
             $comment = request('comment') ?? "";
+            $parent = ParentModel::where('id', $parent_payment->parent_id)->first();
+
 
             $parent_payment->update([
                                         'status' => $remark,
                                         'comment' => $comment
                                     ]);
 
-            $transaction_no = mt_rand(123456,999999);
-
-           
-            // $num = "09162646505"; // sir jess
-           // $num = "09951460049"; // eric
-            // $num = "09659312003";
-              // $message .= "Reference No: $transaction_no ";
-            // $message .= "Questions? Feel free to email as at school@email.com ";
-            $num = "09760872122";
-
-            //$message = nl2br("Admin has $remarks your payment request \n Reference No: $transaction_no \n Questions? Feel free to email as at school@email.com ");
+            //TODO EMAIL
+            $parent_email = $parent->email;
+            $title = "Cashier";
+            $body = "Your payment request has been $remark";
             
-            $message = " Admin has $remark your payment request.Reference No. 00993281.";
 
-
-            $apicode = "TR-EONBO872122_3B6T3";
-            $pw = "d8y7b2]aa]";
-      
-            $this->itexmo($num,$message,$apicode,$pw);
+            $this->sendEmail($parent_email, $title , $body);
 
             return response()->json('success');
         }
@@ -199,5 +179,17 @@ class ParentPaymentController extends Controller
 		);
 		$context  = stream_context_create($param);
 		return file_get_contents($url, false, $context);
+    }
+
+    public function sendEmail($parent_email, $title, $body)
+    {
+        $details = [
+            'title' =>  $title,
+            'body' => $body
+        ];
+        
+        Mail::to("$parent_email")->send(new sendMail($details));
+
+        return 'Email Sent Successfully';
     }
 }

@@ -135,7 +135,7 @@
 {{--Start TEACHER Modal--}}
 
     <div class="modal fade" id="teacher_modal" tabindex="-1" role="dialog" aria-labelledby="teacher_modal_label" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg  modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header bg-primary" id="teacher_modal_header">
               <h5 class="modal-title text-white" id="teacher_modal_label">{{--Modal Title--}}</h5>
@@ -274,30 +274,30 @@
       </div>
  
     
-      {{--SHOW Teacher MODAL--}}
-    
-        <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header" id="show_teacher_modal_header">
-                        <h4 class="modal-title text-white" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
-                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
-                </div>
-                <div class="modal-body" >
-                    <div class="row justify-content-center">
-                        <div class="card w-75">
-                            <div class="card-body py-5">
-                                <div id="show_teacher_info">
-                                </div>
+    {{--SHOW Teacher MODAL--}}
+
+    <div class="modal fade " id="show_teacher_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" id="show_teacher_modal_header">
+                    <h4 class="modal-title text-white" id="myLargeModalLabel">Teacher Information <i class="fas fa-info-circle"></i> </h4>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
+            </div>
+            <div class="modal-body" >
+                <div class="row justify-content-center">
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div id="show_teacher_info">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-        
-     {{--END SHOW Teacher MODAL--}}
+        </div>
+    </div>
+    
+    {{--END SHOW Teacher MODAL--}}
 
 {{--End TEACHER Modal--}}
 @endif
@@ -835,7 +835,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-10">
                             <div class="card w-100">
-                                <div class="card-body p-6">
+                                <div class="card-body">
                                     <div id="show_student_info">
                                         
                                     </div>
@@ -872,7 +872,7 @@
 
             <div class="modal-body">
                 <div class="row justify-content-center">
-                    <div class="card w-50">
+                    <div class="card w-100">
                         <div class="card-body">
                             <form id="fee_form" autocomplete="off" onsubmit="false">
                                 @csrf
@@ -898,7 +898,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label" for="amount">Amount</label>
-                                                <input class="form-control" min="0" type="number"  name="fee_amount[]">
+                                                <input class="form-control" min="0" type="number"  name="fee_amount[]" oninput="validity.valid||(value='');">
                                             </div>
                                         </div>
                                     </div>
@@ -1236,7 +1236,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label class='form-label mt-1 '>Enter Amount <span class="text-muted"> <small id="amount_to_pay">(Amount to pay)</small></span> </label>
-                            <input class="form-control" min="0" name="payment_amount" type="number" id="payment_amount" value="">
+                            <input class="form-control" min="0" name="payment_amount" type="number" id="payment_amount" oninput="validity.valid||(value='')">
                         </div>
 
                         <div class="col-md-6">
@@ -1444,47 +1444,44 @@
                 @csrf
 
                 <div class="row">
-                    <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class='form-label'>Select User</label>
-                            <select class="form-select" id="select_user" onchange="display_user_select_box()">
-                               <option></option>
-                               <option value="student">Student</option>
-                               <option value="parent">Parent</option>
-                               <option value="teacher">Teacher</option>
+                        <div class="form-group mb-3">
+                            <label class='form-label'>Select Role *</label>
+                            <select class="form-select user_display_enduser" id="select_user" onchange="display_user_select_box()">
+                                {{--Display Student Parent and Teacher category--}}
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6">
 
+                        {{--HIDDEN--}}
                         <div class="form-group" style="display:none" id="p_parent_div">
-                            <label class='form-label'>Select Parent</label>
-                            <select class="form-select" id="user_parent_id" name="parent_id"  onchange="display_parent_info_on_user_modal()">
+                            <label class='form-label'>Select Parent *</label>
+                            <select  id="user_parent_id" name="parent_id"  onchange="display_parent_info_on_user_modal()" style="width:100%">
                                 {{--Display Parent--}}
                             </select>
                             <div id="parentHelp" class="form-text text-success">Select only for parent's account registration</div>
                         </div>
 
                         <div class="form-group" style="display:none" id="s_student_div">
-                            <label class='form-label'>Select Student</label>
-                            <select class="form-select" id="user_student_id" name="student_id" onchange="display_student_info_on_user_modal()">
+                            <label class='form-label'>Select Student *</label>
+                            <select  id="user_student_id" name="student_id" onchange="display_student_info_on_user_modal()" style="width:100%">
                                 {{--Display Student--}}
                             </select>
                             <div class="form-text text-success">Select only for student's account registration</div>
                         </div>
 
                         <div class="form-group" style="display:none" id="t_teacher_div">
-                            <label class='form-label'>Select Teacher</label>
-                            <select class="form-select" id="user_teacher_id" name="teacher_id"  onchange="display_teacher_info_on_user_modal()">
+                            <label class='form-label'>Select Teacher *</label>
+                            <select  id="user_teacher_id" name="teacher_id"  onchange="display_teacher_info_on_user_modal()" style="width:100%">
                                 {{--Display Teacher--}}
                             </select>
                             <div class="form-text text-success">Select only for teacher's account registration</div>
                         </div>
 
+                    </div>
+                    <div class="col-md-6">  
+                        <div id="user_display_user_avatar">
+                            {{--Display Selected User's Avatar--}}
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -1502,33 +1499,7 @@
                     <input class="form-control " name="user_password" type="password" id="user_password" value="">
                 </div>
 
-                <div class="role_wrapper">
-                    {{--Admin--}}
-                    <div class="form-group col-md-5" id="role_div">
-                        <label for="form-label">Role</label>
-                        <select class="form-select" name="user_role" id="user_role">
-                        </select>
-                    </div>
-
-                    {{--Student--}}
-                    <div class="form-group" id='student_role_div'>
-                        <label class='form-label'>Role </label>
-                        <input class="form-control " name="user_role" type="text" id="user_student_role"  disabled>
-                    </div>
-                    
-                    {{--Parent--}}
-                    <div class="form-group" id='parent_role_div'>
-                        <label class='form-label'>Role </label>
-                        <input class="form-control " name="user_role" type="text" id="user_parent_role"  disabled>
-                    </div>  
-
-                     {{--Teacher--}}
-                     <div class="form-group" id='teacher_role_div'>
-                        <label class='form-label'>Role </label>
-                        <input class="form-control " name="user_role" type="text" id="user_teacher_role"  disabled>
-                    </div>  
-
-                </div>
+                
             </form>
             </div>
 
@@ -1931,7 +1902,7 @@
                                     </div>
                                     <div class="col-md-2"></div>
 
-                                    <div class="col-md-6 border p-5">
+                                    <div class="col-md-6 border p-3 mt-3">
                                         <div id="teacher_assign_grade_to_student_subject_display_students">
                                             {{--Display Student By Teacher's Section ID--}}
                                         </div>
@@ -2024,29 +1995,39 @@
                 <form id="section_teacher_form" autocomplete="off" enctype="multipart/form-data">
                     @csrf
                     
-                    <div class="form-group">
-                        <label class='form-label'>Select Section *</label>
-                        <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
-                            {{--Select Section--}}
-                        </select>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <label class='form-label'>Select Teacher *</label>
-                        <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
-                            {{--Select Teacher--}}
-                        </select>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class='form-label'>Select Section *</label>
+                                <select class="" id="section_section_id" name="section_id" style="width: 100%" onchange=" select_current_adviser() ">
+                                    {{--Select Section--}}
+                                </select>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label class='form-label'>Select Teacher *</label>
+                                <select class="" id="section_teacher_id" name="teacher_id" style="width: 100%">
+                                    {{--Select Teacher--}}
+                                </select>
+                            </div>
 
+                            <div class="form-group mt-2" >
+                                <label class="form-label" for="section_adviser">Option</label>
+                                <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
+                                    <option ></option>
+                                    <option value='1'>Adviser</option>
+                                    <option value='2'>Subject Teacher</option>
+                                </select>
+                            </div>
 
-                    <div class="form-group mt-2" >
-                        <label class="form-label" for="section_adviser">Option</label>
-                        <select class="form-select" id="section_adviser" name="adviser" style="width: 100%">
-                            <option ></option>
-                            <option value='1'>Adviser</option>
-                            <option value='2'>Subject Teacher</option>
-                        </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="section_display_current_adviser">
+                                {{--Display Current Adviser--}}
+                            </div>
+                        </div>
                     </div>
+                   
                 </form>
                 </div>
         
@@ -2063,7 +2044,7 @@
 {{-- Parent ADD STUDENT  --}}
     
     <div class="modal fade" id="parent_student_modal" tabindex="-1" role="dialog" aria-labelledby="parent_student_modal" aria-hidden="true">
-        <div class="modal-dialog " role="document">
+        <div class="modal-dialog modal-dialog-centered " role="document">
         <div class="modal-content">
             <div class="modal-header" id="parent_student_modal_header">
             <h4 class="modal-title text-white" id="parent_student_modal_label">{{--Modal Title--}}</h4>
@@ -2097,7 +2078,7 @@
             </div>
 
             <div class="modal-footer">
-            <button type="button" class="btn btn-primary"  onclick="parent_student_store()">Submit</button>
+            <button type="button" class="btn btn-info"  onclick="parent_student_store()">Submit</button>
             </div>
         </div>
         </div>

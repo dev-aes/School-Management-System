@@ -13,6 +13,7 @@ use App\Models\GradeLevel;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
 {
+    
     public function index()
     {
         
@@ -38,10 +40,6 @@ class StudentController extends Controller
 
             return DataTables::of($students)
                    ->addIndexColumn()
-                   ->addColumn('student_avatar', function($row) {
-                        $img = "<img class='img-thumbnail' src='/storage/uploads/student/$row->student_avatar' alt='student_avatar' width='100'>";
-                        return $img;
-                   })
                    ->addColumn('actions', function($row) {
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showStudent" onclick="showStudent('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                         $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editStudent" onclick="editStudent('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
@@ -49,7 +47,7 @@ class StudentController extends Controller
         
                         return $btn;
                    })
-                   ->rawColumns(['student_avatar' , 'actions'])
+                   ->rawColumns(['actions'])
                    ->make(true);
         }
 
@@ -82,7 +80,7 @@ class StudentController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|unique:students|email',
             'student_avatar' => 'image',
         ]);
 
@@ -220,7 +218,7 @@ class StudentController extends Controller
             'address' => 'required|string',
             'contact' => 'required|string|max:11',
             'facebook' => 'required|string',
-            'email' => 'required|email',
+            'email' => Rule::unique('students')->ignore($student),
             'student_avatar' => 'image',
             'is_imported'=>'',
         ]);

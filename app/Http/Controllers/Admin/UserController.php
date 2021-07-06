@@ -39,12 +39,12 @@ class UserController extends Controller
         if(request()->ajax())
         {   
             $students = Student::all();
-            $roles = Role::where('name', '!=', 'student')->where('name', '!=', 'parent')->get();
+            $roles = Role::all();
             $parents = ParentModel::all();
             $teachers = Teacher::all();
 
 
-            return response()->json([ $students,$roles,$parents,$teachers ]);
+            return response()->json([ $students,$roles,$parents,$teachers]);
         }
     }
 

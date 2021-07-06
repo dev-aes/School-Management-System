@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AcademicYearController;
 
 class SectionController extends Controller
 {
+   
     public function index()
     {
         if(request()->ajax()) {
@@ -98,7 +99,7 @@ class SectionController extends Controller
                 'description' => $data['description']
             ]);
 
-            return response()->json(request()->all());
+            return response()->json('success');
 
         }
     }
@@ -125,12 +126,6 @@ class SectionController extends Controller
         }
     }
 
-    // public function confirm_adviser_section(){
-    //     $adviser = DB::table('sections')->where('id',$data['section_id'])->where('adviser_id',$data['teacher_id'])->first();
-    //     if($adviser){
-    //         return response()->json('');
-    //     }
-    // }
 
     public function section_store_teacher()
     {
@@ -267,15 +262,22 @@ class SectionController extends Controller
 
     function section_get_adviser(Section $section){
        
-        if(request()->ajax()) {
-//Query current section adviser
+        if(request()->ajax()) 
+        {
+
+        //Query current section adviser
             $adviser = DB::table('sections')
-                    ->join('teachers','sections.adviser_id','=','teachers.id')
-                    ->select('teachers.first_name','teachers.last_name','teachers.teacher_avatar','teachers.id')
-                    ->where('sections.id',$section->id)
-                    ->first(); 
+                        ->join('teachers','sections.adviser_id','=','teachers.id')
+                        ->select('teachers.first_name','teachers.last_name','teachers.teacher_avatar','teachers.id')
+                        ->where('sections.id',$section->id)
+                        ->first();
+            if($adviser)
+            {
+                return response()->json($adviser);
+            }
+
+            return response()->json('empty_adviser');
             
-            return response()->json($section);
         }
     }
 

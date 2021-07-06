@@ -422,6 +422,27 @@
             </div>
     {{--End Add Down Payment to Student Modal--}}
 
+    {{--Parent Show Student's Record--}}
+        <div class="modal fade" id="parent_student_grade_modal" tabindex="-1" role="dialog" aria-labelledby="parent_student_grade_modal" aria-hidden="true">
+            <div class="modal-dialog modal-lg  " role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="parent_student_grade_modal_header">
+                        <h4 class="modal-title text-white" id="parent_student_grade_modal_label">{{--Modal Title--}}</h4>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card w-100">
+                            <div class="card-body">
+                               <div id="parent_student_display_student_record">
+                                    {{--Display Parent's Student's Record--}}
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{--End--}}
 
 {{--End User Parent()--}}
 

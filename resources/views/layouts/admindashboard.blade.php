@@ -69,6 +69,7 @@
                     <span class="align-middle"><img src="{{ asset('images/admin/admin.png') }}" alt="admin_logo" width="130"></span>
                 </a>
 
+				
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
 						<div class="online_check">
@@ -83,105 +84,107 @@
                         </a>
 					</li>
 
-					<li class="sidebar-item">
-						<a href="#teacher" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Teacher</span>
-                        </a>
-						<ul id="teacher" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" id="" href="{{ route('teacher.index') }}">Manage Teacher</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_subject_section" href="javascript:void(0)">Assign Subject to Section</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_grade_to_student" href="javascript:void(0)">Assign Grade to Student</a></li>
-						</ul>
-					</li>
-
-
-					<li class="sidebar-item">
-						<a href="#student" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
-                        </a>
-						<ul id="student" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" id="student_add_parent" href="javascript:void(0)">Add Parent</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('student.index') }}">Manage Student</a></li>
-						</ul>
-					</li>
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('subject.index') }}">
-                            <i class="align-middle" data-feather="book"></i> <span class="align-middle">Subject</span>
-                        </a>
-					</li>
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('grade_level.index') }}">
-                            <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Grade Level</span>
-                        </a>
-					</li>
-
-
-					<li class="sidebar-item">
-						<a href="#section" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="hexagon"></i> <span class="align-middle">Section</span>
-                        </a>
-						<ul id="section" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('section.index') }}">Manage Section</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" id="section_add_teacher" href="javascript:void(0)">Assign Teacher</a></li>
-
-						</ul>
-					</li>
-
+					@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('registrar'))
 					
-					<li class="sidebar-item">
-						<a href="#billing" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Billing</span>
-                        </a>
-						<ul id="billing" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('fee.index') }}">Fee management</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('studentfee.index') }}">Student fee</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment.index') }}">Payment</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment_report.index') }}">Payment Report</a></li>
-						</ul>
-					</li>
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('parent_payment_request.index') }}">
-							<i class="align-middle" data-feather="bell"></i> <span class="align-middle">Payment Request</span>
-                        </a>
-					</li>
-
-
-					{{-- <li class="sidebar-item">
-						<a class="sidebar-link" href="javascript:void(0)" title="coming soon">
-							<i class="align-middle" data-feather="monitor"></i> <span class="align-middle">POS & Inventory</span>
-                        </a>
-					</li> --}}
-
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('report.index') }}" title="coming soon">
-							<i class="align-middle" data-feather="bookmark"></i> <span class="align-middle">Reports</span>
-                        </a>
-					</li>
-
-					<li class="sidebar-item" id="s">
-						<a href="#to_school" data-bs-toggle="collapse" class="sidebar-link collapsed">
-							<i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
-                        </a>
-						<ul id="to_school" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{{ route('school.index') }}"><i class="fas fa-wrench"></i>Manage School</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('user.index')}}"><i class="fas fa-users-cog"></i> Manage User </a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('parent.index')}}"><i class="fas fa-user-plus"></i> Parent Registration </a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}"><i class="far fa-credit-card"></i> Mode of Payment</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('academic_year.index')}}"><i class="fas fa-calendar"></i> Academic Year</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{{route('role.index')}}"> <i class="fas fa-key"></i> Roles</a></li>
-							<a href="#to_values" data-bs-toggle="collapse" class="sidebar-link collapsed">
-								<i class="align-middle fas fa-graduation-cap"></i></i><span class="align-middle">Learner Values</span>
+						<li class="sidebar-item">
+							<a href="#teacher" data-bs-toggle="collapse" class="sidebar-link collapsed">
+								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Teacher</span>
 							</a>
-							<ul id="to_values" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#s">
+							<ul id="teacher" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+								<li class="sidebar-item"><a class="sidebar-link" id="" href="{{ route('teacher.index') }}">Manage Teacher</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_subject_section" href="javascript:void(0)">Assign Subject to Section</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" id="teacher_assign_grade_to_student" href="javascript:void(0)">Assign Grade to Student</a></li>
+							</ul>
+						</li>
+
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('student.index') }}">
+								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('subject.index') }}">
+								<i class="align-middle" data-feather="book"></i> <span class="align-middle">Subject</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('grade_level.index') }}">
+								<i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Grade Level</span>
+							</a>
+						</li>
+
+
+						<li class="sidebar-item">
+							<a href="#section" data-bs-toggle="collapse" class="sidebar-link collapsed">
+								<i class="align-middle" data-feather="hexagon"></i> <span class="align-middle">Section</span>
+							</a>
+							<ul id="section" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('section.index') }}">Manage Section</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" id="section_add_teacher" href="javascript:void(0)">Assign Teacher</a></li>
+
+							</ul>
+						</li>
+
+						<li class="sidebar-item">
+							<a href="#parent" data-bs-toggle="collapse" class="sidebar-link collapsed">
+								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Parent</span>
+							</a>
+							<ul id="parent" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+								<li class="sidebar-item"><a class="sidebar-link" href="{{route('parent.index')}}">Manage Parent</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" id="student_add_parent" href="javascript:void(0)">Add Student</a></li>
+							</ul>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('report.index') }}" title="coming soon">
+								<i class="align-middle" data-feather="bookmark"></i> <span class="align-middle">Reports</span>
+							</a>
+						</li>
+
+					@endif
+
+
+					@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('cashier'))
+
+						<li class="sidebar-item">
+							<a href="#billing" data-bs-toggle="collapse" class="sidebar-link collapsed">
+								<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Billing</span>
+							</a>
+							<ul id="billing" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('fee.index') }}">Fee management</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('studentfee.index') }}">Student fee</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment.index') }}">Payment</a></li>
+								{{-- <li class="sidebar-item"><a class="sidebar-link" href="{{ route('payment_report.index') }}">Payment Report</a></li> --}}
+							</ul>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('parent_payment_request.index') }}">
+								<i class="align-middle" data-feather="bell"></i> <span class="align-middle">Payment Request</span>
+							</a>
+						</li>
+
+
+					@endif
+
+					@if (auth()->user()->hasRole('admin'))
+						<li class="sidebar-item" id="s">
+							<a href="#to_school" data-bs-toggle="collapse" class="sidebar-link collapsed">
+								<i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
+							</a>
+							<ul id="to_school" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+								<li class="sidebar-item"><a class="sidebar-link" href="{{ route('school.index') }}"><i class="fas fa-wrench"></i>Manage School</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" href="{{route('user.index')}}"><i class="fas fa-users-cog"></i> Manage User </a></li>
+								<li class="sidebar-item"><a class="sidebar-link" href="{{route('payment_mode.index')}}"><i class="far fa-credit-card"></i> Mode of Payment</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" href="{{route('academic_year.index')}}"><i class="fas fa-calendar"></i> Academic Year</a></li>
+								<li class="sidebar-item"><a class="sidebar-link" href="{{route('role.index')}}"> <i class="fas fa-key"></i> Roles</a></li>
 								<li class="sidebar-item"><a class="sidebar-link" href="{{route('values.index')}}"><i class="fas fa-graduation-cap"></i>Values</a></li>
 							</ul>
-						</ul>
-
-
-					</li>
+						</li>
+					@endif
                 </ul>
 			</div>
 		</nav>
