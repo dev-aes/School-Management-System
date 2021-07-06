@@ -106,10 +106,7 @@ $(()=> {
                                         {data: `amount_payable`, render(data) {
                                             // res(typeof(data));
                                              //let value = parseFloat(data).toFixed(2); // 30.05
-                                             let value2 =  roundoff(parseFloat(data)); //30.05
-                                             console.log(typeof(value2))
-                                             console.log(typeof(parseFloat(parseFloat(data).toFixed(2))))
-                                           // return
+                                             let value2 =  roundoff(data); //30.05
                                              return (data ? `₱ ${value2}` : "0" )
                                         
                                         },},
@@ -8319,7 +8316,7 @@ function format_date(date)
 
 function roundoff(data)
 {
-    let number =  Math.round((data + Number.EPSILON) * 100) / 100;
+    let number =  Math.round((parseFloat(data) + Number.EPSILON) * 100) / 100;
 
     return number;
 }
