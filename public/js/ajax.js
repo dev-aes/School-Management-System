@@ -104,11 +104,8 @@ $(()=> {
                                         {data: 'id'},
                                         {data: 'student_name'},
                                         {data: `amount_payable`, render(data) {
-                                             let value = parseFloat(data).toFixed(2);
-                                             value = parseFloat(date);
-                                             res(typeOf(value));
-                                             //let value =  roundoff(data);
-
+                                            //  let value = parseFloat(data).toFixed(2);
+                                             let value =  roundoff(data);
                                              return (data ? `₱ ${value}` : "0" )
                                         },},
                                         {data: 'months_no'},
