@@ -109,7 +109,7 @@ $(()=> {
                                              let value2 =  roundoff(parseFloat(data)); //30.05
                                              console.log(typeof(value2))
                                              console.log(typeof(parseFloat(parseFloat(data).toFixed(2))))
-                                            return
+                                           // return
                                              return (data ? `₱ ${value2}` : "0" )
                                         
                                         },},
