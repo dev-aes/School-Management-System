@@ -9,5 +9,5 @@ class PaymentMode extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','account_number'];
+    protected $fillable = ['title','account_number', 'status'];
 }

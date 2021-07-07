@@ -226,9 +226,10 @@ $(()=> {
                                             {data: 'id'},
                                             {data: 'title'},
                                             {data: 'account_number'},
-                                            {data: 'created_at', render(data){
-                                                let date = new Date(data);
-                                                return date.toLocaleDateString();
+                                            {data: 'status', render(data){
+                                                return (data == 'active') ? 
+                                                `<span class='badge bg-success text-capitalize'> ${data} </span>`: 
+                                                `<span class='badge bg-warning text-capitalize'> ${data} </span>`;
                                             }},
                                             {data: 'actions'}
                                         ];
@@ -2532,7 +2533,7 @@ function displaySubjects() {
 // create
 $('#add_subject').on('click', ()=> {
 $('#subject_modal').modal('show');
-$('#subject_modal_label').html(`<h4 class='text-white'> Add Subject <i class="fas fa-book-reader"></i> </h4> `);
+$('#subject_modal_label').html(`<h4 class='text-white'> Add Subject <i class="fas fa-plus-circle"></i> </h4> `);
 $('#subject_name').attr('value', '');
 $('#subject_description').attr('value', '');
 $('#btn_add_subject').css('display', 'block');
@@ -5521,6 +5522,7 @@ $('#add_payment').on('click', ()=> {
     $('#payment_total_balance').attr("value", "");
     $('#payment_amount').val("");
     $('#payment_remarks').val("");
+    $('#payment_pm').val("");
     $('#payment_id').attr('data-id', ""); // payment_id
     $('#payment_monthly_payment').attr("value", "");
     $('#payment_payment_discounted_amount').attr("value", "");
@@ -5534,7 +5536,7 @@ $('#add_payment').on('click', ()=> {
         success: students => {
             // console.log(students);
             let output = `<option> </option>`;
-            students.forEach(student => {
+            students[0].forEach(student => {
                 if(student.status == 'active' && student.has_downpayment == 1)
                 {
                     output += `<option class='bg-secondary text-white' value='${student.id}'> ${student.id} - ${student.first_name} ${student.last_name} </option>`;
@@ -5549,6 +5551,15 @@ $('#add_payment').on('click', ()=> {
                 }
             });
 
+            // show payment_modes
+
+            let payment_mode_output = ``;
+
+            students[1].forEach(payment_mode => {
+                payment_mode_output += `<option value='${payment_mode.id}'> ${payment_mode.title} </option>`;
+            });
+
+            $('#payment_pm').html(payment_mode_output);
             $('#payment_student_fee_id').html(output);
         },
         error: err => {
@@ -5597,8 +5608,9 @@ function updatePayment() {
     let payment_remarks = $('#payment_remarks');
     let payment_official_receipt = $('#payment_payment_official_receipt');
     let payment_type = ``;
+    let payment_mode = $('#payment_pm');
 
-    if( isNotEmpty(payment_official_receipt) &&  isNotEmpty(payment_amount) && isNotEmpty(payment_remarks))
+    if( isNotEmpty(payment_official_receipt) &&  isNotEmpty(payment_amount) && isNotEmpty(payment_remarks) && isNotEmpty(payment_mode))
     {
         if(payment_remarks.val() == 'Down Payment')
         {
@@ -5622,7 +5634,8 @@ function updatePayment() {
                 amount: payment_amount.val(),
                 remarks: payment_remarks.val(),
                 official_receipt: payment_official_receipt.val(),
-                payment_type: payment_type
+                payment_type: payment_type,
+                payment_mode_id: payment_mode.val
             },
             success: response => {
                 console.log(response);
@@ -5788,11 +5801,12 @@ function addPayment() {
     let payment_remarks = $('#payment_remarks');
     let payment_official_receipt = $('#payment_payment_official_receipt');
     let payment_type = ``;
+    let payment_mode = $('#payment_pm');
 
     let discounted_percentage = $('#payment_payment_discount_percentage').val();
     let discounted_cash =       $('#payment_payment_discount_cash').val();
 
-    if(isNotEmpty(payment_official_receipt) &&  isNotEmpty(payment_amount) && isNotEmpty(payment_remarks) )
+    if(isNotEmpty(payment_official_receipt) &&  isNotEmpty(payment_amount) && isNotEmpty(payment_remarks) && isNotEmpty(payment_mode) )
     {
         if(parseFloat(payment_amount.val()) > parseFloat(payment_total_balance.val()))
         {
@@ -5825,7 +5839,8 @@ function addPayment() {
                     payment_type: payment_type,
                     discounted_percentage: discounted_percentage,
                     discounted_cash: discounted_cash,
-                    discounted_amount:  $('#payment_payment_discounted_amount').val()
+                    discounted_amount:  $('#payment_payment_discounted_amount').val(),
+                    payment_mode_id: payment_mode.val()
                     
                 },
                 success: response => {
@@ -6730,11 +6745,12 @@ $(document).on('click', '#to_show_receipt', function() {
 $('#add_payment_mode').on('click', () => {
     $('.bootstrap-tagsinput').show();
     $('#payment_mode_title').hide();
+    $('#edit_mop').css('display', 'none');
 
     $('#payment_mode').modal('show');
     $('#payment_mode_label').html(`<h4 class='text-white'> Add Payment Mode </h4>`);
-    $('#payment_mode_title').attr('value', ``);
-    $('#payment_mode_title').val('');
+    $('#pm_title').attr('value', ``);
+    $('#pm_account_number').attr('value', ``);
 
     $('#btn_add_payment_mode').css('display', 'block');
     $('#btn_update_payment_mode').css('display', 'none');
@@ -6766,6 +6782,7 @@ function createPaymentMode()
                     toastSuccess("Payment Mode Added");
                     $('.payment_mode_DT').DataTable().draw();
                     payment_mode.val('');
+                    account_number.val('');
                 }
             },
             error: err => {
@@ -6784,6 +6801,8 @@ function editPaymentMode(id) {
     $('#payment_mode').modal('show');
     $('#payment_mode_modal_header').removeClass('bg-primary').addClass('bg-success');
     $('#payment_mode_label').html(`<h4 class='text-white'> Edit Payment Mode </h4>`);
+
+    $('#edit_mop').css('display', 'block');
     
 
     $.ajax({
@@ -6806,10 +6825,11 @@ function editPaymentMode(id) {
 function updatePaymentMode() {
     let payment_mode = $('#pm_title');
     let account_number = $('#pm_account_number');
+    let status = $('#pm_status');
 
     let payment_mode_id =  $('#btn_update_payment_mode').attr('data-id');
 
-    if(isNotEmpty(payment_mode))
+    if(isNotEmpty(payment_mode) && isNotEmpty(account_number))
     {
         $.ajax({
             method: 'PUT',
@@ -6817,7 +6837,8 @@ function updatePaymentMode() {
             dataType:'json',
             data:{
                 title: payment_mode.val(),
-                account_number: $('#pm_account_number').val()
+                account_number: $('#pm_account_number').val(),
+                status: status.val()
             },
             success: response => {
                 toastSuccess("Payment Mode Updated");

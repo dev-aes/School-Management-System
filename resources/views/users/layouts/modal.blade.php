@@ -285,34 +285,34 @@
                                         @csrf
 
                                         <input type="hidden" name="student_id" id="student_id">
-                                        <div class="form-group mb-2">
-                                            <label>Name *</label>
+                                        <div class="form-group mb-1">
+                                            <label class="form-label">Name *</label>
                                             <input class="form-control" type="text" id="student_name" readonly>
                                         </div>
                                         
-                                        <div class="form-group mb-2">
-                                            <label>Monthly Payment *</label>
+                                        <div class="form-group mb-1">
+                                            <label class="form-label">Monthly Payment *</label>
                                             <input class="form-control" type="number" min="-0" id="monthly_payment" name="monthly_payment" readonly>
                                         </div>
 
-                                        <div class="form-group mb-2">
-                                            <label>Remaining Balance *</label>
+                                        <div class="form-group mb-1">
+                                            <label class="form-label">Remaining Balance *</label>
                                             <input class="form-control" type="text" id="total_balance" name="total_balance" readonly>
                                         </div>
 
-                                        <div class="form-group mb-2">
-                                            <label>Enter Receipt Code *</label>
+                                        <div class="form-group mb-1">
+                                            <label class="form-label">Enter Receipt Code *</label>
                                             <input class="form-control" type="number" min="0" id="payment_or" name="official_receipt" aria-describedby="payment_or_help" >
                                             <div id="payment_or_help" class="form-text">* Transaction No. / Reference No. </div>
                                         </div>
 
-                                        <div class="form-group mb-2">
-                                            <label>Enter Amount *</label>
+                                        <div class="form-group mb-1">
+                                            <label class="form-label">Enter Amount *</label>
                                             <input class="form-control" type="number" min="0" id="payment_amount" name="amount" >
                                         </div>
 
-                                        <div class="form-group mb-2">
-                                            <label>Receipt Type *</label>
+                                        <div class="form-group mb-1">
+                                            <label class="form-label">Receipt Type *</label>
                                             <select class="form-select" name="payment_mode_id" id="payment_receipt_type">
                                                {{--Display List of Payment Modes--}}
                                             </select>

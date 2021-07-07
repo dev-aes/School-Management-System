@@ -61,7 +61,8 @@ class PaymentModeController extends Controller
         {
             $payment_mode->update([
                                     'title' => request('title'),
-                                    'account_number' => request('account_number')
+                                    'account_number' => request('account_number'),
+                                    'status' => request('status')
                                 ]);
             return response()->json('success');
         }

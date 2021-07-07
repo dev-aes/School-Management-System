@@ -47,7 +47,7 @@ let average_container = []; // student's grade average
                 }
                 // display only if there is a total balance
             
-                if(payment_ledgers.length === 4)
+                if(payment_ledgers.length === 5)
                 {
                     payment_ledgers[0].forEach(payment_ledger => {
 
@@ -639,15 +639,20 @@ $('#mop').on('click', () => {
                                 <tr> 
                                     <th> Modes </th>
                                     <th> Account Number </th>
+                                    <th> Status </th>
                                 </tr>
                             </thead>
                             <tbody>
                           `;
 
                 payment_modes.forEach(payment_mode => {
+                    let status = payment_mode.status == 'active' ?
+                                 `<span class='badge bg-success text-capitalize'> ${payment_mode.status} </span>` : 
+                                 `<span class='badge bg-light text-capitalize'> temporary unavailable </span>`;
                     output += `<tr>
                                   <td> ${payment_mode.title} </td>
                                   <td> ${payment_mode.account_number} </td>
+                                  <td> ${status} </td>
                                </tr>`;
                 });
 

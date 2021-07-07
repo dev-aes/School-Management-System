@@ -17,6 +17,7 @@ class CreatePaymentModesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('account_number');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

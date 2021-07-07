@@ -21,6 +21,7 @@ class CreatePaymentsTable extends Migration
             $table->float('discounted_amount');
             $table->float('amount');
             $table->string('remarks');
+            $table->foreignId('payment_mode_id')->constrained('payment_modes')->onUpdate('cascade')->onDelete('cascade');
             $table->bigInteger('transaction_no');
             $table->bigInteger('official_receipt');
             $table->string('payment_type');

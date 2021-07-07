@@ -42,7 +42,9 @@ class ParentController extends Controller
                             ->where('student_id', $student->id)
                             ->first();
 
-            $payment_modes = PaymentMode::all();
+          
+           $payment_modes = PaymentMode::where('status', 'active')->get();
+
 
         
             if($student_fee->status == 'active' && $student_fee->has_downpayment > 0)

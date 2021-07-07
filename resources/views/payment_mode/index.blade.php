@@ -21,7 +21,7 @@
                                             <th>#</th>
                                             <th>Mode</th>
                                             <th>Account Number</th>
-                                            <th>Created At</th>
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

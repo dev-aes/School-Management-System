@@ -1266,7 +1266,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Mode of Payment</label>
-                    <select class="form-select" id="payment_pm" name="payment_modes">
+                    <select class="form-select" id="payment_pm" name="payment_mode_id">
                         {{-- <option value="Others">Others </option> --}}
                     </select>
                 </div>
@@ -1694,14 +1694,26 @@
             <div class="modal-body">
             <form id="payment_mode_form" autocomplete="off" enctype="multipart/form-data">
                 @csrf
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label class='form-label'>Payment Mode *</label>
                     <input class="form-control" name="title" type="text" id="pm_title" placeholder="Cebuana Lhuillier">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label class='form-label'>Account number *</label>
                     <input class="form-control" name="title" type="number" min="0" id="pm_account_number" placeholder="0988832991">
                 </div>
+
+                <div id="edit_mop">
+                    {{-- only display this form group when the edit button is clicked only--}}
+                    <div class="form-group">
+                        <label class='form-label'>Status *</label>
+                        <select class="form-select" name="status" id="pm_status">
+                            <option value="activate">Activate</option>
+                            <option value="inactive">Deactivate</option>
+                        </select>
+                    </div>
+                </div>
+
                 
             </form>
             </div>

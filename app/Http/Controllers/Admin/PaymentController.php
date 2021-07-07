@@ -9,6 +9,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMode;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentController extends Controller
@@ -70,7 +71,8 @@ class PaymentController extends Controller
                                                 // ->where('status', 'active')
                                                 ->orderBy('status','ASC')
                                                 ->get();
-            return response()->json($student_fee_id_with_student_name);
+            $payment_modes = PaymentMode::where('status', 'active')->get();
+            return response()->json([$student_fee_id_with_student_name, $payment_modes]);
         }
     }
 
@@ -134,7 +136,8 @@ class PaymentController extends Controller
                 'amount' => 'required|int|min:50',
                 'remarks' => 'required',
                 'official_receipt' => 'required',
-                'payment_type' => 'required'
+                'payment_type' => 'required',
+                'payment_mode_id' => 'required'
             ]);
 
             $data['transaction_no'] = $transaction_no;
@@ -487,7 +490,8 @@ class PaymentController extends Controller
             'amount' => 'required',
             'remarks' => 'required',
             'official_receipt' => 'required',
-            'payment_type' => 'required'
+            'payment_type' => 'required',
+            'payment_mode_id' => 'required'
             ]);
 
         $data['updated_at'] = Carbon::now(); // date
