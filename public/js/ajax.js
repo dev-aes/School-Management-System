@@ -353,12 +353,6 @@ $(()=> {
         });
 
 
-
-
-
-
-
-
 });
 
 let selected = []; // dynamic container for table row_id's
