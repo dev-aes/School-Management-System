@@ -1266,7 +1266,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Mode of Payment</label>
-                    <select class="form-select" id="payment_pm" name="payment_remarks">
+                    <select class="form-select" id="payment_pm" name="payment_modes">
                         {{-- <option value="Others">Others </option> --}}
                     </select>
                 </div>
