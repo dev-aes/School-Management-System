@@ -19,7 +19,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
+                                            <th>Mode</th>
+                                            <th>Account Number</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>

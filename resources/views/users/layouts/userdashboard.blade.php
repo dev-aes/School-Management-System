@@ -77,12 +77,13 @@
                         </a>
 					</li>
 
-					{{-- <li class="sidebar-item">
-						<a class="sidebar-link" href="#">
-                            <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Payment</span>
+					@if (auth()->user()->hasRole('parent')) 
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="javascript:void(0)" id="mop">
+                            <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Mode of Payment</span>
                         </a>
-					</li> --}}
-
+					</li>
+					@endif
                 </ul>
 			</div>
 		</nav>

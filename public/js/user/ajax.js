@@ -234,6 +234,13 @@ let average_container = []; // student's grade average
                 $('#monthly_payment').attr('value', `${student[1].balance}`);
                 $('#total_balance').attr('value', `${student[2].total_balance}`);
 
+                let output = `<option> </option>`;
+
+                student[4].forEach(payment_mode => {
+                    output += `<option value='${payment_mode.id}'> ${payment_mode.title} </option>`;
+                })  
+
+                $('#payment_receipt_type').html(output);
             },
             error: err => {
                 console.log(err);
@@ -290,11 +297,19 @@ let average_container = []; // student's grade average
             url: route('parent.parent_show_payment_ledger', id),
             dataType:'json',
             success: student => {
-                console.log(student);
                 $('#dp_student_id').attr('value', `${student[1].id}`);
                 $('#dp_student_name').val(`${student[1].first_name} ${student[1].last_name}`)
                 $('#dp_total_balance').attr('value', `${student[0]}`);
 
+                // display list of payment modes on PARENT ( Add Down Payment Modal)
+
+                let output = `<option> </option>`;
+
+                    student[2].forEach(payment_mode => {
+                        output += `<option value='${payment_mode.id}'> ${payment_mode.title} </option>`;
+                    })  
+                        $('#dp_payment_receipt_type').html(output);
+                        
             },
             error: err => {
                 console.log(err);
@@ -373,7 +388,7 @@ let average_container = []; // student's grade average
                                                         <td> ${history.first_name} ${history.last_name} </td>
                                                         <td> ${history.amount.toLocaleString()} </td>
                                                         <td> ${history.official_receipt} </td>
-                                                        <td> ${history.receipt_type} </td>
+                                                        <td> ${history.title} </td>
                                                         <td> ${history.remark} </td>
                                                         <td> ${comment} </td>
                                                         <td> ${history.status} </td>
@@ -607,6 +622,47 @@ let average_container = []; // student's grade average
         $('#user_parent_modal_label').html(`<h4 class='text-white'> Account <i class="fas fa-user-cog"></i> </h4>`);
 
     });
+
+$('#mop').on('click', () => {
+
+    $('#parent_show_payment_mode_modal').modal('show');
+    $('#parent_show_payment_mode_modal_header').addClass('bg-secondary');
+    $('#parent_show_payment_mode_modal_label').text('Mode of Payment');
+
+    $.ajax({
+        url: route('parent.show_payment_mode'),
+        dataType:'json',
+        success: payment_modes => {
+            let output = `<table class='table table-hover'>
+                            <caption>List of Payment Mode</caption>
+                            <thead> 
+                                <tr> 
+                                    <th> Modes </th>
+                                    <th> Account Number </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                          `;
+
+                payment_modes.forEach(payment_mode => {
+                    output += `<tr>
+                                  <td> ${payment_mode.title} </td>
+                                  <td> ${payment_mode.account_number} </td>
+                               </tr>`;
+                });
+
+                output += `</tbody>
+                          </table>`;
+
+                          $('#parent_display_payment_modes').html(output); // display list of payment modes
+        },
+        error: err => {
+            toastDanger();
+            res(err);
+        }
+    })
+
+});
 
 // -------> ENd Parent()
 

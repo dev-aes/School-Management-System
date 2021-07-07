@@ -343,6 +343,8 @@ Route::middleware('auth', 'parent')->group(function() {
    
    
        Route::get('/dashboard/parent', [UserParentController::class , 'index'])->name('parent.dashboard');
+
+       Route::get('/dashboard/parent/show_payment_modes', [UserParentController::class, 'show_payment_modes'])->name('parent.show_payment_mode');
    
    
        // Parent Create Downpayment or Monthly Payment by student id

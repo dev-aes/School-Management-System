@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ParentPayment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMode;
 
 class ParentController extends Controller
 {
@@ -41,6 +42,8 @@ class ParentController extends Controller
                             ->where('student_id', $student->id)
                             ->first();
 
+            $payment_modes = PaymentMode::all();
+
         
             if($student_fee->status == 'active' && $student_fee->has_downpayment > 0)
             {
@@ -61,7 +64,7 @@ class ParentController extends Controller
                             ->where('student_fee.id', $student_fee->id)
                             ->first();
 
-                return response()->json([$payment_ledger, $next_monthly_payment, $student_balance, $student]);
+                return response()->json([$payment_ledger, $next_monthly_payment, $student_balance, $student,  $payment_modes]);
 
             }
             else if($student_fee->status == 'paid' && $student_fee->has_downpayment >0)
@@ -83,12 +86,12 @@ class ParentController extends Controller
                             ->where('student_fee.id', $student_fee->id)
                             ->first();
 
-                return response()->json([$payment_ledger, $next_monthly_payment, $student_balance, $student]);
+                return response()->json([$payment_ledger, $next_monthly_payment, $student_balance, $student,  $payment_modes]);
 
             }
             else if($student_fee->status == 'active' && $student_fee->has_downpayment == 0)
             {
-                return response()->json([$student_fee->total_fee, $student]);
+                return response()->json([$student_fee->total_fee, $student,  $payment_modes]);
             }
             else
             {
@@ -97,6 +100,7 @@ class ParentController extends Controller
         }
     }
 
+    // TODO Monthly Payment
     public function parent_store_payment_to_student()
     {
         if(request()->ajax())
@@ -106,7 +110,7 @@ class ParentController extends Controller
                 'official_receipt' => 'required',
                 'amount' => 'required',
                 'screenshot' => 'image',
-                'receipt_type' => 'required'
+                'payment_mode_id' => 'required'
 
                 ]);
 
@@ -125,6 +129,7 @@ class ParentController extends Controller
         }
     }
 
+    //TODO DownPayment
     public function parent_store_down_payment_to_student()
     {
         if(request()->ajax())
@@ -134,7 +139,7 @@ class ParentController extends Controller
                 'official_receipt' => 'required',
                 'amount' => 'required',
                 'screenshot' => 'image',
-                'receipt_type' => 'required'
+                'payment_mode_id' => 'required'
                 ]);
 
             $data['parent_id'] = auth()->user()->parent_id;
@@ -157,7 +162,8 @@ class ParentController extends Controller
         {
            $payment_history = DB::table('parent_payments')
                             ->join('students', 'student_id', '=', 'students.id')
-                            ->select('parent_payments.*', 'students.first_name', 'students.last_name')
+                            ->join('payment_modes', 'parent_payments.payment_mode_id', 'payment_modes.id')
+                            ->select('parent_payments.*', 'students.first_name', 'students.last_name', 'payment_modes.title')
                             ->where('parent_id', $parent->id)   
                             ->where('student_id', $student->id)
                             ->get();
@@ -215,7 +221,7 @@ class ParentController extends Controller
               $paymentsTotal['total_balance'] = $total_balance;
   
               // return response()->json($paymentsTotal);
-              // // get the amount payable , paid amount , total balance
+               // get the amount payable , paid amount , total balance
               // $paymentsTotal = DB::select("SELECT student_fee.total_fee as amount_payable, 
               // SUM(payments.amount) as paid, (student_fee.total_fee - SUM(payments.amount)) as total_balance FROM payments INNER JOIN student_fee ON 
               // payments.student_fee_id = student_fee.id WHERE payments.student_fee_id = $student->id");
@@ -249,6 +255,15 @@ class ParentController extends Controller
                                 ->get(); // display student core values
             
             return response()->json([$student_grades, $core_values]);
+        }
+    }
+
+    public function show_payment_modes()
+    {
+        if(request()->ajax())
+        {
+            $payment_modes = PaymentMode::all();
+            return response()->json($payment_modes);
         }
     }
 }

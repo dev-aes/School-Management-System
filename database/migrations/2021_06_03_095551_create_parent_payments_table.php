@@ -19,7 +19,7 @@ class CreateParentPaymentsTable extends Migration
             $table->foreignId('student_id')->constrained('students')->onUpdate('cascade')->onDelete('cascade');
             $table->bigInteger('official_receipt');
             $table->float('amount');
-            $table->string('receipt_type');
+            $table->foreignId('payment_mode_id')->constrained('payment_modes')->onUpdate('cascade')->onDelete('cascade');
             $table->string('screenshot');
             $table->string('remark');
             $table->string('comment')->nullable();

@@ -27,6 +27,7 @@
                     <h3 class="text-info">Login </h3>
                 </div>
                 <br>
+            
                 <form method="POST" action="{{ route('login') }}">
                     @if($errors->any())
                         <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show" role="alert">
@@ -48,7 +49,7 @@
                     @csrf
                     <div class="form-group">
                         <label class="text-muted" for="">Email *</label>
-                        <input class="form-control" id="email" type="email"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        <input class="form-control" id="email" type="email"  class="form-control @error('email') is-invalid @enderror" name="email" value="admin@gmail.com" required autocomplete="email" autofocus>
 
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="form-group">
                         <label class="text-muted" for="">Password *</label>
-                        <input class="form-control" type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                        <input class="form-control" type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" value='test1234' required autocomplete="current-password">
 
                         @error('password')
                             <span class="invalid-feedback" role="alert">

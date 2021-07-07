@@ -20,7 +20,8 @@ class ParentPaymentController extends Controller
         $parent_payment_request = DB::table('parent_payments')
                                   ->join('parents', 'parent_id', '=', 'parents.id')
                                   ->join('students', 'student_id', '=', 'students.id')
-                                  ->select('parent_payments.*', 'parents.name', 'students.first_name', 'students.last_name')
+                                  ->join('payment_modes', 'parent_payments.payment_mode_id', 'payment_modes.id')
+                                  ->select('parent_payments.*', 'parents.name', 'students.first_name', 'students.last_name', 'payment_modes.title')
                                   ->where('status', 'pending')
                                   ->get();
 

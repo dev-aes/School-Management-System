@@ -59,7 +59,7 @@
 {{--End User Student--}}
 
 
-
+@if(url()->current() == route('parent.dashboard'))
 {{--User Parent()--}}
 
     {{--Parent Show Payment Ledger --}}
@@ -313,12 +313,8 @@
 
                                         <div class="form-group mb-2">
                                             <label>Receipt Type *</label>
-                                            <select class="form-select" name="receipt_type" id="payment_receipt_type">
-                                                <option></option>
-                                                <option value="school">School</option>
-                                                <option value="gcash">Gcash</option>
-                                                <option value="palawan">Palawan Pawnshop</option>
-                                                <option value="cebuana">Cebuana Lhuillier</option>
+                                            <select class="form-select" name="payment_mode_id" id="payment_receipt_type">
+                                               {{--Display List of Payment Modes--}}
                                             </select>
                                         </div>
 
@@ -391,12 +387,8 @@
 
                                         <div class="form-group">
                                             <label>Receipt Type *</label>
-                                            <select class="form-select" name="receipt_type" id="dp_payment_receipt_type">
-                                                <option></option>
-                                                <option value="school">School</option>
-                                                <option value="gcash">Gcash</option>
-                                                <option value="palawan">Palawan Pawnshop</option>
-                                                <option value="cebuana">Cebuana Lhuillier</option>
+                                            <select class="form-select" name="payment_mode_id" id="dp_payment_receipt_type">
+                                               {{--Display List of Payment Modes--}}
                                             </select>
                                         </div>
 
@@ -443,11 +435,36 @@
             </div>
         </div>
     {{--End--}}
+     
+    {{--Parent Show Payment Mode--}}
+        <div class="modal fade" id="parent_show_payment_mode_modal" tabindex="-1" role="dialog" aria-labelledby="parent_show_payment_mode_modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-header" id="parent_show_payment_mode_modal_header">
+                        <h4 class="modal-title text-white" id="parent_show_payment_mode_modal_label">{{--Modal Title--}}</h4>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card w-100">
+                            <div class="card-body">
+                                <div id="parent_display_payment_modes">
+                                        {{--Display School Payment Modes--}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{--End--}}
 
 {{--End User Parent()--}}
 
+@endif;
 
 
+@if(url()->current() == route('teacher.dashboard'))
 
 {{--User Teacher ()--}}
 
@@ -529,3 +546,4 @@
 
 
 {{--End User Teacher--}}
+@endif

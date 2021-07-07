@@ -222,11 +222,10 @@ $(()=> {
     {
         let column = 'title';
 
-        $('#payment_mode_title').tagsinput();
-
         let payment_mode_column_data = [
                                             {data: 'id'},
                                             {data: 'title'},
+                                            {data: 'account_number'},
                                             {data: 'created_at', render(data){
                                                 let date = new Date(data);
                                                 return date.toLocaleDateString();
@@ -5780,7 +5779,8 @@ function payment_display_balance_by_student_id() {
         $('#payment_total_balance').attr('value', '');
         $('#payment_amount').attr('value', '').text('');
         $('#payment_monthly_payment').attr('value', '').text('');
-        $('#payment_display_payment_ledger').html("");      
+        $('#payment_display_payment_ledger').html("");  
+        $('#btn_add_payment').attr('disabled', false);    
     }
 }
 
@@ -6370,6 +6370,11 @@ function AdminDashBoardDisplayUser()
                             </div>`;
         
             });
+
+            output2 += `
+                            <center><a class='text-muted' href='javascript:void(0)'> View all </a></center>
+                      `;
+
             $('.activity_log').html(output2);
 
             // display payment_notification count 
@@ -6455,7 +6460,7 @@ function display_parent_payment_request()
                 return  `₱ ${data.toLocaleString()}`
             },},
             {data: 'official_receipt'},
-            {data: 'receipt_type'},
+            {data: 'title'},
             {data: 'screenshot', render(data) {
                 return `<img id="to_show_receipt" class='img-thumbnail' src='/storage/uploads/receipt/${data}' width='100' alt='${data}'>`;
             }},
@@ -6747,15 +6752,19 @@ $('#add_payment_mode').on('click', () => {
 // store
 function createPaymentMode()
 {
-    let payment_mode = $('#payment_mode_title');
+    let payment_mode = $('#pm_title');
+    let account_number = $('#pm_account_number');
 
-    if(isNotEmpty(payment_mode))
+    if(isNotEmpty(payment_mode) && isNotEmpty(account_number))
     {
         $.ajax({
             method:'POST',
             url: route('payment_mode.store'),
             dataType:'json',
-            data:{title:payment_mode.val()},
+            data:{
+                title:payment_mode.val(),
+                account_number: account_number.val()
+            },
             success: response => {
                 console.log(response);
                 if(response == 'success')
@@ -6776,8 +6785,6 @@ function createPaymentMode()
 // edit
 function editPaymentMode(id) {
 
-    $('.bootstrap-tagsinput').hide();
-    $('#payment_mode_title').show();
     $('#btn_add_payment_mode').css('display', 'none');
     $('#btn_update_payment_mode').css('display', 'block');
     $('#payment_mode').modal('show');
@@ -6790,9 +6797,8 @@ function editPaymentMode(id) {
         success: payment_mode => {
             // console.log(payment_mode);
          $('#btn_update_payment_mode').attr('data-id', payment_mode.id);
-         $('#payment_mode_title').val( payment_mode.title);
-
-         //$('#payment_mode_title').attr('value', payment_mode.title);
+         $('#pm_title').attr('value', payment_mode.title);
+         $('#pm_account_number').attr('value', payment_mode.account_number);
 
         },
         error: err => {
@@ -6804,7 +6810,9 @@ function editPaymentMode(id) {
 
 // update
 function updatePaymentMode() {
-    let payment_mode = $('#payment_mode_title');
+    let payment_mode = $('#pm_title');
+    let account_number = $('#pm_account_number');
+
     let payment_mode_id =  $('#btn_update_payment_mode').attr('data-id');
 
     if(isNotEmpty(payment_mode))
@@ -6813,7 +6821,10 @@ function updatePaymentMode() {
             method: 'PUT',
             url: route('payment_mode.update', payment_mode_id),
             dataType:'json',
-            data:{title: payment_mode.val()},
+            data:{
+                title: payment_mode.val(),
+                account_number: $('#pm_account_number').val()
+            },
             success: response => {
                 toastSuccess("Payment Mode Updated");
                 $('.payment_mode_DT').DataTable().draw();
