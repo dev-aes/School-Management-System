@@ -40,7 +40,10 @@ class ParentController extends Controller
                 'facebook' => 'required'
             ]);
 
-            ParentModel::create($data);
+           $parent = ParentModel::create($data);
+
+           $this->log_activity($parent, 'created', 'Guardian', $parent->name);
+
 
             return response()->json('success');
 
@@ -88,6 +91,7 @@ class ParentController extends Controller
             ]);
 
             $parent->update($data);
+            $this->log_activity($parent, 'updated', 'Guardian', $parent->name);
 
             return response()->json('success');
         }
@@ -96,6 +100,8 @@ class ParentController extends Controller
     public function destroy(ParentModel $parent)
     {
         $parent->delete();
+
+        $this->log_activity($parent, 'deleted', 'Guardian', $parent->name);
 
         return response()->json('success');
     }

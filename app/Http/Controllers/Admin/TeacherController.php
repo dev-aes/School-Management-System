@@ -179,7 +179,15 @@ class TeacherController extends Controller
     {
         if(request()->ajax()) {
 
-            Teacher::whereIn('id', request('id'))->delete();
+            $teachers =  Teacher::whereIn('id', request('id'))->get();
+                         Teacher::whereIn('id', request('id'))->delete();
+
+            foreach($teachers as $teacher): 
+
+                $this->log_activity($teacher, 'deleted', 'Teacher', $teacher->first_name. "" . $teacher->last_name);
+
+            endforeach;
+
             return $this->res();
         }
     }

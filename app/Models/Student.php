@@ -6,37 +6,19 @@ use Carbon\Carbon;
 use App\Models\Fee;
 use App\Models\Section;
 use App\Models\ParentModel;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory;
 
     protected $guarded = [];
-
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['first_name', 'last_name', 'email'])
-        ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} student")
-        ->useLogName('student');
-        // Chain fluent methods for configuration options
-    }
 
     public function grade_level()
     {
         return $this->belongsTo(GradeLevel::class, 'grade_level_id');
     }
-
-    //student has many teacher
-    // public function teacher()
-    // {
-    //     return $this->belongsToMany(Teacher::class)->withTimestamps();
-    // }
 
     //student has many fee
 

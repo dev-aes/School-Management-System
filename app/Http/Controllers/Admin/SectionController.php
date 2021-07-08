@@ -56,7 +56,9 @@ class SectionController extends Controller
             }
 
 
-            Section::create($data);
+            $section = Section::create($data);
+
+            $this->log_activity($section, 'created', 'Section', $section->name);
 
             return response()->json('success');
         }
@@ -91,7 +93,7 @@ class SectionController extends Controller
                 'description' => 'required|string'
             ]);
 
-            $section = DB::table('sections')
+             DB::table('sections')
             ->where('id',$section->id)
             ->update([
                 'grade_level_id' => $data['grade_level_id'],
@@ -99,6 +101,8 @@ class SectionController extends Controller
                 'description' => $data['description']
             ]);
 
+            $this->log_activity($section, 'updated', 'Section', $section->name);
+            
             return response()->json('success');
 
         }
@@ -109,6 +113,8 @@ class SectionController extends Controller
         if(request()->ajax())
         {
             $section->delete();
+
+            $this->log_activity($section, 'deleted', 'Section', $section->name);
 
             return response()->json('success');
         }

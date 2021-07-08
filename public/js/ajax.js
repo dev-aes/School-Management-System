@@ -275,6 +275,17 @@ $(()=> {
         crud_index('.values_DT', 'values.index', values_column_data, column); // after loading the Role ; load the Role data
     }
 
+    if(window.location.href == route('activity_log.index'))
+    {
+        let column = 'Activity Log';
+        let activity_log = [{data:'description',render(data){
+                                let description = data.split('-');
+
+                                return `${description[0]} <span class='text-success'> - ${description[1]} </span>`;
+                            }}, 
+                            {data:'created_at'}];
+        crud_index('.al_DT', 'activity_log.index', activity_log, column);
+    }
 
     if(navigator.onLine)
     {
@@ -3791,12 +3802,13 @@ function createStudent() {
             processData: false,
             contentType: false,
             success: response => {
-                console.log(response);
-                toastSuccess('Student Updated')
-                $('#student_DT').DataTable().draw();
+                //console.log(response);
+                $('.student_DT').DataTable().draw();
                 $('#student_modal').modal('hide');
                 $('#student_div_err').css('display', 'none');
                 $('#student_err').html('');
+                toastSuccess('Student Updated')
+
             },
             error: err => {
                 let err_msg = '';
@@ -6349,39 +6361,20 @@ function AdminDashBoardDisplayUser()
             let output2 = ``;
             users[1].forEach(activity => {
                 
-                let name = ``;
                 let date = new Date(activity.created_at);
-
-                if(activity.properties.hasOwnProperty("attributes"))
-                {
-                   if(activity.properties.attributes.name != undefined)
-                   {
-                     name += activity.properties.attributes.name;
-                   }
-                   else if(activity.properties.attributes.first_name != undefined)
-                   {
-                    name += activity.properties.attributes.first_name;
-                   }
-                   else
-                   {
-                       name += ``;
-                   }
-                }
-                else
-                {
-                    name += activity.properties.old.name;
-                }
-            
+                let exploded = activity.description.split('-');
                 output2 += `
                             <div class='border-start border-3 border-secondary'>
-                                <p class="m-0 ps-2">${activity.description} - <span class="text-primary"> ${name}</span> </p>
+                                <p class="m-0 ps-2">${exploded[0]} - <span class='text-success'> ${exploded[1]} </success>  </p>
                                 <p class='ps-2'> ${activity.created_at} </p>
                             </div>`;
         
             });
 
+            let al = route('activity_log.index');
+
             output2 += `
-                            <center><a class='text-muted' href='javascript:void(0)'> View all </a></center>
+                            <center><a class='text-muted' href='${al}'> View all </a></center>
                       `;
 
             $('.activity_log').html(output2);

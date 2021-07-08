@@ -54,31 +54,28 @@ class SubjectController extends Controller
 
         ]);
 
-       
-        
-
-        if(request()->ajax()) {
-
-            //$subject = Subject::create($subject_form_data);
+        if(request()->ajax()) 
+        {
 
             $grade_level_val_and_id = explode(",",$subject_form_data['grade_val']);
-            $subject_id = DB::table('subjects')->insertGetId([
-                'name'=>$subject_form_data['name'],
-                'description'=>$subject_form_data['description'],
-                'grade_val'=>$grade_level_val_and_id[0],
-                'created_at'=>now(),
-            ]);
+
+            $subject = Subject::create([
+                                            'name' => $subject_form_data['name'],
+                                            'description' => $subject_form_data['description'],
+                                            'grade_val' => $grade_level_val_and_id[0]
+                                            ]) ;
         
 
             
             DB::table('grade_level_subject')->insert([
-                'subject_id'=>$subject_id,
+                'subject_id'=>$subject->id,
                 'grade_level_id'=>$grade_level_val_and_id[1],
                 'created_at'=>now(),
             ]);
 
             //Enter Subject to its corresponding Grade Level
-
+  
+           $this->log_activity($subject,'created','Subject',$subject->name);
            return $this->res();
         }
     }
@@ -118,6 +115,8 @@ class SubjectController extends Controller
             //Subject Update    
             $subject->update($subject_form_data); 
 
+           $this->log_activity($subject,'updated','Subject',$subject->name);
+
            return response()->json('success');
         
         }
@@ -127,13 +126,23 @@ class SubjectController extends Controller
     {
         if(request()->ajax()) 
         {
+            
+           $subjects =  Subject::whereIn('id', request('id'))->get();
+                        Subject::whereIn('id', request('id'))->delete();
 
-            Subject::whereIn('id', request('id'))->delete();
+           
+           foreach($subjects as $sub): 
+
+                $this->log_activity($subject, 'deleted', 'Subject', $sub->name);
+
+           endforeach;
 
             return $this->res();
            
         }
     }
+
+   
 
     public function import(Request $request)
     {

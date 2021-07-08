@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use App\Models\School;
 use App\Models\Payment;
 use App\Models\Student;
+use App\Models\StudentFee;
+use App\Models\PaymentMode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\PaymentMode;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentController extends Controller
@@ -148,13 +149,13 @@ class PaymentController extends Controller
             $data['discounted_amount'] = request('discounted_amount') ?? ""; // ex  Php 2500
             
             // check if the payment is a downpayment then update the student_fee table's downpayment to true else do the default insertion
-            if($data['payment_type'] == 'dp')
-            {    
-                $check_if_student_fee_id_has_dp = DB::table('student_fee')
+            $check_if_student_fee_id_has_dp = DB::table('student_fee')
                                                   ->where('id', $data['student_fee_id'])->first();
 
-                //return response()->json($check_if_student_fee_id_has_dp);
-
+                //TODO DOWN PAYMENT
+            if($data['payment_type'] == 'dp')
+            {    
+                
                 // check if the student has already have a downpayment 
                     if($check_if_student_fee_id_has_dp->has_downpayment === 1)
                     {
@@ -164,6 +165,12 @@ class PaymentController extends Controller
                     {
                         // insert
                          $recent_student_fee =   Payment::create($data); // latest inserted data ( Student Payment )
+
+                         $get_student_by_student_fee_id = Student::where('id', $check_if_student_fee_id_has_dp->student_id)->first(); 
+
+
+                        $this->log_activity($recent_student_fee,'added','Down Payment for student',$get_student_by_student_fee_id->first_name." ".$get_student_by_student_fee_id->last_name);
+
 
                          // after payment get the monthly fee of a student and populate it to the student_fee Table with a specific student_fee_id
                          $monthly_fee = DB::table('student_fee')
@@ -221,7 +228,7 @@ class PaymentController extends Controller
                          return response()->json('success');
                     }
                     
-            }
+            } //TODO MONTHLY PAYMENT
             else if($data['payment_type'] == 'mo')
             {
                 $check_if_payment_has_dp = DB::table('student_fee')
@@ -245,6 +252,9 @@ class PaymentController extends Controller
 
                     // insert payment
                      $recent_student_fee =   Payment::create($data); // latest inserted data ( Student Payment )
+
+                     $get_student_by_student_fee_id = Student::where('id', $check_if_student_fee_id_has_dp->student_id)->first(); 
+                     $this->log_activity($recent_student_fee,'added','Monthly Payment for student',$get_student_by_student_fee_id->first_name." ".$get_student_by_student_fee_id->last_name);
 
                     $update_payment_ledger = DB::table('payment_ledger')
                                             ->where('status', 'unpaid')
@@ -814,8 +824,18 @@ class PaymentController extends Controller
             ->where('student_fee_id', $payment->student_fee_id)
             ->delete();
 
+            //todo activty log
+            
+            $student_fee = StudentFee::where('id', $payment->student_fee_id)->first();
+
+            $student = Student::where('id', $student_fee->student_id)->first();
+
+            $this->log_activity($payment,'deleted','Down Payment for student',$student->first_name." ".$student->last_name);
+
+
             // after updating and deleting of records ; delete payment record ( Monthly Payment )
             $payment->delete();
+
             return response()->json('success');
         }
 
@@ -864,7 +884,16 @@ class PaymentController extends Controller
                       ]);
               }
 
-             $payment->delete(); // delete payment by payment-ID
+            //todo activty log
+
+              $student_fee = StudentFee::where('id', $payment->student_fee_id)->first();
+
+              $student = Student::where('id', $student_fee->student_id)->first();
+  
+              $this->log_activity($payment,'deleted','Monthly Payment for student',$student->first_name." ".$student->last_name);
+  
+
+              $payment->delete(); // delete payment by payment-ID
 
 
 

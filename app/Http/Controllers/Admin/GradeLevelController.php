@@ -53,7 +53,12 @@ class GradeLevelController extends Controller
 
             if(request()->ajax()) 
             {
-                return response()->json(GradeLevel::create($grade_level_form_data));
+
+                $gl = GradeLevel::create($grade_level_form_data);
+
+                $this->log_activity($gl, 'created', 'Grade Level', $gl->name);
+
+                return response()->json();
             }
 
         }
@@ -87,14 +92,22 @@ class GradeLevelController extends Controller
 
         if(request()->ajax()) {
 
-            return response()->json($gradeLevel->update( $grade_level_form_data));
+            $gradeLevel->update( $grade_level_form_data);
+
+            $this->log_activity($gradeLevel, 'updated', 'Grade Level', $gradeLevel->name);
+
+            return response()->json('success');
         }
     }
 
     public function destroy(GradeLevel $gradeLevel)
     {
         if(request()->ajax()) {
+
+            $this->log_activity($gradeLevel, 'deleted', 'Grade Level', $gradeLevel->name);
             $gradeLevel->delete();
+
+            return $this->res();
         }
     }
 
@@ -102,11 +115,9 @@ class GradeLevelController extends Controller
     public function display_subjects_for_grade_level(GradeLevel $grade_level)
     {
         if(request()->ajax()){
-            //$subjects_per_grade_level = Subject::where('grade_val',$grade_level->grade_val)->get();
 
             $subjects = DB::table('subjects')
                         ->leftJoin('grade_level_subject','subjects.id','grade_level_subject.subject_id')
-                        //->leftJoin('grade_levels','grade_levels.id','grade_level_subject.grade_level_id')
                         ->select('subjects.name','subjects.id','subjects.grade_val')
                         ->where('subjects.grade_val','=',$grade_level->id)
                         ->where('grade_level_subject.subject_id', NULL)
@@ -148,9 +159,6 @@ class GradeLevelController extends Controller
                                ]);
 
                 }
-
-
-
                
            endforeach;
 

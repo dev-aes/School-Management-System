@@ -68,8 +68,10 @@ class DashboardController extends Controller
 
         $monthly_sales = DB::table('payment_ledger') // get all the monthly sales
                          ->join('payments', 'payment_id', 'payments.id')
-                         ->select(DB::raw("sum(payments.amount) as total"), "month")
+                         ->join('student_fee', 'payments.student_fee_id', 'student_fee.id')
+                         ->select(DB::raw("sum(payment_ledger.balance) as total"), "month")
                          ->groupBy('month')
+                         ->where('student_fee.academic_year_id', $ay->id)
                          ->get();
         $months = [];
         $sales = [];

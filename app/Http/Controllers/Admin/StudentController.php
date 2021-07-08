@@ -36,8 +36,6 @@ class StudentController extends Controller
                         ->select('students.*', 'sections.name')
                         ->get();
 
-                       
-
             return DataTables::of($students)
                    ->addIndexColumn()
                    ->addColumn('actions', function($row) {
@@ -156,6 +154,11 @@ class StudentController extends Controller
                 endforeach;    
             
 
+                // trigger activity log
+
+                $this->log_activity($student_data, 'created', 'Student', $student_data->first_name." ".$student_data->last_name);
+
+
                 return response()->json('success');
                 
         }
@@ -236,12 +239,18 @@ class StudentController extends Controller
                 }
                 request('student_avatar')->storeAs('uploads/student', $student_form_data['student_avatar'], 'public'); //params: fileFolder , fileName , filePath
                 
-                return response()->json($student->update($student_form_data));
+                $this->log_activity($student,'updated','Student',$student->first_name." ". $student->last_name);
+                $student->update($student_form_data);
+
+                return response()->json('success');
                 
             }
             else 
             {
-                return response()->json($student->update($student_form_data));
+                $this->log_activity($student,'updated','Student',$student->first_name." ". $student->last_name);
+                $student->update($student_form_data);
+
+                return response()->json('success');
 
             }
         }
@@ -251,7 +260,14 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            Student::whereIn('id', request('id'))->delete();
+            $students =  Student::whereIn('id', request('id'))->get();
+                         Student::whereIn('id', request('id'))->delete();
+
+            foreach($students as $stud): 
+
+                $this->log_activity($student, 'deleted', 'Student', $stud->first_name. "" . $stud->last_name);
+
+            endforeach;
 
             return $this->res();
         }
@@ -318,7 +334,8 @@ class StudentController extends Controller
             
 
             
-             foreach($imported_students as $student){
+             foreach($imported_students as $student)
+             {
                 $adviser_id = Section::where('id',$student->section_id)->first();
                 if($adviser_id){
                     $insert_student = DB::table('student_grade')->insertGetId([
@@ -328,7 +345,8 @@ class StudentController extends Controller
                         'created_at'=>now(),
                     ]);
                 }
-                else{
+                else
+                {
                     $insert_student = DB::table('student_grade')->insertGetId([
                         'academic_year_id'=>$ay->id,
                         'student_id'=>$student->id,
@@ -355,19 +373,20 @@ class StudentController extends Controller
                 endforeach;  
     
 
-     //If no subjects and teachers exist    
-    if($get_subjects_and_teachers_id->count() == 0){
-         DB::table('grades')->insert(['student_grade_id'=>$insert_student]);
-        
-    }
-                // $insert_student_to_grades = DB::table('grades')->insert([
-                //     'student_grade_id'=>$insert_student,
-                //     'created_at'=>now(),
-                // ]);           
-               
+                    //If no subjects and teachers exist    
+                    if($get_subjects_and_teachers_id->count() == 0)
+                    {
+                        DB::table('grades')->insert(['student_grade_id'=>$insert_student]);
+                        
+                    }
+                      
+                    
+                $this->log_activity($student, 'created', 'Student', $student->first_name. " " . $student->last_name);
+                                
+                            
             }
-             
-            Student::where('is_imported',1)->update(['is_imported'=>0]);
+                            
+             Student::where('is_imported',1)->update(['is_imported'=>0]);
 
              
 
@@ -407,8 +426,11 @@ class StudentController extends Controller
             // check if the given password is equal to the super admin password
             if(Hash::check($data['password'], $admin['password']))
             {
+                $student = Student::latest()->first();
                 Student::query()->delete();
 
+                $this->log_activity($student, 'Deleted all', 'Student Record',);
+                
                 return response()->json('success');
             }
             else

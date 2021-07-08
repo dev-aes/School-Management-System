@@ -22,7 +22,7 @@ class ParentPaymentController extends Controller
                                   ->join('students', 'student_id', '=', 'students.id')
                                   ->join('payment_modes', 'parent_payments.payment_mode_id', 'payment_modes.id')
                                   ->select('parent_payments.*', 'parents.name', 'students.first_name', 'students.last_name', 'payment_modes.title')
-                                  ->where('status', 'pending')
+                                  ->where('parent_payments.status','=', 'pending')
                                   ->get();
 
         if(request()->ajax()) 

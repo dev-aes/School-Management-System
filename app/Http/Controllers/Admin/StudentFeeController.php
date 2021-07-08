@@ -11,6 +11,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\AcademicYearController;
+use App\Models\StudentFee;
 
 class StudentFeeController extends Controller
 {
@@ -128,7 +129,13 @@ class StudentFeeController extends Controller
             if(!$student->count() > 0)
             {
                 // insert student fee
-                DB::table('student_fee')->insert($data);
+                // DB::table('student_fee')->insert($data);
+                $student_fee = StudentFee::create($data);
+
+                $student = Student::where('id', $student_fee->student_id)->first();
+
+                $this->log_activity($student_fee,'enrolled','Student',$student->first_name." ".$student->last_name);
+
                 return response()->json('success');
             }
             else 
@@ -175,13 +182,17 @@ class StudentFeeController extends Controller
 
     public function destroy($id)
     {
-         DB::table('student_fee')
-                       ->where('id', $id)
-                       ->delete();
+        $student_fee = StudentFee::where('id', $id)->first();
 
-        DB::table('payments')
-            ->where('student_fee_id', $id)
-            ->delete();
+        $student = Student::where('id', $student_fee->student_id)->first();
+
+
+        $this->log_activity($student_fee,'cancelled an entry for','Student',$student->first_name." ".$student->last_name);
+
+        $student_fee->delete();
+
+        return $this->res();
+
     }
 
 

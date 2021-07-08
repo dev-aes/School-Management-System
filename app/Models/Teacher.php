@@ -5,25 +5,14 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\Section;
 use App\Models\Subject;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Teacher extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory;
 
     protected $guarded = [];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['first_name', 'email'])
-        ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} teacher")
-        ->useLogName('teacher');
-        // Chain fluent methods for configuration options
-    }
 
     public function grade_level()
     {

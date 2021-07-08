@@ -11,3 +11,14 @@ if(!function_exists('get_latest_academic_year'))
         return $ay;
     }
 }
+
+if(!function_exists('get_username'))
+{
+    function get_username()
+    {
+        $name = auth()->user()->name;
+
+        return $name;
+    }
+}
+

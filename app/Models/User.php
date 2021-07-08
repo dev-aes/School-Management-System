@@ -3,16 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    // use HasFactory, Notifiable, LogsActivity;
     use HasFactory, Notifiable;
 
     /**
@@ -39,15 +36,6 @@ class User extends Authenticatable
         // 'password',
         'remember_token',
     ];
-
-    // public function getActivitylogOptions(): LogOptions
-    // {
-    //     return LogOptions::defaults()
-    //     ->logOnly(['name', 'email'])
-    //     ->setDescriptionForEvent(fn(string $eventName) =>  auth()->user()->name." has {$eventName} user")
-    //     ->useLogName('user');
-    // Chain fluent methods for configuration options
-    // }
 
     /**
      * The attributes that should be cast to native types.

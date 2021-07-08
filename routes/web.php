@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 // Admin Restful Controllers
  
 use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\ActivitylogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeeController;
 use App\Http\Controllers\Admin\SchoolController;
@@ -94,6 +95,7 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::resource('/admin/school', SchoolController::class);
     Route::resource('/admin/academic_year', AcademicYearController::class);
     Route::resource('/admin/role', RoleController::class);
+    Route::resource('admin/activity_log', ActivitylogController::class);
 
 
             
