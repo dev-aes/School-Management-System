@@ -130,6 +130,7 @@ class ParentPaymentController extends Controller
         $latest_pending_payment->update([
                                             'status' => $remarks,
                                             'comment' => $comment]);
+        
 
         $parent_email = $parent->email;
         $title = "Cashier";
@@ -137,6 +138,8 @@ class ParentPaymentController extends Controller
         
 
         $this->sendEmail($parent_email, $title , $body);
+
+        $this->log_activity($latest_pending_payment,$remarks,'Payment Request from parent', $parent->name);
 
         return response()->json('success');
 
@@ -163,6 +166,8 @@ class ParentPaymentController extends Controller
             
 
             $this->sendEmail($parent_email, $title , $body);
+
+            $this->log_activity($parent_payment,$remark,'Payment Request from parent', $parent->name);
 
             return response()->json('success');
         }

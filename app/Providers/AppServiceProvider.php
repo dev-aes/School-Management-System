@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,6 +25,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Using view composer to set following variables globally
+
+        view()->composer('*',function($view) {
+
+            if(Auth::user())
+            {
+                $view->with('user_role', ucfirst(Auth::user()->role->name));
+            }
+
+        });
+
+        
         //Add this custom validation rule.
         Validator::extend('alpha_spaces', function ($attribute, $value) {
 

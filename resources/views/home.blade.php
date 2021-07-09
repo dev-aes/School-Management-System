@@ -1,7 +1,8 @@
 @extends('layouts.admindashboard')
-@section('title', 'Admin · Dashboard ')
+@section('title', "$user_role · Dashboard ")
 
 @section('content')
+
 
 <div class="container-fluid p-0">
 
@@ -13,8 +14,8 @@
         <div class="col-auto ms-auto text-end mt-n1">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                    <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                    <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboards</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Analytics</li>
                 </ol>
             </nav>
@@ -169,8 +170,8 @@
 
                     {{-- <h5 class="card-title mb-0">Latest Projects</h5> --}}
                 </div>
-                <table class="table table-hover my-0 caption-top p-5" id="dashboard_user_DT">
-                    <caption class="p-3">List of users</caption>
+                <table class="table table-hover my-0  p-5" id="dashboard_user_DT">
+                    <caption class="p-3">List of users <i class="fas fa-user-shield"></i></caption>
                     <thead style="background: none">
                         <tr>
                             <th>#</th>

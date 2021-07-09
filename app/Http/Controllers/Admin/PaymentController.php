@@ -136,7 +136,7 @@ class PaymentController extends Controller
                 'student_fee_id' => 'required',
                 'amount' => 'required|int|min:50',
                 'remarks' => 'required',
-                'official_receipt' => 'required',
+                'official_receipt' => 'required|unique:payments',
                 'payment_type' => 'required',
                 'payment_mode_id' => 'required'
             ]);
@@ -152,268 +152,286 @@ class PaymentController extends Controller
             $check_if_student_fee_id_has_dp = DB::table('student_fee')
                                                   ->where('id', $data['student_fee_id'])->first();
 
+
+            $get_all_payments = Payment::all();
+
+            $recent_transaction_no = [];
+
+            foreach($get_all_payments as $payment):
+
+                    array_push($recent_transaction_no, $payment->transaction_no);
+
+            endforeach;
+
+
+            if(!in_array($transaction_no, $recent_transaction_no)) // check if the transaction no exist
+            {
                 //TODO DOWN PAYMENT
-            if($data['payment_type'] == 'dp')
-            {    
-                
-                // check if the student has already have a downpayment 
-                    if($check_if_student_fee_id_has_dp->has_downpayment === 1)
-                    {
-                        return response()->json('error');
-                    }
-                    else
-                    {
-                        // insert
-                         $recent_student_fee =   Payment::create($data); // latest inserted data ( Student Payment )
-
-                         $get_student_by_student_fee_id = Student::where('id', $check_if_student_fee_id_has_dp->student_id)->first(); 
-
-
-                        $this->log_activity($recent_student_fee,'added','Down Payment for student',$get_student_by_student_fee_id->first_name." ".$get_student_by_student_fee_id->last_name);
-
-
-                         // after payment get the monthly fee of a student and populate it to the student_fee Table with a specific student_fee_id
-                         $monthly_fee = DB::table('student_fee')
-                                         ->select(DB::raw("(total_fee - downpayment) / months_no as monthly_payment"))
-                                         ->where('id', $recent_student_fee->student_fee_id)
-                                         ->first();
-
-                         //update the student fee
+                if($data['payment_type'] == 'dp')
+                {    
+                    
+                    // check if the student has already have a downpayment 
+                        if($check_if_student_fee_id_has_dp->has_downpayment === 1)
+                        {
+                            return response()->json('error');
+                        }
+                        else
+                        {
+                            // insert
+                             $recent_student_fee =   Payment::create($data); // latest inserted data ( Student Payment )
+    
+                             $get_student_by_student_fee_id = Student::where('id', $check_if_student_fee_id_has_dp->student_id)->first(); 
+    
+    
+                            $this->log_activity($recent_student_fee,'added','Down Payment for student',$get_student_by_student_fee_id->first_name." ".$get_student_by_student_fee_id->last_name);
+    
+    
+                             // after payment get the monthly fee of a student and populate it to the student_fee Table with a specific student_fee_id
+                             $monthly_fee = DB::table('student_fee')
+                                             ->select(DB::raw("(total_fee - downpayment) / months_no as monthly_payment"))
+                                             ->where('id', $recent_student_fee->student_fee_id)
+                                             ->first();
+    
+                             //update the student fee
+                                 DB::table('student_fee')
+                                 ->where('id', $data['student_fee_id'])
+                                 ->update([
+                                            'has_downpayment' => 1, 
+                                            'downpayment' => $data['amount'], 
+                                            'monthly_payment' => $monthly_fee->monthly_payment, 
+                                            ]);
+    
+    
+                             $months = School::all('months_no', 'date_started')->first();
+    
+                             // get the updated monthly payment
+                             $mp = DB::table('student_fee')
+                                 ->select(DB::raw("(total_fee - downpayment) / months_no as monthly_payment"))
+                                 ->where('id', $recent_student_fee->student_fee_id)
+                                 ->first();
+    
+                             // because refresh helper function wont work on eloquent ; use the querybuiler to update again the recent row
                              DB::table('student_fee')
-                             ->where('id', $data['student_fee_id'])
-                             ->update([
-                                        'has_downpayment' => 1, 
-                                        'downpayment' => $data['amount'], 
-                                        'monthly_payment' => $monthly_fee->monthly_payment, 
-                                        ]);
-
-
-                         $months = School::all('months_no', 'date_started')->first();
-
-                         // get the updated monthly payment
-                         $mp = DB::table('student_fee')
-                             ->select(DB::raw("(total_fee - downpayment) / months_no as monthly_payment"))
-                             ->where('id', $recent_student_fee->student_fee_id)
-                             ->first();
-
-                         // because refresh helper function wont work on eloquent ; use the querybuiler to update again the recent row
-                         DB::table('student_fee')
-                             ->where('id', $data['student_fee_id'])
-                             ->update(['monthly_payment' => $mp->monthly_payment ]);
-
-
-
-                         $date_started = $months->date_started; // get the date started (Starting date for a payment)
-                         $months_no = $months->months_no; // get number of months by school
-            
-                         $monthly_payment = $mp->monthly_payment; // montly payment
-
-
-                         // insert each payments by  Schools.months_no / Payment Schedule
-                         for($i = 0; $i<$months_no; $i++)
-                         {
-                             DB::table('payment_ledger')
-                                 ->insert([
-                                 'month'=> $date_started,
-                                 'student_fee_id' => $recent_student_fee['student_fee_id'],
-                                 'amount' => $monthly_payment,
-                                 'balance' => $monthly_payment
-                                 ]);
-
-                             //after inserting the recent values to payment_ledger ; increment the month by one month until the last index of the months_no inside for loop
-                            $date_started = date("Y-m-d",strtotime("+1 month",strtotime($date_started)));
-
-                         }
-
-                         return response()->json('success');
+                                 ->where('id', $data['student_fee_id'])
+                                 ->update(['monthly_payment' => $mp->monthly_payment ]);
+    
+    
+    
+                             $date_started = $months->date_started; // get the date started (Starting date for a payment)
+                             $months_no = $months->months_no; // get number of months by school
+                
+                             $monthly_payment = $mp->monthly_payment; // montly payment
+    
+    
+                             // insert each payments by  Schools.months_no / Payment Schedule
+                             for($i = 0; $i<$months_no; $i++)
+                             {
+                                 DB::table('payment_ledger')
+                                     ->insert([
+                                     'month'=> $date_started,
+                                     'student_fee_id' => $recent_student_fee['student_fee_id'],
+                                     'amount' => $monthly_payment,
+                                     'balance' => $monthly_payment
+                                     ]);
+    
+                                 //after inserting the recent values to payment_ledger ; increment the month by one month until the last index of the months_no inside for loop
+                                $date_started = date("Y-m-d",strtotime("+1 month",strtotime($date_started)));
+    
+                             }
+    
+                             return response()->json('success');
+                        }
+                        
+                } //TODO MONTHLY PAYMENT
+                else if($data['payment_type'] == 'mo')
+                {
+                    $check_if_payment_has_dp = DB::table('student_fee')
+                                               ->where('id', $data['student_fee_id'])
+                                               ->first();
+    
+                    if(!$check_if_payment_has_dp->has_downpayment)
+                    {
+                        return response()->json('no downpayment');
+                    }
+                    // get the monthly payment by student_fee_id
+                    $get_the_monthly_payment_or_balance = DB::table('payment_ledger')
+                                                            ->select('amount', 'balance')
+                                                            ->where('student_fee_id', $data['student_fee_id'])
+                                                            ->where('status', 'unpaid')
+                                                            ->first();
+    
+                    // check if the delivered amount is equal to the student's monthly payment / balance  do something ..
+                    if($data['amount'] == $get_the_monthly_payment_or_balance->balance)
+                    {
+    
+                        // insert payment
+                         $recent_student_fee =   Payment::create($data); // latest inserted data ( Student Payment )
+    
+                         $get_student_by_student_fee_id = Student::where('id', $check_if_student_fee_id_has_dp->student_id)->first(); 
+                         $this->log_activity($recent_student_fee,'added','Monthly Payment for student',$get_student_by_student_fee_id->first_name." ".$get_student_by_student_fee_id->last_name);
+    
+                        $update_payment_ledger = DB::table('payment_ledger')
+                                                ->where('status', 'unpaid')
+                                                ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                                ->first();
+                                                 
+                                                //update
+                                                 DB::table('payment_ledger')
+                                                 ->where('id', $update_payment_ledger->id)
+                                                 ->update([
+                                                     'status' => 'paid',
+                                                     'payment_id' => $recent_student_fee->id,
+                                                     'created_at' => Carbon::now()
+                                                     ]);
+    
+                        return response()->json('success');
+                    }
+    
+                    // check if the delivered amount is less than to the student's monthly payment / balance  do something ..
+                     if($data['amount'] < $get_the_monthly_payment_or_balance->balance)
+                    {
+                        /**  if the delivered amount is less than the monthly payment then subtract the delivered amount to the monthly payment and get the total change
+                         * after getting the total change add it to the next payment_schedule 
+                         */
+    
+    
+                        // get the delivered amount then subtract it to the current amount/balance then get the total change so that it will be added to the next payment schedule
+                        $get_the_change = DB::table('payment_ledger')
+                                          ->select(DB::raw("(balance - $data[amount]) as total_change"), 'id')
+                                          ->where('status', 'unpaid')
+                                          ->where('student_fee_id', $data['student_fee_id'])
+                                          ->first();
+    
+                        // insert  payment and get the last inserted data (Student Payment)
+                        $recent_student_fee =   Payment::create($data); 
+    
+                        // update the latest unpaid row in the payment ledger 
+                        $update_payment_ledger = DB::table('payment_ledger')
+                                                ->where('status', 'unpaid')
+                                                ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                                ->first();
+                                                
+                                                //update
+                                                 DB::table('payment_ledger')
+                                                 ->where('id', $update_payment_ledger->id)
+                                                 ->update([
+                                                     'status' => 'paid',
+                                                     'payment_id' => $recent_student_fee->id,
+                                                     'created_at' => Carbon::now()
+                                                     ]);
+    
+                        // after updating the recent row is now paid then select again a new unpaid record
+    
+                        // getting the latest unpaid record
+                        $new_payment_ledger_record =  DB::table('payment_ledger')
+                                                      ->where('status', 'unpaid')
+                                                      ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                                      ->first();
+    
+                        // update the newly selected unpaid record ; update its amount / balance BY PAYMENT_LEDGER_ID
+                        DB::update("UPDATE payment_ledger 
+                                    SET 
+                                    balance = balance + $get_the_change->total_change 
+                                    WHERE id = $new_payment_ledger_record->id");
+                        
+                        return response()->json('success');
+    
                     }
                     
-            } //TODO MONTHLY PAYMENT
-            else if($data['payment_type'] == 'mo')
-            {
-                $check_if_payment_has_dp = DB::table('student_fee')
-                                           ->where('id', $data['student_fee_id'])
-                                           ->first();
-
-                if(!$check_if_payment_has_dp->has_downpayment)
-                {
-                    return response()->json('no downpayment');
-                }
-                // get the monthly payment by student_fee_id
-                $get_the_monthly_payment_or_balance = DB::table('payment_ledger')
-                                                        ->select('amount', 'balance')
-                                                        ->where('student_fee_id', $data['student_fee_id'])
-                                                        ->where('status', 'unpaid')
-                                                        ->first();
-
-                // check if the delivered amount is equal to the student's monthly payment / balance  do something ..
-                if($data['amount'] == $get_the_monthly_payment_or_balance->balance)
-                {
-
-                    // insert payment
-                     $recent_student_fee =   Payment::create($data); // latest inserted data ( Student Payment )
-
-                     $get_student_by_student_fee_id = Student::where('id', $check_if_student_fee_id_has_dp->student_id)->first(); 
-                     $this->log_activity($recent_student_fee,'added','Monthly Payment for student',$get_student_by_student_fee_id->first_name." ".$get_student_by_student_fee_id->last_name);
-
-                    $update_payment_ledger = DB::table('payment_ledger')
-                                            ->where('status', 'unpaid')
-                                            ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                                            ->first();
-                                             
-                                            //update
-                                             DB::table('payment_ledger')
-                                             ->where('id', $update_payment_ledger->id)
-                                             ->update([
-                                                 'status' => 'paid',
-                                                 'payment_id' => $recent_student_fee->id,
-                                                 'created_at' => Carbon::now()
-                                                 ]);
-
-                    return response()->json('success');
-                }
-
-                // check if the delivered amount is less than to the student's monthly payment / balance  do something ..
-                 if($data['amount'] < $get_the_monthly_payment_or_balance->balance)
-                {
-                    /**  if the delivered amount is less than the monthly payment then subtract the delivered amount to the monthly payment and get the total change
-                     * after getting the total change add it to the next payment_schedule 
-                     */
-
-
-                    // get the delivered amount then subtract it to the current amount/balance then get the total change so that it will be added to the next payment schedule
-                    $get_the_change = DB::table('payment_ledger')
-                                      ->select(DB::raw("(balance - $data[amount]) as total_change"), 'id')
-                                      ->where('status', 'unpaid')
-                                      ->where('student_fee_id', $data['student_fee_id'])
-                                      ->first();
-
-                    // insert  payment and get the last inserted data (Student Payment)
-                    $recent_student_fee =   Payment::create($data); 
-
-                    // update the latest unpaid row in the payment ledger 
-                    $update_payment_ledger = DB::table('payment_ledger')
+                    // check if the delivered amount is greather than the recent amount / balance (Monthly Payment)
+                    if($data['amount'] > $get_the_monthly_payment_or_balance->balance)
+                    {
+    
+                        $first_change = $data['amount'] - $get_the_monthly_payment_or_balance->balance;
+    
+                        $recent_student_fee =   Payment::create($data); 
+    
+                        $update_payment_ledger = DB::table('payment_ledger')
                                             ->where('status', 'unpaid')
                                             ->where('student_fee_id', $recent_student_fee->student_fee_id)
                                             ->first();
                                             
                                             //update
-                                             DB::table('payment_ledger')
-                                             ->where('id', $update_payment_ledger->id)
-                                             ->update([
-                                                 'status' => 'paid',
-                                                 'payment_id' => $recent_student_fee->id,
-                                                 'created_at' => Carbon::now()
-                                                 ]);
-
-                    // after updating the recent row is now paid then select again a new unpaid record
-
-                    // getting the latest unpaid record
-                    $new_payment_ledger_record =  DB::table('payment_ledger')
-                                                  ->where('status', 'unpaid')
-                                                  ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                                                  ->first();
-
-                    // update the newly selected unpaid record ; update its amount / balance BY PAYMENT_LEDGER_ID
-                    DB::update("UPDATE payment_ledger 
-                                SET 
-                                balance = balance + $get_the_change->total_change 
-                                WHERE id = $new_payment_ledger_record->id");
-                    
-                    return response()->json('success');
-
-                }
-                
-                // check if the delivered amount is greather than the recent amount / balance (Monthly Payment)
-                if($data['amount'] > $get_the_monthly_payment_or_balance->balance)
-                {
-
-                    $first_change = $data['amount'] - $get_the_monthly_payment_or_balance->balance;
-
-                    $recent_student_fee =   Payment::create($data); 
-
-                    $update_payment_ledger = DB::table('payment_ledger')
-                                        ->where('status', 'unpaid')
-                                        ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                                        ->first();
-                                        
-                                        //update
-                                        DB::table('payment_ledger')
-                                        ->where('id', $update_payment_ledger->id)
-                                        ->update([
-                                            'payment_change' => $first_change,
-                                            'status' => 'paid',
-                                            'payment_id' => $recent_student_fee->id,
-                                            'created_at' => Carbon::now()
-                                            ]);
-
-
-                    $new_payment_ledger_record =  DB::table('payment_ledger')
-                                                        ->where('status', 'unpaid')
-                                                        ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                                                        ->first();
-
-
-                    $new_paid_payment_ledger_record = DB::table('payment_ledger')
-                                                        ->where('status', 'paid')
-                                                        ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                                                        ->latest('id')
-                                                        ->first();
-                                                        // getting the payment change of the latest payment
-
-
-                    $id = $new_payment_ledger_record->id;
-                    $change = $data['amount'] - $get_the_monthly_payment_or_balance->balance;
-
-                    $created_at = Carbon::now();
-                    
-
-                    $payment_change = $new_paid_payment_ledger_record->payment_change; // paymentchange
-
-                    while($change >= $new_payment_ledger_record->balance)
-                    {
-                        
-                         //update the newly selected unpaid record ; update its amount / balance BY PAYMENT_LEDGER_ID
-                            DB::update("UPDATE payment_ledger 
-                            SET  
-                            payment_id = $recent_student_fee->id ,
-                            payment_change = $payment_change - balance,
-                            status = 'paid',
-                            created_at = '$created_at'
-                            WHERE id = $id");
-
-                            
-                            $get_the_change_for_next_payment_sched = DB::table('payment_ledger')
-                            ->select(DB::raw("($change) - balance as total_change"), 'id', 'payment_change')
-                            ->where('status', "unpaid")
-                            ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                            ->first(); // 2000
-
-                            $get_the_new_paid_record = DB::table('payment_ledger')
-                            ->where('status', 'paid')
-                            ->where('student_fee_id', $recent_student_fee->student_fee_id)
-                            ->latest('id')
-                            ->first(); // updated payment change
-
-                            $id ++;
-
-                            $change = $get_the_change_for_next_payment_sched->total_change;
-                            $payment_change = $get_the_new_paid_record->payment_change; // update the payment change
-                    }
-
-                            $next_payment_ledger_record =  DB::table('payment_ledger')
+                                            DB::table('payment_ledger')
+                                            ->where('id', $update_payment_ledger->id)
+                                            ->update([
+                                                'payment_change' => $first_change,
+                                                'status' => 'paid',
+                                                'payment_id' => $recent_student_fee->id,
+                                                'created_at' => Carbon::now()
+                                                ]);
+    
+    
+                        $new_payment_ledger_record =  DB::table('payment_ledger')
                                                             ->where('status', 'unpaid')
                                                             ->where('student_fee_id', $recent_student_fee->student_fee_id)
                                                             ->first();
-
-                                                            //update the newly selected unpaid record ; update its amount / balance BY PAYMENT_LEDGER_ID
-                                                            DB::update("UPDATE payment_ledger 
-                                                            SET
-                                                            balance = balance - $change
-                                                            WHERE id = $next_payment_ledger_record->id");
-                      return response()->json('success');
+    
+    
+                        $new_paid_payment_ledger_record = DB::table('payment_ledger')
+                                                            ->where('status', 'paid')
+                                                            ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                                            ->latest('id')
+                                                            ->first();
+                                                            // getting the payment change of the latest payment
+    
+    
+                        $id = $new_payment_ledger_record->id;
+                        $change = $data['amount'] - $get_the_monthly_payment_or_balance->balance;
+    
+                        $created_at = Carbon::now();
+                        
+    
+                        $payment_change = $new_paid_payment_ledger_record->payment_change; // paymentchange
+    
+                        while($change >= $new_payment_ledger_record->balance)
+                        {
+                            
+                             //update the newly selected unpaid record ; update its amount / balance BY PAYMENT_LEDGER_ID
+                                DB::update("UPDATE payment_ledger 
+                                SET  
+                                payment_id = $recent_student_fee->id ,
+                                payment_change = $payment_change - balance,
+                                status = 'paid',
+                                created_at = '$created_at'
+                                WHERE id = $id");
+    
+                                
+                                $get_the_change_for_next_payment_sched = DB::table('payment_ledger')
+                                ->select(DB::raw("($change) - balance as total_change"), 'id', 'payment_change')
+                                ->where('status', "unpaid")
+                                ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                ->first(); // 2000
+    
+                                $get_the_new_paid_record = DB::table('payment_ledger')
+                                ->where('status', 'paid')
+                                ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                ->latest('id')
+                                ->first(); // updated payment change
+    
+                                $id ++;
+    
+                                $change = $get_the_change_for_next_payment_sched->total_change;
+                                $payment_change = $get_the_new_paid_record->payment_change; // update the payment change
+                        }
+    
+                                $next_payment_ledger_record =  DB::table('payment_ledger')
+                                                                ->where('status', 'unpaid')
+                                                                ->where('student_fee_id', $recent_student_fee->student_fee_id)
+                                                                ->first();
+    
+                                                                //update the newly selected unpaid record ; update its amount / balance BY PAYMENT_LEDGER_ID
+                                                                DB::update("UPDATE payment_ledger 
+                                                                SET
+                                                                balance = balance - $change
+                                                                WHERE id = $next_payment_ledger_record->id");
+                          return response()->json('success');
+                    }
                 }
             }
+
+            return response()->json('error_transaction_no');
+
         }
     }
 

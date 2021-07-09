@@ -116,14 +116,19 @@ class ParentController extends Controller
 
                 ]);
 
-            $data['parent_id'] = auth()->user()->parent_id;
-            $data['remark'] = "monthly payment";
+                $data['parent_id'] = auth()->user()->parent_id;
+                $data['remark'] = "monthly payment";
 
                 if(request()->hasFile('screenshot')) {
                     // check if the request has an image file
                       $data['screenshot'] = request('screenshot')->getClientOriginalName(); // get only the original file_name 
                      request('screenshot')->storeAs('/uploads/receipt',$data['screenshot'], 'public'); // params: fileFolder , fileName , filePath
-                     ParentPayment::create($data);
+
+                      $payment = ParentPayment::create($data);
+
+                      $parent = ParentModel::where('id', $data['parent_id'])->first(); // get authenticated parent
+
+                      $this->log_activity($parent,'sent','payment',"Php $payment->amount", '', $parent->id, $payment->student_id);
 
                       return response()->json('success');
                 }
@@ -151,7 +156,12 @@ class ParentController extends Controller
                     // check if the request has an image file
                       $data['screenshot'] = request('screenshot')->getClientOriginalName(); // get only the original file_name 
                      request('screenshot')->storeAs('/uploads/receipt',$data['screenshot'], 'public'); // params: fileFolder , fileName , filePath
-                     ParentPayment::create($data);
+
+                     $payment = ParentPayment::create($data);
+                     $parent = ParentModel::where('id', $data['parent_id'])->first(); // get authenticated parent
+
+                     $this->log_activity($parent,'sent','payment',"Php $payment->amount", '', $parent->id, $payment->student_id);
+
 
                       return response()->json('success');
                 }

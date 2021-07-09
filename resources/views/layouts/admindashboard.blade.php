@@ -60,15 +60,21 @@
 </head>
 
 <body>
-    {{-- @include('layouts.modal') --}}
+    {{-- @include('layouts.modal') --}}	
     @include('layouts.modal')
 	<div class="wrapper">
 		<nav id="sidebar" class="sidebar">
 			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="index.html">
-                    <span class="align-middle"><img src="{{ asset('images/admin/admin.png') }}" alt="admin_logo" width="130"></span>
+				<a class="sidebar-brand" href="javascript:void(0)">
+					{{--Display a specific Images for Specific Roles--}}
+					@if ($user_role == 'Admin')
+                   		 <span class="align-middle"><img src="{{ asset('images/admin/admin.svg') }}" class="rounded-circle" alt="admin_logo" width="130"></span>
+					@elseif ($user_role == 'Registar')
+						 <span class="align-middle"><img src="{{ asset('images/admin/registrar.svg') }}" class="rounded-circle" alt="admin_logo" width="130"></span>
+					@else
+						 <span class="align-middle"><img src="{{ asset('images/admin/cashier.svg') }}" class="rounded-circle" alt="admin_logo" width="130"></span>
+					@endif
                 </a>
-
 				
 				<ul class="sidebar-nav">
 					<li class="sidebar-header">
@@ -293,7 +299,15 @@
              			    </a>
 
 							 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-               				 	<img src="{{ asset('images/admin/admin.png') }}" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">{{ Auth::user()->name }}</span>
+								 {{--Display a specific Images for Specific Roles--}}
+									@if ($user_role == 'Admin')
+										<img src="{{ asset('images/admin/admin.svg') }}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
+									@elseif ($user_role == 'Registar')
+										<img src="{{ asset('images/admin/registrar.svg') }}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
+									@else
+										<img src="{{ asset('images/admin/cashier.svg') }}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
+									@endif
+               				 	
               				 </a>
 
 							<div class="dropdown-menu dropdown-menu-end">

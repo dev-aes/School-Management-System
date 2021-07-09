@@ -22,3 +22,17 @@ if(!function_exists('get_username'))
     }
 }
 
+
+if(!function_exists('get_user_role_name'))
+{
+    function get_user_role_name()
+    {
+        $role = auth()->id();
+
+        return $role;
+        // return ucfirst($role);
+    }
+}
+
+
+

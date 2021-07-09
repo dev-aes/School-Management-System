@@ -1,6 +1,6 @@
 @extends('layouts.admindashboard')
 
-@section('title', 'Admin · Subject Information')
+@section('title', "$user_role · Subject Information")
 
 @section('content')
 
@@ -38,7 +38,10 @@
                 </div>
                 <a class="btn btn-outline-info d-block d-sm-inline-block" href="javascript:void(0)" id="imp_subject"><i class="fas fa-upload"></i> Import</a>
                 <a class="btn  btn-outline-info d-block d-sm-inline-block" href="javascript:void(0)" id="exp_subject"><i class="fas fa-file-export"></i> Export</a>
+                
+                @if(auth()->user()->hasRole('admin'))
                 <a class="btn  btn-outline-danger d-block d-sm-inline-block" href="javascript:void(0)" id="delete_all_subject"><i class="fas fa-trash-alt"></i> Delete Record</a>
+                @endif
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admindashboard')
 
-@section('title', 'Admin · Reports')
+@section('title', "$user_role · Reports")
 
 @section('content')
 

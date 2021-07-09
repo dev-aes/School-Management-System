@@ -283,8 +283,11 @@ $(()=> {
 
                                 return `${description[0]} <span class='text-success'> - ${description[1]} </span>`;
                             }}, 
-                            {data:'created_at'}];
-        crud_index('.al_DT', 'activity_log.index', activity_log, column);
+                            {data:'created_at'},
+                        ];
+
+
+        crud_index('.al_DT', 'activity_log.index', activity_log, column, 1);
     }
 
     if(navigator.onLine)
@@ -5856,7 +5859,7 @@ function addPayment() {
                     
                 },
                 success: response => {
-                    // console.log(response);
+                    res(response);
                     if(response == 'success')
                     {
                         toastSuccess('Payment Added')
@@ -5867,8 +5870,11 @@ function addPayment() {
                         payment_display_balance_by_student_id();
 
                         return;
-    
-    
+                    }
+
+                    if(response == 'error_transaction_no')
+                    {
+                        return toastWarning('Server Error please refresh the page');
                     }
 
                      if(response == 'error')
@@ -6338,8 +6344,8 @@ function AdminDashBoardDisplayUser()
             let date = new Date(user.created_at);
 
                 output += `<tr><td>${user.id} </td>
-                          <td>${user.name} </td>
-                          <td>${user.role.name} </td>`;
+                          <td class='text-capitalize'>${user.name} </td>
+                          <td class='text-capitalize'>${user.role.name} </td>`;
 
                           if(user.status == 1)
                           {
@@ -7837,7 +7843,7 @@ function display_teacher_info_on_user_modal()
             dataType:'json',
             success: teacher => {
                 //res(teacher);
-                let teacher_avatar = img_catch(teacher.teacher_avatar, `storage/uploads/student/${student.teacher_avatar}`, 150);
+                let teacher_avatar = img_catch(teacher.teacher_avatar, `storage/uploads/teacher/${teacher.teacher_avatar}`, 150);
 
                 $('#user_full_name').attr('value', `${teacher.first_name} ${teacher.last_name}` ).attr('readonly', true);
                 $('#user_email').attr('value', `${teacher.email}` ).attr('readonly', true);
@@ -8404,33 +8410,71 @@ function crud_delete(element,route_name,msg,dt)
 }
 
 // crud index / read / select all
-function crud_index(dt,route_name,data, column) {
-    
-    $(dt).DataTable({
-        processing: false,
-        serverSide: true,
-        retrieve: true,
-        autoWidth: false,
-        ajax: route(route_name),
-        columns:data,
-        responsive: {
-            details: {
-                display: $.fn.dataTable.Responsive.display.modal( {
-                      header: function ( row ) {
-                        var data = row.data();
-                        return 'Details for '+ data[column];
-                      }
-                } ),
-                renderer: $.fn.dataTable.Responsive.renderer.tableAll()
-            }
-        },
-        "rowCallback": function( row, data ) {
-            if ( $.inArray(data.id, selected) !== -1 ) {
-                $(row).addClass('selected');
-            }
-        },
-        
-    });
+function crud_index(dt,route_name,data, column, order = '') {
+
+    // check if there is no order by value 
+    if(order == "")
+    {
+        $(dt).DataTable({
+
+            processing: false,
+            serverSide: true,
+            retrieve: true,
+            autoWidth: false,
+            ajax: route(route_name),
+            columns:data,
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal( {
+                          header: function ( row ) {
+                            var data = row.data();
+                            return 'Details for '+ data[column];
+                          }
+                    } ),
+                    renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                }
+            },
+            "rowCallback": function( row, data ) {
+                if ( $.inArray(data.id, selected) !== -1 ) {
+                    $(row).addClass('selected');
+                }
+            },
+            
+            
+        });
+    }
+    else
+    {
+        $(dt).DataTable({
+
+            "order": [[ order, "desc" ]],
+            processing: false,
+            serverSide: true,
+            retrieve: true,
+            autoWidth: false,
+            ajax: route(route_name),
+            columns:data,
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal( {
+                          header: function ( row ) {
+                            var data = row.data();
+                            return 'Details for '+ data[column];
+                          }
+                    } ),
+                    renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                }
+            },
+            "rowCallback": function( row, data ) {
+                if ( $.inArray(data.id, selected) !== -1 ) {
+                    $(row).addClass('selected');
+                }
+            },
+            
+            
+        });
+    }
+   
 }
 
 

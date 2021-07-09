@@ -58,7 +58,9 @@ class DashboardController extends Controller
 
 
 
-        $activity_logs = Activity::where('subject_type', '!=', 'App\Models\ParentPayment')->latest()->take(5)->get(); // get the latest 5 activity logs
+        //$activity_logs = Activity::where('subject_type', '!=', 'App\Models\ParentPayment')->latest()->take(5)->get(); // get the latest 5 activity logs
+        $activity_logs = Activity::latest()->take(5)->get(); // get the latest 5 activity logs
+
         $parent_payments_log = DB::select("SELECT al.id, al.description, al.properties, al.parent_id, al.student_id, al.created_at, pp.seen FROM activity_log al INNER JOIN parent_payments pp ON al.parent_id = pp.parent_id  WHERE al.student_id = pp.student_id AND al.causer_id !=1 GROUP BY pp.id ORDER BY pp.seen LIMIT 5"); // get the latest parent payment request
 
 
@@ -129,5 +131,21 @@ class DashboardController extends Controller
 
                     return $count;
     }
+
+//     public function create()
+//     {
+//           $transaction_no = mt_rand(123456,999999); // generate a transaction no.
+
+//           $list = [360336,591146,387636,470795,523490,165573,274120,517230,770976,868966,692249,581938,655816,562482,608797,841223,287869,653443,908375,914920,689989,
+//                    409020,440557,436912,764477,632525,834896,694835,325137,308790,611840,733947,164223,774325,616388,880872,305889,359298,719367,464676,135884,322772,
+//                    514457,730685,819699,826255,990005,729825,766242,811909,233471,348820,231365,866698,562976,810826,140586,880234,488368,333503,421038,777218,815015];
+
+//         if(!in_array($transaction_no, $list))
+//         {
+//              return 'not in array';
+//         }
+
+//         return 'in array';
+//     }
 
 }

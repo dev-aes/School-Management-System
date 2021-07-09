@@ -87,6 +87,7 @@ Route::get('/', function () {
 
 Route::resource('/admin/user', UserController::class)->middleware('auth'); // only auth because of reusing of updating avatar function
 Route::resource('/home', DashboardController::class)->middleware(['auth', 'staff']); // middleware for admin, registrar & cashier
+Route::resource('admin/activity_log', ActivitylogController::class)->middleware(['auth', 'staff']);
 
 // Admin Dashboard
 Route::middleware(['auth','admin'])->group(function() {
@@ -95,7 +96,6 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::resource('/admin/school', SchoolController::class);
     Route::resource('/admin/academic_year', AcademicYearController::class);
     Route::resource('/admin/role', RoleController::class);
-    Route::resource('admin/activity_log', ActivitylogController::class);
 
 
             
