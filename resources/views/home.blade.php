@@ -223,7 +223,7 @@
 				labels:{!!json_encode($months)!!},
 				datasets:[{
 					label:'Monthly Sales for AY 2020-2021',
-					data: {{ json_encode($sales) }},
+					data: {!!json_encode($sales)!!},
 					backgroundColor:[
 					'rgba(26, 188, 156,1.0)',
 					'rgba(52, 152, 219,1.0)',
@@ -252,12 +252,12 @@
 				datasets:[{
 					label:'Students by Grade Level',
 					data:[
-                        {{ json_encode($g1) }},
-                        {{ json_encode($g2) }},
-                        {{ json_encode($g3) }},
-                        {{ json_encode($g4) }},
-                        {{ json_encode($g5) }},
-                        {{ json_encode($g6) }}
+                        {!!json_encode($g1)!!},
+                        {!!json_encode($g2)!!},
+                        {!!json_encode($g3)!!},
+                        {!!json_encode($g4)!!},
+                        {!!json_encode($g5)!!},
+                        {!!json_encode($g6)!!}
                     ],
 					backgroundColor:
                     [
