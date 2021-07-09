@@ -52,7 +52,7 @@ Route::get('/symlink', function() {
 
 Route::get('/mfresh', function() {
 
-    Artisan::call('migrate:fresh');
+    Artisan::call('migrate:fresh --seed');
 
     return view('test');
 });
