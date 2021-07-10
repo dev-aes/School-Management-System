@@ -4147,7 +4147,7 @@ function deleteFee(id) {
                 {
                     toastSuccess('Fee Removed')
                     displaySubFeeByGradeLevelID();
-                    $('#fee_DT').DataTable().draw();
+                    $('.fee_DT').DataTable().draw();
                 }
             },
             error: err=> {
@@ -6360,8 +6360,23 @@ function AdminDashBoardDisplayUser()
                 `
             });
 
+          
             $('#dashboard_display_user').html(output);
 
+            $('#dashboard_user_DT').DataTable({
+                retrieve: true,
+                responsive: {
+                    details: {
+                        display: $.fn.dataTable.Responsive.display.modal( {
+                              header: function ( row ) {
+                                var data = row.data();
+                                return `<p class='lead fw-bold text-success'> <i class="fas fa-info-circle"></i> Basic Info</p>`;
+                              }
+                        } ),
+                        renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                    }
+                },
+            });
 
             //display activity logs
             let output2 = ``;
@@ -8428,7 +8443,8 @@ function crud_index(dt,route_name,data, column, order = '') {
                     display: $.fn.dataTable.Responsive.display.modal( {
                           header: function ( row ) {
                             var data = row.data();
-                            return 'Details for '+ data[column];
+                            return `<p class='lead fw-bold text-success'> <i class="fas fa-info-circle"></i> Basic Info</p>`;
+                            // return 'Details for '+ data[column];
                           }
                     } ),
                     renderer: $.fn.dataTable.Responsive.renderer.tableAll()
@@ -8459,7 +8475,8 @@ function crud_index(dt,route_name,data, column, order = '') {
                     display: $.fn.dataTable.Responsive.display.modal( {
                           header: function ( row ) {
                             var data = row.data();
-                            return 'Details for '+ data[column];
+                            return `<p class='lead fw-bold text-success'> <i class="fas fa-info-circle"></i> Basic Info</p>`;
+                            // return `<p class='lead fw-bold text-success'> <i class="fas fa-info-circle"></i>  ${data[column]} </p>`;
                           }
                     } ),
                     renderer: $.fn.dataTable.Responsive.renderer.tableAll()

@@ -166,25 +166,25 @@
     <div class="row">
         <div class="col-12 col-lg-8 col-xxl-9 d-flex">
             <div class="card flex-fill">
-                <div class="card-header">
-
-                    {{-- <h5 class="card-title mb-0">Latest Projects</h5> --}}
+                <div class="card-body p-5">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="dashboard_user_DT">
+                            <caption class="p-3">List of online users <i class="fas fa-user-shield"></i></caption>
+                            <thead style="background: none">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboard_display_user">
+                               {{--Display Fetch Users--}}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <table class="table table-hover my-0  p-5" id="dashboard_user_DT">
-                    <caption class="p-3">List of users <i class="fas fa-user-shield"></i></caption>
-                    <thead style="background: none">
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th class="d-none d-xl-table-cell">Role</th>
-                            <th class="d-none d-xl-table-cell">Status</th>
-                            <th class="d-none d-md-table-cell">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dashboard_display_user">
-                       {{--Display Fetch Users--}}
-                    </tbody>
-                </table>
             </div>
         </div>
         <div class="col-12 col-lg-4 col-xxl-3 d-flex">
@@ -194,9 +194,6 @@
                     <h5 class="card-title mb-0">Activity Log</h5>
                 </div>
                 <div class="card-body d-flex w-100">
-                    {{-- <div class="align-self-center chart chart-lg">
-                        <canvas id="chartjs-dashboard-bar"></canvas>
-                    </div> --}}
                     <div class="activity_log">
                         {{--Display Activity Logs--}}
                     </div>

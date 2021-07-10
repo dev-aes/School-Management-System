@@ -52,7 +52,7 @@ class DashboardController extends Controller
                         ->where('student_fee.academic_year_id', $ay->id )
                         ->first(); // get the total of yearly sale
 
-        $latest_users = User::with('role')->where('role_id', '!=', '1')->latest()->take(10)->get(); // get the latest users
+        $latest_users = User::with('role')->where('role_id', '!=', '1')->where('status', 1)->latest()->take(50)->get(); // get the latest users
 
 
 

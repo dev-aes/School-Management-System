@@ -60,7 +60,10 @@ class ValuesController extends Controller
  
                  endif;
  
-                 Value::create(['title' => $value]);
+               $val =  Value::create(['title' => $value]); // get individual values for activity_log
+
+               $this->log_activity($val,'created','Values',$val->title);
+
  
              endforeach;
              
@@ -78,10 +81,14 @@ class ValuesController extends Controller
                 'description' => 'required|string'
             ]);
 
-            Description::create([
+          $description = Description::create([
                                     'values_id' => $data['values_id'],
                                     'description' => $data['description']
             ]);
+
+            $values = Value::where('id', $data['id'])->first();
+
+            $this->log_activity($description,'assigned','description to values', $values->title);
 
             return $this->res();
         }
@@ -104,6 +111,9 @@ class ValuesController extends Controller
         {
             $value->update(['title' => request('title')]);
 
+            $this->log_activity($value,'updated','Values',$value->title);
+
+
             return $this->res();
         }
     }
@@ -112,8 +122,9 @@ class ValuesController extends Controller
     {
         if(request()->ajax())
         {
-            $description->delete();
+            $this->log_activity($description,'deleted','Description', $description->description);
 
+            $description->delete();
             return $this->res();
         }
     }
@@ -122,6 +133,8 @@ class ValuesController extends Controller
     {
         if(request()->ajax())
         {
+            $this->log_activity($value,'deleted','Values',$value->title);
+
             $value->delete();
 
             return $this->res();

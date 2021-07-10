@@ -398,7 +398,7 @@
 
 	{{--Scripts--}}
     <script src="{{ asset('js/preview.js') }}"></script>
-    <script src="{{ asset('js/ajax.js') }}"></script>
+    <script src="{{ asset('js/bundle.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     {{-- <script src="{{ asset('js/statistic.js') }}"></script> --}}
      
