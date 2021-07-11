@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Subject;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SubjectFactory extends Factory
@@ -21,10 +22,15 @@ class SubjectFactory extends Factory
      */
     public function definition()
     {
-        return [
-            'name' => 'math',
-            'description' => $this->faker->name,
-            'grade_val'=>1
-        ];
+        return $this->random();
+    }
+
+    public function random()
+    {
+        $names = Arr::random(['Math', 'English', 'Filipino', 'Makabayan', 'Hekasi', 'Araling Panlipunan']);
+        $descriptions = Arr::random(['test_description']);
+        $grade_vals = Arr::random([1]);
+
+        return array('name' => $names , 'description' => $descriptions, 'grade_val' => $grade_vals);
     }
 }
