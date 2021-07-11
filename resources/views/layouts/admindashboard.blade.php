@@ -67,11 +67,15 @@
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="javascript:void(0)">
 					{{--Display a specific Images for Specific Roles--}}
-					@if ($user_role == 'Admin')
+					@if ($user_role === 'Admin')
                    		 <span class="align-middle"><img src="{{ asset('images/admin/admin.svg') }}" class="rounded-circle" alt="admin_logo" width="130"></span>
-					@elseif ($user_role == 'Registar')
+					@endif
+
+					@if ($user_role === 'Registrar')	
 						 <span class="align-middle"><img src="{{ asset('images/admin/registrar.svg') }}" class="rounded-circle" alt="admin_logo" width="130"></span>
-					@else
+					@endif
+
+					@if ($user_role === 'Cashier')	
 						 <span class="align-middle"><img src="{{ asset('images/admin/cashier.svg') }}" class="rounded-circle" alt="admin_logo" width="130"></span>
 					@endif
                 </a>
@@ -300,11 +304,15 @@
 
 							 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
 								 {{--Display a specific Images for Specific Roles--}}
-									@if ($user_role == 'Admin')
+									@if ($user_role === 'Admin')
 										<img src="{{ asset('images/admin/admin.svg') }}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
-									@elseif ($user_role == 'Registar')
+									@endif
+
+									@if ($user_role === 'Registrar')
 										<img src="{{ asset('images/admin/registrar.svg') }}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
-									@else
+									@endif
+
+									@if ($user_role === 'Cashier')
 										<img src="{{ asset('images/admin/cashier.svg') }}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()->name}}" /> <span class="text-dark">{{ Auth::user()->name }}</span>
 									@endif
                				 	
