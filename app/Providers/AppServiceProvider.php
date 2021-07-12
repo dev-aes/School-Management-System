@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\School;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
             if(Auth::user())
             {
                 $view->with('user_role', ucfirst(Auth::user()->role->name));
+                
+                $view->with('school', School::first());
             }
 
         });

@@ -9,6 +9,7 @@ use App\Imports\SubjectImport;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SubjectController extends Controller
@@ -157,8 +158,30 @@ class SubjectController extends Controller
     }
 
 
-    public  static function getAcademicYear(){
-        return DB::table('academic_years')->where('status',1)->first();
+    public function truncate()
+    {
+        if(request()->ajax())
+        {
+            $data = request()->validate(['password'=> 'required']);
+            $admin = get_admin_pw();
+
+            // check if the given password is equal to the super admin password
+            if(Hash::check($data['password'], $admin['password']))
+            {
+                $subject = Subject::latest()->first();
+
+                Subject::query()->delete();
+
+                $this->log_activity($subject, 'Deleted all', 'Subject Record','','');
+                
+                return response()->json('success');
+            }
+            else
+            {
+                return response()->json('error');
+            }
+
+        }
     }
    
 }

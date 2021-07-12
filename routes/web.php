@@ -108,6 +108,12 @@ Route::middleware(['auth','admin'])->group(function() {
     // student delete subject_teacher
     Route::delete('/admin/student/deleteTeacher/{id}', [StudentController::class, 'delete_student_teacher_subject'])->name('student.delete_teacher_subject');
 
+    // subject truncate all records
+    Route::post('/admin/subject/truncateSubject', [SubjectController::class , 'truncate'])->name('subject.truncate');
+
+    
+    // teacher truncate all records
+    Route::post('/admin/teacher/truncateTeacher', [TeacherController::class , 'truncate'])->name('teacher.truncate');
         
 });
 

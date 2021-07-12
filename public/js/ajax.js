@@ -1160,195 +1160,7 @@ function teacher_display_students_by_section_id(id)
    })
 }
 
-// teacher student 
 
-    function teacher_createStudent(id) {
-        $('#show_teacher_modal').modal('hide');
-        $('#teacher_addStudent_modal').modal('show');
-
-        $.ajax({
-            url: route('teacher.show', id),
-            data: {id:id},
-            dataType:'json',
-            success: students => {
-                let output= ` `;
-                students[4].forEach(student => {
-                    output += ` 
-                            <div class='form-check'>
-                            <input class="form-check-input" type="checkbox" name='student_id[]' value="${student.id}" id="student_id-${student.id}">
-                            <h4 class="form-check-label text-muted" for="flexCheckDefault">
-                            ${student.first_name} ${student.last_name}
-                            </h4>
-                            </div>`;
-                    $('#_teacher_id').attr('value', id);
-                    $('#teacher_student').html(output);
-                })
-            },
-            error: err => {
-                console.log(err);
-                toastDanger();
-            }
-        })
-    }
-
-    // Teacher Store Student
-
-    function teacher_storeStudent(event) {
-        event.preventDefault();
-        let add_student_form = $('#teacher_add_student_form');
-
-        $.ajax({
-            method: 'POST',
-            url : route('teacher.teacher_store_student'),
-            data: add_student_form.serialize(),
-            success: response => {
-                console.log(response);
-                if(response == 'success') 
-                {
-                return toastSuccess('Student Added');
-                }
-
-                if(response == 'error') {
-                return  toastr.warning('Some of the student is already assigned to your class');
-                    
-                }
-
-                if(response == 'not enrolled') {
-                    return  toastr.warning('Some of the student/s are not yet enrolled');
-                    
-                }
-
-            
-            },
-            error: err => {
-                toastDanger();
-                console.log(err);
-            }
-        }) 
-    }
-
-// Teacher Delete Student
-
-    function teacher_destroyStudent(id, teacher_id) {
-        if(confirm("Do you want to delete?"))
-        {
-            $.ajax({
-                method: 'DELETE',
-                url: route('teacher.teacher_destroy_student',[ id, teacher_id]),
-                data: {
-                    student_id: id,
-                    teacher_id : teacher_id
-                },
-                success: response => {
-                    console.log(response);
-                    toastSuccess('Student Deleted')
-                    showTeacher(teacher_id);
-                },
-                error: err => {
-                    toastDanger();
-                    console.log(err);
-                }
-            })
-        }
-    }
-// Teacher Subject
-function teacher_createSubject(id) 
-{
-    $('#show_teacher_modal').modal('hide');
-    $('#teacher_addSubject_modal').modal('show');
-
-    $.ajax({
-        url: route('teacher.show', id),
-        data: {id:id},
-        dataType:'json',
-        success: subjects => {
-            // console.log(subjects);
-            let output=' <option></option>';
-            subjects[2].forEach(subject => {
-                // output += `<option value='${subject.id}'>  ${subject.name}  </option>`;
-                // $('#teacher_subject').html(output);
-
-                output += ` 
-                        <div class='form-check'>
-                        <input class="form-check-input" type="checkbox" name='subject_id[]' value="${subject.id}" id="student_id-${subject.id}">
-                        <h4 class="form-check-label text-muted" for="flexCheckDefault">
-                         ${subject.name}
-                        </h4>
-                        </div>`;
-                         $('#teacher_subject').html(output);
-            })
-        },
-        error: err => {
-            toastDanger();
-            console.log(err);
-        }
-    })
-
-    $('#teacher_id').attr('value', id);
-
-}
-
-function teacher_storeSubject(event)
-{   
-   event.preventDefault();
-   let teacher_add_subject_form = $('#teacher_add_subject_form');
-   $.ajax({
-       method:'POST',
-       url: route('teacher.teacher_store_subject'),
-       data: teacher_add_subject_form.serialize(),
-       success: response => {
-           if(response == 'success')
-           {
-                toastSuccess('Subject Added');
-           }
-           else 
-           {
-               return toastr.warning('You already have this subject');
-           }
-
-       },
-       error: err => {
-         console.log(err);
-       }
-
-   })
-}
-
-function teacher_destroySubject(id) {
-    let teacher_id = $('#subject_teacher_id').attr('data-id');
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#4085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                method: 'DELETE',
-                url: route('teacher.teacher_destroy_subject', [teacher_id , id]),
-                success: response => {
-                      toastSuccess('Subject Deleted');
-                      showTeacher(teacher_id);
-                },
-                error: err => { 
-                    toastDanger();
-                    console.log(err);
-                }
-            })
-        }
-      })
-    
-}
-
-function back() {
-    let teacher_id = $('#teacher_id').attr('value');
-    showTeacher(teacher_id);
-}
- 
-// end teacher subject
 
 
 // edit
@@ -1472,6 +1284,43 @@ function back() {
       })
 
 }
+
+
+// trunctate students
+$('#delete_all_teacher').on('click', ()=> {
+
+    const pw = prompt("Enter admin secret key *");
+  
+    if(pw.toString() == "")
+    {
+  
+     return alert("Secret key is required");
+  
+    }
+  
+    $.ajax({
+        method:'POST',
+        url: route('teacher.truncate'),
+        data:{password:pw},
+        success: response => {
+           if(response == "success")
+           {
+              $('.teacher_DT').DataTable().draw();
+              return toastSuccess("Teachers Data Deleted");
+           }
+  
+           if(response == "error")
+           {
+               return toastr.error("Invalid Key !");
+           }
+        },
+        error: err => {
+            toastDanger();
+            res(err);
+        }
+    })
+  
+});
 
 
 // Teacher Add subject II
@@ -2755,6 +2604,46 @@ function import_subject()
         }
       })
 }
+
+// trunctate students
+$('#delete_all_subject').on('click', ()=> {
+
+    const pw = prompt("Enter admin secret key *");
+  
+    if(pw.toString() == "")
+    {
+  
+     return alert("Secret key is required");
+  
+    }
+  
+    $.ajax({
+        method:'POST',
+        url: route('subject.truncate'),
+        data:{password:pw},
+        success: response => {
+           if(response == "success")
+           {
+              $('.subject_DT').DataTable().draw();
+              return toastSuccess("Subjects Data Deleted");
+           }
+  
+           if(response == "error")
+           {
+               return toastr.error("Invalid Key !");
+           }
+        },
+        error: err => {
+            toastDanger();
+            res(err);
+        }
+    })
+   
+  
+  
+});
+  
+  
 
 //* -------> END SUBJECT MANAGEMENT
 
@@ -4517,6 +4406,10 @@ function showPayment(id) {
             $('#payment_sf_balance').text(`₱ ${roundoff(payment[3].total_balance)}`);
 
 
+            // display incharge of the transaction
+
+            $('#p_signature').attr('value', payment[0].user.name );
+
         },
         error: err => {
             console.log(err);
@@ -5817,6 +5710,7 @@ function addPayment() {
     let payment_official_receipt = $('#payment_payment_official_receipt');
     let payment_type = ``;
     let payment_mode = $('#payment_pm');
+    let user_id = $('#p_staff_id').val(); // staff id who is incharge of adding payment from the selected student
 
     let discounted_percentage = $('#payment_payment_discount_percentage').val();
     let discounted_cash =       $('#payment_payment_discount_cash').val();
@@ -5855,7 +5749,8 @@ function addPayment() {
                     discounted_percentage: discounted_percentage,
                     discounted_cash: discounted_cash,
                     discounted_amount:  $('#payment_payment_discounted_amount').val(),
-                    payment_mode_id: payment_mode.val()
+                    payment_mode_id: payment_mode.val(),
+                    user_id: user_id
                     
                 },
                 success: response => {
@@ -6073,10 +5968,10 @@ function showParent(id)
         url: route('parent.show',id),
         dataType:'json',
         success: parent => {
-            res(parent);
+            // res(parent);
             let student_info = ``;
             let parent_info = `<ul class='list-group'>
-                                    <center><img class='round-circle' src='/images/guardian.png' width='160'></center>
+                                    <center><img class='round-circle' src='/images/no_photo.png' width='130'></center>
                                     <p class='text-center lead'> Parent </p>
                                     <li class="list-group-item"> <span class='badge bg-info'> Name:</span> ${parent[0].name}</li>
                                     <li class="list-group-item"> <span class='badge bg-info'> Email:</span> ${parent[0].email}</li>
@@ -6088,7 +5983,7 @@ function showParent(id)
                     student_info += `<tr>
                                         <td>${student.first_name} ${student.last_name}</td>
                                         <td> ${student.section.name}</td>
-                                        <td> | <a href='javascript:void(0)' class='btn btn-sm btn-danger' onclick='parent_destroy_student(${parent[0].id})'> <i class="fas fa-trash-alt"></i> </a> </td>
+                                        <td><a href='javascript:void(0)' class='text-danger' onclick='parent_destroy_student(${parent[0].id})'><i class="fas fa-times"></i> </a> </td>
                                         <input type='hidden' id='p_student_id' data-id = ${student.id}>
                                      </tr>`;
                 });

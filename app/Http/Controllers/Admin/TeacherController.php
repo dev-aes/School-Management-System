@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Admin\StudentFeeController;
@@ -685,6 +686,32 @@ public function teacher_destroy_student()
             $file = $request->file('teachers');
             Excel::import(new TeacherImport, $file);
             return response()->json('success');
+        }
+    }
+
+    public function truncate()
+    {
+        if(request()->ajax())
+        {
+            $data = request()->validate(['password'=> 'required']);
+            $admin = get_admin_pw();
+
+            // check if the given password is equal to the super admin password
+            if(Hash::check($data['password'], $admin['password']))
+            {
+                $teacher = Teacher::latest()->first();
+
+                Teacher::query()->delete();
+
+                $this->log_activity($teacher, 'Deleted all', 'Teacher Record','','');
+                
+                return response()->json('success');
+            }
+            else
+            {
+                return response()->json('error');
+            }
+
         }
     }
 

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Calculation\Financial\CashFlow\Constant\Periodic\Payments;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentController extends Controller
@@ -139,7 +140,8 @@ class PaymentController extends Controller
                 'remarks' => 'required',
                 'official_receipt' => 'required|unique:payments',
                 'payment_type' => 'required',
-                'payment_mode_id' => 'required'
+                'payment_mode_id' => 'required',
+                'user_id' => 'required'  
             ]);
 
             $data['transaction_no'] = $transaction_no;
@@ -165,7 +167,7 @@ class PaymentController extends Controller
             endforeach;
 
 
-            if(!in_array($transaction_no, $recent_transaction_no)) // check if the transaction no exist
+            if(!in_array($transaction_no, $recent_transaction_no)) // check if the transaction not exist
             {
                 //TODO DOWN PAYMENT
                 if($data['payment_type'] == 'dp')
@@ -441,9 +443,7 @@ class PaymentController extends Controller
         if(request()->ajax())
         {
             // get the payment by payment id
-           $selected_payment = DB::table('payments')
-                      ->where('id', $payment->id)
-                      ->first();
+           $selected_payment = Payment::with('user')->where('id', $payment->id)->first();
 
 
             // get student name , grade level name and student fee

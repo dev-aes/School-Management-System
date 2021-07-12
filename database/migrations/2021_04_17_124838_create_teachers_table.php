@@ -28,6 +28,7 @@ class CreateTeachersTable extends Migration
             $table->string('facebook');
             $table->string('email');
             $table->string('teacher_avatar')->nullable();
+            $table->bigInteger('is_imported');
             $table->timestamps();
         });
     }

@@ -151,10 +151,11 @@ let average_container = []; // student's grade average
     function parent_showPayment(id) {
 
         $('#show_parent_payment_ledger_modal').modal('hide');
+        $('#p_showpayment_modal_header').addClass('bg-secondary');
         $.ajax({
             url: route('parent.parent_payment_show', id),
             success: payment => {
-               // console.log(payment);
+                // res(payment);
                 const date = new Date(payment[0].created_at);
                 //const d = date.toDateString();
                 const d = date.toLocaleDateString();
@@ -208,6 +209,10 @@ let average_container = []; // student's grade average
                 $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toLocaleString()}`);
                 $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toLocaleString()}`);
 
+                
+                // display incharge of the transaction
+
+                $('#p_signature').attr('value', payment[0].user.name );
 
             },
             error: err => {

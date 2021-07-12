@@ -25,6 +25,7 @@ class CreatePaymentsTable extends Migration
             $table->bigInteger('transaction_no');
             $table->bigInteger('official_receipt');
             $table->string('payment_type');
+            $table->foreignId('user_id')->constrained('users'); // user who encoded the payment
             $table->timestamps();
         });
     }

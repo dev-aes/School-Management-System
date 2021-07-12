@@ -999,20 +999,898 @@
                     <label class='form-label'>Add Discount <small class="text-muted">(Optional)</small> </label>
                     <select class="form-select" id="student_fee_discount" name="student_fee_discount" onchange="student_fee_display_discounted_fee_by_student_id()" aria-describedby="discountHelp">
                        <option></option>
-                       <option value="0.05">5%</option>
-                       <option value="0.10">10%</option>
-                       <option value="0.15">15%</option>
-                       <option value="0.20">20%</option>
-                       <option value="0.25">25%</option>
-                       <option value="0.30">30%</option>
-                       <option value="0.35">35%</option>
-                       <option value="0.40">40%</option>
-                       <option value="0.50">50%</option>
-                       <option value="0.60">60%</option>
-                       <option value="0.70">70%</option>
-                       <option value="0.80">80%</option>
-                       <option value="0.90">90%</option>
-                       <option value="1.00">100%</option>
+                       <option value="0.01">1%</option>
+                            <option value="0.011">1.1%</option>
+                            <option value="0.012">1.2%</option>
+                            <option value="0.013">1.3%</option>
+                            <option value="0.014">1.4%</option>
+                            <option value="0.015">1.5%</option>
+                            <option value="0.016">1.6%</option>
+                            <option value="0.017">1.7%</option>
+                            <option value="0.018">1.8%</option>
+                            <option value="0.019">1.9%</option>
+
+                            <option value="0.02">2%</option>
+                            <option value="0.021">2.1%</option>
+                            <option value="0.022">2.2%</option>
+                            <option value="0.023">2.3%</option>
+                            <option value="0.024">2.4%</option>
+                            <option value="0.025">2.5%</option>
+                            <option value="0.026">2.6%</option>
+                            <option value="0.027">2.7%</option>
+                            <option value="0.028">2.8%</option>
+                            <option value="0.029">2.9%</option>
+
+                            <option value="0.03">3%</option>
+                            <option value="0.031">3.1%</option>
+                            <option value="0.032">3.2%</option>
+                            <option value="0.033">3.3%</option>
+                            <option value="0.034">3.4%</option>
+                            <option value="0.035">3.5%</option>
+                            <option value="0.036">3.6%</option>
+                            <option value="0.037">3.7%</option>
+                            <option value="0.038">3.8%</option>
+                            <option value="0.039">3.9%</option>
+
+                            <option value="0.04">4%</option>
+                            <option value="0.041">4.1%</option>
+                            <option value="0.042">4.2%</option>
+                            <option value="0.043">4.3%</option>
+                            <option value="0.044">4.4%</option>
+                            <option value="0.045">4.5%</option>
+                            <option value="0.046">4.6%</option>
+                            <option value="0.047">4.7%</option>
+                            <option value="0.048">4.8%</option>
+                            <option value="0.049">4.9%</option>
+
+                            <option value="0.05">5%</option>
+                            <option value="0.051">5.1%</option>
+                            <option value="0.052">5.2%</option>
+                            <option value="0.053">5.3%</option>
+                            <option value="0.054">5.4%</option>
+                            <option value="0.055">5.5%</option>
+                            <option value="0.056">5.6%</option>
+                            <option value="0.057">5.7%</option>
+                            <option value="0.058">5.8%</option>
+                            <option value="0.059">5.9%</option>
+
+                            <option value="0.06">6%</option>
+                            <option value="0.061">6.1%</option>
+                            <option value="0.062">6.2%</option>
+                            <option value="0.063">6.3%</option>
+                            <option value="0.064">6.4%</option>
+                            <option value="0.065">6.5%</option>
+                            <option value="0.066">6.6%</option>
+                            <option value="0.067">6.7%</option>
+                            <option value="0.068">6.8%</option>
+                            <option value="0.069">6.9%</option>
+
+                            <option value="0.07">7%</option>
+                            <option value="0.071">7.1%</option>
+                            <option value="0.072">7.2%</option>
+                            <option value="0.073">7.3%</option>
+                            <option value="0.074">7.4%</option>
+                            <option value="0.075">7.5%</option>
+                            <option value="0.076">7.6%</option>
+                            <option value="0.077">7.7%</option>
+                            <option value="0.078">7.8%</option>
+                            <option value="0.079">7.9%</option>
+
+                            <option value="0.08">8%</option>
+                            <option value="0.081">8.1%</option>
+                            <option value="0.082">8.2%</option>
+                            <option value="0.083">8.3%</option>
+                            <option value="0.084">8.4%</option>
+                            <option value="0.085">8.5%</option>
+                            <option value="0.086">8.6%</option>
+                            <option value="0.087">8.7%</option>
+                            <option value="0.088">8.8%</option>
+                            <option value="0.089">8.9%</option>
+
+                            <option value="0.09">9%</option>
+                            <option value="0.091">9.1%</option>
+                            <option value="0.092">9.2%</option>
+                            <option value="0.093">9.3%</option>
+                            <option value="0.094">9.4%</option>
+                            <option value="0.095">9.5%</option>
+                            <option value="0.096">9.6%</option>
+                            <option value="0.097">9.7%</option>
+                            <option value="0.098">9.8%</option>
+                            <option value="0.099">9.9%</option>
+
+                            <option value="0.10">10%</option>
+                            <option value="0.101">10.1%</option>
+                            <option value="0.102">10.2%</option>
+                            <option value="0.103">10.3%</option>
+                            <option value="0.104">10.4%</option>
+                            <option value="0.105">10.5%</option>
+                            <option value="0.106">10.6%</option>
+                            <option value="0.107">10.7%</option>
+                            <option value="0.108">10.8%</option>
+                            <option value="0.109">10.9%</option>
+
+                            <option value="0.11">11%</option>
+                            <option value="0.111">11.1%</option>
+                            <option value="0.112">11.2%</option>
+                            <option value="0.113">11.3%</option>
+                            <option value="0.114">11.4%</option>
+                            <option value="0.115">11.5%</option>
+                            <option value="0.116">11.6%</option>
+                            <option value="0.117">11.7%</option>
+                            <option value="0.118">11.8%</option>
+                            <option value="0.119">11.9%</option>
+
+                            <option value="0.12">12%</option>
+                            <option value="0.121">12.1%</option>
+                            <option value="0.122">12.2%</option>
+                            <option value="0.123">12.3%</option>
+                            <option value="0.124">12.4%</option>
+                            <option value="0.125">12.5%</option>
+                            <option value="0.126">12.6%</option>
+                            <option value="0.127">12.7%</option>
+                            <option value="0.128">12.8%</option>
+                            <option value="0.129">12.9%</option>
+
+                            <option value="0.13">13%</option>
+                            <option value="0.131">13.1%</option>
+                            <option value="0.132">13.2%</option>
+                            <option value="0.133">13.3%</option>
+                            <option value="0.134">13.4%</option>
+                            <option value="0.135">13.5%</option>
+                            <option value="0.136">13.6%</option>
+                            <option value="0.137">13.7%</option>
+                            <option value="0.138">13.8%</option>
+                            <option value="0.139">13.9%</option>
+
+                            <option value="0.14">14%</option>
+                            <option value="0.141">14.1%</option>
+                            <option value="0.142">14.2%</option>
+                            <option value="0.143">14.3%</option>
+                            <option value="0.144">14.4%</option>
+                            <option value="0.145">14.5%</option>
+                            <option value="0.146">14.6%</option>
+                            <option value="0.147">14.7%</option>
+                            <option value="0.148">14.8%</option>
+                            <option value="0.149">14.9%</option>
+
+                            <option value="0.15">15%</option>
+                            <option value="0.151">15.1%</option>
+                            <option value="0.152">15.2%</option>
+                            <option value="0.153">15.3%</option>
+                            <option value="0.154">15.4%</option>
+                            <option value="0.155">15.5%</option>
+                            <option value="0.156">15.6%</option>
+                            <option value="0.157">15.7%</option>
+                            <option value="0.158">15.8%</option>
+                            <option value="0.159">15.9%</option>
+
+                            <option value="0.16">16%</option>
+                            <option value="0.161">16.1%</option>
+                            <option value="0.162">16.2%</option>
+                            <option value="0.163">16.3%</option>
+                            <option value="0.164">16.4%</option>
+                            <option value="0.165">16.5%</option>
+                            <option value="0.166">16.6%</option>
+                            <option value="0.167">16.7%</option>
+                            <option value="0.168">16.8%</option>
+                            <option value="0.169">16.9%</option>
+
+                            <option value="0.17">17%</option>
+                            <option value="0.171">17.1%</option>
+                            <option value="0.172">17.2%</option>
+                            <option value="0.173">17.3%</option>
+                            <option value="0.174">17.4%</option>
+                            <option value="0.175">17.5%</option>
+                            <option value="0.176">17.6%</option>
+                            <option value="0.177">17.7%</option>
+                            <option value="0.178">17.8%</option>
+                            <option value="0.179">17.9%</option>
+
+                            <option value="0.18">18%</option>
+                            <option value="0.181">18.1%</option>
+                            <option value="0.182">18.2%</option>
+                            <option value="0.183">18.3%</option>
+                            <option value="0.184">18.4%</option>
+                            <option value="0.185">18.5%</option>
+                            <option value="0.186">18.6%</option>
+                            <option value="0.187">18.7%</option>
+                            <option value="0.188">18.8%</option>
+                            <option value="0.189">18.9%</option>
+
+                            <option value="0.19">19%</option>
+                            <option value="0.191">19.1%</option>
+                            <option value="0.192">19.2%</option>
+                            <option value="0.193">19.3%</option>
+                            <option value="0.194">19.4%</option>
+                            <option value="0.195">19.5%</option>
+                            <option value="0.196">19.6%</option>
+                            <option value="0.197">19.7%</option>
+                            <option value="0.198">19.8%</option>
+                            <option value="0.199">19.9%</option>
+
+                            <option value="0.20">20%</option>
+                            <option value="0.201">20.1%</option>
+                            <option value="0.202">20.2%</option>
+                            <option value="0.203">20.3%</option>
+                            <option value="0.204">20.4%</option>
+                            <option value="0.205">20.5%</option>
+                            <option value="0.206">20.6%</option>
+                            <option value="0.207">20.7%</option>
+                            <option value="0.208">20.8%</option>
+                            <option value="0.209">20.9%</option>
+
+                            <option value="0.21">21%</option>
+                            <option value="0.211">21.1%</option>
+                            <option value="0.212">21.2%</option>
+                            <option value="0.213">21.3%</option>
+                            <option value="0.214">21.4%</option>
+                            <option value="0.215">21.5%</option>
+                            <option value="0.216">21.6%</option>
+                            <option value="0.217">21.7%</option>
+                            <option value="0.218">21.8%</option>
+                            <option value="0.219">21.9%</option>
+
+                            <option value="0.22">22%</option>
+                            <option value="0.221">22.1%</option>
+                            <option value="0.222">22.2%</option>
+                            <option value="0.223">22.3%</option>
+                            <option value="0.224">22.4%</option>
+                            <option value="0.225">22.5%</option>
+                            <option value="0.226">22.6%</option>
+                            <option value="0.227">22.7%</option>
+                            <option value="0.228">22.8%</option>
+                            <option value="0.229">22.9%</option>
+
+                            <option value="0.23">23%</option>
+                            <option value="0.231">23.1%</option>
+                            <option value="0.232">23.2%</option>
+                            <option value="0.233">23.3%</option>
+                            <option value="0.234">23.4%</option>
+                            <option value="0.235">23.5%</option>
+                            <option value="0.236">23.6%</option>
+                            <option value="0.237">23.7%</option>
+                            <option value="0.238">23.8%</option>
+                            <option value="0.239">23.9%</option>
+
+                            <option value="0.24">24%</option>
+                            <option value="0.241">24.1%</option>
+                            <option value="0.242">24.2%</option>
+                            <option value="0.243">24.3%</option>
+                            <option value="0.244">24.4%</option>
+                            <option value="0.245">24.5%</option>
+                            <option value="0.246">24.6%</option>
+                            <option value="0.247">24.7%</option>
+                            <option value="0.248">24.8%</option>
+                            <option value="0.249">24.9%</option>
+
+                            <option value="0.25">25%</option>
+                            <option value="0.251">25.1%</option>
+                            <option value="0.252">25.2%</option>
+                            <option value="0.253">25.3%</option>
+                            <option value="0.254">25.4%</option>
+                            <option value="0.255">25.5%</option>
+                            <option value="0.256">25.6%</option>
+                            <option value="0.257">25.7%</option>
+                            <option value="0.258">25.8%</option>
+                            <option value="0.259">25.9%</option>
+
+                            <option value="0.26">26%</option>
+                            <option value="0.261">26.1%</option>
+                            <option value="0.262">26.2%</option>
+                            <option value="0.263">26.3%</option>
+                            <option value="0.264">26.4%</option>
+                            <option value="0.265">26.5%</option>
+                            <option value="0.266">26.6%</option>
+                            <option value="0.267">26.7%</option>
+                            <option value="0.268">26.8%</option>
+                            <option value="0.269">26.9%</option>
+
+                            <option value="0.27">27%</option>
+                            <option value="0.271">27.1%</option>
+                            <option value="0.272">27.2%</option>
+                            <option value="0.273">27.3%</option>
+                            <option value="0.274">27.4%</option>
+                            <option value="0.275">27.5%</option>
+                            <option value="0.276">27.6%</option>
+                            <option value="0.277">27.7%</option>
+                            <option value="0.278">27.8%</option>
+                            <option value="0.279">27.9%</option>
+
+                            <option value="0.28">28%</option>
+                            <option value="0.281">28.1%</option>
+                            <option value="0.282">28.2%</option>
+                            <option value="0.283">28.3%</option>
+                            <option value="0.284">28.4%</option>
+                            <option value="0.285">28.5%</option>
+                            <option value="0.286">28.6%</option>
+                            <option value="0.287">28.7%</option>
+                            <option value="0.288">28.8%</option>
+                            <option value="0.289">28.9%</option>
+
+                            <option value="0.29">29%</option>
+                            <option value="0.291">29.1%</option>
+                            <option value="0.292">29.2%</option>
+                            <option value="0.293">29.3%</option>
+                            <option value="0.294">29.4%</option>
+                            <option value="0.295">29.5%</option>
+                            <option value="0.296">29.6%</option>
+                            <option value="0.297">29.7%</option>
+                            <option value="0.298">29.8%</option>
+                            <option value="0.299">29.9%</option>
+
+                            <option value="0.30">30%</option>
+                            <option value="0.301">30.1%</option>
+                            <option value="0.302">30.2%</option>
+                            <option value="0.303">30.3%</option>
+                            <option value="0.304">30.4%</option>
+                            <option value="0.305">30.5%</option>
+                            <option value="0.306">30.6%</option>
+                            <option value="0.307">30.7%</option>
+                            <option value="0.308">30.8%</option>
+                            <option value="0.309">30.9%</option>
+
+                            <option value="0.31">31%</option>
+                            <option value="0.311">31.1%</option>
+                            <option value="0.312">31.2%</option>
+                            <option value="0.313">31.3%</option>
+                            <option value="0.314">31.4%</option>
+                            <option value="0.315">31.5%</option>
+                            <option value="0.316">31.6%</option>
+                            <option value="0.317">31.7%</option>
+                            <option value="0.318">31.8%</option>
+                            <option value="0.319">31.9%</option>
+
+                            <option value="0.32">32%</option>
+                            <option value="0.321">32.1%</option>
+                            <option value="0.322">32.2%</option>
+                            <option value="0.323">32.3%</option>
+                            <option value="0.324">32.4%</option>
+                            <option value="0.325">32.5%</option>
+                            <option value="0.326">32.6%</option>
+                            <option value="0.327">32.7%</option>
+                            <option value="0.328">32.8%</option>
+                            <option value="0.329">32.9%</option>
+
+                            <option value="0.33">33%</option>
+                            <option value="0.331">33.1%</option>
+                            <option value="0.332">33.2%</option>
+                            <option value="0.333">33.3%</option>
+                            <option value="0.334">33.4%</option>
+                            <option value="0.335">33.5%</option>
+                            <option value="0.336">33.6%</option>
+                            <option value="0.337">33.7%</option>
+                            <option value="0.338">33.8%</option>
+                            <option value="0.339">33.9%</option>
+
+                            <option value="0.34">34%</option>
+                            <option value="0.341">34.1%</option>
+                            <option value="0.342">34.2%</option>
+                            <option value="0.343">34.3%</option>
+                            <option value="0.344">34.4%</option>
+                            <option value="0.345">34.5%</option>
+                            <option value="0.346">34.6%</option>
+                            <option value="0.347">34.7%</option>
+                            <option value="0.348">34.8%</option>
+                            <option value="0.349">34.9%</option>
+
+                            <option value="0.35">35%</option>
+                            <option value="0.351">35.1%</option>
+                            <option value="0.352">35.2%</option>
+                            <option value="0.353">35.3%</option>
+                            <option value="0.354">35.4%</option>
+                            <option value="0.355">35.5%</option>
+                            <option value="0.356">35.6%</option>
+                            <option value="0.357">35.7%</option>
+                            <option value="0.358">35.8%</option>
+                            <option value="0.359">35.9%</option>
+
+                            <option value="0.36">36%</option>
+                            <option value="0.361">36.1%</option>
+                            <option value="0.362">36.2%</option>
+                            <option value="0.363">36.3%</option>
+                            <option value="0.364">36.4%</option>
+                            <option value="0.365">36.5%</option>
+                            <option value="0.366">36.6%</option>
+                            <option value="0.367">36.7%</option>
+                            <option value="0.368">36.8%</option>
+                            <option value="0.369">36.9%</option>
+
+                            <option value="0.37">37%</option>
+                            <option value="0.371">37.1%</option>
+                            <option value="0.372">37.2%</option>
+                            <option value="0.373">37.3%</option>
+                            <option value="0.374">37.4%</option>
+                            <option value="0.375">37.5%</option>
+                            <option value="0.376">37.6%</option>
+                            <option value="0.377">37.7%</option>
+                            <option value="0.378">37.8%</option>
+                            <option value="0.379">37.9%</option>
+
+                            <option value="0.38">38%</option>
+                            <option value="0.381">38.1%</option>
+                            <option value="0.382">38.2%</option>
+                            <option value="0.383">38.3%</option>
+                            <option value="0.384">38.4%</option>
+                            <option value="0.385">38.5%</option>
+                            <option value="0.386">38.6%</option>
+                            <option value="0.387">38.7%</option>
+                            <option value="0.388">38.8%</option>
+                            <option value="0.389">38.9%</option>
+
+                            <option value="0.39">39%</option>
+                            <option value="0.391">39.1%</option>
+                            <option value="0.392">39.2%</option>
+                            <option value="0.393">39.3%</option>
+                            <option value="0.394">39.4%</option>
+                            <option value="0.395">39.5%</option>
+                            <option value="0.396">39.6%</option>
+                            <option value="0.397">39.7%</option>
+                            <option value="0.398">39.8%</option>
+                            <option value="0.399">39.9%</option>
+
+                            <option value="0.40">40%</option>
+                            <option value="0.401">40.1%</option>
+                            <option value="0.402">40.2%</option>
+                            <option value="0.403">40.3%</option>
+                            <option value="0.404">40.4%</option>
+                            <option value="0.405">40.5%</option>
+                            <option value="0.406">40.6%</option>
+                            <option value="0.407">40.7%</option>
+                            <option value="0.408">40.8%</option>
+                            <option value="0.409">40.9%</option>
+
+                            <option value="0.50">50%</option>
+                            <option value="0.501">50.1%</option>
+                            <option value="0.502">50.2%</option>
+                            <option value="0.503">50.3%</option>
+                            <option value="0.504">50.4%</option>
+                            <option value="0.505">50.5%</option>
+                            <option value="0.506">50.6%</option>
+                            <option value="0.507">50.7%</option>
+                            <option value="0.508">50.8%</option>
+                            <option value="0.509">50.9%</option>
+
+                            <option value="0.60">60%</option>
+                            <option value="0.601">60.1%</option>
+                            <option value="0.602">60.2%</option>
+                            <option value="0.603">60.3%</option>
+                            <option value="0.604">60.4%</option>
+                            <option value="0.605">60.5%</option>
+                            <option value="0.606">60.6%</option>
+                            <option value="0.607">60.7%</option>
+                            <option value="0.608">60.8%</option>
+                            <option value="0.609">60.9%</option>
+
+                            <option value="0.61">61%</option>
+                            <option value="0.611">61.1%</option>
+                            <option value="0.612">61.2%</option>
+                            <option value="0.613">61.3%</option>
+                            <option value="0.614">61.4%</option>
+                            <option value="0.615">61.5%</option>
+                            <option value="0.616">61.6%</option>
+                            <option value="0.617">61.7%</option>
+                            <option value="0.618">61.8%</option>
+                            <option value="0.619">61.9%</option>
+
+                            <option value="0.62">62%</option>
+                            <option value="0.621">62.1%</option>
+                            <option value="0.622">62.2%</option>
+                            <option value="0.623">62.3%</option>
+                            <option value="0.624">62.4%</option>
+                            <option value="0.625">62.5%</option>
+                            <option value="0.626">62.6%</option>
+                            <option value="0.627">62.7%</option>
+                            <option value="0.628">62.8%</option>
+                            <option value="0.629">62.9%</option>
+
+                            <option value="0.63">63%</option>
+                            <option value="0.631">63.1%</option>
+                            <option value="0.632">63.2%</option>
+                            <option value="0.633">63.3%</option>
+                            <option value="0.634">63.4%</option>
+                            <option value="0.635">63.5%</option>
+                            <option value="0.636">63.6%</option>
+                            <option value="0.637">63.7%</option>
+                            <option value="0.638">63.8%</option>
+                            <option value="0.639">63.9%</option>
+
+                            <option value="0.64">64%</option>
+                            <option value="0.641">64.1%</option>
+                            <option value="0.642">64.2%</option>
+                            <option value="0.643">64.3%</option>
+                            <option value="0.644">64.4%</option>
+                            <option value="0.645">64.5%</option>
+                            <option value="0.646">64.6%</option>
+                            <option value="0.647">64.7%</option>
+                            <option value="0.648">64.8%</option>
+                            <option value="0.649">64.9%</option>
+
+                            <option value="0.65">65%</option>
+                            <option value="0.651">65.1%</option>
+                            <option value="0.652">65.2%</option>
+                            <option value="0.653">65.3%</option>
+                            <option value="0.654">65.4%</option>
+                            <option value="0.655">65.5%</option>
+                            <option value="0.656">65.6%</option>
+                            <option value="0.657">65.7%</option>
+                            <option value="0.658">65.8%</option>
+                            <option value="0.659">65.9%</option>
+
+                            <option value="0.66">66%</option>
+                            <option value="0.661">66.1%</option>
+                            <option value="0.662">66.2%</option>
+                            <option value="0.663">66.3%</option>
+                            <option value="0.664">66.4%</option>
+                            <option value="0.665">66.5%</option>
+                            <option value="0.666">66.6%</option>
+                            <option value="0.667">66.7%</option>
+                            <option value="0.668">66.8%</option>
+                            <option value="0.669">66.9%</option>
+
+                            <option value="0.67">67%</option>
+                            <option value="0.671">67.1%</option>
+                            <option value="0.672">67.2%</option>
+                            <option value="0.673">67.3%</option>
+                            <option value="0.674">67.4%</option>
+                            <option value="0.675">67.5%</option>
+                            <option value="0.676">67.6%</option>
+                            <option value="0.677">67.7%</option>
+                            <option value="0.678">67.8%</option>
+                            <option value="0.679">67.9%</option>
+
+                            <option value="0.68">68%</option>
+                            <option value="0.681">68.1%</option>
+                            <option value="0.682">68.2%</option>
+                            <option value="0.683">68.3%</option>
+                            <option value="0.684">68.4%</option>
+                            <option value="0.685">68.5%</option>
+                            <option value="0.686">68.6%</option>
+                            <option value="0.687">68.7%</option>
+                            <option value="0.688">68.8%</option>
+                            <option value="0.689">68.9%</option>
+
+                            <option value="0.69">69%</option>
+                            <option value="0.691">69.1%</option>
+                            <option value="0.692">69.2%</option>
+                            <option value="0.693">69.3%</option>
+                            <option value="0.694">69.4%</option>
+                            <option value="0.695">69.5%</option>
+                            <option value="0.696">69.6%</option>
+                            <option value="0.697">69.7%</option>
+                            <option value="0.698">69.8%</option>
+                            <option value="0.699">69.9%</option>
+
+                            <option value="0.70">70%</option>
+                            <option value="0.701">70.1%</option>
+                            <option value="0.702">70.2%</option>
+                            <option value="0.703">70.3%</option>
+                            <option value="0.704">70.4%</option>
+                            <option value="0.705">70.5%</option>
+                            <option value="0.706">70.6%</option>
+                            <option value="0.707">70.7%</option>
+                            <option value="0.708">70.8%</option>
+                            <option value="0.709">70.9%</option>
+
+                            <option value="0.71">71%</option>
+                            <option value="0.711">71.1%</option>
+                            <option value="0.712">71.2%</option>
+                            <option value="0.713">71.3%</option>
+                            <option value="0.714">71.4%</option>
+                            <option value="0.715">71.5%</option>
+                            <option value="0.716">71.6%</option>
+                            <option value="0.717">71.7%</option>
+                            <option value="0.718">71.8%</option>
+                            <option value="0.719">71.9%</option>
+
+                            <option value="0.72">72%</option>
+                            <option value="0.721">72.1%</option>
+                            <option value="0.722">72.2%</option>
+                            <option value="0.723">72.3%</option>
+                            <option value="0.724">72.4%</option>
+                            <option value="0.725">72.5%</option>
+                            <option value="0.726">72.6%</option>
+                            <option value="0.727">72.7%</option>
+                            <option value="0.728">72.8%</option>
+                            <option value="0.729">72.9%</option>
+
+                            <option value="0.73">73%</option>
+                            <option value="0.731">73.1%</option>
+                            <option value="0.732">73.2%</option>
+                            <option value="0.733">73.3%</option>
+                            <option value="0.734">73.4%</option>
+                            <option value="0.735">73.5%</option>
+                            <option value="0.736">73.6%</option>
+                            <option value="0.737">73.7%</option>
+                            <option value="0.738">73.8%</option>
+                            <option value="0.739">73.9%</option>
+
+                            <option value="0.74">74%</option>
+                            <option value="0.741">74.1%</option>
+                            <option value="0.742">74.2%</option>
+                            <option value="0.743">74.3%</option>
+                            <option value="0.744">74.4%</option>
+                            <option value="0.745">74.5%</option>
+                            <option value="0.746">74.6%</option>
+                            <option value="0.747">74.7%</option>
+                            <option value="0.748">74.8%</option>
+                            <option value="0.749">74.9%</option>
+
+                            <option value="0.75">75%</option>
+                            <option value="0.751">75.1%</option>
+                            <option value="0.752">75.2%</option>
+                            <option value="0.753">75.3%</option>
+                            <option value="0.754">75.4%</option>
+                            <option value="0.755">75.5%</option>
+                            <option value="0.756">75.6%</option>
+                            <option value="0.757">75.7%</option>
+                            <option value="0.758">75.8%</option>
+                            <option value="0.759">75.9%</option>
+
+                            <option value="0.76">76%</option>
+                            <option value="0.761">76.1%</option>
+                            <option value="0.762">76.2%</option>
+                            <option value="0.763">76.3%</option>
+                            <option value="0.764">76.4%</option>
+                            <option value="0.765">76.5%</option>
+                            <option value="0.766">76.6%</option>
+                            <option value="0.767">76.7%</option>
+                            <option value="0.768">76.8%</option>
+                            <option value="0.769">76.9%</option>
+
+                            <option value="0.77">77%</option>
+                            <option value="0.771">77.1%</option>
+                            <option value="0.772">77.2%</option>
+                            <option value="0.773">77.3%</option>
+                            <option value="0.774">77.4%</option>
+                            <option value="0.775">77.5%</option>
+                            <option value="0.776">77.6%</option>
+                            <option value="0.777">77.7%</option>
+                            <option value="0.778">77.8%</option>
+                            <option value="0.779">77.9%</option>
+
+                            <option value="0.78">78%</option>
+                            <option value="0.781">78.1%</option>
+                            <option value="0.782">78.2%</option>
+                            <option value="0.783">78.3%</option>
+                            <option value="0.784">78.4%</option>
+                            <option value="0.785">78.5%</option>
+                            <option value="0.786">78.6%</option>
+                            <option value="0.787">78.7%</option>
+                            <option value="0.788">78.8%</option>
+                            <option value="0.789">78.9%</option>
+
+                            <option value="0.79">79%</option>
+                            <option value="0.791">79.1%</option>
+                            <option value="0.792">79.2%</option>
+                            <option value="0.793">79.3%</option>
+                            <option value="0.794">79.4%</option>
+                            <option value="0.795">79.5%</option>
+                            <option value="0.796">79.6%</option>
+                            <option value="0.797">79.7%</option>
+                            <option value="0.798">79.8%</option>
+                            <option value="0.799">79.9%</option>
+
+                            <option value="0.80">80%</option>
+                            <option value="0.801">80.1%</option>
+                            <option value="0.802">80.2%</option>
+                            <option value="0.803">80.3%</option>
+                            <option value="0.804">80.4%</option>
+                            <option value="0.805">80.5%</option>
+                            <option value="0.806">80.6%</option>
+                            <option value="0.807">80.7%</option>
+                            <option value="0.808">80.8%</option>
+                            <option value="0.809">80.9%</option>
+
+                            <option value="0.81">81%</option>
+                            <option value="0.811">81.1%</option>
+                            <option value="0.812">81.2%</option>
+                            <option value="0.813">81.3%</option>
+                            <option value="0.814">81.4%</option>
+                            <option value="0.815">81.5%</option>
+                            <option value="0.816">81.6%</option>
+                            <option value="0.817">81.7%</option>
+                            <option value="0.818">81.8%</option>
+                            <option value="0.819">81.9%</option>
+
+                            <option value="0.82">82%</option>
+                            <option value="0.821">82.1%</option>
+                            <option value="0.822">82.2%</option>
+                            <option value="0.823">82.3%</option>
+                            <option value="0.824">82.4%</option>
+                            <option value="0.825">82.5%</option>
+                            <option value="0.826">82.6%</option>
+                            <option value="0.827">82.7%</option>
+                            <option value="0.828">82.8%</option>
+                            <option value="0.829">82.9%</option>
+
+                            <option value="0.83">83%</option>
+                            <option value="0.831">83.1%</option>
+                            <option value="0.832">83.2%</option>
+                            <option value="0.833">83.3%</option>
+                            <option value="0.834">83.4%</option>
+                            <option value="0.835">83.5%</option>
+                            <option value="0.836">83.6%</option>
+                            <option value="0.837">83.7%</option>
+                            <option value="0.838">83.8%</option>
+                            <option value="0.839">83.9%</option>
+
+                            <option value="0.84">84%</option>
+                            <option value="0.841">84.1%</option>
+                            <option value="0.842">84.2%</option>
+                            <option value="0.843">84.3%</option>
+                            <option value="0.844">84.4%</option>
+                            <option value="0.845">84.5%</option>
+                            <option value="0.846">84.6%</option>
+                            <option value="0.847">84.7%</option>
+                            <option value="0.848">84.8%</option>
+                            <option value="0.849">84.9%</option>
+
+                            <option value="0.85">85%</option>
+                            <option value="0.851">85.1%</option>
+                            <option value="0.852">85.2%</option>
+                            <option value="0.853">85.3%</option>
+                            <option value="0.854">85.4%</option>
+                            <option value="0.855">85.5%</option>
+                            <option value="0.856">85.6%</option>
+                            <option value="0.857">85.7%</option>
+                            <option value="0.858">85.8%</option>
+                            <option value="0.859">85.9%</option>
+
+                            <option value="0.86">86%</option>
+                            <option value="0.861">86.1%</option>
+                            <option value="0.862">86.2%</option>
+                            <option value="0.863">86.3%</option>
+                            <option value="0.864">86.4%</option>
+                            <option value="0.865">86.5%</option>
+                            <option value="0.866">86.6%</option>
+                            <option value="0.867">86.7%</option>
+                            <option value="0.868">86.8%</option>
+                            <option value="0.869">86.9%</option>
+
+                            <option value="0.87">87%</option>
+                            <option value="0.871">87.1%</option>
+                            <option value="0.872">87.2%</option>
+                            <option value="0.873">87.3%</option>
+                            <option value="0.874">87.4%</option>
+                            <option value="0.875">87.5%</option>
+                            <option value="0.876">87.6%</option>
+                            <option value="0.877">87.7%</option>
+                            <option value="0.878">87.8%</option>
+                            <option value="0.879">87.9%</option>
+
+                            <option value="0.88">88%</option>
+                            <option value="0.881">88.1%</option>
+                            <option value="0.882">88.2%</option>
+                            <option value="0.883">88.3%</option>
+                            <option value="0.884">88.4%</option>
+                            <option value="0.885">88.5%</option>
+                            <option value="0.886">88.6%</option>
+                            <option value="0.887">88.7%</option>
+                            <option value="0.888">88.8%</option>
+                            <option value="0.889">88.9%</option>
+
+                            <option value="0.89">89%</option>
+                            <option value="0.891">89.1%</option>
+                            <option value="0.892">89.2%</option>
+                            <option value="0.893">89.3%</option>
+                            <option value="0.894">89.4%</option>
+                            <option value="0.895">89.5%</option>
+                            <option value="0.896">89.6%</option>
+                            <option value="0.897">89.7%</option>
+                            <option value="0.898">89.8%</option>
+                            <option value="0.899">89.9%</option>
+
+                            <option value="0.90">90%</option>
+                            <option value="0.901">90.1%</option>
+                            <option value="0.902">90.2%</option>
+                            <option value="0.903">90.3%</option>
+                            <option value="0.904">90.4%</option>
+                            <option value="0.905">90.5%</option>
+                            <option value="0.906">90.6%</option>
+                            <option value="0.907">90.7%</option>
+                            <option value="0.908">90.8%</option>
+                            <option value="0.909">90.9%</option>
+
+                            <option value="0.91">91%</option>
+                            <option value="0.911">91.1%</option>
+                            <option value="0.912">91.2%</option>
+                            <option value="0.913">91.3%</option>
+                            <option value="0.914">91.4%</option>
+                            <option value="0.915">91.5%</option>
+                            <option value="0.916">91.6%</option>
+                            <option value="0.917">91.7%</option>
+                            <option value="0.918">91.8%</option>
+                            <option value="0.919">91.9%</option>
+
+                            <option value="0.92">92%</option>
+                            <option value="0.921">92.1%</option>
+                            <option value="0.922">92.2%</option>
+                            <option value="0.923">92.3%</option>
+                            <option value="0.924">92.4%</option>
+                            <option value="0.925">92.5%</option>
+                            <option value="0.926">92.6%</option>
+                            <option value="0.927">92.7%</option>
+                            <option value="0.928">92.8%</option>
+                            <option value="0.929">92.9%</option>
+
+                            <option value="0.93">93%</option>
+                            <option value="0.931">93.1%</option>
+                            <option value="0.932">93.2%</option>
+                            <option value="0.933">93.3%</option>
+                            <option value="0.934">93.4%</option>
+                            <option value="0.935">93.5%</option>
+                            <option value="0.936">93.6%</option>
+                            <option value="0.937">93.7%</option>
+                            <option value="0.938">93.8%</option>
+                            <option value="0.939">93.9%</option>
+
+                            <option value="0.94">94%</option>
+                            <option value="0.941">94.1%</option>
+                            <option value="0.942">94.2%</option>
+                            <option value="0.943">94.3%</option>
+                            <option value="0.944">94.4%</option>
+                            <option value="0.945">94.5%</option>
+                            <option value="0.946">94.6%</option>
+                            <option value="0.947">94.7%</option>
+                            <option value="0.948">94.8%</option>
+                            <option value="0.949">94.9%</option>
+
+                            <option value="0.95">95%</option>
+                            <option value="0.951">95.1%</option>
+                            <option value="0.952">95.2%</option>
+                            <option value="0.953">95.3%</option>
+                            <option value="0.954">95.4%</option>
+                            <option value="0.955">95.5%</option>
+                            <option value="0.956">95.6%</option>
+                            <option value="0.957">95.7%</option>
+                            <option value="0.958">95.8%</option>
+                            <option value="0.959">95.9%</option>
+
+                            <option value="0.96">96%</option>
+                            <option value="0.961">96.1%</option>
+                            <option value="0.962">96.2%</option>
+                            <option value="0.963">96.3%</option>
+                            <option value="0.964">96.4%</option>
+                            <option value="0.965">96.5%</option>
+                            <option value="0.966">96.6%</option>
+                            <option value="0.967">96.7%</option>
+                            <option value="0.968">96.8%</option>
+                            <option value="0.969">96.9%</option>
+
+                            <option value="0.97">97%</option>
+                            <option value="0.971">97.1%</option>
+                            <option value="0.972">97.2%</option>
+                            <option value="0.973">97.3%</option>
+                            <option value="0.974">97.4%</option>
+                            <option value="0.975">97.5%</option>
+                            <option value="0.976">97.6%</option>
+                            <option value="0.977">97.7%</option>
+                            <option value="0.978">97.8%</option>
+                            <option value="0.979">97.9%</option>
+
+                            <option value="0.98">98%</option>
+                            <option value="0.981">98.1%</option>
+                            <option value="0.982">98.2%</option>
+                            <option value="0.983">98.3%</option>
+                            <option value="0.984">98.4%</option>
+                            <option value="0.985">98.5%</option>
+                            <option value="0.986">98.6%</option>
+                            <option value="0.987">98.7%</option>
+                            <option value="0.988">98.8%</option>
+                            <option value="0.989">98.9%</option>
+
+                            <option value="0.99">99%</option>
+                            <option value="0.991">99.1%</option>
+                            <option value="0.992">99.2%</option>
+                            <option value="0.993">99.3%</option>
+                            <option value="0.994">99.4%</option>
+                            <option value="0.995">99.5%</option>
+                            <option value="0.996">99.6%</option>
+                            <option value="0.997">99.7%</option>
+                            <option value="0.998">99.8%</option>
+                            <option value="0.999">99.9%</option>
+
+                            <option value="1.00">100%</option>
                     </select>
                 </div>
                     
@@ -1282,6 +2160,8 @@
             <button type="button" class="btn btn-primary" id="btn_add_payment" onclick="addPayment()">Submit</button>
             <button type="button" class="btn btn-success" id="btn_update_payment" style="display:none" onclick="updatePayment()">Save</button>
             <input type="hidden" id="payment_id" name="payment_id">
+            <input type="hidden" id="p_staff_id" value="{{ auth()->id() }}">
+
             </div>
         </div>
         </div>
@@ -1306,13 +2186,14 @@
                                         <div class="row">
                                            <div class="col-6">
                                                <h1 class="display-5">Receipt</h1>
-                                               <h5>School name Inc.</h5>
-                                               <h5>Juna Subd. Matina Davao City,8000</h5>
-                                               <h5>09659212003</h5>
-                                               <h5>school.edu.ph</h5>
+                                               <br>
+                                               <h5>{{ $school->school_name }}</h5>
+                                               <h5>{{ $school->address }}</h5>
+                                               <h5>{{ $school->contact }}</h5>
+                                               <h5>{{ $school->website }}</h5>
                                            </div>
                                            <div class="col-6">
-                                               <img class="float-end d-none d-lg-block" id="logo_img" src="{{asset('images/logo.png')}}" alt="sample_logo" width="250">
+                                               <img class="float-end d-none d-lg-block" id="logo_img" src='{{asset("/storage/uploads/school/$school->school_logo")}}' alt="sample_logo" width="120">
                                            </div>
                                         </div>
                                        </div><br>
@@ -1408,7 +2289,7 @@
                                         </div>
                                     </div>
                                   </div>
-                                        <input class="text-center" type="text" id="p_signature" value="{{ auth()->user()->name }}" readonly  style="display: none">
+                                        <input class="text-center" type="text" id="p_signature" readonly  style="display: none">
                                         <h5 id="p_label" style="display: none">Cashier</h5>
                                  </div>
                                  <div class="form-group p-3">

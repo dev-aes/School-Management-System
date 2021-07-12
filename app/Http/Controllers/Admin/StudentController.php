@@ -429,7 +429,7 @@ class StudentController extends Controller
                 $student = Student::latest()->first();
                 Student::query()->delete();
 
-                $this->log_activity($student, 'Deleted all', 'Student Record',);
+                $this->log_activity($student, 'Deleted all', 'Student Record','','');
                 
                 return response()->json('success');
             }

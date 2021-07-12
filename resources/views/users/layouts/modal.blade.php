@@ -129,8 +129,8 @@
         <div class="modal fade " data-bs-backdrop="static" id="show_payment_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
-                        <h4 class="modal-title text-info" id="myLargeModalLabel">Payment Details </h4>
+                <div class="modal-header" id="p_showpayment_modal_header">
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Payment Details </h4>
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
@@ -142,15 +142,16 @@
                                         <div class="card-body" id="print">
                                                 <div class="card-header p-0">
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-6">
                                                             <h1 class="display-5">Receipt</h1>
-                                                            <h5>School name Inc.</h5>
-                                                            <h5>Juna Subd. Matina Davao City,8000</h5>
-                                                            <h5>09659212003</h5>
-                                                            <h5>school.edu.ph</h5>
+                                                            <br>
+                                                            <h5>{{ $school->school_name }}</h5>
+                                                            <h5>{{ $school->address }}</h5>
+                                                            <h5>{{ $school->contact }}</h5>
+                                                            <h5>{{ $school->website }}</h5>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <img class="float-end" src="{{asset('images/logo.png')}}" alt="sample_logo" width="250">
+                                                        <div class="col-6">
+                                                            <img class="float-end d-none d-lg-block" id="logo_img" src='{{asset("/storage/uploads/school/$school->school_logo")}}' alt="sample_logo" width="120">
                                                         </div>
                                                     </div>
                                                 </div><br>
@@ -246,6 +247,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                            <input class="text-center" type="text" id="p_signature" readonly  style="display: none">
+                                            <h5 id="p_label" style="display: none">Cashier</h5>
                                         </div>
                                         <div class="form-group p-3">
                                             <button class="btn btn-info float-end" onclick="window.print()"> Print <i class="fas fa-print"></i> </button>

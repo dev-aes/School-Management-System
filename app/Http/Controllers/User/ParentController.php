@@ -47,13 +47,14 @@ class ParentController extends Controller
 
 
         
+           // if student is active ( has downpayment)
             if($student_fee->status == 'active' && $student_fee->has_downpayment > 0)
             {
                 $payment_ledger = DB::table('payment_ledger')
-                ->leftJoin('payments', 'payment_id' , '=', 'payments.id')
-                ->select(DB::raw("payment_ledger.payment_change , payment_ledger.month, payment_ledger.amount as amount , payment_ledger.balance as balance , payment_ledger.status , payments.amount as payment_amount , payments.remarks as payment_remark, payments.official_receipt as payment_official_receipt, payments.transaction_no as payment_transaction_no, payments.created_at as payment_date, payments.id as payment_id"))
-                ->where('payment_ledger.student_fee_id', $student_fee->id)
-                ->get();
+                                    ->leftJoin('payments', 'payment_id' , '=', 'payments.id')
+                                    ->select(DB::raw("payment_ledger.payment_change , payment_ledger.month, payment_ledger.amount as amount , payment_ledger.balance as balance , payment_ledger.status , payments.amount as payment_amount , payments.remarks as payment_remark, payments.official_receipt as payment_official_receipt, payments.transaction_no as payment_transaction_no, payments.created_at as payment_date, payments.id as payment_id"))
+                                    ->where('payment_ledger.student_fee_id', $student_fee->id)
+                                    ->get();
 
                 $next_monthly_payment = DB::table('payment_ledger')
                                     ->where('student_fee_id', $student_fee->id)
@@ -69,6 +70,7 @@ class ParentController extends Controller
                 return response()->json([$payment_ledger, $next_monthly_payment, $student_balance, $student,  $payment_modes]);
 
             }
+            // if student is fully paid
             else if($student_fee->status == 'paid' && $student_fee->has_downpayment >0)
             {
                 $payment_ledger = DB::table('payment_ledger')
@@ -91,6 +93,7 @@ class ParentController extends Controller
                 return response()->json([$payment_ledger, $next_monthly_payment, $student_balance, $student,  $payment_modes]);
 
             }
+            // if student is active but don't have a down payment
             else if($student_fee->status == 'active' && $student_fee->has_downpayment == 0)
             {
                 return response()->json([$student_fee->total_fee, $student,  $payment_modes]);
@@ -192,9 +195,7 @@ class ParentController extends Controller
         {
 
               // get the payment by payment id
-           $selected_payment = DB::table('payments')
-           ->where('id', $payment->id)
-           ->first();
+              $selected_payment = Payment::with('user')->where('id', $payment->id)->first();
 
 
             // get student name , grade level name and student fee

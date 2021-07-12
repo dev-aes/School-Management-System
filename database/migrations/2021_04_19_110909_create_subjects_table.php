@@ -19,6 +19,7 @@ class CreateSubjectsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->bigInteger('grade_val');
+            $table->bigInteger('is_imported');
             $table->timestamps();
         });
     }
