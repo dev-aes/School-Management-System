@@ -421,7 +421,7 @@ class StudentController extends Controller
         if(request()->ajax())
         {
             $data = request()->validate(['password'=> 'required']);
-            $admin = User::where('role_id', 1)->first();
+            $admin = get_admin_pw();
 
             // check if the given password is equal to the super admin password
             if(Hash::check($data['password'], $admin['password']))

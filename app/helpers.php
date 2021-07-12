@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\AcademicYear;
 
 if(!function_exists('get_latest_academic_year'))
@@ -33,6 +34,23 @@ if(!function_exists('get_user_role_name'))
         // return ucfirst($role);
     }
 }
+
+
+if(!function_exists('get_admin_pw'))
+{
+    function get_admin_pw()
+    {
+        $admin = User::with(['role' => function($query) {
+            $query->where('name', '=', 'admin');
+        }])->first();
+
+        return $admin;
+        // return ucfirst($role);
+    }
+}
+
+
+
 
 
 

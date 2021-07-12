@@ -5916,22 +5916,35 @@ function deletePayment(id) {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-            $.ajax({
-                method: 'DELETE',
-                url: route('payment.destroy', id),
-                success: response => {
-                    console.log(response);
-                    if(response == 'success') {
-                        toastSuccess("Payment Deleted");
-                        $('.payment_DT').DataTable().draw();
-                    }
-        
-                },
-                error: err => {
-                    console.log(err);
-                    toastDanger();
+
+            let admin_key = prompt("Enter admin secret key *");
+
+            if(admin_key.toString() == "")
+            {
+            return alert("Secret key is required");
+            }
+
+          $.ajax({
+            method: 'DELETE',
+            dataType:'json',
+            data:{admin_key:admin_key},
+            url: route('payment.destroy', id),
+            success: response => {
+                res(response);
+                if(response == 'success') {
+                    toastSuccess("Payment Deleted");
+                    $('.payment_DT').DataTable().draw();
                 }
-            })
+                if(response == 'error') {
+                  return toastr.error('Invalid Key');
+                }
+    
+            },
+            error: err => {
+                console.log(err);
+                toastDanger();
+            }
+        })
         }
       })
 }

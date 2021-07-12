@@ -11,6 +11,7 @@ use App\Models\PaymentMode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentController extends Controller
@@ -37,13 +38,13 @@ class PaymentController extends Controller
                 {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showPayment" 
                     onclick="showPayment('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editPayment" onclick="editPayment('.$row->id.')"> <i class="fas fa-edit"></i> Edit</a> |';
+                    // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editPayment" onclick="editPayment('.$row->id.')"> <i class="fas fa-edit"></i> Edit</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deletePayment" onclick="deletePayment('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
        
                 }
                 else
                 {
-                    $btn .= '  <button class="btn btn-sm btn-secondary" disabled> <i class="fas fa-trash"></i> Edit </button> |';
+                    // $btn .= '  <button class="btn btn-sm btn-secondary" disabled> <i class="fas fa-trash"></i> Edit </button> |';
     
                     $btn .= '  <button class="btn btn-sm btn-secondary" disabled> <i class="fas fa-trash"></i> Delete </button>';
     
@@ -824,99 +825,111 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
 
+        $admin = get_admin_pw();
 
-        if($payment->payment_type == 'dp')
+
+        if(Hash::check(request('admin_key') , $admin->password))
         {
 
-            //after deleting the downpayment update the student bill's downpayment back to 0 and 
-            //revert back also the has_downpayment property to false (0)
-            DB::table('student_fee')
-            ->where('id', $payment->student_fee_id)
-            ->update([
-                'has_downpayment'  => 0,
-                'downpayment' => 0
-                ]);
+            if($payment->payment_type == 'dp')
+            {
 
-            //after update get all the payment ledgers associated with payment->student_fee_id ; DELETE 
-            DB::table('payment_ledger')
-            ->where('student_fee_id', $payment->student_fee_id)
-            ->delete();
+                //after deleting the downpayment update the student bill's downpayment back to 0 and 
+                //revert back also the has_downpayment property to false (0)
+                DB::table('student_fee')
+                ->where('id', $payment->student_fee_id)
+                ->update([
+                    'has_downpayment'  => 0,
+                    'downpayment' => 0
+                    ]);
 
-            //todo activty log
-            
-            $student_fee = StudentFee::where('id', $payment->student_fee_id)->first();
+                //after update get all the payment ledgers associated with payment->student_fee_id ; DELETE 
+                DB::table('payment_ledger')
+                ->where('student_fee_id', $payment->student_fee_id)
+                ->delete();
 
-            $student = Student::where('id', $student_fee->student_id)->first();
+                //todo activty log
+                
+                $student_fee = StudentFee::where('id', $payment->student_fee_id)->first();
 
-            $this->log_activity($payment,'deleted','Down Payment for student',$student->first_name." ".$student->last_name);
+                $student = Student::where('id', $student_fee->student_id)->first();
+
+                $this->log_activity($payment,'deleted','Down Payment for student',$student->first_name." ".$student->last_name);
 
 
-            // after updating and deleting of records ; delete payment record ( Monthly Payment )
-            $payment->delete();
+                // after updating and deleting of records ; delete payment record ( Monthly Payment )
+                $payment->delete();
 
-            return response()->json('success');
+                return response()->json('success');
+            }
+
+            if($payment->payment_type == 'mo')
+            {
+
+
+                // get the last monthly payment for ex Php 1500
+                    $get_last_monthly_payment = DB::table('payment_ledger')
+                                            ->select('amount' , 'id')
+                                            ->where('status', 'unpaid')
+                                            ->where('student_fee_id', $payment->student_fee_id)
+                                            ->latest('id')
+                                            ->first();
+
+                    // get the latest unpaid monthly payment
+                    $get_monthly_payment = DB::table('payment_ledger')
+                                            ->select('amount' , 'id', 'payment_change')
+                                            ->where('status', 'unpaid')
+                                            ->where('student_fee_id', $payment->student_fee_id)
+                                            ->first();
+                    // after getting ; revert back to its usual monthly payment
+                                            DB::table('payment_ledger')
+                                                ->where('id', $get_monthly_payment->id)
+                                                ->update([
+                                                    'payment_change' => 0,
+                                                    'amount' => $get_last_monthly_payment->amount,
+                                                    'balance' => $get_last_monthly_payment->amount
+                                                    ]);
+
+        
+                // get all the recent monthly payment by payment id where status = PAID
+                $get_the_recent_monthly_payment_by_payment_id =  DB::table('payment_ledger')
+                                                                ->where('status', 'paid')
+                                                                ->where('student_fee_id', $payment->student_fee_id)
+                                                                ->where('payment_id', $payment->id)
+                                                                ->get();
+                
+                foreach($get_the_recent_monthly_payment_by_payment_id as $key => $monthly_payment_by_payment_id)
+                {
+                    
+                    DB::table('payment_ledger')
+                    ->where('id', $monthly_payment_by_payment_id->id)
+                    ->update([
+                        'payment_change' => 0,
+                        'status' => 'unpaid',
+                        'payment_id'  => null
+                        ]);
+                }
+
+                //todo activty log
+
+                $student_fee = StudentFee::where('id', $payment->student_fee_id)->first();
+
+                $student = Student::where('id', $student_fee->student_id)->first();
+    
+                $this->log_activity($payment,'deleted','Monthly Payment for student',$student->first_name." ".$student->last_name);
+    
+
+                $payment->delete(); // delete payment by payment-ID
+
+
+
+                return response()->json('success');
+
+            }
         }
-
-        if($payment->payment_type == 'mo')
+        else
         {
-            //   // get the last monthly payment for ex Php 1500
-                $get_last_monthly_payment = DB::table('payment_ledger')
-                                        ->select('amount' , 'id')
-                                        ->where('status', 'unpaid')
-                                        ->where('student_fee_id', $payment->student_fee_id)
-                                        ->latest('id')
-                                        ->first();
-
-                // get the latest unpaid monthly payment
-                $get_monthly_payment = DB::table('payment_ledger')
-                                        ->select('amount' , 'id', 'payment_change')
-                                        ->where('status', 'unpaid')
-                                        ->where('student_fee_id', $payment->student_fee_id)
-                                        ->first();
-                // after getting ; revert back to its usual monthly payment
-                                        DB::table('payment_ledger')
-                                            ->where('id', $get_monthly_payment->id)
-                                            ->update([
-                                                'payment_change' => 0,
-                                                'amount' => $get_last_monthly_payment->amount,
-                                                'balance' => $get_last_monthly_payment->amount
-                                                ]);
-
-     
-              // get all the recent monthly payment by payment id where status = PAID
-              $get_the_recent_monthly_payment_by_payment_id =  DB::table('payment_ledger')
-                                                               ->where('status', 'paid')
-                                                               ->where('student_fee_id', $payment->student_fee_id)
-                                                               ->where('payment_id', $payment->id)
-                                                               ->get();
-            
-              foreach($get_the_recent_monthly_payment_by_payment_id as $key => $monthly_payment_by_payment_id)
-              {
-                 
-                  DB::table('payment_ledger')
-                  ->where('id', $monthly_payment_by_payment_id->id)
-                  ->update([
-                      'payment_change' => 0,
-                      'status' => 'unpaid',
-                      'payment_id'  => null
-                      ]);
-              }
-
-            //todo activty log
-
-              $student_fee = StudentFee::where('id', $payment->student_fee_id)->first();
-
-              $student = Student::where('id', $student_fee->student_id)->first();
-  
-              $this->log_activity($payment,'deleted','Monthly Payment for student',$student->first_name." ".$student->last_name);
-  
-
-              $payment->delete(); // delete payment by payment-ID
-
-
-
-               return response()->json('success');
-
+            return $this->err();
         }
     }
 }
