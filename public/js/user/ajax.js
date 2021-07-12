@@ -848,8 +848,10 @@ function t_assign_grade(section , student)
                                     <tbody>
                                 `;
 
+                    let student_avatar = img_catch(section_student[1].student_avatar,`storage/uploads/student/${section_student[1].student_avatar}`, 50);
+
                     student_output +=        `  <tr>
-                                            <td><img class='rounded-circle img-fluid' src='/storage/uploads/student/${section_student[1].student_avatar}' alt='student_avatar' width='30'> </td>
+                                            <td>${student_avatar}</td>
                                             <td> ${section_student[1].first_name}  ${section_student[1].last_name} </td>
                                             <td>  ${section_student[1].gender} </td>
 
@@ -868,7 +870,7 @@ function t_assign_grade(section , student)
                 
 
                 let output = `
-                                <center><img class='rounded-circle' src='/storage/uploads/student/${section_student[1].student_avatar}' alt='student_avatar' width='50'></center>
+                                <center>${student_avatar}</center>
                                 <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${section_student[1].id}'> Student : ${section_student[1].first_name} ${section_student[1].last_name} </h5>
 
                                 <table class="table table-bordered mt-2 " border="1" id='table_assign_grade_to_subject_student_grade_table'>
@@ -877,12 +879,12 @@ function t_assign_grade(section , student)
                                         <td rowspan="2" style="width:25%">Learning Areas</td>
                                         <td colspan="4" style="width:25%">Quarter</td>
                                         <td rowspan="2" style="width:25%">Final Grade</td>
-                                        <td rowspan="2" style="width:25%">Remark</td>`;
+                                        <td rowspan="2" style="width:25%">Remark</td>`
 
                                         if(section_student[0].adviser_id == section_student[3])
                                         
                                         {
-                    output +=          `<td rowspan="2" style="width:25%">Action</td>`;
+                    output +=               `<td rowspan="2" style="width:25%">Action</td>`;
                                         }
                     output +=      `</tr>
                                     <tr>
@@ -906,7 +908,6 @@ function t_assign_grade(section , student)
                                     {
                                        average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
                                        remark = (average > 74) ? 'Passed': 'Failed';
-           
                                     }
                                     
                                     
@@ -923,7 +924,6 @@ function t_assign_grade(section , student)
 
                                     average_container.push(average); // insert all average per row on average container[]
 
-
                     output += `<tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject_teacher_id=${subject.subject_teacher_id}  
                      data-subject='${subject.subject_id}'>
                                         <th >${subject.name}</th>
@@ -934,6 +934,7 @@ function t_assign_grade(section , student)
                                         <td class='average'>${average}</td>
                                         <td class='remark'>${remark}</td>`;
 
+                                       
 
                                 if(section_student[0].adviser_id == section_student[3]) //Check if the login teacher is the adviser
                                 {
@@ -960,7 +961,7 @@ function t_assign_grade(section , student)
 
 
                    output += `       </tr>
-                                    ;    `
+                                      `;
 
                             }) // loop closure
 
@@ -1430,6 +1431,17 @@ function getUnique(array){
     return uniqueArray;
 }
 
+function img_catch(img, directory, width='75')
+{
+    if(img == null || img == "")
+    {
+        return `<img class='rounded-circle' src='/images/noimg.jpg' width='${width}'> `;
+    }
+    else
+    {
+        return `<img class='rounded-cirle' src='/${directory}' width='${width}'>`;
+    }
+}
 
 
 function toastSuccess(message)

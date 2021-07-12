@@ -86,7 +86,7 @@ class ValuesController extends Controller
                                     'description' => $data['description']
             ]);
 
-            $values = Value::where('id', $data['id'])->first();
+            $values = Value::where('id', $data['values_id'])->first();
 
             $this->log_activity($description,'assigned','description to values', $values->title);
 

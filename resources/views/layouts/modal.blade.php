@@ -1896,7 +1896,7 @@
             <div class="modal-dialog modal-xl">
             <div class="modal-content ">
                 <div class="modal-header" id="teacher_assign_grade_to_student_subject_header">
-                        <h4 class="modal-title text-white" id="myLargeModalLabel">Add Grade <i class="fas fa-info-circle"></i> </h4>
+                        <h4 class="modal-title text-white" id="myLargeModalLabel">Add Grade <i class="fas fa-chalkboard-teacher"></i> </h4>
                         <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body" >
@@ -1964,14 +1964,14 @@
                 <div class="modal-body">
                 <form id="teacher_assign_subject_section_form" autocomplete="off" enctype="multipart/form-data">
                     @csrf
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label class='form-label'>Select Teacher </label>
                         <select name="teacher_id" type="text" id="teacher_assign_subject_section_teacher_id" onchange="display_section_by_teacher()" style="width:100%">
                             {{--display teachers --}}
                         </select>   
                     
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label class='form-label'>Select Section </label>
                         <select name="section_id" type="text" id="teacher_assign_subject_section_section_id" onchange="display_subject_by_grade_level()" style="width:100%">
                             {{--display sections --}}

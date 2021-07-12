@@ -23,7 +23,9 @@ class SectionFactory extends Factory
     public function definition()
     {
        
-        return $this->random();
+        return array('name' => 'Bayabas', 'description' => 'Bayabas 101', 'grade_level_id' => 1);
+
+        // return $this->random();
     }
 
     public function random()

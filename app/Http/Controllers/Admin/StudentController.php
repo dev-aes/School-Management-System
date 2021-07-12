@@ -325,8 +325,8 @@ class StudentController extends Controller
             $file = $request->file('students');
             
             Excel::import(new StudentImport, $file);
-             $imported_students = Student::where('is_imported',1)->get();
-             $ay = AcademicYear::where('status',1)->first();
+            $imported_students = Student::where('is_imported',1)->get();
+            $ay = AcademicYear::where('status',1)->first();
              
              
              

@@ -81,6 +81,7 @@ class LoginController extends Controller
 
     public function isOnline($user)
     {
+        $this->log_activity($user,'logged-in','','','');
          User::where('id', $user->id)->update(['status' => 1]);
     }
 

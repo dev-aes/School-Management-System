@@ -97,13 +97,14 @@ class UserController extends Controller
                         'user_role' => 'required'
                         ]);
 
-                        User::create([
+                    $user_role =    User::create([
                             'name' => $data['name'],
                             'email' => $data['email'],
                             'password' => Hash::make($data['password']),
                             'role_id' => $data['user_role']
                         ]);
                         
+                        $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
                         return response()->json('success');
                 }
 
@@ -118,7 +119,7 @@ class UserController extends Controller
                         'student_role' => 'required'
                         ]);
 
-                        User::create([
+                    $user_role =    User::create([
                             'name' => $data['name'],
                             'email' => $data['email'],
                             'password' => Hash::make($data['password']),
@@ -126,6 +127,7 @@ class UserController extends Controller
                             'role_id' => $data['student_role']
                         ]);
                         
+                        $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
                         return response()->json('success');
                 }
 
@@ -142,14 +144,15 @@ class UserController extends Controller
                         'parent_role' => 'required'
                         ]);
 
-                        User::create([
+                     $user_role =   User::create([
                             'name' => $data['name'],
                             'email' => $data['email'],
                             'password' => Hash::make($data['password']),
                             'parent_id' => $data['parent_id'],
                             'role_id' => $data['parent_role']
                         ]);
-                        
+
+                        $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
                         return response()->json('success');
                 }   
 
@@ -166,16 +169,19 @@ class UserController extends Controller
                          'teacher_role' => 'required'
                          ]);
  
-                         User::create([
+                     $user_role =    User::create([
                              'name' => $data['name'],
                              'email' => $data['email'],
                              'password' => Hash::make($data['password']),
                              'teacher_id' => $data['teacher_id'],
                              'role_id' => $data['teacher_role']
                          ]);
-                         
+
+                         $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
                          return response()->json('success');
-                 }   
+                 }
+                 
+                 
         }
     }
 
@@ -195,6 +201,8 @@ class UserController extends Controller
                 'password' => Hash::make(request('password'))
             ]);
 
+            $this->log_activity($user,'updated','User',$user->first_name." ".$user->last_name);
+
             return response()->json('success');
         }
     }
@@ -205,6 +213,8 @@ class UserController extends Controller
     {
         if(request()->ajax())
         {
+            $this->log_activity($user,'deleted','User',$user->first_name." ".$user->last_name);
+
             $user->delete();
 
             return response()->json('success');

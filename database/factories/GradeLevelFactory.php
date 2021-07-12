@@ -24,7 +24,9 @@ class GradeLevelFactory extends Factory
     public function definition()
     {
 
-        return $this->random();
+        return array('name' => 'Grade 1', 'description' => 'g1', 'grade_val' => 1, 'months_no' => '10', 'academic_year_id' => '1');
+
+        // return $this->random();
  
     }
 

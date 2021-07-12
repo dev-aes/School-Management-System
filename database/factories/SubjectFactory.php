@@ -22,7 +22,9 @@ class SubjectFactory extends Factory
      */
     public function definition()
     {
-        return $this->random();
+        // return $this->random();
+
+        return array('name' => 'Math', 'description' => 'Math 101', 'grade_val' => 1);
     }
 
     public function random()

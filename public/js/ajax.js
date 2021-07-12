@@ -729,7 +729,7 @@ $('#add_teacher').on('click', ()=> {
     // end teacher Modal
     $('#teacher_assign_subject_section').on('click', ()=> {
         $('#teacher_assign_subject_section_modal').modal('show');
-        $('#teacher_assign_subject_section_label').html(`<h4 class='text-white'> Assign Subjects to Section </h4>`);
+        $('#teacher_assign_subject_section_label').html(`<h4 class='text-white'> Assign Subjects to Section <i class="fas fa-chalkboard-teacher"></i> </h4>`);
         $('#teacher_assign_subject_section_header').addClass('bg-primary');
         $.ajax({
             url:route('teacher.teacher_assign_subject_to_student_display_teachers'),//Route Display All teacher
