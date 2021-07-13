@@ -131,7 +131,7 @@ class ParentController extends Controller
 
                       $parent = ParentModel::where('id', $data['parent_id'])->first(); // get authenticated parent
 
-                      $this->log_activity($parent,'sent','payment',"Php $payment->amount", '', $parent->id, $payment->student_id);
+                      $this->log_activity($parent,'sent','payment',"Php $payment->amount", 'a', $parent->id, $payment->student_id);
 
                       return response()->json('success');
                 }
@@ -163,7 +163,7 @@ class ParentController extends Controller
                      $payment = ParentPayment::create($data);
                      $parent = ParentModel::where('id', $data['parent_id'])->first(); // get authenticated parent
 
-                     $this->log_activity($parent,'sent','payment',"Php $payment->amount", '', $parent->id, $payment->student_id);
+                     $this->log_activity($parent,'sent','payment',"Php $payment->amount", 'a', $parent->id, $payment->student_id);
 
 
                       return response()->json('success');

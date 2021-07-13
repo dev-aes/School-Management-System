@@ -1106,7 +1106,8 @@ function t_assign_grade(section , student)
                                                     let q2 = (values_description.q2 == null) ? "" : values_description.q2;
                                                     let q3 = (values_description.q3 == null) ? "" : values_description.q3;
                                                     let q4 = (values_description.q4 == null) ? "" : values_description.q4;
-                
+
+                                                    let description = (values_description.description == null ) ? "" : values_description.description;
 
 
                        output +=                     `<tr class='v_values' data-description_id='${values_description.description_id}' data-values_id='${values_description.values_id}' data-student_id ='${section_student[1].id}' data-adviser_id='${section_student[0].adviser_id}'>`;        
@@ -1114,7 +1115,7 @@ function t_assign_grade(section , student)
                                                         if(index === values_description.values_id)
                                                         {
                        output +=                           `<td style='border-top:1px solid #fff !important'> </td>
-                                                            <td>${values_description.description}</td>
+                                                            <td>${description}</td>
                                                             <td class='values_quarter' data-quarter='1' style='width:7%'>${q1}</td>
                                                             <td class='values_quarter' data-quarter='2' style='width:7%'>${q2}</td>
                                                             <td class='values_quarter' data-quarter='3' style='width:7%'>${q3}</td>
@@ -1124,7 +1125,7 @@ function t_assign_grade(section , student)
                                                         {
                                                             
                        output +=                           `<td class='text-capitalize'>${values_description.title}</td>
-                                                            <td>${values_description.description}</td>
+                                                            <td>${description}</td>
                                                             <td class='values_quarter' data-quarter='1'style='width:7%'>${q1}</td>
                                                             <td class='values_quarter' data-quarter='2'style='width:7%'>${q2}</td>
                                                             <td class='values_quarter' data-quarter='3'style='width:7%'>${q3}</td>

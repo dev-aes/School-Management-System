@@ -167,6 +167,24 @@ class GradeLevelController extends Controller
         }
     }
 
+    // TODO destroy assigned subject
+
+    function destroy_subject(GradeLevel $grade_level, Subject $subject)
+    {
+        if(request()->ajax())
+        {
+
+            $this->log_activity($grade_level, 'deleted', 'assigned Subject', $subject->name,'an');
+
+            DB::table('grade_level_subject')
+                ->where('grade_level_id', $grade_level->id)
+                ->where('subject_id', $subject->id)
+                ->delete();
+
+                return $this->res(); // success
+        }
+    }
+
 
     
 

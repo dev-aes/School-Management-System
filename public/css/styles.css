@@ -69,11 +69,7 @@ html {
 .payment_paid {
   background-color: blue !important;
 }
-/* select2
-.select2-results__option--selectable {
-  background-color: green !important;
-}
-*/
+
 
 .select2-results__option--highlighted {
   /* background-color: gray !important; */
@@ -83,6 +79,10 @@ html {
 
 .select2-results__option {
   list-style: "" !important;
+}
+
+.nav_nowrap {
+  flex-wrap: nowrap !important;
 }
 
   /* .minus_sub_fee {

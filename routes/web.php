@@ -148,6 +148,8 @@ Route::middleware(['auth','registrar'])->group(function() {
     Route::get('/admin/gradeLevel/addSubjects/{grade_level}', [GradeLevelController::class, 'display_subjects_for_grade_level'])->name('grade_level.display_subjects_for_grade_level');
     Route::post('/admin/gradeLevel/addSubjects', [GradeLevelController::class, 'grade_level_assign_subject_subject_id_store'])->name('grade_level.grade_level_assign_subject_subject_id_store');
     
+    // Grade Level Delete Assigned Subject
+    Route::delete('/admin/gradeLevel/{grade_level}/subject/{subject}', [GradeLevelController::class, 'destroy_subject'])->name('grade_level.destroy_subject');
 
     // Values and Description
     Route::post('/admin/values/createDescription', [ValuesController::class, 'store_description'])->name('values.store_description');

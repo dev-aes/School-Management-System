@@ -489,7 +489,7 @@
               </div>
               <div class="modal-body" >
                 <div class="row justify-content-center">
-                    <div class="card w-75 ">
+                    <div class="card w-100">
                         <div class="card-body py-5">
                            <div id="show_grade_level_info">
                                {{--Display Grade Level and its assigned Subject(s)--}}
@@ -566,7 +566,7 @@
               </div>
               <div class="modal-body" >
                 <div class="row justify-content-center">
-                    <div class="card w-75 ">
+                    <div class="card w-100 ">
                         <div class="card-body py-5">
                            <div id="show_section_info">
                                {{--Display Section and its assigned Teachers & Students--}}
@@ -2333,7 +2333,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3" id="user_select_role">
                             <label class='form-label'>Select Role *</label>
                             <select class="form-select user_display_enduser" id="select_user" onchange="display_user_select_box()">
                                 {{--Display Student Parent and Teacher category--}}
@@ -2373,16 +2373,16 @@
                     </div>
                 </div>
                 <br>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label class='form-label'>Name</label>
                     <input class="form-control " name="user_full_name" type="text" id="user_full_name" value="">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label class='form-label'>Email</label>
                     <input class="form-control " name="user_email" type="email" id="user_email" value="">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label class='form-label'>Password</label>
                     <input class="form-control " name="user_password" type="password" id="user_password" value="">
                 </div>
@@ -2466,7 +2466,7 @@
                     <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card w-50 mx-auto">
+                    <div class="card w-100 mx-auto">
                         <div class="card-header"></div>
                         <div class="card-body">
                             <div class="parent_info">
@@ -2475,7 +2475,7 @@
                         </div>
                     </div>
 
-                    <div class="card w-50 mx-auto">
+                    <div class="card w-100 mx-auto">
                         <div class="card-header"></div>
                         <div class="card-body">
                             {{-- <h3>Students</h3> --}}

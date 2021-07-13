@@ -393,7 +393,7 @@ AdminDashBoardDisplayUser();
 $('#add_accademic_year').on('click', ()=> {
     $('#accademic_year_modal').modal('show');
     $('#accademic_year_modal_label').html(`<h3 class='text-white'> Add Academic Year </h3>`);
-    $('#accademic_year_modal_header').removeClass('bg-primary').addClass('bg-success');
+    $('#accademic_year_modal_header').removeClass('bg-success').addClass('bg-primary');
     $('#accademic_year').val('');
 
 });
@@ -478,7 +478,9 @@ function displaySchools() {
         success: school => {
             // display school's information
            
-            let output = `<table class="table table-borderless" style='width:65%;margin-left:auto;'>
+            let output = `
+                            <div class='table-responsive'>
+                            <table class="table table-borderless" style='width:65%;margin-left:auto;'>
                                 <tbody>
                                 <tr>
                                     <th></th>
@@ -557,7 +559,8 @@ function displaySchools() {
                                 </tr>
                             
                                 </tbody>
-                            </table>`;
+                            </table>
+                            </div>`;
 
 
 
@@ -918,10 +921,10 @@ function createTeacher()  {
         data: {id:id},
         success: teacher => {
           // res(teacher[1]);
-           let teacher_avatar = img_catch(teacher[0].teacher_avatar,`storage/uploads/teacher/${teacher[0].teacher_avatar}`, 250);
+           let teacher_avatar = img_catch(teacher[0].teacher_avatar,`storage/uploads/teacher/${teacher[0].teacher_avatar}`, 200);
            $('#show_teacher_modal').modal('show');
            $('#show_teacher_modal_header').addClass('bg-info');
-           let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
+           let output = `<ul class="nav nav-tabs nav_nowrap" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="teacherinfo-tab" data-bs-toggle="tab" data-bs-target="#teacherinfo" type="button" role="tab" aria-controls="teacherinfo" aria-selected="true">Teacher Info</button>
                         </li>
@@ -1031,9 +1034,10 @@ function createTeacher()  {
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${section.id}" aria-expanded="true" aria-controls="collapseOne" onclick='teacher_display_students_by_section_id(${section.id})'>
                                             Section: <span class='ms-2 text-primary fw-bold text-uppercase'> ${section.name} </section>
                                             </button>
-                                            <a class='btn btn-sm text-danger float-end mt-2 me-3 mb-2' href='javascript:void(0)' onclick='teacher_destroy_section(${section.id},${teacher[0].id})' title='delete section'> <i class="fas fa-times fa-lg"></i> </a>
+                                            <a class='btn btn-sm btn-warning float-end mt-2 me-3 mb-2' href='javascript:void(0)' onclick='teacher_destroy_section(${section.id},${teacher[0].id})' id='teacher_delete_section' title='delete section' style='display:none'> <i class="fas fa-times fa-lg"></i></a>
 
                                         </h2>
+                                        <br><br>
                                         <div id="collapse-${section.id}" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body" id='display_students-${section.id}'>
                                             
@@ -1126,12 +1130,14 @@ function teacher_destroy_section(section, teacher)
 
 function teacher_display_students_by_section_id(id) 
 {
+   $('#teacher_delete_section').toggle(); // delete section button
+
    $.ajax({
       url: route('teacher.teacher_display_students_by_section_id',id),
       dataType:'json',
       success: students => {
-          res(students);
-          let output = `<table class='table table-hover table-bordered'>
+        //   res(students);
+          let output = `<table class='table table-hover table-bordered' id='teacher_display_students_by_section_id_DT'>
                             <thead>
                                 <tr> 
                                     <th> Student Name </th>
@@ -1140,9 +1146,13 @@ function teacher_display_students_by_section_id(id)
                             </thead>
                             <tbody>
                         `;
+
             students.forEach(student => {
+
+                let student_avatar = img_catch(student.student_avatar,`storage/uploads/student/${student.student_avatar}`, 50);
+
                 output += `<tr>
-                            <td><img class='rounded-circle me-2' src='/storage/uploads/student/${student.student_avatar}' width='35'>${student.first_name} ${student.last_name} </td>
+                            <td>${student_avatar} ${student.first_name} ${student.last_name} </td>
                             <td> ${student.gender} </td>
                           </tr>`
             }) // loop closure
@@ -1150,7 +1160,14 @@ function teacher_display_students_by_section_id(id)
             output += `</tbody>
                      </table>`; // table closure
  
+                
                 $('#display_students-'+ id).html(output); // dynamic id + elemt id
+
+                $('#teacher_display_students_by_section_id_DT').DataTable({
+                    pageLength : 3,
+                    lengthMenu: [[3, 10, 20, -1], [3, 10, 20]]
+                }); // convert to dt
+
 
       },
       error: err => {
@@ -2095,12 +2112,14 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                                     let q3 = (student_values.q3 == null) ? "" : student_values.q3;
                                     let q4 = (student_values.q4 == null) ? "" : student_values.q4;
 
+                                    let description = (student_values.description == null ) ? "" : student_values.description;
+
 
             output +=               `<tr class='v_values' data-description_id='${student_values.description_id}' data-values_id='${student_values.values_id}' data-student_id ='${student_subjects[0].id}' data-adviser_id='${adviser}'>`;
                                         if(index === student_values.values_id)
                                         {
             output +=                      `<td style='border-top:1px solid #fff !important'> </td>
-                                            <td>${student_values.description}</td>
+                                            <td>${description}</td>
                                             <td class='values_quarter' data-quarter='1' style='width:7%'>${q1}</td>
                                             <td class='values_quarter' data-quarter='2' style='width:7%'>${q2}</td>
                                             <td class='values_quarter' data-quarter='3' style='width:7%'>${q3}</td>
@@ -2110,7 +2129,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                                         {
                                             
             output +=                      `<td class='text-capitalize'>${student_values.title}</td>
-                                            <td>${student_values.description}</td>
+                                            <td>${description}</td>
                                             <td class='values_quarter' data-quarter='1'style='width:7%'>${q1}</td>
                                             <td class='values_quarter' data-quarter='2'style='width:7%'>${q2}</td>
                                             <td class='values_quarter' data-quarter='3'style='width:7%'>${q3}</td>
@@ -2711,17 +2730,19 @@ function createGradeLevel() {
                           <caption>List of Subjects  </caption>
                              <thead class='bg-info text-white'>
                                 <tr> 
-                                    <th>Subject Name </th>
-                                    <th> Subject Description </th>
+                                    <th> Subject </th>
+                                    <th> Description </th>
+                                    <th>  </th>
                                 </tr>
                              </thead>
                              <tbody>
                          `;
 
                 grade_level.subject.forEach(subject => {
-                    output += `<tr>
+                    output += `<tr id='grade_level_subject-${subject.id}'>
                                 <td>${subject.name}</td> 
                                 <td>${subject.description}</td> 
+                                <td><a class='text-danger' href='javascript:void(0)' onclick='grade_level_destroy_subject(${grade_level.id},${subject.id})'> <i class="fas fa-times"></i> </a></td> 
                                </tr>`;
                 });
 
@@ -2735,6 +2756,37 @@ function createGradeLevel() {
  
          }
      })
+ }
+
+ // delelete assigned subject by grade_level_id and subject_id
+ function grade_level_destroy_subject(grade_level, subject)
+ {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method:'DELETE',
+                url:route('grade_level.destroy_subject', [grade_level,subject]),
+                success: response => {
+                    $('#grade_level_subject-'+subject).fadeOut('slow'); // remove deleted subject (row)
+                    toastSuccess('Assigned Subject Deleted');
+
+                },
+                error: err => {
+                    toastDanger();
+                    console.log(err);
+                }
+    
+            })
+        }
+      })
  }
 
 // edit
@@ -3461,9 +3513,9 @@ function createStudent() {
         data: {id:id},
         success: student => {
             //res(student);
-           let student_avatar = img_catch(student[0].student_avatar,`storage/uploads/student/${student[0].student_avatar}`, 250);
+           let student_avatar = img_catch(student[0].student_avatar,`storage/uploads/student/${student[0].student_avatar}`, 200);
 
-           let output = `<ul class="nav nav-tabs" id="myTab" role="tablist">
+           let output = `<ul class="nav nav-tabs nav_nowrap" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="studentinfo-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true">Student Info</button>
                         </li>
@@ -6310,7 +6362,7 @@ function AdminDashBoardDisplayUser()
 
                 users[3].forEach(payment_log => {
 
-                //   console.log(payment_log);
+                    // console.log(payment_log);
                     parent_payment_logs += '<a href="'+route('parent_payment_request.edit', [payment_log.parent_id, payment_log.student_id])+'" class="list-group-item">';
 
 
@@ -6322,21 +6374,28 @@ function AdminDashBoardDisplayUser()
 
                     parent_payment_logs += `<div class="col-2">
                                                 <i class="fas fa-eye text-muted"></i>
-                                            </div>`; 
+                                            </div>
+                                            <div class="col-10">
+                                                <div class="text-dark">${payment_log.description}</div>
+                                                <div class="text-muted small mt-1">${payment_log.created_at}</div>
+                                            </div>
+                                            `; 
 
                                         }
                                         if(payment_log.seen === 1)
                                         {
                     parent_payment_logs += `<div class="col-2">
                                                 <i class="fas fa-eye text-primary"></i>
-                                            </div>`;
+                                            </div>
+                                            <div class="col-10">
+                                                <div class="text-dark">${payment_log.description}</div>
+                                                <div class="text-muted small mt-1">${payment_log.created_at}</div>
+                                            </div>
+                                            `;
 
                                         }
                        
-                    parent_payment_logs += `       <div class="col-10">
-                                                        <div class="text-dark">${payment_log.description}</div>
-                                                        <div class="text-muted small mt-1">${payment_log.created_at}</div>
-                                                    </div>
+                    parent_payment_logs += `      
                                                 </div>
                                             </a>`;
                                  });
@@ -7186,26 +7245,35 @@ function updateRole()
 
                              let index = 0; // counter
                              student_form[1].forEach(student_values => {
+
+                                let q1 = (student_values.q1 == null) ? "" : student_values.q1;
+                                let q2 = (student_values.q2 == null) ? "" : student_values.q2;
+                                let q3 = (student_values.q3 == null) ? "" : student_values.q3;
+                                let q4 = (student_values.q4 == null) ? "" : student_values.q4;
+
+                                let description = (student_values.description == null ) ? "" : student_values.description;
+
+
             output +=                   `<tr>`;
 
                                     if(index === student_values.values_id)
                                     {
             output +=                  `<td style='border-top:1px solid #fff !important'> </td>
-                                        <td>${student_values.description}</td>
-                                        <td class='values_quarter' data-quarter='1' style='width:7%'>${student_values.q1}</td>
-                                        <td class='values_quarter' data-quarter='2' style='width:7%'>${student_values.q2}</td>
-                                        <td class='values_quarter' data-quarter='3' style='width:7%'>${student_values.q3}</td>
-                                        <td class='values_quarter' data-quarter='4' style='width:7%'>${student_values.q4}</td>`;
+                                        <td>${description}</td>
+                                        <td class='values_quarter' data-quarter='1' style='width:7%'>${q1}</td>
+                                        <td class='values_quarter' data-quarter='2' style='width:7%'>${q2}</td>
+                                        <td class='values_quarter' data-quarter='3' style='width:7%'>${q3}</td>
+                                        <td class='values_quarter' data-quarter='4' style='width:7%'>${q4}</td>`;
                                     }
                                     else
                                     {
                                         
             output +=                   `<td class='text-capitalize'>${student_values.title}</td>
-                                        <td>${student_values.description}</td>
-                                        <td class='values_quarter' data-quarter='1'style='width:7%'>${student_values.q1}</td>
-                                        <td class='values_quarter' data-quarter='2'style='width:7%'>${student_values.q2}</td>
-                                        <td class='values_quarter' data-quarter='3'style='width:7%'>${student_values.q3}</td>
-                                        <td class='values_quarter' data-quarter='4'style='width:7%'>${student_values.q4}</td>`;  
+                                        <td>${description}</td>
+                                        <td class='values_quarter' data-quarter='1'style='width:7%'>${q1}</td>
+                                        <td class='values_quarter' data-quarter='2'style='width:7%'>${q2}</td>
+                                        <td class='values_quarter' data-quarter='3'style='width:7%'>${q3}</td>
+                                        <td class='values_quarter' data-quarter='4'style='width:7%'>${q4}</td>`;  
                                     }
 
 
@@ -7712,6 +7780,9 @@ $('#add_user').on('click', ()=> {
     $('#user_email').attr('value','');
     $('#user_password').attr('value','');
 
+    $('#user_select_role').css('display','block');
+
+
 
     $.ajax({
         url:route('user.create'),
@@ -8035,6 +8106,7 @@ function editUser(id)
     $('#btn_add_user').css('display', 'none');
     $('#btn_update_user').css('display', 'block');
     $('#user_modal_header').removeClass('bg-primary').addClass('bg-success');
+    $('#user_select_role').css('display','none');
 
         $.ajax({
             url: route('user.edit', id),

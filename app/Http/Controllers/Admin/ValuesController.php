@@ -18,7 +18,7 @@ class ValuesController extends Controller
             ->addIndexColumn()
             ->addColumn('actions', function($row){
                     $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editValues" onclick="editValues('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm " onclick="assign_description('.$row->id.')"><i class="fas fa-plus-circle"></i> Behavior Statement</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm " onclick="assign_description('.$row->id.')"><i class="fas fa-plus-circle"></i> Statement</a> |';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteValues" onclick="crud_delete(\' '.'a.deleteValues'.' \' , \'values.destroy\', \' '.'Values Deleted'.' \' , \' '.'.valuesDT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
 
                     return $btn;

@@ -17,10 +17,19 @@ class AcademicYearController extends Controller
             return DataTables::of(AcademicYear::all())
             ->addIndexColumn()
             ->addColumn('actions',function($row) {
-                // $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showAccademicYear" onclick="showAY('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                // $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editAccademicYear" onclick="editAY('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteAccademicYear" onclick="crud_delete(\' '.'a.deleteAccademicYear'.' \' , \'academic_year.destroy\', \' '.'Academic Year Deleted'.' \' , \' '.'.academic_year_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
 
+                $get_active_ay = AcademicYear::where('status', 1)->first();
+
+                if($get_active_ay->id == $row->id)
+                {
+                    $btn = ' <a href="javascript:void(0)" role="button" class="btn btn-secondary btn-sm" disabled><i class="fas fa-trash"></i> Delete</a>';
+                }
+                else
+                {
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteAccademicYear" onclick="crud_delete(\' '.'a.deleteAccademicYear'.' \' , \'academic_year.destroy\', \' '.'Academic Year Deleted'.' \' , \' '.'.academic_year_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
+
+                }
+         
                 return $btn;
             })
            ->rawColumns(['actions'])
