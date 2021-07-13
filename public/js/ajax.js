@@ -7082,7 +7082,7 @@ function updateRole()
        
                                 if(student_subject_grade.quarter_1 !== null && student_subject_grade.quarter_2 !== null &&student_subject_grade.quarter_3 !== null && student_subject_grade.quarter_4 !== null)
                                 {
-                                   average = get_average([student_subject_grade.quarter_1, student_subject_grade.quarter_2 , student_subject_grade.quarter_3 , student_subject_grade.quarter_4])/4;
+                                   average = get_average([student_subject_grade.quarter_1, student_subject_grade.quarter_2 , student_subject_grade.quarter_3 , student_subject_grade.quarter_4]);
                                    remark = (average > 74) ? 'Passed': 'Failed';
 
        
