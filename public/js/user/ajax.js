@@ -922,7 +922,7 @@ function t_assign_grade(section , student)
            
                                     if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
                                     {
-                                       average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+                                       average = get_average([subject.quarter_1 , subject.quarter_2 , subject.quarter_3 , subject.quarter_4]);
                                        remark = (average > 74) ? 'Passed': 'Failed';
                                     }
                                     
