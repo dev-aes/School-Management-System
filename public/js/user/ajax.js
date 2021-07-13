@@ -458,7 +458,6 @@ let average_container = []; // student's grade average
                                       average = get_average([student_subject_grade.quarter_1 , student_subject_grade.quarter_2 , student_subject_grade.quarter_3 , student_subject_grade.quarter_4]);
                                       remark = (average > 74) ? 'Passed': 'Failed';
    
-          
                                    }
                                    
                                    let q1 = (student_subject_grade.quarter_1 == null) ? '' : student_subject_grade.quarter_1 ;
@@ -1468,7 +1467,7 @@ function img_catch(img, directory, width='75')
 
 function get_average(array)
 {
-   let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
+   let ave = array.reduce((accumulator, currentValue) => parseFloat(accumulator) + parseFloat(currentValue)) / array.length;
 
     return parseFloat(roundoff(ave));
 //  return parseFloat(ave.toFixed(2));
