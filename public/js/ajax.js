@@ -1979,6 +1979,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                                 }
                                 
+                                res(typeof(average))
+
                                 let result = subject.is_approve.split(',');
 
                                 let q1_color = (result[0] == 1) ? 'warning' : ''; 
@@ -2006,6 +2008,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                             `;
                     });
                         let result = (average_container.length > 0)? get_average(average_container) : "";
+
+                        res(typeof(result))
              output += `
                             <tr class="text-center fw-bold">
                                 <td></td>
@@ -2194,19 +2198,6 @@ $(document).on('keypress', '#g_grade', function(e) {
     let grades = $('#g_grade').val();
     
     if(e.keyCode == 13){
-       console.log(
-                    {
-                     //  teacher_id: teacher_id, adviser ID
-                        section_id: section_id,
-                        quarter_id: quarter_id,
-                        student_id: student_id,
-                        subject_id: subject_id,
-                        grades: grades,
-                        grades_id: grades_id,
-
-
-                    }
-                  )
         
                   $.ajax({
                     method: 'POST',
@@ -2266,8 +2257,6 @@ $(document).on('keypress', '#g_grade', function(e) {
                     }
                 })
                     
-                  
-                  
     }
 })
 
