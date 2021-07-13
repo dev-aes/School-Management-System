@@ -1979,8 +1979,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                                 }
                                 
-                                 console.log(typeof(average));
-                                
+                                console.log(typeof(average));
 
                                 let result = subject.is_approve.split(',');
 
@@ -2010,7 +2009,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                     });
                         let result = (average_container.length > 0)? get_average(average_container) : "";
 
-                        console.log(typeof(result))
+                        console.log(typeof(result));
              output += `
                             <tr class="text-center fw-bold">
                                 <td></td>
@@ -8240,7 +8239,7 @@ function res(res)
 // get average
 function get_average(array)
 {
-   let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
+   let ave = array.reduce((accumulator, currentValue) => parseFloat(accumulator) + parseFloat(currentValue)) / array.length;
 //    return parseFloat(ave.toFixed(2));
 
    return parseFloat(roundoff(ave));
