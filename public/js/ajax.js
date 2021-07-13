@@ -1979,7 +1979,8 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                                 }
                                 
-                                res(typeof(average))
+                                 console.log(typeof(average));
+                                
 
                                 let result = subject.is_approve.split(',');
 
@@ -2009,7 +2010,7 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                     });
                         let result = (average_container.length > 0)? get_average(average_container) : "";
 
-                        res(typeof(result))
+                        console.log(typeof(result))
              output += `
                             <tr class="text-center fw-bold">
                                 <td></td>
