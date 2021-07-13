@@ -466,7 +466,9 @@ let average_container = []; // student's grade average
                                    let q3 = (student_subject_grade.quarter_3 == null) ? '' : student_subject_grade.quarter_3 ;
                                    let q4 = (student_subject_grade.quarter_4 == null) ? '' : student_subject_grade.quarter_4 ;
    
-                                    average_container.push(average); // insert all average per row on average container[]
+
+                                    (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
+        
    
                    output +=           `<tr>
                                            <th >${student_subject_grade.name}</th>
@@ -474,13 +476,23 @@ let average_container = []; // student's grade average
                                            <td class='quarter' data-quarter='2' style='width:7%'>${q2}</td>
                                            <td class='quarter ' data-quarter='3' style='width:7%'>${q3}</td>
                                            <td class='quarter ' data-quarter='4' style='width:7%'>${q4}</td>
-                                           <td class='average'>${average}</td>
-                                           <td class='remark'>${remark}</td>
+                                           <td class='average text-center'>${average}</td>
+                                           <td class='remark text-center'>${remark}</td>
                                         </tr>`    
    
                                    }); // closure
+
+                                   let result = (average_container.length > 0) ? get_average(average_container) : "";
+
    
-                     output +=     `</tbody>
+                     output +=     `
+                                        <tr class="text-center fw-bold">
+                                            <td></td>
+                                            <td colspan="4">General Average</td>
+                                            <td class='final_grade'>${result}</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
                                </table>
                                <div class="row mt-3" id="descriptors">
                                    <table class="table table-sm ">
@@ -642,8 +654,8 @@ $('#mop').on('click', () => {
                             <caption>List of Payment Mode</caption>
                             <thead> 
                                 <tr> 
-                                    <th> Modes </th>
-                                    <th> Account Number </th>
+                                    <th> Type </th>
+                                    <th> Account Number # </th>
                                     <th> Status </th>
                                 </tr>
                             </thead>
@@ -927,7 +939,8 @@ function t_assign_grade(section , student)
                                     let q3 = (subject.quarter_3 == null) ? '' : subject.quarter_3 ;
                                     let q4 = (subject.quarter_4 == null) ? '' : subject.quarter_4 ;
 
-                                    average_container.push(average); // insert all average per row on average container[]
+                                    (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
+
 
                     output += `<tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject_teacher_id=${subject.subject_teacher_id}  
                      data-subject='${subject.subject_id}'>
@@ -970,19 +983,26 @@ function t_assign_grade(section , student)
 
                             }) // loop closure
 
-                            
-                    output += `
-                                    <tr class="text-center fw-bold">
-                                        <td></td>
-                                        <td colspan="4">General Average</td>
-                                        <td class='final_grade'>${get_average(average_container)}</td>
-                                        <td></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                               
-                                `;
+                            let result = (average_container.length > 0) ? get_average(average_container) : "";
 
+
+                        if(section_student[0].adviser_id == section_student[3]) //Check if the login teacher is the adviser
+                        {
+
+                            output += `
+                                            <tr class="text-center fw-bold">
+                                                <td></td>
+                                                <td colspan="4">General Average</td>
+                                                <td class='final_grade'>${result}</td>
+                                                <td></td>
+                                            </tr>
+                                
+                                    
+                                        `;
+                        }
+
+                        output += ` </tbody>
+                                </table>`;
              
                     output += `<div class="row mt-2" id="descriptors">
                                 <table class="table table-sm ">
@@ -1214,11 +1234,14 @@ $(document).on('keypress', '#g_grade', function(e) {
                             remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
 
                        }
+                       
+                       (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
+                       let result = (average_container.length > 0) ? get_average(average_container) : "";
                
                       c.text(average);
                       d.text(remark);
 
-                      $('.final_grade').text(get_average(average_container)); // store the final average_grade
+                      $('.final_grade').text(result); // store the final average_grade
                        toastSuccess("Grade Added");
                         
                     },
@@ -1352,13 +1375,6 @@ function adviser_approve_grade(grade_id)
 
 
 
-// GLOBAL FUNCTIONS
-
-function get_average(array)
-{
-   let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
-   return parseFloat(ave.toFixed(2));
-}
 
 function editProfile()
 {
@@ -1446,6 +1462,25 @@ function img_catch(img, directory, width='75')
     {
         return `<img class='rounded-cirle' src='/${directory}' width='${width}'>`;
     }
+}
+
+// GLOBAL FUNCTIONS
+
+function get_average(array)
+{
+   let ave = array.reduce((accumulator, currentValue) => accumulator + currentValue) / array.length;
+
+    return parseFloat(roundoff(ave));
+//  return parseFloat(ave.toFixed(2));
+
+}
+
+
+function roundoff(data)
+{
+    let number =  Math.round((parseFloat(data) + Number.EPSILON) * 100) / 100;
+
+    return number;
 }
 
 

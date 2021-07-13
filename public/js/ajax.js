@@ -1944,9 +1944,10 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
+            let student_avatar = img_catch(student_subjects[1].student_avatar,`storage/uploads/student/${student_subjects[1].student_avatar}`, 50);
 
             let output = `
-                           <center><img class='rounded-circle' src='/storage/uploads/student/${student_subjects[0].student_avatar}' alt='student_avatar' width='50'></center>
+                           <center>${student_avatar}</center>
                            <h5 class='text-muted fw-bold text-center mt-3' id='s_student' data-id='${student_subjects[0].id}'> Student : ${student_subjects[0].first_name} ${student_subjects[0].last_name} </h5>
                            <div class='table-responsive'>
                             <table class="table table-bordered mt-2" border="1" id='table_assign_grade_to_subject_student_grade_table'>
@@ -1968,49 +1969,48 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                     student_subjects[1].forEach(subject => {
                         
-                         let average = '';
-                         let remark = '';
+                                let average = '';
+                                let remark = '';
 
-                         if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
-                         {
-                            average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
-                            remark = (average > 74) ? 'Passed': 'Failed';
+                                if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
+                                {
+                                    average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+                                    remark = (average > 74) ? 'Passed': 'Failed';
 
-                         }
-                         
-                         let result = subject.is_approve.split(',');
-
-                         let q1_color = (result[0] == 1) ? 'warning' : ''; 
-                         let q2_color = (result[1] == 2) ? 'warning' : '';
-                         let q3_color = (result[2] == 3) ? 'warning' : ''; 
-                         let q4_color = (result[3] == 4) ? 'warning' : '';
-
-                         let q1 = (subject.quarter_1 == null) ? '' : subject.quarter_1 ;
-                         let q2 = (subject.quarter_2 == null) ? '' : subject.quarter_2 ;
-                         let q3 = (subject.quarter_3 == null) ? '' : subject.quarter_3 ;
-                         let q4 = (subject.quarter_4 == null) ? '' : subject.quarter_4 ;     
-
-                         average_container.push(average); // insert all average per row on average container[]
-                         
-
-                  output += ` <tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
-                                <th >${subject.name}</th>
-                                <td class='quarter' data-quarter='1' style='width:7%'><span class='text-${q1_color}'>${q1}</span></td>
-                                <td class='quarter' data-quarter='2' style='width:7%'><span class='text-${q1_color}'>${q2}</span></td>
-                                <td class='quarter' data-quarter='3' style='width:7%'><span class='text-${q1_color}'>${q3}</span></td>
-                                <td class='quarter' data-quarter='4' style='width:7%'><span class='text-${q1_color}'>${q4}</span></td>`;
+                                }
                                 
-                   output += `  <td class='average'>${average}</td>
-                                <td class='remark'>${remark}</td>
-                            </tr>
-                      `;
+                                let result = subject.is_approve.split(',');
+
+                                let q1_color = (result[0] == 1) ? 'warning' : ''; 
+                                let q2_color = (result[1] == 2) ? 'warning' : '';
+                                let q3_color = (result[2] == 3) ? 'warning' : ''; 
+                                let q4_color = (result[3] == 4) ? 'warning' : '';
+
+                                let q1 = (subject.quarter_1 == null) ? '' : subject.quarter_1 ;
+                                let q2 = (subject.quarter_2 == null) ? '' : subject.quarter_2 ;
+                                let q3 = (subject.quarter_3 == null) ? '' : subject.quarter_3 ;
+                                let q4 = (subject.quarter_4 == null) ? '' : subject.quarter_4 ;     
+
+                                (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
+
+                        output += ` <tr class='text-center s_subject' data-grades_id='${subject.id}' data-subject='${subject.subject_id}'>
+                                        <th >${subject.name}</th>
+                                        <td class='quarter' data-quarter='1' style='width:7%'><span class='text-${q1_color}'>${q1}</span></td>
+                                        <td class='quarter' data-quarter='2' style='width:7%'><span class='text-${q1_color}'>${q2}</span></td>
+                                        <td class='quarter' data-quarter='3' style='width:7%'><span class='text-${q1_color}'>${q3}</span></td>
+                                        <td class='quarter' data-quarter='4' style='width:7%'><span class='text-${q1_color}'>${q4}</span></td>`;
+                                        
+                        output += `  <td class='average'>${average}</td>
+                                        <td class='remark'>${remark}</td>
+                                    </tr>
+                            `;
                     });
-                   
+                        let result = (average_container.length > 0)? get_average(average_container) : "";
              output += `
                             <tr class="text-center fw-bold">
                                 <td></td>
                                 <td colspan="4">General Average</td>
-                                <td class='final_grade'>${get_average(average_container)}</td>
+                                <td class='final_grade'>${result}</td>
                                 <td></td>
                             </tr>
                             </tbody>
@@ -2248,6 +2248,8 @@ $(document).on('keypress', '#g_grade', function(e) {
                              remark = (average > 74) ? 'Passed': 'Failed'; // check if the grade is passed or failed
 
                         }
+                        
+                        (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
 
                 
                        c.text(average);
@@ -7104,7 +7106,8 @@ function updateRole()
                                 let q3 = (student_subject_grade.quarter_3 == null) ? '' : student_subject_grade.quarter_3 ;
                                 let q4 = (student_subject_grade.quarter_4 == null) ? '' : student_subject_grade.quarter_4 ;
 
-                                 average_container.push(average); // insert all average per row on average container[]
+                                 (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
+
 
                 output +=           `<tr>
                                         <th >${student_subject_grade.name}</th>
@@ -7112,13 +7115,22 @@ function updateRole()
                                         <td class='quarter' data-quarter='2' style='width:7%'>${q2}</td>
                                         <td class='quarter ' data-quarter='3' style='width:7%'>${q3}</td>
                                         <td class='quarter ' data-quarter='4' style='width:7%'>${q4}</td>
-                                        <td class='average'>${average}</td>
-                                        <td class='remark'>${remark}</td>
+                                        <td class='average text-center'>${average}</td>
+                                        <td class='remark text-center'>${remark}</td>
                                      </tr>`    
 
                                 }); // closure
 
-                  output +=     `</tbody>
+                                let result = (average_container.length > 0) ? get_average(average_container) : "";
+
+
+                  output +=     `<tr class="text-center fw-bold">
+                                    <td></td>
+                                    <td colspan="4">General Average</td>
+                                    <td class='final_grade'>${result}</td>
+                                    <td></td>
+                                 </tr>
+                                </tbody>
                             </table>
                             <div class="row mt-3" id="descriptors">
                                 <table class="table table-sm ">

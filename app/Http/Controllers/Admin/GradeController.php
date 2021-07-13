@@ -86,21 +86,21 @@ class GradeController extends Controller
                         }
 
 
-               $is_approve = DB::table('grades')
-               ->select('grades.is_approve')
-               ->where('student_grade_id',$data['student_id'])
-               ->where('subject_id', $data['subject_id'])  
-               ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
-               ->first();
+        //        $is_approve = DB::table('grades')
+        //        ->select('grades.is_approve')
+        //        ->where('student_grade_id',$data['student_id'])
+        //        ->where('subject_id', $data['subject_id'])  
+        //        ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
+        //        ->first();
                
         //explode is_approve data 6/26
-               $is_approved = explode(",",$is_approve->is_approve);
-               for($i = 0; $i < count($is_approved); $i++){
-                if($i == $data['quarter_id']-1)   
-                $is_approved[$i] = $data['quarter_id'];
-               }
+        //        $is_approved = explode(",",$is_approve->is_approve);
+        //        for($i = 0; $i < count($is_approved); $i++){
+        //         if($i == $data['quarter_id']-1)   
+        //         $is_approved[$i] = $data['quarter_id'];
+        //        }
 
-               $is_approves = implode(",",$is_approved);
+        //        $is_approves = implode(",",$is_approved);
 
          //Update or insert grades of a student on all quarters 6/26
             DB::table('grades')
@@ -113,7 +113,7 @@ class GradeController extends Controller
                 [
                     'grade_level_val'=> $grade_val->grade_val,
                      $quarter => $data['grades'],
-                    'is_approve'=>$is_approves,
+                    // 'is_approve'=>$is_approves,
                     'created_at'=> now()
                 ]
             );                                
