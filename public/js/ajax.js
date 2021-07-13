@@ -1974,13 +1974,11 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 
                                 if(subject.quarter_1 !== null && subject.quarter_2 !== null &&subject.quarter_3 !== null && subject.quarter_4 !== null)
                                 {
-                                    average = get_average([subject.quarter_1 + subject.quarter_2 + subject.quarter_3 + subject.quarter_4])/4;
+                                    average = get_average([subject.quarter_1 , subject.quarter_2 , subject.quarter_3 , subject.quarter_4]);
                                     remark = (average > 74) ? 'Passed': 'Failed';
 
                                 }
                                 
-                                console.log(typeof(average));
-
                                 let result = subject.is_approve.split(',');
 
                                 let q1_color = (result[0] == 1) ? 'warning' : ''; 
@@ -2009,7 +2007,6 @@ function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
                     });
                         let result = (average_container.length > 0)? get_average(average_container) : "";
 
-                        console.log(typeof(result));
              output += `
                             <tr class="text-center fw-bold">
                                 <td></td>
