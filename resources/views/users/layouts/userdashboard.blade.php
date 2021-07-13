@@ -33,6 +33,8 @@
 
     {{--DataTables--}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
 
     {{--icons--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
@@ -168,12 +170,17 @@
     {{--Scripts--}}
     @routes 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- JavaScript Bundle with Popper -->
 
+	{{--JavaScript Bundle with Popper--}}
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+	{{--DT--}}
 	<script src="{{ asset('admin/js/app.js') }}"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('dist/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('dist/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('dist/dataTables.rowReorder.min.js') }}"></script>
+	<script src="{{ asset('dist/dataTables.responsive.min.js') }}"></script>
+	
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('js/prev.js') }}"></script>
     <script src="{{ asset('js/user/ajax.js') }}"></script>

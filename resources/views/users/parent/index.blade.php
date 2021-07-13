@@ -42,16 +42,14 @@
                    <h4 class="text-muted">My Students</h4>
                 </div>
                  <div class="card-body">
-                        <table class="table table-hover">
+                     <div class="table-responsive">
+                        <table class="table table-hover" id="parent_student_DT">
                             <thead>
                                 <tr class="bg-secondary text-white">
                                     <th>Name</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
                                     <th>Section</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +59,7 @@
                                 $parent_id = auth()->user()->parent_id;
                                @endphp
                                    <tr>
-                                       <td colspan="4">{{ $student->first_name }} {{ $student->last_name }}</td>
+                                       <td>{{ $student->first_name }} {{ $student->last_name }}</td>
                                        <td > {{ $student->section->name }}</td>
 
                                             @php 
@@ -129,6 +127,7 @@
                                @endforelse
                             </tbody>
                         </table>
+                    </div>
                  </div>
             </div>
         </div>

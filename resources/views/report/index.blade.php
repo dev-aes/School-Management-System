@@ -24,10 +24,10 @@
                                         </select>
                                         <br>
                                         <center>
-                                            <button type="button" class="btn btn-primary" onclick="report_display_students_by_ay()">Student List</button>
-                                            <button type="button" class="btn btn-success" onclick="report_display_teachers_by_ay()">Teacher List</button>
-                                            <button type="button" class="btn btn-info" onclick="report_display_payments_by_ay()">Payment List</button>
-                                            <button type="button" class="btn btn-secondary" onclick="report_reset()"><i class="fas fa-sync-alt"></i></button>
+                                            <button type="button" class="btn btn-primary btn-default d-block d-sm-inline-block mb-2" onclick="report_display_students_by_ay()">Student List</button>
+                                            <button type="button" class="btn btn-success btn-default d-block d-sm-inline-block mb-2" onclick="report_display_teachers_by_ay()">Teacher List</button>
+                                            <button type="button" class="btn btn-info btn-default d-block d-sm-inline-block mb-2" onclick="report_display_payments_by_ay()">Payment List</button>
+                                            <button type="button" class="btn btn-secondary btn-default d-block d-sm-inline-block mb-2" onclick="report_reset()">Refresh</button>
                                         </center>
                                     </div>
                                  </form>

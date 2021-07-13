@@ -14,6 +14,29 @@ $(() => {
 
     }
 
+    if(window.location.href == route('parent.dashboard'))
+    {
+        $('#parent_student_DT').DataTable({
+            retrieve: true,
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal( {
+                          header: function ( row ) {
+                            var data = row.data();
+                            return `<p class='lead fw-bold text-success'> <i class="fas fa-info-circle"></i> Basic Info</p>`;
+                            // return `<p class='lead fw-bold text-success'> <i class="fas fa-info-circle"></i>  ${data[column]} </p>`;
+                          }
+                    } ),
+                    renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+                }
+            },
+        });
+
+    }
+
+    
+
+
 
 
 
@@ -428,6 +451,7 @@ let average_container = []; // student's grade average
             success: student_form => {
                let output = `
                                <h1 class="fw-bold text-uppercase text-center mb-5"> report on learning progress and achievement</h1>
+                               <div class='table-responsive'>
                                <table class="table table-bordered " border="1">
                                    <thead style="background: none">
                                        <tr class="text-center fw-bold">
@@ -493,6 +517,7 @@ let average_container = []; // student's grade average
                                         </tr>
                                     </tbody>
                                </table>
+                               </div>
                                <div class="row mt-3" id="descriptors">
                                    <table class="table table-sm ">
                                        <thead style="background: none">
@@ -535,6 +560,7 @@ let average_container = []; // student's grade average
                                // learner values
                  output +=    `<div class="row mt-5" id="obsereved_values">
                                    <h1 class="fw-bold text-uppercase text-center mb-5"> report on learner's observed values</h1>
+                                   <div class='table-responsive'>
                                    <table class="table table-bordered">
                                        <thead style="background: none">
                                            <tr class="fw-bold text-center">
@@ -590,6 +616,7 @@ let average_container = []; // student's grade average
    
                output +=              `</tbody>
                                    </table>
+                                   </div>
                                </div>
    
                                <div class="row mt-2" id="marking">

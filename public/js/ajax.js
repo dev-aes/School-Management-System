@@ -7055,6 +7055,7 @@ function updateRole()
          success: student_form => {
             let output = `
                             <h1 class="fw-bold text-uppercase text-center mb-5"> report on learning progress and achievement</h1>
+                           <div class= 'table-responsive'>
                             <table class="table table-bordered " border="1">
                                 <thead style="background: none">
                                     <tr class="text-center fw-bold">
@@ -7119,6 +7120,7 @@ function updateRole()
                                  </tr>
                                 </tbody>
                             </table>
+                            </div>
                             <div class="row mt-3" id="descriptors">
                                 <table class="table table-sm ">
                                     <thead style="background: none">
@@ -7161,6 +7163,7 @@ function updateRole()
                             // learner values
               output +=    `<div class="row mt-5" id="obsereved_values">
                                 <h1 class="fw-bold text-uppercase text-center mb-5"> report on learner's observed values</h1>
+                                <div class='table-responsive'>
                                 <table class="table table-bordered">
                                     <thead style="background: none">
                                         <tr class="fw-bold text-center">
@@ -7216,6 +7219,7 @@ function updateRole()
 
             output +=              `</tbody>
                                 </table>
+                                </div>
                             </div>
 
                             <div class="row mt-2" id="marking">
