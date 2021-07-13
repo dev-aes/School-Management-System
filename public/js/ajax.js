@@ -2250,13 +2250,14 @@ $(document).on('keypress', '#g_grade', function(e) {
                         }
                         
                         (average !== "") ? average_container.push(average) : ""; // insert all average per row on average container[]
+                        let result = (average_container.length > 0)? get_average(average_container) : "";
 
                 
                        c.text(average);
                        d.text(remark);
 
                        
-                      $('.final_grade').text(get_average(average_container)); // store the final average_grade
+                      $('.final_grade').text(result); // store the final average_grade
                       toastSuccess("Grade Added");
                         
                     },
