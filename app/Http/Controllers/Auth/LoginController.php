@@ -47,6 +47,8 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        Auth::logoutOtherDevices($request->password); // logout other devices 
+
         $credentials = $request->only('email', 'password');
         // if(Auth::attempt($credentials) && Gate::allows('admin')) {
         //     $request->session()->regenerate();

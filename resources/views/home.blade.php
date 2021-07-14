@@ -168,7 +168,7 @@
             <div class="card flex-fill">
                 <div class="card-body p-5">
                     <div class="table-responsive">
-                        <table class="table table-hover" id="dashboard_user_DT">
+                        <table class="table table-hover" id="dashboard_user_DT" style="width:100% !important">
                             <caption class="p-3">List of online users <i class="fas fa-user-shield"></i></caption>
                             <thead style="background: none">
                                 <tr>

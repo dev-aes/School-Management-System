@@ -84,7 +84,14 @@
                                     <tr>
                                         <td>{{ $credential->name }}</td>
                                         <td>{{ $credential->description }}</td>
-                                        <td><img src='{{ asset("/storage/uploads/teacher/$credential->teacher_avatar") }}' width="35"> <span class="ms-2">{{ $credential->first_name }} {{$credential->last_name}}</span></td>
+
+                                        @if(is_null($credential->teacher_avatar))
+                                            <td><img class='rounded-circle' src='/images/noimg.jpg' width='35'> <span class="ms-2">{{ $credential->first_name }} {{$credential->last_name}}</span></td>
+                                       
+                                        @else
+                                            <td><img src='{{ asset("/storage/uploads/teacher/$credential->teacher_avatar") }}' width="35"> <span class="ms-2">{{ $credential->first_name }} {{$credential->last_name}}</span></td>
+                                        @endif
+                                       
                                     </tr>
                                 @empty
                                     <tr>

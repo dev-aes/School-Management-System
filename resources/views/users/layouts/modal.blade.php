@@ -11,10 +11,7 @@
                 <div class="modal-body">
                     <div class="card w-100 mx-auto">
                         <div class="card-header">
-                            {{--DATE--}}
-                            <div class='float-end' id="date">
-                                {{ "Date: " . date('m/d/Y')}}
-                            </div>
+                           
                         </div>
                         <div class="card-body">
                             <form class="user_form" class='col-md-10 bg-info text-white border p-5 mx-auto rounded-3' autocomplete="off" onsubmit="false" enctype="multipart/form-data">
@@ -39,16 +36,15 @@
                                 @endif
                                
 
-                                <div class="form-group ">
+                                <div class="form-group mb-3">
                                     <label class="form-label">Change Password <i class="fas fa-key"></i></label>
                                     <input class="form-control user_student_password" type="password" name="password" placeholder="********">
                                 </div>
 
-
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success float-end" id="btn_update_student_profile" onclick="update_password({{auth()->user()->id}}, '.user_student_password')">Save</button>
+                                </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="btn_update_student_profile" onclick="update_password({{auth()->user()->id}}, '.user_student_password')">Submit</button>
                         </div>
                     </div>
                 </div>

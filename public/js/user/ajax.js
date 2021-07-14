@@ -896,7 +896,7 @@ function t_assign_grade(section , student)
                                 <caption> List of Students </caption>
                                     <thead style='background:none'>
                                         <tr>
-                                            <th>  </th>
+                                            <th>LRN </th>
                                             <th> Name </th>
                                             <th> Gender </th>
                                         </tr>
@@ -904,12 +904,12 @@ function t_assign_grade(section , student)
                                     <tbody>
                                 `;
 
-                    let student_avatar = img_catch(section_student[1].student_avatar,`storage/uploads/student/${section_student[1].student_avatar}`, 50);
+                    let student_avatar = img_catch(section_student[1].student_avatar,`storage/uploads/student/${section_student[1].student_avatar}`, 90);
 
                     student_output +=        `  <tr>
-                                            <td>${student_avatar}</td>
-                                            <td> ${section_student[1].first_name}  ${section_student[1].last_name} </td>
-                                            <td>  ${section_student[1].gender} </td>
+                                            <td>${section_student[1].lrn}</td>
+                                            <td>${section_student[1].first_name}  ${section_student[1].last_name}</td>
+                                            <td>${section_student[1].gender}</td>
 
                                         </tr>
                                     `;                 
@@ -1419,7 +1419,7 @@ function adviser_approve_grade(grade_id)
 function editProfile()
 {
     $('.end_user_modal').modal('show');
-    $('#end_user_modal_header').addClass('bg-info');
+    $('#end_user_modal_header').addClass('bg-success');
     $('#end_user_modal_label').html(`<h4 class='text-white'> Account <i class="fas fa-user-cog"></i> </h4>`);
 }
 function update_password(user, inputfield)

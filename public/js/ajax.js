@@ -1929,11 +1929,12 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
             success: students => {
                  //res(students);
                 let output = `
-                            <table class='table table-sm' id='teacher_assign_grade_to_subject_students_DT mt-5'>
+                            <table class='table mt-5' id='teacher_assign_grade_to_subject_students_DT'>
                             <caption> List of Students </caption>
                                 <thead style='background:none'>
                                     <tr>
-                                        <th> Student Name</th>
+                                        <th>LRN</th>
+                                        <th>Name</th>
                                         <th> </th>
                                     </tr>
                                 </thead>
@@ -1942,6 +1943,7 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
 
                                 students.forEach(student => {
                    output +=        `<tr>
+                                        <td> ${student.lrn} </td>
                                         <td> ${student.first_name} ${student.last_name}</td>
                                         <td> <a class='btn btn-sm btn-info' href='javascript:void(0)'
                                          onclick='teacher_assign_grade_to_subject_create_grade(${student.student_id}, ${section_id} , ${student.adviser_id})'> Add Grade </a></td>
