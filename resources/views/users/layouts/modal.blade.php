@@ -127,7 +127,7 @@
     {{--SHOW Payment MODAL--}}
         
         <div class="modal fade " data-bs-backdrop="static" id="show_payment_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header" id="p_showpayment_modal_header">
                         <h4 class="modal-title text-white" id="myLargeModalLabel">Payment Details </h4>
@@ -138,11 +138,11 @@
                         <div class="card-header">
                             <div class="card-body">
                                 <div class="row justify-content-center">
-                                    <div class="card w-100 border border-secondary">
+                                    <div class="card w-100 border border-secondary d-none d-md-block">
                                         <div class="card-body" id="print">
                                                 <div class="card-header p-0">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col">
                                                             <h1 class="display-5">Receipt</h1>
                                                             <br>
                                                             <h5>{{ $school->school_name }}</h5>
@@ -150,24 +150,26 @@
                                                             <h5>{{ $school->contact }}</h5>
                                                             <h5>{{ $school->website }}</h5>
                                                         </div>
-                                                        <div class="col-6">
+                                                        <div class="col">
                                                             <img class="float-end d-none d-lg-block" id="logo_img" src='{{asset("/storage/uploads/school/$school->school_logo")}}' alt="sample_logo" width="120">
                                                         </div>
                                                     </div>
                                                 </div><br>
                                                     <div class="row">
                                                             <div class="col-md-6">
-                                                                <h5 >Enrolment Fee No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h5>
-                                                                <h5 >Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h5>
-                                                                <h5 >Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h5>
-                                                                <h5 >Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h5>
+                                                                <h5>Enrolment No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h5>
+                                                                <h5>Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h5>
+                                                                <h5>Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h5>
+                                                                <h5>Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h5>
+                                                                <h5>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h5>
                                                             </div>
 
                                                             <div class="col-md-6">
-                                                                <h5>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h5>
-                                                                <h5>OR No: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h5>
+                                                                <h5>Transaction No. <span class="h5 fw-bold" id="payment_transaction_no"> {{--Display Payment Official Receipt--}}</span></h5>
+                                                                <h5>Official Receipt: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h5>
                                                                 <h5>Amount paid: <span class="h5 fw-bold" id="payment_payment_amount"> {{--Display Payment amount--}}</span></h5>
                                                                 <h5>Remark: <span class="h5 fw-bold" id="payment_payment_remarks"> {{--Display Payment Remarks--}}</span></h5>
+                                                                <h5>Paid via: <span class="h5 fw-bold" id="payment_payment_mode"> {{--Display Payment Remarks--}}</span></h5>
                                                             </div>
                                                     </div>
                                             <hr>

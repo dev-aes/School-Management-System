@@ -6,7 +6,7 @@
 
 
 {{-- CONTAINER --}}
-<div class="container-fluid">
+<div class="container-fluid" data-aos="zoom-in" data-aos-duration="1000">
                 <div class="card">
                     <div class="card-header">
                         {{-- <a class="btn btn-primary" href="#"><i class="fas fa-file-import"></i></a> --}}

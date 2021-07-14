@@ -195,7 +195,7 @@ class ParentController extends Controller
         {
 
               // get the payment by payment id
-              $selected_payment = Payment::with('user')->where('id', $payment->id)->first();
+              $selected_payment = Payment::with('user', 'payment_mode')->where('id', $payment->id)->first();
 
 
             // get student name , grade level name and student fee

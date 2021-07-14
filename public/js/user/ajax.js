@@ -171,78 +171,91 @@ let average_container = []; // student's grade average
     }
 
 
-    function parent_showPayment(id) {
+function parent_showPayment(id) 
+{
 
-        $('#show_parent_payment_ledger_modal').modal('hide');
-        $('#p_showpayment_modal_header').addClass('bg-secondary');
-        $.ajax({
-            url: route('parent.parent_payment_show', id),
-            success: payment => {
-                // res(payment);
-                const date = new Date(payment[0].created_at);
-                //const d = date.toDateString();
-                const d = date.toLocaleDateString();
+    if (window.innerWidth <= 400){
+
+        return Swal.fire({
+                icon: 'info',
+                title: 'Oops...',
+                text: 'Your screen resolution is lower please use a desktop view mode on your browser settings',
+            });
+    
+        }
+
+    $('#show_parent_payment_ledger_modal').modal('hide');
+    $('#p_showpayment_modal_header').addClass('bg-secondary');
+    $.ajax({
+        url: route('parent.parent_payment_show', id),
+        success: payment => {
+            // res(payment);
+            const date = new Date(payment[0].created_at);
+            //const d = date.toDateString();
+            const d = date.toLocaleDateString();
 
 
-                // display discount
-                let total_discount = Math.round(payment[1].discount * 100);
-                $('#payment_sf_total_discount').text(`${total_discount}%`);
+            // display discount
+            let total_discount = Math.round(payment[1].discount * 100);
+            $('#payment_sf_total_discount').text(`${total_discount}%`);
 
-                // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
+            // display the calculated student fee with a discount (DISCOUNTED AMOUNT)
 
-                $('#payment_sf_total_discounted_amount').text(`₱ ${payment[1].total_fee.toLocaleString()}`);
+            $('#payment_sf_total_discounted_amount').text(`₱ ${payment[1].total_fee.toLocaleString()}`);
 
 
-                let discounted_total = `₱ ${payment[1].total_fee.toLocaleString()}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+            let discounted_total = `₱ ${payment[1].total_fee.toLocaleString()}`; // THE DISCOUNTED TOTAL ( TOTAL AMOUNT - DISCOUNTED PRICE);
+    
+            //display payment info
+            $('#show_payment_modal').modal('show');
+            $('#payment_date').text(`${d}`);
+            $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
+            $('#payment_payment_amount').text(`₱ ${payment[0].amount.toLocaleString()}`);
+            $('#payment_payment_remarks').text(`${payment[0].remarks}`);
+            $('#payment_transaction_no').text(`${payment[0].transaction_no}`);
+            $('#payment_payment_mode').text(`${payment[0].payment_mode.title}`);
+
+            // display student info
+
+            $('#payment_enrolment_fee_no').text(`${payment[1].id}`);
+            $('#payment_student_id_no').text(`${payment[1].student_id}`);
+            $('#payment_student_name').text(`${payment[1].first_name} ${payment[1].last_name}`);$('#payment_grade_level').text(`${payment[1].name}`);
+
+
+            // PAYMENT SUMMARY display sub fees
+            let fee_type = ``;
+            let fee_amount = ``;
+            payment[2].forEach(subfee => {
+                fee_type += `<h5 > ${subfee.description} </h5>`
+                fee_amount += `<h5 >₱ ${subfee.amount.toLocaleString()} </h5>`
+            });
         
-                //display payment info
-                $('#show_payment_modal').modal('show');
-                $('#payment_date').text(`${d}`);
-                $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
-                $('#payment_payment_amount').text(`₱ ${payment[0].amount.toLocaleString()}`);
-                $('#payment_payment_remarks').text(`${payment[0].remarks}`);
 
-                // display student info
+            $('#payment_sf_type').html(fee_type);
+            $('#payment_sf_amount').html(fee_amount);
+            $('#payment_sf_total').text(`₱ ${payment[4].subtotal.toLocaleString()}`)
 
-                $('#payment_enrolment_fee_no').text(`${payment[1].id}`);
-                $('#payment_student_id_no').text(`${payment[1].student_id}`);
-                $('#payment_student_name').text(`${payment[1].first_name} ${payment[1].last_name}`);$('#payment_grade_level').text(`${payment[1].name}`);
+            // Payment details
 
+            $('#payment_sf_date').html(`<h5> ${d} </h5>`)
+            $('#payment_sf_payment').html(`<h5>₱ ${payment[0].amount.toLocaleString()}</h5>`)
+            $('#payment_sf_payment_total').html(`<h5>₱ ${payment[0].amount.toLocaleString()} </h5>`)
 
-                // PAYMENT SUMMARY display sub fees
-                let fee_type = ``;
-                let fee_amount = ``;
-                payment[2].forEach(subfee => {
-                    fee_type += `<h5 > ${subfee.description} </h5>`
-                    fee_amount += `<h5 >₱ ${subfee.amount.toLocaleString()} </h5>`
-                });
+            $('#payment_sf_total_payable').text(`₱ ${payment[3][0].amount_payable.toLocaleString()}`);
+            $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toLocaleString()}`);
+            $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toLocaleString()}`);
+
             
+            // display incharge of the transaction
 
-                $('#payment_sf_type').html(fee_type);
-                $('#payment_sf_amount').html(fee_amount);
-                $('#payment_sf_total').text(`₱ ${payment[4].subtotal.toLocaleString()}`)
+            $('#p_signature').attr('value', payment[0].user.name );
 
-                // Payment details
-
-                $('#payment_sf_date').html(`<h5> ${d} </h5>`)
-                $('#payment_sf_payment').html(`<h5>₱ ${payment[0].amount.toLocaleString()}</h5>`)
-                $('#payment_sf_payment_total').html(`<h5>₱ ${payment[0].amount.toLocaleString()} </h5>`)
-
-                $('#payment_sf_total_payable').text(`₱ ${payment[3][0].amount_payable.toLocaleString()}`);
-                $('#payment_sf_total_paid').text(`₱ ${payment[3].paid.toLocaleString()}`);
-                $('#payment_sf_balance').text(`₱ ${payment[3].total_balance.toLocaleString()}`);
-
-                
-                // display incharge of the transaction
-
-                $('#p_signature').attr('value', payment[0].user.name );
-
-            },
-            error: err => {
-                console.log(err);
-            }
-        })
-    }
+        },
+        error: err => {
+            console.log(err);
+        }
+    })
+}
 
     function parent_create_payment_to_student(id)
     {

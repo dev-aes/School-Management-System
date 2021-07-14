@@ -16,6 +16,11 @@ $(()=> {
     }
 
 
+
+
+
+
+
      if(window.location.href == route('teacher.index'))
     {
         let column = 'first_name';
@@ -170,6 +175,7 @@ $(()=> {
         $('#payment_student_fee_id').select2({
             dropdownParent: $('#payment_modal')
         });
+
     }
 
 
@@ -460,6 +466,17 @@ function activateAY(e)
       })
 }
 
+
+// prompt a warning when the user tries to delete an active AY
+$(document).on('click', '#ay_disabled', () => {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Active Academic Year must not be deleted .',
+      })
+})
+
+
 //* ---------------> End Academic Year
 
 
@@ -552,7 +569,7 @@ function displaySchools() {
                                 </tr>
 
                                 <tr>
-                                    <th>No of Months</th>
+                                    <th>No of Month</th>
                                     <td>${school[0].months_no}</td>
                                     <td></td>
                                     <td></td>
@@ -729,130 +746,131 @@ $('#add_teacher').on('click', ()=> {
     $('#teacher_modal_header').removeClass('bg-success').addClass('bg-primary');
 
 });
-    // end teacher Modal
-    $('#teacher_assign_subject_section').on('click', ()=> {
-        $('#teacher_assign_subject_section_modal').modal('show');
-        $('#teacher_assign_subject_section_label').html(`<h4 class='text-white'> Assign Subjects to Section <i class="fas fa-chalkboard-teacher"></i> </h4>`);
-        $('#teacher_assign_subject_section_header').addClass('bg-primary');
-        $.ajax({
-            url:route('teacher.teacher_assign_subject_to_student_display_teachers'),//Route Display All teacher
-            dataType:'json',
-            success:teachers =>{
-               // res(teachers);
-                 let output = `<option></option>`;
+// end teacher Modal
+$('#teacher_assign_subject_section').on('click', ()=> {
+    $('#teacher_assign_subject_section_modal').modal('show');
+    $('#teacher_assign_subject_section_label').html(`<h4 class='text-white'> Assign Subjects to Section <i class="fas fa-chalkboard-teacher"></i> </h4>`);
+    $('#teacher_assign_subject_section_header').addClass('bg-primary');
+    $.ajax({
+        url:route('teacher.teacher_assign_subject_to_student_display_teachers'),//Route Display All teacher
+        dataType:'json',
+        success:teachers =>{
+            // res(teachers);
+                let output = `<option></option>`;
 
-                 teachers.forEach(teacher => {
-                    output += `<option value='${teacher.id}'> ${teacher.id} - ${teacher.first_name} ${teacher.last_name} </option>`
+                teachers.forEach(teacher => {
+                output += `<option value='${teacher.id}'> ${teacher.id} - ${teacher.first_name} ${teacher.last_name} </option>`
+            });
+            $('#teacher_assign_subject_section_teacher_id').html(output);
+        },
+        error:err=>{
+            res(err)
+        }
+
+    })
+
+
+});
+
+//Display section by teacher id
+function display_section_by_teacher(){
+    let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
+
+    if(teacher_id > 0)
+    {
+        $.ajax({
+            url:route('teacher.display_section_by_teacher',teacher_id),
+            dataType:'json',
+            success:sections => {
+                let output = `<option></option>`;
+                sections.forEach(section => {
+                    output += `<option value='${section.id}'> ${section.id} - ${section.name} </option>`
                 });
-                $('#teacher_assign_subject_section_teacher_id').html(output);
+                $('#teacher_assign_subject_section_section_id').html(output);
             },
-            error:err=>{
+            error:err => {
                 res(err)
             }
 
         })
-
-
-    });
-    //Display section by teacher id
-    function display_section_by_teacher(){
-        let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
-
-        if(teacher_id > 0)
-        {
-            $.ajax({
-                url:route('teacher.display_section_by_teacher',teacher_id),
-                dataType:'json',
-                success:sections => {
-                    let output = `<option></option>`;
-                    sections.forEach(section => {
-                        output += `<option value='${section.id}'> ${section.id} - ${section.name} </option>`
-                    });
-                    $('#teacher_assign_subject_section_section_id').html(output);
-                },
-                error:err => {
-                    res(err)
-                }
-    
-            })
-        }
-        else
-        {
-            $('#teacher_assign_subject_section_section_id').html(``); 
-        }
-       
     }
-    //
-
-
-    //Display subjects by grade level
-    function display_subject_by_grade_level(){
-        let section_id = $('#teacher_assign_subject_section_section_id').val();
-
-        if(section_id > 0)
-        {
-            $.ajax({
-                url:route('teacher.display_subjects_by_grade_level_id',section_id),
-                dataType:'json',
-                success:subjects => {
-                   // res(subjects);
-                    let output = `<option></option>`;
-                    subjects.forEach(subject => {
-                        output += `<option value='${subject.id}'>${subject.name} </option>`
-                    });
-                    $('#teacher_assign_subject_section_subject_id').html(output);
-                },
-                error:err => {
-                    res(err)
-                }
-    
-            })
-        }
-        else
-        {
-            $('#teacher_assign_subject_section_subject_id').html(``);
-
-        }
-        
-       
+    else
+    {
+        $('#teacher_assign_subject_section_section_id').html(``); 
     }
+    
+}
+//
 
-    function store_subjects_by_grade_level_id(){
-        let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
-        let section_id = $('#teacher_assign_subject_section_section_id').val();
-        let subject_id = $('#teacher_assign_subject_section_subject_id').val();
-        let form = $('#teacher_assign_subject_section_form');
-        
 
-        if(teacher_id > 0 || section_id > 0 || subject_id >0){
-          $.ajax({
-            method: 'POST',
-            url: route('teacher.store_subjects_by_grade_level_id'),
-            dataType: 'json',
-            data:form.serialize(),
-            success:response => {
-                res(response);
-                if(response == 'success')
-                {
-                    toastSuccess("Subjects Assigned");
-                }
-                if(response == 'error'){
-                    toastr.warning("Subject already assigned");
-                }
+//Display subjects by grade level
+function display_subject_by_grade_level(){
+    let section_id = $('#teacher_assign_subject_section_section_id').val();
+
+    if(section_id > 0)
+    {
+        $.ajax({
+            url:route('teacher.display_subjects_by_grade_level_id',section_id),
+            dataType:'json',
+            success:subjects => {
+                // res(subjects);
+                let output = `<option></option>`;
+                subjects.forEach(subject => {
+                    output += `<option value='${subject.id}'>${subject.name} </option>`
+                });
+                $('#teacher_assign_subject_section_subject_id').html(output);
             },
             error:err => {
-                res(err);
+                res(err)
             }
-          })  
-           
-              
-        }
-        else{
-            toastWarning();
-        }
 
+        })
+    }
+    else
+    {
+        $('#teacher_assign_subject_section_subject_id').html(``);
 
     }
+    
+    
+}
+
+function store_subjects_by_grade_level_id(){
+    let teacher_id = $('#teacher_assign_subject_section_teacher_id').val();
+    let section_id = $('#teacher_assign_subject_section_section_id').val();
+    let subject_id = $('#teacher_assign_subject_section_subject_id').val();
+    let form = $('#teacher_assign_subject_section_form');
+    
+
+    if(teacher_id > 0 || section_id > 0 || subject_id >0){
+        $.ajax({
+        method: 'POST',
+        url: route('teacher.store_subjects_by_grade_level_id'),
+        dataType: 'json',
+        data:form.serialize(),
+        success:response => {
+            res(response);
+            if(response == 'success')
+            {
+                toastSuccess("Subjects Assigned");
+            }
+            if(response == 'error'){
+                toastr.warning("Subject already assigned");
+            }
+        },
+        error:err => {
+            res(err);
+        }
+        })  
+        
+            
+    }
+    else{
+        toastWarning();
+    }
+
+
+}
 
 
 
@@ -4152,6 +4170,7 @@ function student_fee_display_grade_level_by_student_id() {
         $.ajax({
             url:route('studentfee.display_grade_level_by_student_id', student_id),
             success: grade_level => {
+                let student_avatar = img_catch(grade_level[2],`storage/uploads/student/${grade_level[2]}`, 150);
                 if(grade_level[1] == undefined)
                 {
                     $('#select2-student_fee_student_id-container').attr('style', 'background:#gray;color:#black !important');
@@ -4174,6 +4193,7 @@ function student_fee_display_grade_level_by_student_id() {
                 $('#student_fee_grade_level_val').attr('value',grade_level[0].grade_val); // display grade level val by grade level id
                 $('#student_fee_fee').attr('placeholder','Php ' + grade_level[0].total_amount).attr('value', grade_level[0].total_amount); // grade level total fee
                 $('#student_fee_months_no').val(`${grade_level[0].months_no} month/s`);
+                $('#student_fee_display_student_avatar').html(student_avatar); // display student avatar
             },
             error: err => {
                 console.log(err);
@@ -4185,6 +4205,9 @@ function student_fee_display_grade_level_by_student_id() {
         $('#student_fee_grade_level_id').attr('placeholder', "").attr('value', '');
         $('#student_fee_fee').attr('placeholder', "").attr('value', '');
         $('#student_fee_months_no').val("");
+        $('#student_fee_grade_level_val').attr('value',''); // display grade level val by grade level id
+        $('#student_fee_display_student_avatar').html('');
+
     }
  
 
@@ -4388,10 +4411,22 @@ function deleteStudentFee(id) {
 
 // show 
 function showPayment(id) {
+
+    if (window.innerWidth <= 400){
+
+       return Swal.fire({
+            icon: 'info',
+            title: 'Oops...',
+            text: 'Your screen resolution is lower please use a desktop view mode on your browser settings',
+          });
+
+    }
+
+
     $.ajax({
         url: route('payment.show', id),
         success: payment => {
-            //  console.log(payment);
+            // res(payment[0]);
              const date = new Date(payment[0].created_at);
              //const d = date.toDateString();
              const d = date.toLocaleDateString();
@@ -4415,6 +4450,8 @@ function showPayment(id) {
             $('#payment_official_receipt').text(`${payment[0].official_receipt}`);
             $('#payment_payment_amount').text(`₱ ${roundoff(payment[0].amount)}`);
             $('#payment_payment_remarks').text(`${payment[0].remarks}`);
+            $('#payment_transaction_no').text(`${payment[0].transaction_no}`);
+            $('#payment_payment_mode').text(`${payment[0].payment_mode.title}`);
 
             // display student info
 
@@ -6352,7 +6389,7 @@ function AdminDashBoardDisplayUser()
             // display payment_notification count 
 
             $('#notification_count').html(`${users[2]}`);
-            $('#notification_details').html(`${users[2]} New Notifications`);
+            $('#notification_details').html(`${users[2]} New Notifications <i class="ms-1 fas fa-bell"></i>`);
 
             // display parent payment logs
 
@@ -6361,12 +6398,8 @@ function AdminDashBoardDisplayUser()
                 let parent_payment_logs = ``;
 
                 users[3].forEach(payment_log => {
-
-                    // console.log(payment_log);
-                    parent_payment_logs += '<a href="'+route('parent_payment_request.edit', [payment_log.parent_id, payment_log.student_id])+'" class="list-group-item">';
-
-
                     // check if the notification already seen
+                    parent_payment_logs += '<a href="'+route('parent_payment_request.edit', [payment_log.parent_id, payment_log.student_id])+'" class="list-group-item">';
                     parent_payment_logs += ` <div class="row g-0 align-items-center">`;
 
                                         if(payment_log.seen === 0)
@@ -6375,29 +6408,26 @@ function AdminDashBoardDisplayUser()
                     parent_payment_logs += `<div class="col-2">
                                                 <i class="fas fa-eye text-muted"></i>
                                             </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">${payment_log.description}</div>
-                                                <div class="text-muted small mt-1">${payment_log.created_at}</div>
-                                            </div>
                                             `; 
-
                                         }
-                                        if(payment_log.seen === 1)
+                                        
+                                        else
                                         {
+
                     parent_payment_logs += `<div class="col-2">
                                                 <i class="fas fa-eye text-primary"></i>
                                             </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">${payment_log.description}</div>
-                                                <div class="text-muted small mt-1">${payment_log.created_at}</div>
-                                            </div>
                                             `;
-
                                         }
                        
-                    parent_payment_logs += `      
+                    parent_payment_logs += `
+                                                <div class="col-10">
+                                                    <div class="text-dark">${payment_log.description}</div>
+                                                    <div class="text-muted small mt-1">${payment_log.created_at}</div>
                                                 </div>
-                                            </a>`;
+                                              </div>   
+                                            </a>
+                                             `;
                                  });
 
                                   
@@ -8097,7 +8127,6 @@ function createUser()
 // edit
 function editUser(id)
 {
-    $('#user_modal_label').html(`<h4>Edit User <i class="fas fa-user-plus"></i></h4>`);
     $('#user_full_name').attr('value', '');
     $('#user_email').attr('value', '');
     $('#user_password').attr('value', '');
@@ -8117,7 +8146,7 @@ function editUser(id)
                 let pareint_id = (user.pareint_id > 0) ? user.name: "";
 
                 $('#user_modal').modal('show');
-                $('#user_modal_label').html(`Edit User`);
+                $('#user_modal_label').html(`<h4 class='text-white'> Edit User <i class="fas fa-user-cog"></i> </h4>`);
                 $('#user_full_name').attr('value', `${user.name}`).attr('disabled', true);
                 $('#user_email').attr('value', `${user.email}`).attr('disabled', true);
                 $('#user_password').attr('value', `${user.password}`);
@@ -8322,7 +8351,7 @@ function img_catch(img, directory, width='75')
 {
     if(img == null || img == "")
     {
-        return `<img class='rounded-circle' src='/images/noimg.jpg' width='${width}'> `;
+        return `<img class='rounded-circle img-fluid' src='/images/noimg.jpg' width='${width}'> `;
     }
     else
     {
@@ -8415,7 +8444,7 @@ function crud_index(dt,route_name,data, column, order = '') {
     {
         $(dt).DataTable({
 
-            processing: false,
+            processing: true,
             serverSide: true,
             retrieve: true,
             autoWidth: false,
@@ -8447,7 +8476,7 @@ function crud_index(dt,route_name,data, column, order = '') {
         $(dt).DataTable({
 
             "order": [[ order, "desc" ]],
-            processing: false,
+            processing: true,
             serverSide: true,
             retrieve: true,
             autoWidth: false,

@@ -19,7 +19,7 @@ class SchoolController extends Controller
     public function index() 
     {
         if(request()->ajax()) {
-           return response()->json([School::latest()->take(1)->first(), AcademicYear::all(), AcademicYear::where('status', '1')->first()]);
+           return response()->json([School::first(), AcademicYear::all(), AcademicYear::where('status', '1')->first()]);
         }
         return view('school.index');
     }

@@ -93,7 +93,7 @@ class StudentFeeController extends Controller
                                     ->where('student_id', $student->id)
                                     ->first();
                                     
-             return response()->json([$get_student_grade_level_by_section_id , $check_student_status]);
+             return response()->json([$get_student_grade_level_by_section_id , $check_student_status, $student->student_avatar]);
         }
     }
 

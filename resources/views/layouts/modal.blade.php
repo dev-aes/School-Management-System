@@ -944,7 +944,7 @@
 {{--Start Student Enrolment Fee Modal--}}
 
   <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="student_fee_modal" tabindex="-1" role="dialog" aria-labelledby="subject_fee_modal_label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
         <div class="modal-content">
             <div class="modal-header" id="student_fee_modal_header">
             <h5 class="modal-title text-primary" id="student_fee_modal_label">{{--Modal Title--}}</h5>
@@ -982,20 +982,34 @@
                     </div>
                 </div>
                 <br>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group mb-2">
+                            <label class='form-label'>Select Student</label><br>
+                            <select class="" id="student_fee_student_id" name="student_fee_student_id" onchange="student_fee_display_grade_level_by_student_id()" style="width:100%">
+                                {{--Display all student--}}
+                            </select>
+                        </div>
 
-                <div class="form-group">
-                    <label class='form-label'>Select Student</label><br>
-                    <select class="" id="student_fee_student_id" name="student_fee_student_id" onchange="student_fee_display_grade_level_by_student_id()" style="width:100%">
-                        {{--Display all student--}}
-                    </select>
+                        <div class="form-group mb-2">
+                            <label class='form-label'>Grade Level</label>
+                            {{-- If the user selected the student it will automatically populate its grade level (by grade_level_id) in this input--}}
+                            <input class="form-control d-none" name="student_fee_grade_level_id" type="text" id="student_fee_grade_level_id" value="" readonly>
+                            <input class="form-control" id="student_fee_grade_level_val" type="text" readonly>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <center>
+                            <div id="student_fee_display_student_avatar">
+                                {{--Display Selected Student's Avatar--}}
+                            </div>
+                        </center>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class='form-label'>Grade Level</label>
-                    {{-- If the user selected the student it will automatically populate its grade level (by grade_level_id) in this input--}}
-                    <input class="form-control d-none" name="student_fee_grade_level_id" type="text" id="student_fee_grade_level_id" value="" readonly>
-                    <input class="form-control" id="student_fee_grade_level_val" type="text" readonly>
-                </div>
-                <div class="form-group">
+               
+             
+                <div class="form-group mb-2">
                     <label class='form-label'>Add Discount <small class="text-muted">(Optional)</small> </label>
                     <select class="form-select" id="student_fee_discount" name="student_fee_discount" onchange="student_fee_display_discounted_fee_by_student_id()" aria-describedby="discountHelp">
                        <option></option>
@@ -2089,28 +2103,28 @@
                     {{ "Date: " . date('m/d/Y')}}
                 </div>
                 
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-5 mb-2">
                     <label class="form-label">Official Receipt</label>
                     <input type='number' min='0' class="form-control" name="payment_official_receipt" id="payment_payment_official_receipt">
                  </div>
 
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label class='form-label'>Select Student</label>
                     <select class="" id="payment_student_fee_id" name="payment_student_fee_id" onchange="payment_display_balance_by_student_id()" style="width:100%">
                         {{--Display all student--}}
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label class='form-label'>Total Balance</label>
                     {{-- If the user selected the student it will automatically populate its remaining balance in this input--}}
                     <input class="form-control" name="payment_total_balance" type="text" id="payment_total_balance" value="" readonly>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label class='form-label'>Monthly Payment</label>
                     {{-- If the user selected the student it will automatically populate its monthly payment in this input--}}
                     <input class="form-control" name="payment_monthly_payment" type="text" id="payment_monthly_payment" value="" readonly>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <div class="row">
                         <div class="col-md-6">
                             <label class='form-label mt-1 '>Enter Amount <span class="text-muted"> <small id="amount_to_pay">(Amount to pay)</small></span> </label>
@@ -2170,7 +2184,7 @@
       {{--SHOW Payment MODAL--}}
     
    <div class="modal fade " data-bs-backdrop="static" id="show_payment_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
           <div class="modal-header" id="show_payment_modal_header">
                 <h4 class="modal-title text-white" id="myLargeModalLabel">Payment Details <i class="fas fa-info-circle"></i>  </h4>
@@ -2180,84 +2194,88 @@
               <div class="card border border-light">
                       <div class="card-body">
                          <div class="row justify-content-center">
-                             <div class="card w-100 border border-secondary">
+                             <div class="card w-100 border border-secondary d-none d-md-block">
                                    <div class="card-body" id="print">
                                     <div class="card-header p-0">
                                         <div class="row">
-                                           <div class="col-6">
+                                           <div class="col">
                                                <h1 class="display-5">Receipt</h1>
                                                <br>
-                                               <h5>{{ $school->school_name }}</h5>
-                                               <h5>{{ $school->address }}</h5>
-                                               <h5>{{ $school->contact }}</h5>
-                                               <h5>{{ $school->website }}</h5>
+                                               <h6>{{ $school->school_name }}</h6>
+                                               <h6>{{ $school->address }}</h6>
+                                               <h6>{{ $school->contact }}</h6>
+                                               <h6>{{ $school->website }}</h6>
                                            </div>
-                                           <div class="col-6">
+                                           <div class="col">
                                                <img class="float-end d-none d-lg-block" id="logo_img" src='{{asset("/storage/uploads/school/$school->school_logo")}}' alt="sample_logo" width="120">
                                            </div>
                                         </div>
                                        </div><br>
                                        <div class="row">
                                             <div class="col-6">
-                                                <h5 >Enrolment Fee No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h5>
-                                                <h5 >Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h5>
-                                                <h5 >Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h5>
-                                                <h5 >Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h5>
+                                                <h6 >Enrolment No. <span class="h5 fw-bold" id="payment_enrolment_fee_no">{{--Display enrolment fee no--}}</span></h6>
+                                                <h6 >Student ID No. <span class="h5 fw-bold" id="payment_student_id_no">{{--Display student id no--}}</span></h6>
+                                                <h6 >Student: <span class="h5 fw-bold" id="payment_student_name">{{--Display Student Name--}}</span> </h6>
+                                                <h6 >Grade Level: <span class="h5 fw-bold" id="payment_grade_level">{{--Display Student's Grade Level--}}</span> </h6>
+                                                <h6>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h6>
+
                                             </div>
 
                                             <div class="col-6">
-                                                <h5>Date: <span class="h5 fw-bold" id="payment_date"> {{--Display Payment date--}}</span></h5>
-                                                <h5>OR No: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h5>
-                                                <h5>Amount paid: <span class="h5 fw-bold" id="payment_payment_amount"> {{--Display Payment amount--}}</span></h5>
-                                                <h5>Remark: <span class="h5 fw-bold" id="payment_payment_remarks"> {{--Display Payment Remarks--}}</span></h5>
+                                                <h6>Transaction No. <span class="h5 fw-bold" id="payment_transaction_no"> {{--Display Payment Official Receipt--}}</span></h6>
+                                                <h6>Official Receipt: <span class="h5 fw-bold" id="payment_official_receipt"> {{--Display Payment Official Receipt--}}</span></h6>
+                                                <h6>Amount paid: <span class="h5 fw-bold" id="payment_payment_amount"> {{--Display Payment amount--}}</span></h6>
+                                                <h6>Remark: <span class="h5 fw-bold" id="payment_payment_remarks"> {{--Display Payment Remarks--}}</span></h6>
+                                                <h6>Paid via: <span class="h5 fw-bold" id="payment_payment_mode"> {{--Display Payment Official Receipt--}}</span></h6>
+
                                             </div>
                                        </div>
                                       <hr>
-                                    <h5>Payment Summary</h5>
+                                    <h6>Payment Summary</h6>
                                     <div class="row">
                                     <div class="col-6 border border-dark border-1 p-2">
                                         <div class="row">
                                             <div class="col-12">
-                                                <h5>Fee Details</h5>
+                                                <h6>Fee Details</h6>
                                                 <hr>
                                             </div>
                                         </div>
                                         <div class="row">
                                             {{-- Display Sub Fees and Totals --}}
                                             <div class="col-6">
-                                                <h5>Fee Type</h5>
+                                                <h6>Fee Type</h6>
                                                 <div id="payment_sf_type">
                                                     {{-- display subfees--}}
                                                 </div>
-                                                <h5 class="fw-bold">Sub Total</h5>
-                                                <h5 class="fw-bold">Total Discount</h5>
-                                                <h5 class="fw-bold">Total</h5>
+                                                <h6 class="fw-bold">Sub Total</h6>
+                                                <h6 class="fw-bold">Total Discount</h6>
+                                                <h6 class="fw-bold">Total</h6>
                                             </div>
                                             <div class="col-6 text-end">
-                                                <h5>Amount</h5>
+                                                <h6>Amount</h6>
                                                 <div id="payment_sf_amount">
                                                     {{-- display subfees--}}
                                                 </div>
-                                                <h5 class="fw-bold" id="payment_sf_total">{{--Display Sub Total--}}</h5>
-                                                <h5 class="fw-bold" id="payment_sf_total_discount">{{--Display Total Discount--}}</h5>
-                                                <h5 class="fw-bold" id="payment_sf_total_discounted_amount">{{--Display Total Discounted Amount--}}</h5>
+                                                <h6 class="fw-bold" id="payment_sf_total">{{--Display Sub Total--}}</h6>
+                                                <h6 class="fw-bold" id="payment_sf_total_discount">{{--Display Total Discount--}}</h6>
+                                                <h6 class="fw-bold" id="payment_sf_total_discounted_amount">{{--Display Total Discounted Amount--}}</h6>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-6 border border-dark  p-2">
                                         <div class="row">
-                                            <h5>Payment Details</h5>
+                                            <h6>Payment Details</h6>
                                         </div>
                                         <div class="row">
                                             <div class="col-6 ">
-                                             <h5>Date</h5>
+                                             <h6>Date</h6>
                                             <div class="text-start" id="payment_sf_date">
                                                 {{--Display payment date--}}
                                             </div>
                                             </div>
 
                                             <div class="col-6">
-                                                <h5 class="text-end">Amount</h5>
+                                                <h6 class="text-end">Amount</h6>
                                                 <div class="text-end" id="payment_sf_payment">
                                                     {{--display payments amount--}}
                                                 </div>
@@ -2266,25 +2284,25 @@
                                         <div class="row">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h5>Total</h5>
+                                                    <h6>Total</h6>
                                                 </div>
                                                 <div>
-                                                    <h5 id="payment_sf_payment_total"></h5>
+                                                    <h6 id="payment_sf_payment_total"></h6>
                                                    {{-- Display total Payments--}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
-                                                <h5>Total Payable</h5>
-                                                <h5>Total Paid</h5>
-                                                <h5>Balance</h5>
+                                                <h6>Total Payable</h6>
+                                                <h6>Total Paid</h6>
+                                                <h6>Balance</h6>
                                             </div>
 
                                             <div class="col-6 text-end">
-                                                <h5 id="payment_sf_total_payable"></h5>
-                                                <h5 id="payment_sf_total_paid"></h5>
-                                                <h5 id="payment_sf_balance"></h5>
+                                                <h6 id="payment_sf_total_payable"></h6>
+                                                <h6 id="payment_sf_total_paid"></h6>
+                                                <h6 id="payment_sf_balance"></h6>
                                             </div>
                                         </div>
                                     </div>

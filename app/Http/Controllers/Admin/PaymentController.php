@@ -443,7 +443,7 @@ class PaymentController extends Controller
         if(request()->ajax())
         {
             // get the payment by payment id
-           $selected_payment = Payment::with('user')->where('id', $payment->id)->first();
+           $selected_payment = Payment::with('user', 'payment_mode')->where('id', $payment->id)->first();
 
 
             // get student name , grade level name and student fee
@@ -474,19 +474,14 @@ class PaymentController extends Controller
             $total_balance = $balance->total_balance;
 
 
-            // return response()->json($total_balance);
-
             // get the amount payable , paid amount , total balance
-            $paymentsTotal = DB::select("SELECT student_fee.total_fee as amount_payable FROM payments INNER JOIN student_fee ON payments.student_fee_id = student_fee.id WHERE payments.student_fee_id = $student->id");
+            $paymentsTotal = DB::select("SELECT student_fee.total_fee as amount_payable 
+                                         FROM payments 
+                                         INNER JOIN student_fee 
+                                         ON payments.student_fee_id = student_fee.id WHERE payments.student_fee_id = $student->id");
 
             $paymentsTotal['paid']  = $total_paid;
             $paymentsTotal['total_balance'] = $total_balance;
-
-            // return response()->json($paymentsTotal);
-            // // get the amount payable , paid amount , total balance
-            // $paymentsTotal = DB::select("SELECT student_fee.total_fee as amount_payable, 
-            // SUM(payments.amount) as paid, (student_fee.total_fee - SUM(payments.amount)) as total_balance FROM payments INNER JOIN student_fee ON 
-            // payments.student_fee_id = student_fee.id WHERE payments.student_fee_id = $student->id");
 
 
           return response()->json([$selected_payment, $student, $fee, $paymentsTotal, $total_fee]);

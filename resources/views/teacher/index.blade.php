@@ -6,7 +6,7 @@
 
 {{-- CONTAINER --}}
 
-<div class="container-fluid">
+<div class="container-fluid" data-aos="zoom-in" data-aos-duration="1000">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">

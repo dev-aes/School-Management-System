@@ -22,7 +22,7 @@ class AcademicYearController extends Controller
 
                 if($get_active_ay->id == $row->id)
                 {
-                    $btn = ' <a href="javascript:void(0)" role="button" class="btn btn-secondary btn-sm" disabled><i class="fas fa-trash"></i> Delete</a>';
+                    $btn = ' <a href="javascript:void(0)" role="button" class="btn btn-secondary btn-sm" id="ay_disabled"><i class="fas fa-trash"></i> Delete</a>';
                 }
                 else
                 {
