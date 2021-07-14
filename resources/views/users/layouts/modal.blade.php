@@ -138,7 +138,7 @@
                         <div class="card-header">
                             <div class="card-body">
                                 <div class="row justify-content-center">
-                                    <div class="card w-100 border border-secondary d-none d-md-block">
+                                    <div class="card w-100 border border-secondary">
                                         <div class="card-body" id="print">
                                                 <div class="card-header p-0">
                                                     <div class="row">
