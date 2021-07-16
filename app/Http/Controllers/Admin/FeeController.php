@@ -19,7 +19,7 @@ class FeeController extends Controller
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
                    
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editFee" onclick="editFee('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="text-decoration-none editFee" onclick="editFee('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>';
 
                     return $btn;
            })

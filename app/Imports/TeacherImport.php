@@ -13,7 +13,6 @@ class TeacherImport implements ToModel,WithHeadingRow,WithValidation
     public function model(array $row)
     {
         return new Teacher([
-            "grade_level_id"  => $row["grade_level_id"],
             "first_name" => $row["first_name"],
             "middle_name" => $row["middle_name"],
             "last_name"    => $row["last_name"],
@@ -26,7 +25,8 @@ class TeacherImport implements ToModel,WithHeadingRow,WithValidation
             "contact"  => $row["contact"],
             "facebook"  => $row["facebook"],
             "email"  => $row["email"],
-            "teacher_avatar"  => $row["teacher_avatar"]
+            "teacher_avatar"  => $row["teacher_avatar"],
+            "is_imported"  => $row["is_imported"]
         ]);
     }
 

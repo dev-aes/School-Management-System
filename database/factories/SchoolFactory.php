@@ -22,16 +22,16 @@ class SchoolFactory extends Factory
     public function definition()
     {
         return [
-            'school_name' => $this->faker->name,
-            'deped_no' => $this->faker->name,
-            'city' => $this->faker->city,
-            'province' => $this->faker->city,
-            'address' => $this->faker->address,
-            'contact' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'website' => $this->faker->url,
-            'facebook' => $this->faker->url,
-            'school_logo' => 'HOLY_CROSS.png',
+            'school_name' => 'Holy Cross Elementary School',
+            'deped_no' => 'LGA03991',
+            'city' => 'Davao',
+            'province' => 'Davao Del Sur',
+            'address' => 'Juna Subd. Matina Davao City, 8000',
+            'contact' => '09659312003',
+            'email' => 'school@gmail.com',
+            'website' => 'school.edu.ph',
+            'facebook' => 'www.facebook.com/schoolname',
+            'school_logo' => 'ames.jpg',
             'months_no' => 10,
             'date_started' => '2021-06-21',
             'country' => 'Philippines'

@@ -22,11 +22,11 @@ class AcademicYearController extends Controller
 
                 if($get_active_ay->id == $row->id)
                 {
-                    $btn = ' <a href="javascript:void(0)" role="button" class="btn btn-secondary btn-sm" id="ay_disabled"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn = ' <a href="javascript:void(0)" class="text-decoration-none text-danger" id="ay_disabled"><i class="fas fa-trash"></i> Delete</a>';
                 }
                 else
                 {
-                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteAccademicYear" onclick="crud_delete(\' '.'a.deleteAccademicYear'.' \' , \'academic_year.destroy\', \' '.'Academic Year Deleted'.' \' , \' '.'.academic_year_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-decoration-none text-danger deleteAccademicYear" onclick="crud_delete(\' '.'a.deleteAccademicYear'.' \' , \'academic_year.destroy\', \' '.'Academic Year Deleted'.' \' , \' '.'.academic_year_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
 
                 }
          

@@ -39,16 +39,16 @@ class StudentFeeController extends Controller
             return DataTables::of($student_fee)
             ->addIndexColumn()
             ->addColumn('actions', function($row) {
-             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showStudentFee" onclick="showStudentFee('.$row->id.')"><i class="fas fa-eye"></i> View</a> ';
+             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="text-decoration-none" onclick="showStudentFee('.$row->id.')"><i class="fas fa-eye"></i> View</a> ';
                 
                 $sf = DB::table('student_fee')->where('id', $row->id)->first();
                 if($sf->has_downpayment)
                 {
-                    $btn .= ' | <button class="btn btn-sm btn-secondary" disabled> <i class="fas fa-trash"></i> Delete </button>';
+                    $btn .= ' | <a class="text-decoration-none text-secondary"> <i class="fas fa-trash"></i> Delete </a>';
                 }
                 else
                 {
-                    $btn .= ' | <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteStudentFee" onclick="deleteStudentFee('.$row->id.')" role="button"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn .= ' | <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-decoration-none text-danger deleteStudentFee" onclick="deleteStudentFee('.$row->id.')" role="button"><i class="fas fa-trash"></i> Delete</a>';
                 }
            
 

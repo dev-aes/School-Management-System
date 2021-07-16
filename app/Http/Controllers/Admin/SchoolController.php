@@ -1,12 +1,13 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\AcademicYear;
 use App\Models\School;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class SchoolController extends Controller
 {
@@ -95,9 +96,14 @@ class SchoolController extends Controller
                     Storage::delete("/public/uploads/school/$school->school_logo");
                 }
                 request('school_logo')->storeAs('uploads/school', $data['school_logo'], 'public' );  // params: fileFolder , fileName , filePath
+
+                DB::table('grade_levels')->update(['months_no' => $data['months_no'] ]);
+
                 return response()->json($school->update($data));
             }
             else {
+
+                DB::table('grade_levels')->update(['months_no' => $data['months_no'] ]);
                 return response()->json($school->update($data));
             }
         }   

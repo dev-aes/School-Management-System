@@ -18,8 +18,8 @@ class PaymentModeController extends Controller
                     ->addIndexColumn()
                     ->addColumn('actions', function($row) {
                         // $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showGradeLevel" onclick="showGradeLevel('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editPaymentMode" onclick="editPaymentMode('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deletePaymentMode" onclick="deletePaymentMode('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class=" text-decoration-none editPaymentMode" onclick="editPaymentMode('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-decoration-none text-danger deletePaymentMode" onclick="deletePaymentMode('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
     
                         return $btn;
                })

@@ -695,12 +695,11 @@ function updateSchool() {
             processData: false,
             contentType: false,
             success: response => {
-                console.log(response);
                 toastSuccess('School Updated')
-                $('#school_DT').DataTable().draw();
                 $('#school_modal').modal('hide');
                 $('#school_div_err').css('display', 'none');
                 $('#school_err').html('');
+                displaySchools();
             },
             error: err => {
                 let err_msg = '';
@@ -3453,7 +3452,7 @@ $('#student_modal_header').removeClass('bg-success').addClass('bg-primary');
         url: route('student.create'),
         data:'json',
         success: sections => {
-            res(sections);
+            //res(sections);
             let output=' <option></option>';
             sections.forEach(section => {
                 output += `<option value='${section.id}'> ${section.name} </option>`;

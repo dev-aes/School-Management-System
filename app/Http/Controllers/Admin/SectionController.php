@@ -21,9 +21,9 @@ class SectionController extends Controller
             return DataTables::of(Section::all())
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showSection" onclick="showSection('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editSection" onclick="editSection('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteSection" onclick="deleteSection('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="text-decoration-none" onclick="showSection('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="text-decoration-none" onclick="editSection('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-decoration-none text-danger deleteSection" onclick="deleteSection('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
                     return $btn;
            })
            ->rawColumns(['actions'])

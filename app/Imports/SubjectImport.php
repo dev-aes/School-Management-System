@@ -15,7 +15,8 @@ class SubjectImport implements ToModel,WithHeadingRow, WithValidation
         return new Subject([
             'grade_val' => $row['grade_val'],
             'name' => $row['name'],
-            'description' => $row['description']
+            'description' => $row['description'],
+            'is_imported' => $row['is_imported']
         ]);
     }
 

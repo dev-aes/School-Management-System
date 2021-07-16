@@ -27,8 +27,8 @@ class PaymentController extends Controller
             return DataTables::of($payments)
             ->addIndexColumn()
             ->addColumn('actions', function($row) {
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showPayment" 
-            onclick="showPayment('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="text-decoration-none showPayment" 
+            onclick="showPayment('.$row->id.')"><i class="fas fa-eye"></i> View</a> ';
             
 
             $latest_payment =  Payment::where('payment_type', '=', 'mo')->latest()->take(1)->first();
@@ -37,17 +37,17 @@ class PaymentController extends Controller
             {
                 if($row->id == $latest_payment->id)
                 {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showPayment" 
+                    $btn = '| <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="text-decoration-none showPayment" 
                     onclick="showPayment('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
                     // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editPayment" onclick="editPayment('.$row->id.')"> <i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deletePayment" onclick="deletePayment('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-decoration-none text-danger deletePayment" onclick="deletePayment('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
        
                 }
                 else
                 {
                     // $btn .= '  <button class="btn btn-sm btn-secondary" disabled> <i class="fas fa-trash"></i> Edit </button> |';
     
-                    $btn .= '  <button class="btn btn-sm btn-secondary" disabled> <i class="fas fa-trash"></i> Delete </button>';
+                    $btn .= '  <a class="text-decoration-none text-secondary"> <i class="fas fa-trash"></i> Delete </a>';
     
                 }
             }

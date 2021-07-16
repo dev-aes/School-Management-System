@@ -22,8 +22,8 @@ class SubjectController extends Controller
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
                     // $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showSubject" onclick="showSubject('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editSubject " onclick="editSubject('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteSubject " onclick="crud_delete(\' '.'a.deleteSubject'.' \' , \'subject.destroy\', \' '.'Subject Deleted'.' \' , \' '.'.subject_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="text-decoration-none" onclick="editSubject('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-danger text-decoration-none deleteSubject " onclick="crud_delete(\' '.'a.deleteSubject'.' \' , \'subject.destroy\', \' '.'Subject Deleted'.' \' , \' '.'.subject_DT'.' \' )"><i class="fas fa-trash"></i> Delete</a>';
 
                     return $btn;
            })
@@ -150,9 +150,23 @@ class SubjectController extends Controller
         if(request()->ajax())
         {
             $data = $request->validate(['subjects' => "file|max:5000|mimes:xlsx,csv"]);
-            
             $file = $request->file('subjects');
             Excel::import(new SubjectImport, $file);
+
+            $get_imported_subjects = Subject::where('is_imported', 1)->get();
+
+            foreach($get_imported_subjects as $subject): 
+
+                $grade_level = GradeLevel::where('grade_val', $subject->grade_val)->first();
+
+                DB::table('grade_level_subject')->insert([
+                                                            'subject_id' => $subject->id,
+                                                            'grade_level_id' => $grade_level->id]);
+
+
+            endforeach;
+
+
             return response()->json('success');
         }
     }

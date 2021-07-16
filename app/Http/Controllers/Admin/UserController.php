@@ -22,8 +22,8 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
                     // $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Show" class="edit btn btn-secondary btn-sm showUser" onclick="showUser('.$row->id.')"><i class="fas fa-eye"></i> View</a> |';
-                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-secondary btn-sm editUser" onclick="editUser('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-secondary btn-sm deleteUser" onclick="deleteUser('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="text-decoration-none editUser" onclick="editUser('.$row->id.')"><i class="fas fa-edit"></i> Edit</a> |';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="text-decoration-none text-danger deleteUser" onclick="deleteUser('.$row->id.')"><i class="fas fa-trash"></i> Delete</a>';
 
                     return $btn;
            })

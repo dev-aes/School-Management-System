@@ -18,6 +18,7 @@ class StudentImport implements ToModel,WithHeadingRow,WithValidation
         $birth_date =  Date::excelToDateTimeObject($date)->format('Y-m-d');
 
         return new Student([
+            "lrn" => $row["lrn"],
             "first_name" => $row["first_name"],
             "middle_name" => $row["middle_name"],
             "last_name"    => $row["last_name"],
@@ -33,7 +34,6 @@ class StudentImport implements ToModel,WithHeadingRow,WithValidation
             "facebook"  => $row["facebook"],
             "email"  => $row["email"],
             "student_avatar"  => $row["student_avatar"],
-            "lrn" => $row["lrn"],
             "is_imported" => $row["is_imported"]
         ]);
     }
