@@ -85,7 +85,7 @@
 						</div>
 					</li>
 					
-					<li class="sidebar-item active">
+					<li class="sidebar-item" id="dashboard_dashboard">
 						<a class="sidebar-link" href="{{ route('home.index') }}">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                         </a>
@@ -93,7 +93,7 @@
 
 					@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('registrar'))
 					
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_teacher">
 							<a href="#teacher" data-bs-toggle="collapse" class="sidebar-link collapsed">
 								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Teacher</span>
 							</a>
@@ -105,26 +105,26 @@
 						</li>
 
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_student">
 							<a class="sidebar-link" href="{{ route('student.index') }}">
 								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
 							</a>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_subject">
 							<a class="sidebar-link" href="{{ route('subject.index') }}">
 								<i class="align-middle" data-feather="book"></i> <span class="align-middle">Subject</span>
 							</a>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_gl">
 							<a class="sidebar-link" href="{{ route('grade_level.index') }}">
 								<i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Grade Level</span>
 							</a>
 						</li>
 
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_section">
 							<a href="#section" data-bs-toggle="collapse" class="sidebar-link collapsed">
 								<i class="align-middle" data-feather="hexagon"></i> <span class="align-middle">Section</span>
 							</a>
@@ -135,7 +135,7 @@
 							</ul>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_parent">
 							<a href="#parent" data-bs-toggle="collapse" class="sidebar-link collapsed">
 								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Parent</span>
 							</a>
@@ -145,7 +145,7 @@
 							</ul>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_report">
 							<a class="sidebar-link" href="{{ route('report.index') }}" title="coming soon">
 								<i class="align-middle" data-feather="bookmark"></i> <span class="align-middle">Reports</span>
 							</a>
@@ -156,7 +156,7 @@
 
 					@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('cashier'))
 
-						<li class="sidebar-item">
+						<li class="sidebar-item" id="dashboard_billing">
 							<a href="#billing" data-bs-toggle="collapse" class="sidebar-link collapsed">
 								<i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Billing</span>
 							</a>
@@ -178,7 +178,7 @@
 					@endif
 
 					@if (auth()->user()->hasRole('admin'))
-						<li class="sidebar-item" id="s">
+						<li class="sidebar-item" id="dashboard_settings">
 							<a href="#to_school" data-bs-toggle="collapse" class="sidebar-link collapsed">
 								<i class="align-middle" data-feather="settings" ></i><span class="align-middle">Settings</span>
 							</a>

@@ -7,9 +7,18 @@ $(()=> {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    if(window.location.href == route('home.index'))
+    {
+        $('#dashboard_dashboard').addClass('active');
+
+    }
     
+
     if(window.location.href == route('school.index')) 
     {
+        $('#dashboard_settings').addClass('active');
+
         displaySchools(); // after loading the school page ; load the school data
         $('#school_announcement').emojioneArea();
 
@@ -17,12 +26,10 @@ $(()=> {
 
 
 
-
-
-
-
      if(window.location.href == route('teacher.index'))
     {
+        $('#dashboard_teacher').addClass('active');
+        
         let column = 'first_name';
         let teacher_column_data = [ {data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'city'}, {data: 'contact'}, 
                                     {data: 'teacher_avatar', render(data){
@@ -37,6 +44,8 @@ $(()=> {
 
      if(window.location.href == route('subject.index'))
     {
+        $('#dashboard_subject').addClass('active');
+
         let column = 'name';
         let subject_column_data = [ {data:'id'}, {data:'name'}, {data:'description'}, {data:'actions',  orderable: false, searchable: false} ];
 
@@ -47,6 +56,8 @@ $(()=> {
 
      if(window.location.href == route('grade_level.index')) 
     {
+        $('#dashboard_gl').addClass('active');
+
         let column = 'name';
         let grade_level_column_data = [ {data:'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions'} ];
 
@@ -60,6 +71,8 @@ $(()=> {
 
     if(window.location.href == route('section.index'))
     {
+        $('#dashboard_section').addClass('active');
+
         let column = 'name';
         let section_column_data = [{data: 'id'}, {data: 'name'}, {data: 'description'}, {data: 'actions', orderable: false, searchable: false} ];
         crud_index('.section_DT', 'section.index', section_column_data, column); // after loading the section page ; load the section data
@@ -76,6 +89,8 @@ $(()=> {
 
     if(window.location.href == route('student.index')) 
     {
+        $('#dashboard_student').addClass('active');
+
         let column = 'first_name';
         let student_column_data = [{data: 'id'}, {data: 'first_name'}, {data: 'last_name'}, {data: 'gender'}, {data: 'name'}, {data: 'address'}, {data: 'contact'},
                                    {data: 'student_avatar', render(data){
@@ -90,6 +105,8 @@ $(()=> {
 
     if(window.location.href == route('fee.index'))
     {
+        $('#dashboard_billing').addClass('active');
+
         let column = 'name';
         let fee_column_data = [ {data: 'name'},
                                 {data: 'total_amount', render(data) {
@@ -103,6 +120,8 @@ $(()=> {
 
     if(window.location.href == route('studentfee.index'))
     {
+        $('#dashboard_billing').addClass('active');
+
         let column = 'student_name';
 
         let student_fee_column_data = [
@@ -159,6 +178,8 @@ $(()=> {
 
     if(window.location.href == route('payment.index'))
     {
+        $('#dashboard_billing').addClass('active');
+
         let column = 'first_name';
 
         let payment_column_data = [
@@ -187,6 +208,8 @@ $(()=> {
 
     if(window.location.href == route('user.index'))
     {
+        $('#dashboard_settings').addClass('active');
+
        let column = 'name';
        let user_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'role.name'}, {data: 'actions', orderable: false, searchable: false} ];
 
@@ -209,6 +232,8 @@ $(()=> {
     
     if(window.location.href == route('parent.index'))
     {
+        $('#dashboard_parent').addClass('active');
+
         let column = 'name';
 
         let parent_column_data = [ {data: 'id'}, {data: 'name'}, {data: 'email'}, {data: 'contact'}, {data: 'facebook'}, {data: 'actions'} ];
@@ -219,6 +244,8 @@ $(()=> {
 
     if(window.location.href == route('parent_payment_request.index'))
     {
+        $('#dashboard_billing').addClass('active');
+
         display_parent_payment_request(); // after loading the Parent payment_request ; load the Parent payment request data
 
     }
@@ -226,6 +253,8 @@ $(()=> {
 
     if(window.location.href == route('payment_mode.index'))
     {
+        $('#dashboard_settings').addClass('active');
+
         let column = 'title';
 
         let payment_mode_column_data = [
@@ -246,6 +275,8 @@ $(()=> {
 
     if(window.location.href == route('academic_year.index'))
     {
+        $('#dashboard_settings').addClass('active');
+
         let column = 'academic_year';
         $('#accademic_year').tagsinput();
        
@@ -265,6 +296,8 @@ $(()=> {
 
     if(window.location.href == route('role.index'))
     {
+        $('#dashboard_settings').addClass('active');
+
         let column = 'name';
         let role_column_data = [ {data: 'name'}, {data: 'actions',  orderable: false, searchable: false} ];
         crud_index('.role_DT', 'role.index', role_column_data, column); // after loading the Role ; load the Role data
@@ -274,6 +307,8 @@ $(()=> {
 
     if(window.location.href == route('values.index'))
     {
+        $('#dashboard_settings').addClass('active');
+
         let column = 'title';
         $('#values_title').tagsinput(); 
 

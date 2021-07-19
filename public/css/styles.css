@@ -18,6 +18,28 @@ html {
     border: 3px solid var(--scrollbarBG);
   }
 
+  /* dashboard */
+
+  /* .sidebar-nav, .sidebar-brand, .sidebar-link{
+    background-color: #16a085 !important;
+    color: #fff !important;
+} */
+
+li.sidebar-item.active {
+    background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.0875) 50%,transparent) !important;
+   
+}
+
+.new {
+    background: #1abc9c !important;
+}
+
+
+/* .sidebar-item.active .sidebar-link:hover, .sidebar-item.active>.sidebar-link {
+  background: none !important;
+  border-left-color: #16a085 !important;
+} */
+
   /*BOX*/
   .box-0,.box-1 , .box-2, .box-00, .box-11, .box-22{
     width: 15px;
