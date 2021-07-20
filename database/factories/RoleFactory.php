@@ -29,6 +29,6 @@ class RoleFactory extends Factory
     {
         $roles = Arr::random(['admin', 'parent', 'student', 'teacher', 'cashier', 'registrar']);
 
-        return array('roles' => $roles );
+        return array('role' => $roles );
     }
 }
