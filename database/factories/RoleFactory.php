@@ -22,13 +22,18 @@ class RoleFactory extends Factory
      */
     public function definition()
     {
-        return $this->random();
+        // return $this->random();
+
+        return [
+            'name' => 'admin'
+        ];
+        
     }
 
-    public function random()
-    {
-        $roles = Arr::random(['admin', 'parent', 'student', 'teacher', 'cashier', 'registrar']);
+    // public function random()
+    // {
+    //     $roles = Arr::random(['admin', 'parent', 'student', 'teacher', 'cashier', 'registrar']);
 
-        return array('name' => $roles );
-    }
+    //     return array('roles' => $roles );
+    // }
 }
