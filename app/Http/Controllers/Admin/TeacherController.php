@@ -543,7 +543,7 @@ class TeacherController extends Controller
              $subjects = DB::table('subjects')
                             ->join('section_subject','subjects.id','section_subject.subject_id')
                             ->join('grades','subjects.id','grades.subject_id')
-                            ->select('section_subject.subject_id','subjects.name','grades.id','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.subject_teacher_id','grades.is_approve')
+                            ->select('section_subject.subject_id','subjects.name','grades.id','grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','section_subject.section_id','grades.subject_teacher_id','grades.is_approve', 'grades.student_grade_id','grades.viewable')
                             ->where('section_subject.section_id',$section->id)
                             ->where('grades.student_grade_id',$student_grade_id->id)                            
                             ->get(); 
@@ -559,6 +559,17 @@ class TeacherController extends Controller
              endforeach;   
              
                          return response()->json([$student, $subjects, $core_values]); // return subjects[] , student
+         }
+     }
+
+     public function enable_grade_to_be_viewable($id)
+     {
+         if(request()->ajax())
+         {
+
+            DB::table('grades')->where('student_grade_id', $id)->update(['viewable' => request('viewable')]);
+
+            return $this->res();
          }
      }
  

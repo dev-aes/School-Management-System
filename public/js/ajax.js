@@ -99,7 +99,7 @@ $(()=> {
                                    {data: 'actions'},
                                   ];
         
-         crud_index('.student_DT', 'student.index', student_column_data, column); // after loading the student Information page ; load the Student Information data
+         crud_index('.student_DT', 'student.index', student_column_data, column, 5); // after loading the student Information page ; load the Student Information data
     }
 
 
@@ -1895,6 +1895,8 @@ $('#teacher_assign_grade_to_student').on('click', () => {
     $('#teacher_assign_grade_to_student_subject_display_students').html(``);
     $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(``);
 
+    $('#teacher_enable_grade_to_be_viewable_container').css('display','none');
+
     $.ajax({
         url: route('teacher.teacher_assign_grade_to_subject_display_teachers'),
         dataType:'json',
@@ -1948,6 +1950,7 @@ function grade_assign_grade_to_student_subject_display_section()
         $('#teacher_assign_grade_to_student_subject_section_id').html(``);
         $('#teacher_assign_grade_to_student_subject_display_students').html(``);
         $('#teacher_assign_grade_to_student_display_encoding_of_grade').html(``);
+        $('#teacher_enable_grade_to_be_viewable_container').css('display','none');
     }
 }
 
@@ -2009,13 +2012,23 @@ function teacher_assign_grade_to_student_subject_display_students_by_section_id(
 
 function teacher_assign_grade_to_subject_create_grade(student,section,adviser)
 {
-    
+    $('#teacher_enable_grade_to_be_viewable_container').css('display','block'); // display this container when the user click this function 
     $.ajax({
         url: route('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id', [section]),
         dataType:'json',
         data:{student_id:student}, // send the student id via get request
         success: student_subjects => {
             let student_avatar = img_catch(student_subjects[1].student_avatar,`storage/uploads/student/${student_subjects[1].student_avatar}`, 50);
+            $('#teacher_enable_grade_to_be_viewable_assign_id').attr('data-id',`${student_subjects[1][0].student_grade_id}`); // append student_ID
+
+            let viewable = student_subjects[1][0].viewable == 1 ? 'Enabled' : 'Disabled'; 
+
+            $('#allow_grade').html(
+                                    `<option value='${student_subjects[1][0].viewable}'> Current [ ${viewable} ] </option>
+                                     <option value='1'> Enable </option>
+                                     <option value='0'> Disable </option>
+                                    `
+                                    );
 
             let output = `
                            <center>${student_avatar}</center>
@@ -2335,7 +2348,6 @@ $(document).on('mouseleave', '#g_grade', function(e) {
 })
 
 
-
 // TODO ADMIN TEACHER ASSIGN VALUES TO STUDENT
 
 $(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values .values_quarter', function() {
@@ -2347,21 +2359,21 @@ $(document).on('dblclick', '#teacher_assign_observed_values_to_student .v_values
         .attr('data-student_id',$(this).parent().attr('data-student_id'))
         .attr('data-adviser_id',$(this).parent().attr('data-adviser_id'))
         .attr('data-quarter',$(this).attr('data-quarter'))
-      ); // append values id  && description id  && student id to this input field
-     
-});
-
+        ); // append values id  && description id  && student id to this input field
+        
+    });
+    
 $(document).on('keypress', '#v_values', function(e) {
-
+    
     let student_id = $('#v_values').attr('data-student_id');
     let adviser_id = $('#v_values').attr('data-adviser_id');
     let description_id = $('#v_values').attr('data-description_id');
     let values = $('#v_values').val();
     let quarter = $('#v_values').attr('data-quarter');
-
+    
     if(e.keyCode == 13)
     {
-
+        
         console.log({
             student_id:student_id,
             description_id:description_id,
@@ -2369,7 +2381,7 @@ $(document).on('keypress', '#v_values', function(e) {
             quarter: quarter,
             adviser_id:adviser_id
         })
-
+        
         $.ajax({
             method: 'POST',
             url: route('teacher.teacher_assign_values_to_student'),
@@ -2389,7 +2401,7 @@ $(document).on('keypress', '#v_values', function(e) {
                 {
                     $(this).closest('td').text($(this).val());
                     return toastSuccess("Values assigned ");
-
+                    
                 }
                 if(response == 'error')
                 {
@@ -2401,15 +2413,56 @@ $(document).on('keypress', '#v_values', function(e) {
             }
         })
     }
-
+    
 });
 
 
 $(document).on('mouseleave', '#v_values', function(e) {
     $(this).css('display','none');
 })
+    
+function teacher_enable_grade_to_be_viewable()
+{
+   let student_grade_id =  $('#teacher_enable_grade_to_be_viewable_assign_id').attr('data-id');
 
+   if(isNotEmpty($('#allow_grade')))
+   {
+       let opt =($('#allow_grade').val()) == 1 ? 'Enable' : 'Disable';
+        Swal.fire({
+            title: `Do you want to ${opt} viewing of grade for this particular Student ?`,
+            text: "Please double check before enabling",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4085d6',
+            cancelButtonColor: '#95a5a6',
+            confirmButtonText: 'Yes, enable it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'PUT',
+                    url: route('teacher.enable_grade_to_be_viewable', student_grade_id),
+                    data:{viewable:$('#allow_grade').val()},
+                    success: response => {
+                          if(response == 'success')
+                          {
+                               return toastSuccess(`Student Grade is now ${opt}d`);
+                          }
+                    },
+                    error: err => { 
+                        toastDanger();
+                        res(err);
+                    }
+                })
+            }
+         
+        });
+   }
 
+ 
+   
+}
+
+    
 
 //* ---------> END TEACHER MANAGEMENT 
 

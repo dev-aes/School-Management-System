@@ -254,6 +254,10 @@ Route::middleware(['auth','registrar'])->group(function() {
     Route::get('/admin/teacher/assign_grade_to_student/display_subjects/{section}', [TeacherController::class, 'teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id'])->name('teacher.teacher_assign_grade_to_subject_display_subjects_by_teacher_and_section_id');
 
 
+    //? Teacher Enable Showing of Student Grades
+    
+    Route::put('/admin/teacher/enable_grade/{id}', [TeacherController::class, 'enable_grade_to_be_viewable'])->name('teacher.enable_grade_to_be_viewable');
+
     //admin add grade
     Route::post('/admin/teacher/addgrade', [GradeController::class, 'store'])->name('grade.teacher_store_student_grade');
     

@@ -2813,13 +2813,27 @@
                                                 </select>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group mb-2">
                                                 <label class="form-label" for="teacher_assign_grade_to_student_subject_section_id">Select Section *</label>
                                                 <select name="" id="teacher_assign_grade_to_student_subject_section_id" onchange="teacher_assign_grade_to_student_subject_display_students_by_section_id()" style="width:100%">
                                                     {{--Display Section by Teacher ID--}}
                                                 </select>
                                             </div>
-
+                                                
+                                            <div class="row" id="teacher_enable_grade_to_be_viewable_container"  style="display:none">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Options *</label>
+                                                        <select id="allow_grade" class="form-select">
+                                                           {{--Display Option here--}}
+                                                        </select>
+                                                        <div id="allow_grade" class="form-text"> To Enable or Disable for viewing of Grades </div>
+                                                    </div>
+        
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-sm btn-success float-end" id="teacher_enable_grade_to_be_viewable_assign_id" onclick="teacher_enable_grade_to_be_viewable()">Save</button>
+                                                    </div>
+                                            </div>
+                                           
                                         </form>
                                     </div>
                                     <div class="col-md-2"></div>

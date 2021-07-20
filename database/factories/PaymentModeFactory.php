@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
+use App\Models\PaymentMode;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RoleFactory extends Factory
+class PaymentModeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Role::class;
+    protected $model = PaymentMode::class;
 
     /**
      * Define the model's default state.
@@ -27,8 +27,9 @@ class RoleFactory extends Factory
 
     public function random()
     {
-        $roles = Arr::random(['admin', 'parent', 'student', 'teacher', 'cashier', 'registrar']);
+        $titles = Arr::random(['Gcash', 'Cebuana Lhuillier', 'School', 'Palawan Pawnshop']);
+        $account_no = Arr::random(['0988382832', '0988382832', '097732636261', '']);
 
-        return array('roles' => $roles );
+        return array('title' => $titles , 'account_number' => $account_no);
     }
 }

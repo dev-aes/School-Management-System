@@ -24,6 +24,7 @@ class CreateGradesTable extends Migration
             $table->bigInteger('quarter_4')->nullable();
             $table->bigInteger('grade_level_val')->nullable();
             $table->string('is_approve')->default('0,0,0,0');
+            $table->boolean('viewable')->default(0);
             
             $table->timestamps();
         });

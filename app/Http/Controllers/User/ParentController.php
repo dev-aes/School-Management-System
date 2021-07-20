@@ -255,6 +255,8 @@ class ParentController extends Controller
             $student_grades = DB::table('grades')
                                 ->join('subjects','grades.subject_id','subjects.id')
                                 ->select('grades.quarter_1','grades.quarter_2','grades.quarter_3','grades.quarter_4','grades.subject_id','grades.is_approve','subjects.name','grades.id','grades.subject_teacher_id')
+                                ->where('grades.is_approve','0,0,0,0')
+                                ->where('viewable', 1)
                                 ->where('student_grade_id',$student_grade_id->id)
                                 ->get(); // get subjects, grades by quarter where student id is equal to the param $student
 
