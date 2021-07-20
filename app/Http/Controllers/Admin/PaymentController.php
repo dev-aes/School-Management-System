@@ -174,7 +174,7 @@ class PaymentController extends Controller
                 {    
                     
                     // check if the student has already have a downpayment 
-                        if($check_if_student_fee_id_has_dp->has_downpayment === 1)
+                        if($check_if_student_fee_id_has_dp->has_downpayment == 1)
                         {
                             return response()->json('error');
                         }
