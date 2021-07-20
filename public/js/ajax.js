@@ -5941,7 +5941,7 @@ function addPayment() {
 
                      if(response == 'error')
                     {
-                       return toastr.warning("Already have a downpayment, please select monthly payment or others")
+                       return toastr.warning("Already have a downpayment. Please select monthly payment")
                     }
 
                     if(response == 'no downpayment')
