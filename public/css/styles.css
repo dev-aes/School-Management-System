@@ -145,14 +145,14 @@ li.sidebar-item.active {
   @page{size:auto; margin:5mm;}
   
   @media print {
-   
+/*    
     body {
       visibility: hidden;
-    }
+    } */
     #print {
       visibility: visible;
       position: absolute;
-      left: 0px;
+      left: 70px;
       top: 0px;
     
     }
@@ -177,7 +177,6 @@ li.sidebar-item.active {
       top: 115% !important;
       left: 73% !important;
     }
-
 
     .col-md-1,.col-md-2,.col-md-3,.col-md-4,
     .col-md-5,.col-md-6,.col-md-7,.col-md-8, 

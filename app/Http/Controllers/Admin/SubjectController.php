@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
+
+use App\Exports\SubjectExport;
 use App\Models\Subject;
 use App\Models\GradeLevel;
 use App\Models\AcademicYear;
@@ -169,6 +171,13 @@ class SubjectController extends Controller
 
             return response()->json('success');
         }
+    }
+
+    public function export() 
+    {
+        return Excel::download(new SubjectExport, 'exp_subject.xlsx');
+
+        //  return $this->res();
     }
 
 

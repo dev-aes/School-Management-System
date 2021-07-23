@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <a class="btn text-info  btn-default d-block d-sm-inline-block" href="javascript:void(0)" id="imp_teacher"><i class="fas fa-upload"></i> Import</a>
-                <a class="btn text-info  btn-default d-block d-sm-inline-block" href="javascript:void(0)" id="exp_teacher"><i class="fas fa-file-export"></i> Export</a>
+                <a class="btn text-info  btn-default d-block d-sm-inline-block" href="{{ route('teacher.export') }}"><i class="fas fa-file-export"></i> Export</a>
 
                 @if(auth()->user()->hasRole('admin'))
                 <a class="btn text-danger btn-default d-block d-sm-inline-block" href="javascript:void(0)" id="delete_all_teacher"><i class="fas fa-trash-alt"></i> Delete Record</a>

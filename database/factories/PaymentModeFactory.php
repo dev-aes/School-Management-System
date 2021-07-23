@@ -22,14 +22,17 @@ class PaymentModeFactory extends Factory
      */
     public function definition()
     {
-        return $this->random();
+        return [
+            'title' => 'School',
+            'account_number' => ''
+        ];
     }
 
-    public function random()
-    {
-        $titles = Arr::random(['Gcash', 'Cebuana Lhuillier', 'School', 'Palawan Pawnshop']);
-        $account_no = Arr::random(['0988382832', '0988382832', '097732636261', '']);
+    // public function random()
+    // {
+    //     $titles = Arr::random(['Gcash', 'Cebuana Lhuillier', 'School', 'Palawan Pawnshop']);
+    //     $account_no = Arr::random(['0988382832', '0988382832', '097732636261', '']);
 
-        return array('title' => $titles , 'account_number' => $account_no);
-    }
+    //     return array('title' => $titles , 'account_number' => $account_no);
+    // }
 }

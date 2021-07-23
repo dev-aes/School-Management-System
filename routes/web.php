@@ -292,6 +292,11 @@ Route::middleware(['auth','registrar'])->group(function() {
     Route::post('/admin/subject/importSubject', [SubjectController::class, 'import'])->name('subject.import');
     Route::post('/admin/teacher/importTeacher', [TeacherController::class, 'import'])->name('teacher.import');
 
+    // Exportables [students, subjects , teachers]
+    Route::get('/admin/student/export/student', [StudentController::class,'export'])->name('student.export');
+    Route::get('/admin/subject/export/subject', [SubjectController::class,'export'])->name('subject.export');
+    Route::get('/admin/teacher/export/teacher', [TeacherController::class,'export'])->name('teacher.export');
+
 });
 
 

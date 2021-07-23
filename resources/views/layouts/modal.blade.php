@@ -2036,7 +2036,7 @@
                                   </div>
                                  </div>
                                  <div class="form-group">
-                                    <button class="btn btn-info float-end" onclick="window.print()"> Print <i class="fas fa-print"></i> </button>
+                                    <button class="btn btn-info float-end" onclick="print_receipt()"> Print <i class="fas fa-print"></i> </button>
                                  </div>
                              </div>
                          </div>
@@ -2184,7 +2184,7 @@
       {{--SHOW Payment MODAL--}}
     
    <div class="modal fade " data-bs-backdrop="static" id="show_payment_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
           <div class="modal-header" id="show_payment_modal_header">
                 <h4 class="modal-title text-white" id="myLargeModalLabel">Payment Details <i class="fas fa-info-circle"></i>  </h4>
@@ -2311,7 +2311,7 @@
                                         <h5 id="p_label" style="display: none">Cashier</h5>
                                  </div>
                                  <div class="form-group p-3">
-                                    <button class="btn btn-info float-end" onclick="window.print();"> Print <i class="fas fa-print"></i> </button>
+                                    <button class="btn btn-info float-end" onclick="print_receipt()"> Print <i class="fas fa-print"></i> </button>
                                  </div> 
                              </div>
                          </div>

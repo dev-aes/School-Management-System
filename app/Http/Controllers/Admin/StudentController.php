@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-
+use App\Exports\StudentExport;
 use App\Models\User;
 use App\Models\School;
 use App\Models\Section;
@@ -389,16 +389,6 @@ class StudentController extends Controller
              Student::where('is_imported',1)->update(['is_imported'=>0]);
 
              
-
-
-    // *************** //
-
-   
-    
-    
-
-    
-     
     
     //Populate grades here
     
@@ -406,14 +396,20 @@ class StudentController extends Controller
 
          //if there is already existing section with subjects the newly added student will populate the Grades Table
         
-       
-
-
+   
     //************** */
 
 
             return response()->json('success');
         }
+    }
+
+    public function export() 
+    {
+         //Excel::store(new StudentExport(2021), 'exp_student.xlsx', 'public');
+        return Excel::download(new StudentExport, 'exp_student.xlsx');
+
+        //  return $this->res();
     }
 
     public function truncate()

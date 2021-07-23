@@ -1737,6 +1737,8 @@ function teacher_student2_store_teacher_subject() {
     $('#teacher_file').click();
 });
 
+
+
  function import_teacher()
 {
     let form = $('#teacher_import_form')[0];
@@ -1781,6 +1783,22 @@ function teacher_student2_store_teacher_subject() {
             });
         }
       })
+}
+function export_teacher()
+{
+    $.ajax({
+        url: route('teacher.export'),
+        success: response => {
+            if(response == 'success')
+            {
+                return toastSuccess("Teacher Exported");
+            }
+        },
+        error: err => {
+            res(err);
+            toastDanger();
+        }
+    })
 }
 
 
@@ -2718,6 +2736,23 @@ function import_subject()
             });
         }
       })
+}
+
+function export_subject()
+{
+    $.ajax({
+        url: route('subject.export'),
+        success: response => {
+            if(response == 'success')
+            {
+                return toastSuccess("Subject Exported");
+            }
+        },
+        error: err => {
+            res(err);
+            toastDanger();
+        }
+    })
 }
 
 // trunctate students
@@ -3949,6 +3984,22 @@ function import_student()
       })
 }
 
+function export_student()
+{
+    $.ajax({
+        url: route('student.export'),
+        success: response => {
+            if(response == 'success')
+            {
+                return toastSuccess("Student Exported");
+            }
+        },
+        error: err => {
+            res(err);
+            toastDanger();
+        }
+    })
+}
 
 // trunctate students
 $('#delete_all_student').on('click', ()=> {
@@ -4582,6 +4633,13 @@ function showPayment(id) {
             console.log(err);
         }
     })
+}
+
+function print_receipt()
+{
+    $('body').css('visibility', 'hidden');
+
+    window.print();
 }
 
 // enable / disable payment discount select input field
@@ -7163,7 +7221,7 @@ function updateRole()
     {
         let output =    `
                         <table class='table table-bordered table-hover mt-5' id='report_student_DT'>
-                            <caption>List of Students </caption>
+                            <caption>List of Students by A.Y </caption>
                             <thead>
                                 <tr>
                                     <td>LRN</td>
@@ -7200,6 +7258,14 @@ function updateRole()
             }
             },
             autoWidth: false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5',
+                'print'
+            ],
             ajax : route('report.display_students_by_ay', ay),
             columns: [
             {data: 'lrn'},
@@ -7524,7 +7590,7 @@ function updateRole()
     {
         let output =    `
                                 <table class='table table-bordered table-hover mt-5' id='report_teacher_DT'>
-                                    <caption>List of Teachers </caption>
+                                    <caption>List of Teachers by A.Y </caption>
                                     <thead>
                                         <tr>
                                             <td>#</td>
@@ -7557,6 +7623,14 @@ function updateRole()
                             }
                         },
                         autoWidth: false,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'csvHtml5',
+                            'pdfHtml5',
+                            'print'
+                        ],
                         ajax : route('report.display_teachers_by_ay', ay),
                         columns: [
                             {data: 'id'},

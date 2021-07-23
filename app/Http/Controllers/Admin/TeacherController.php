@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\TeacherExport;
 use App\Models\Quarter;
 use App\Models\Section;
 use App\Models\Student;
@@ -583,6 +584,13 @@ class TeacherController extends Controller
             Excel::import(new TeacherImport, $file);
             return response()->json('success');
         }
+    }
+
+    public function export() 
+    {
+        return Excel::download(new TeacherExport, 'exp_teacher.xlsx');
+
+        //  return $this->res();
     }
 
     public function truncate()
