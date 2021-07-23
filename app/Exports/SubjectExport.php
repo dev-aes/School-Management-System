@@ -13,7 +13,16 @@ class SubjectExport implements FromCollection,WithHeadings
     */
     public function collection()
     {
-        return Subject::all();
+        $subjects = Subject::all();
+
+        if($subjects->count() > 0)
+        {
+            return $subjects;
+        }
+        else
+        {
+           die('no data found. Please add some record before exporting .');
+        }
     }
 
     public function headings(): array

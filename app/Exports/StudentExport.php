@@ -13,7 +13,15 @@ class StudentExport implements FromCollection,WithHeadings
     */
     public function collection()
     {
-        return Student::all();
+        $students = Student::all();
+        if($students->count() > 0)
+        {
+            return $students;
+        }
+        else
+        {
+           die('no data found. Please add some record before exporting .');
+        }
     }
 
     public function headings(): array

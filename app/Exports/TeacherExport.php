@@ -13,7 +13,17 @@ class TeacherExport implements FromCollection,WithHeadings
     */
     public function collection()
     {
-        return Teacher::all();
+        $teachers = Teacher::all();
+
+        if($teachers->count() > 0)
+        {
+            return $teachers;
+        }
+        else
+        {
+           die('no data found. Please add some record before exporting .');
+        }
+        
     }
     public function headings(): array
     {
