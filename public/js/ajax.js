@@ -7139,16 +7139,16 @@ function createRole()
                 if(response == "success")
                 {
                     $('.role_DT').DataTable().draw();
-                    toastSuccess("Role Added");
+                   return toastSuccess("Role Added");
                 }
                 if(response == 'error')
                 {
-                    toastr.warning("Role already exist!");
+                   return toastr.warning("Role already exist!");
                 }
             },
             error: err => {
-                console.log(err);
                 toastDanger();
+                console.log(err);
             }
         })
     }

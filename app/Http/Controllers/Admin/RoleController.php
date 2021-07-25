@@ -47,7 +47,7 @@ class RoleController extends Controller
 
                 endif;
 
-                Role::create(['name' => $role]);
+                Role::create(['name' => strtolower($role)]);
 
             endforeach;
 
