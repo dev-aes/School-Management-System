@@ -6955,10 +6955,11 @@ function editPaymentMode(id) {
     $.ajax({
         url: route('payment_mode.edit', id),
         success: payment_mode => {
-            // console.log(payment_mode);
          $('#btn_update_payment_mode').attr('data-id', payment_mode.id);
          $('#pm_title').attr('value', payment_mode.title);
          $('#pm_account_number').attr('value', payment_mode.account_number);
+
+         $('#pm_d_status').text(`[ ${payment_mode.status} ]`);
 
         },
         error: err => {

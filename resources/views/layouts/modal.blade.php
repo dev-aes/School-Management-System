@@ -2605,9 +2605,9 @@
                 <div id="edit_mop">
                     {{-- only display this form group when the edit button is clicked only--}}
                     <div class="form-group">
-                        <label class='form-label'>Status *</label>
+                        <label class='form-label'>Status <span class='text-capitalize text-success' id="pm_d_status"> {{--Display Status--}}</span></label>
                         <select class="form-select" name="status" id="pm_status">
-                            <option value="activate">Activate</option>
+                            <option value="active">Activate</option>
                             <option value="inactive">Deactivate</option>
                         </select>
                     </div>
