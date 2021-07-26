@@ -14,7 +14,7 @@
         <div class="col-auto ms-auto text-end mt-n1">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">{{ $user_role }}</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboards</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Analytics</li>
                 </ol>
