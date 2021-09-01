@@ -136,11 +136,11 @@ class StudentFeeController extends Controller
 
                 $this->log_activity($student_fee,'enrolled','Student',$student->first_name." ".$student->last_name);
 
-                return response()->json('success');
+                return $this->success();
             }
             else 
             {
-                return response()->json('error');
+                return $this->danger();
             }
 
         }
@@ -174,7 +174,7 @@ class StudentFeeController extends Controller
             SUM(payments.amount) as paid, (student_fee.total_fee - SUM(payments.amount)) as total_balance FROM payments INNER JOIN student_fee ON 
             payments.student_fee_id = student_fee.id WHERE payments.student_fee_id = $student->id");
 
-            return response()->json([$student, $fee, $total_fee, $payments,  $paymentsTotal ]);
+            return $this->res([$student, $fee, $total_fee, $payments,  $paymentsTotal ]);
 
         }
        
@@ -191,7 +191,7 @@ class StudentFeeController extends Controller
 
         $student_fee->delete();
 
-        return $this->res();
+        return $this->success();
 
     }
 

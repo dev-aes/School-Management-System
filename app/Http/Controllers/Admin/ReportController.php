@@ -74,7 +74,7 @@ class ReportController extends Controller
                                 ->orWhere('student_values.description_id',NULL)
                                 ->get(); // display student core values
             
-            return response()->json([$student_grades, $core_values]);
+            return $this->res([$student_grades, $core_values]);
           
         }
     }

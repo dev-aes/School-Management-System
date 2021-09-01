@@ -10,8 +10,6 @@ use App\Models\Teacher;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use App\Imports\TeacherImport;
-use App\Models\SubjectStudent;
-use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -20,6 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Admin\StudentFeeController;
 use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Requests\TeacherRequest;
 
 class TeacherController extends Controller
 {
@@ -55,29 +54,14 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json(GradeLevel::all());
+            return $this->res(GradeLevel::all());
         }
     }
 
 
-    public function store()
+    public function store(TeacherRequest $request)
     {
-        $teacher_form_data = request()->validate([
-            'first_name' => 'required|alpha',
-            'middle_name' => 'required',
-            'last_name' => 'required|alpha',
-            'birth_date' => 'required|string',
-            'gender' => 'required|alpha',
-            'city' => 'required|alpha_spaces',
-            'province' => 'required|alpha_spaces',
-            'country' => 'required|alpha',
-            'address' => 'required|string',
-            'contact' => 'required|string|max:11',
-            'facebook' => 'required|string',
-            'email' => 'required|email|unique:teachers',
-            'teacher_avatar' => 'image',
-
-        ]);
+        $teacher_form_data = $request->validated();
 
         if(request()->ajax()) 
         {
@@ -90,7 +74,7 @@ class TeacherController extends Controller
 
             Teacher::create($teacher_form_data);
 
-            return response()->json('success');
+            return $this->success();
 
         }
     }
@@ -117,7 +101,7 @@ class TeacherController extends Controller
 
 
             
-            return response()->json([$teacher, $teacher->section, $teacher_subjects]); // params (teacher, section, subjects)
+            return $this->res([$teacher, $teacher->section, $teacher_subjects]); // params (teacher, section, subjects)
         }
     }
 
@@ -132,34 +116,20 @@ class TeacherController extends Controller
    
             $students = StudentFeeController::getStudentHasDownpayment();
 
-            return response()->json($students); // display students by teacher's section_id
+            return $this->res($students); // display students by teacher's section_id
         }
     }
 
     public function edit(Teacher $teacher)
     {
         if(request()->ajax()) {
-            return response()->json($teacher);
+            return $this->res($teacher);
         }
     }
 
-    public function update(Teacher $teacher)
+    public function update(Teacher $teacher, TeacherRequest $request)
     {
-        $teacher_form_data = request()->validate([
-            'first_name' => 'required|alpha',
-            'middle_name' => 'required',
-            'last_name' => 'required|alpha',
-            'birth_date' => 'required|string',
-            'gender' => 'required|alpha',
-            'city' => 'required|alpha_spaces',
-            'province' => 'required|alpha_spaces',
-            'country' => 'required|alpha',
-            'address' => 'required|string',
-            'contact' => 'required|string|max:11',
-            'facebook' => 'required|string',
-            'email' => Rule::unique('teachers')->ignore($teacher),
-            'teacher_avatar' => 'image',
-        ]);
+        $teacher_form_data = $request->validated();
 
         if(request()->ajax()) {
             if(request()->hasFile('teacher_avatar')) {
@@ -169,10 +139,10 @@ class TeacherController extends Controller
                     Storage::delete("/public/uploads/teacher/$teacher->teacher_avatar");
                 }
                 request('teacher_avatar')->storeAs('uploads/teacher', $teacher_form_data['teacher_avatar'], 'public' );  // params: fileFolder , fileName , filePath
-                return response()->json($teacher->update($teacher_form_data));
+                return $this->res($teacher->update($teacher_form_data));
             }
             else {
-                return response()->json($teacher->update($teacher_form_data));
+                return $this->res($teacher->update($teacher_form_data));
             }
         }   
     }
@@ -190,7 +160,7 @@ class TeacherController extends Controller
 
             endforeach;
 
-            return $this->res();
+            return $this->success();
         }
     }
 
@@ -213,24 +183,16 @@ class TeacherController extends Controller
             endforeach;
             //distinct 
            // $grade_levels = array_unique($gl);
-            return response()->json($gl);
+            return $this->res($gl);
         }
     }
 
-    public function teacher_display_by_teacher_id(Teacher $teacher)
-    {
-        if(request()->ajax())
-        {
-
-            return response()->json('here');
-        }
-    }
 
     public function teacher_subject2_display_subjects_by_teacher_grade_level_id(GradeLevel $gradeLevel)
     {
         if(request()->ajax())
         {
-            return response()->json($gradeLevel->subject);
+            return $this->res($gradeLevel->subject);
         }
     }
 
@@ -238,7 +200,7 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($gradeLevel->student);
+            return $this->res($gradeLevel->student);
         }
     }
 
@@ -246,7 +208,7 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json(Teacher::all());
+            return $this->res(Teacher::all());
         }
     }
 
@@ -254,7 +216,7 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json([$teacher->section, $teacher->student, $teacher->subject]);
+            return $this->res([$teacher->section, $teacher->student, $teacher->subject]);
         }
     }
 
@@ -262,7 +224,7 @@ class TeacherController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json(Section::all());
+            return $this->res(Section::all());
         }
     }
 
@@ -294,7 +256,7 @@ class TeacherController extends Controller
                'created_at' => now()
             ]);
 
-            return response()->json('success');
+            return $this->res('success');
         }
 
 
@@ -306,7 +268,7 @@ class TeacherController extends Controller
     public function display_section_by_teacher(Teacher $teacher){
       
         if(request()->ajax()) {
-        return response()->json($teacher->section);
+        return $this->res($teacher->section);
         }    
     }
 
@@ -356,7 +318,7 @@ class TeacherController extends Controller
             $result_subject = Subject::whereIn('id',$results)->get(); // after getting the unique id's select the subjects using the unique results[subject id] 
 
 
-            return response()->json($result_subject); // display
+            return $this->res($result_subject); // display
         }
     }
 
@@ -431,7 +393,7 @@ class TeacherController extends Controller
          
 
         }
-        return response()->json('success');
+        return $this->res('success');
     }
 
 
@@ -452,7 +414,7 @@ class TeacherController extends Controller
                                  ->where('teacher_id', $teacher->id)
                                  ->delete();
                                  // after deleting of section_Teacher automatically delete its subjects (section_subject) 
-            return $this->res();
+                                 return $this->success();
 
         }
     }
@@ -467,7 +429,7 @@ class TeacherController extends Controller
                                             ->where('subject_id', $subject->id)
                                             ->update(['subject_id' => NULL]);
 
-                    return $this->res();
+                                            return $this->success();
         }
     }
 
@@ -479,7 +441,7 @@ class TeacherController extends Controller
             $grade_level = GradeLevel::all();
             $quarters = Quarter::all();
 
-            return response()->json([$grade_level,$quarters]);
+            return $this->res([$grade_level,$quarters]);
         }
     }
 
@@ -490,7 +452,7 @@ class TeacherController extends Controller
          {
              
             $sections = Section::where('grade_level_id',$id)->get();
-             return response()->json($sections);
+             return $this->res($sections);
          }
      }
 
@@ -501,7 +463,7 @@ class TeacherController extends Controller
            // $ay = AcademicYearController::getAcademicYear();
             //get student according to academic year 
             $students = StudentFeeController::getStudentHasDownpayment();
-            return response()->json($students);
+            return $this->res($students);
          }
      }
 
@@ -559,7 +521,7 @@ class TeacherController extends Controller
 
              endforeach;   
              
-                         return response()->json([$student, $subjects, $core_values]); // return subjects[] , student
+                         return $this->res([$student, $subjects, $core_values]); // return subjects[] , student
          }
      }
 
@@ -570,9 +532,66 @@ class TeacherController extends Controller
 
             DB::table('grades')->where('student_grade_id', $id)->update(['viewable' => request('viewable')]);
 
-            return $this->res();
+            return $this->success();
          }
      }
+
+        // TODO VALUES ()
+
+
+    public function teacher_assign_values_to_student()
+    {
+
+        if(request()->ajax())
+        {
+
+            $data = request()->validate([
+                'student_id' => '',
+                'adviser_id' => '',
+                'description_id' => '',
+                'quarter' => '',
+                'values' => ''
+            ]);
+
+
+            $quarter = 0;
+                        
+            if($data['quarter'] == 1)
+            {
+                $quarter = 'q1';
+            }
+            else if($data['quarter'] == 2)
+            {
+                $quarter = 'q2';
+            }
+            else if($data['quarter'] == 3)
+            {
+                $quarter = 'q3';
+            }
+            else
+            {
+                $quarter = 'q4';
+            }
+
+            $ay = get_latest_academic_year(); // get latest academic_year
+
+            DB::table('student_values')
+            ->updateOrInsert(
+                [
+                    'student_id' => $data['student_id'],
+                    'adviser_id' => $data['adviser_id'],
+                    'description_id' => $data['description_id'],
+                    'academic_year_id' => $ay->id
+                ],
+                [
+                    $quarter => $data['values'],
+                    'created_at' => now()
+                ]
+            );
+
+           return $this->success();
+        }
+    }
  
     public function import(Request $request)
     {
@@ -582,7 +601,7 @@ class TeacherController extends Controller
 
             $file = $request->file('teachers');
             Excel::import(new TeacherImport, $file);
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -609,11 +628,11 @@ class TeacherController extends Controller
 
                 $this->log_activity($teacher, 'Deleted all', 'Teacher Record','','');
                 
-                return response()->json('success');
+                return $this->success();
             }
             else
             {
-                return response()->json('error');
+                return $this->danger();
             }
 
         }

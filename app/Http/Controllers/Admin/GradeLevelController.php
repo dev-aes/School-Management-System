@@ -6,7 +6,6 @@ use App\Models\Grade;
 use App\Models\School;
 use App\Models\Subject;
 use App\Models\GradeLevel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -58,7 +57,7 @@ class GradeLevelController extends Controller
 
                 $this->log_activity($gl, 'created', 'Grade Level', $gl->name);
 
-                return response()->json();
+                return;
             }
 
         }
@@ -69,7 +68,7 @@ class GradeLevelController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json(GradeLevel::with('subject')->where('id', $gradeLevel->id)->first()); // get grade level and its assigned subject(s)
+            return $this->res(GradeLevel::with('subject')->where('id', $gradeLevel->id)->first()); // get grade level and its assigned subject(s)
         }
     }
 
@@ -77,7 +76,7 @@ class GradeLevelController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($gradeLevel);
+            return $this->res($gradeLevel);
         }
     }
 
@@ -96,7 +95,7 @@ class GradeLevelController extends Controller
 
             $this->log_activity($gradeLevel, 'updated', 'Grade Level', $gradeLevel->name);
 
-            return response()->json('success');
+            return $this->sucess();
         }
     }
 
@@ -107,7 +106,7 @@ class GradeLevelController extends Controller
             $this->log_activity($gradeLevel, 'deleted', 'Grade Level', $gradeLevel->name);
             $gradeLevel->delete();
 
-            return $this->res();
+            return $this->sucess();
         }
     }
 
@@ -123,7 +122,7 @@ class GradeLevelController extends Controller
                         ->where('grade_level_subject.subject_id', NULL)
                         ->get();
 
-            return response()->json($subjects);
+            return $this->res($subjects);
 
         }
     }
@@ -162,7 +161,7 @@ class GradeLevelController extends Controller
                
            endforeach;
 
-           return $this->res(); // success msg
+           return $this->success(); // success msg
          
         }
     }
@@ -181,7 +180,7 @@ class GradeLevelController extends Controller
                 ->where('subject_id', $subject->id)
                 ->delete();
 
-                return $this->res(); // success
+                return $this->success(); // success
         }
     }
 

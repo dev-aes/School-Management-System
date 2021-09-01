@@ -52,7 +52,7 @@ class SectionController extends Controller
 
             $section = Section::where('name',$data['name'])->first();
             if($section){
-                return $this->err();
+                return $this->danger();
             }
 
 
@@ -60,7 +60,7 @@ class SectionController extends Controller
 
             $this->log_activity($section, 'created', 'Section', $section->name);
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -70,7 +70,7 @@ class SectionController extends Controller
         {
             // TODO display section and its assigned GradeLevel , Teachers & Students.
 
-            return response()->json(Section::with('grade_level','teacher', 'student')->where('id', $section->id)->first());
+            return $this->res(Section::with('grade_level','teacher', 'student')->where('id', $section->id)->first());
 
         }
     }
@@ -79,7 +79,7 @@ class SectionController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json([$section , GradeLevel::all(), $section->grade_level->name]);
+            return $this->res([$section , GradeLevel::all(), $section->grade_level->name]);
         }
     }
 
@@ -103,8 +103,7 @@ class SectionController extends Controller
 
             $this->log_activity($section, 'updated', 'Section', $section->name);
             
-            return response()->json('success');
-
+            return $this->success();
         }
     }
 
@@ -116,7 +115,7 @@ class SectionController extends Controller
 
             $this->log_activity($section, 'deleted', 'Section', $section->name);
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -128,7 +127,7 @@ class SectionController extends Controller
             //Query current section adviser information
 
 
-            return response()->json([Section::all(), Teacher::all()]);
+            return $this->res([Section::all(), Teacher::all()]);
         }
     }
 
@@ -279,10 +278,10 @@ class SectionController extends Controller
                         ->first();
             if($adviser)
             {
-                return response()->json($adviser);
+                return $this->res($adviser);
             }
 
-            return response()->json('empty_adviser');
+            return $this->res('empty_adviser');
             
         }
     }

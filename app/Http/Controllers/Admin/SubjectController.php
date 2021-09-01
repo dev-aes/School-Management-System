@@ -79,7 +79,7 @@ class SubjectController extends Controller
             //Enter Subject to its corresponding Grade Level
   
            $this->log_activity($subject,'created','Subject',$subject->name);
-           return $this->res();
+           return $this->success();
         }
     }
 
@@ -88,7 +88,7 @@ class SubjectController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($subject);
+            return $this->res($subject);
         }
     }
 
@@ -101,7 +101,7 @@ class SubjectController extends Controller
             $recent_subject_by_grade_val = GradeLevel::where('grade_val', $subject->grade_val)->first();
             $grades = GradeLevel::all();
 
-            return response()->json([$subject,$grades, $recent_subject_by_grade_val]);
+            return $this->res([$subject,$grades, $recent_subject_by_grade_val]);
         }
     }
 
@@ -120,7 +120,7 @@ class SubjectController extends Controller
 
            $this->log_activity($subject,'updated','Subject',$subject->name);
 
-           return response()->json('success');
+           return $this->success();
         
         }
     }
@@ -140,7 +140,7 @@ class SubjectController extends Controller
 
            endforeach;
 
-            return $this->res();
+           return $this->success();
            
         }
     }
@@ -169,7 +169,7 @@ class SubjectController extends Controller
             endforeach;
 
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -197,11 +197,11 @@ class SubjectController extends Controller
 
                 $this->log_activity($subject, 'Deleted all', 'Subject Record','','');
                 
-                return response()->json('success');
+                return $this->success();
             }
             else
             {
-                return response()->json('error');
+                return $this->danger();
             }
 
         }

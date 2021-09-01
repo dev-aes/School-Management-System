@@ -3,20 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\StudentExport;
-use App\Models\User;
-use App\Models\School;
 use App\Models\Section;
 use App\Models\Student;
-use App\Models\Subject;
-use App\Models\Teacher;
 use App\Models\GradeLevel;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StudentRequest;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -57,30 +52,13 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json(Section::all());
+            return $this->res(Section::all());
         }
     }
 
-    public function store()
+    public function store(StudentRequest $request)
     {
-        $student_form_data = request()->validate([
-            'lrn' => 'required|integer',
-            'first_name' => 'required|alpha',
-            'middle_name' => 'required|alpha_spaces',
-            'last_name' => 'required|alpha',
-            'birth_date' => 'required|string',
-            'gender' => 'required|alpha',
-            'section_id' => 'required|string',
-            'nationality' => 'required|alpha_spaces',
-            'city' => 'required|alpha_spaces',
-            'province' => 'required|alpha_spaces',
-            'country' => 'required|alpha',
-            'address' => 'required|string',
-            'contact' => 'required|string|max:11',
-            'facebook' => 'required|string',
-            'email' => 'required|unique:students|email',
-            'student_avatar' => 'image',
-        ]);
+        $student_form_data = $request->validated();
 
         if(request()->ajax()) 
         {
@@ -111,7 +89,6 @@ class StudentController extends Controller
 
                 //Get Adviser ID through section_id
                 $adviser_id = Section::where('id',$student_form_data['section_id'])->first();
-                //$adviser = Teachers::where('id',$adviser_id->adviser_id)->first();
                 
                 $student_grade_id = DB::table('student_grade')->insertGetId([
                     'academic_year_id'=>$academic_year->id,
@@ -119,8 +96,6 @@ class StudentController extends Controller
                     'student_id'=>$student_data->id
                 ]);
             
-        
-         
         
                 //Populate grades here
                 $get_subjects_and_teachers_id = DB::table('section_subject')->where('section_id',$student_form_data['section_id'])->get();
@@ -159,7 +134,7 @@ class StudentController extends Controller
                 $this->log_activity($student_data, 'created', 'Student', $student_data->first_name." ".$student_data->last_name);
 
 
-                return response()->json('success');
+                return $this->success();
                 
         }
 
@@ -191,7 +166,7 @@ class StudentController extends Controller
                                
                             
 
-            return response()->json([$student_profile, $student_section, $student_grade, $student_subject_teacher]);
+            return $this->res([$student_profile, $student_section, $student_grade, $student_subject_teacher]);
           
         }
     }
@@ -200,31 +175,14 @@ class StudentController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json([$student,Section::all(), $student->section->name]);
+            return $this->res([$student,Section::all(), $student->section->name]);
         }
     }
 
-    public function update(Student $student)
+    public function update(Student $student, StudentRequest $request)
     {
-        $student_form_data = request()->validate([
-            'lrn' => 'required|integer',
-            'first_name' => 'required|alpha',
-            'middle_name' => 'required|alpha_spaces',
-            'last_name' => 'required|alpha',
-            'birth_date' => 'required|string',
-            'gender' => 'required|alpha',
-            'section_id' => 'required|string',
-            'nationality' => 'required|alpha_spaces',
-            'city' => 'required|alpha_spaces',
-            'province' => 'required|alpha_spaces',
-            'country' => 'required|alpha',
-            'address' => 'required|string',
-            'contact' => 'required|string|max:11',
-            'facebook' => 'required|string',
-            'email' => Rule::unique('students')->ignore($student),
-            'student_avatar' => 'image',
-            'is_imported'=>'',
-        ]);
+
+        $student_form_data = $request->validated();
 
         if(request()->ajax())
         {
@@ -250,8 +208,7 @@ class StudentController extends Controller
                 $this->log_activity($student,'updated','Student',$student->first_name." ". $student->last_name);
                 $student->update($student_form_data);
 
-                return response()->json('success');
-
+                return $this->success();
             }
         }
     }
@@ -269,7 +226,7 @@ class StudentController extends Controller
 
             endforeach;
 
-            return $this->res();
+            return $this->success();
         }
     }
 
@@ -278,7 +235,8 @@ class StudentController extends Controller
        if(request()->ajax())
        {
         $subjects = DB::select("SELECT b.id , b.first_name , b.last_name FROM subject_teacher a, teachers b , subjects c WHERE a.teacher_id = b.id AND a.subject_id = c.id AND c.id = $id");
-        return response()->json($subjects);
+
+        return $this->res($subjects);
        }
     }
 
@@ -304,7 +262,7 @@ class StudentController extends Controller
                 return response()->json('success');
             }
 
-            return response()->json('error');
+        return response()->json('error');
         }
     }
     public function delete_student_teacher_subject($id)
@@ -400,16 +358,13 @@ class StudentController extends Controller
     //************** */
 
 
-            return response()->json('success');
+                 return $this->success();
         }
     }
 
     public function export() 
     {
-         //Excel::store(new StudentExport(2021), 'exp_student.xlsx', 'public');
         return Excel::download(new StudentExport, 'exp_student.xlsx');
-
-        //  return $this->res();
     }
 
     public function truncate()
@@ -427,11 +382,11 @@ class StudentController extends Controller
 
                 $this->log_activity($student, 'Deleted all', 'Student Record','','');
                 
-                return response()->json('success');
+                return $this->success();
             }
             else
             {
-                return response()->json('error');
+                return $this->danger();
             }
 
         }

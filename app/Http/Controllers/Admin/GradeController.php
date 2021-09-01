@@ -7,6 +7,7 @@ use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GradeRequest;
 use App\Models\Grade;
 
 
@@ -30,17 +31,10 @@ class GradeController extends Controller
         }
     }
 
-    public function store(){
+    public function store(GradeRequest $request){
         if(request()->ajax()) {
             
-            $data = request()->validate([
-                'grades' => '',
-                'quarter_id' => '',
-                'section_id'=>'',
-                'student_id'=>'',
-                'subject_id'=>'',
-                'grades_id'=>'',
-            ]);
+            $data = $request->validated();
 
             $academic_year = DB::table('academic_years')
                     ->join('student_grade','academic_years.id','student_grade.academic_year_id')
@@ -86,22 +80,6 @@ class GradeController extends Controller
                         }
 
 
-        //        $is_approve = DB::table('grades')
-        //        ->select('grades.is_approve')
-        //        ->where('student_grade_id',$data['student_id'])
-        //        ->where('subject_id', $data['subject_id'])  
-        //        ->where('subject_teacher_id',$get_subject_teacher->teacher_id)
-        //        ->first();
-               
-        //explode is_approve data 6/26
-        //        $is_approved = explode(",",$is_approve->is_approve);
-        //        for($i = 0; $i < count($is_approved); $i++){
-        //         if($i == $data['quarter_id']-1)   
-        //         $is_approved[$i] = $data['quarter_id'];
-        //        }
-
-        //        $is_approves = implode(",",$is_approved);
-
          //Update or insert grades of a student on all quarters 6/26
             DB::table('grades')
             ->updateOrInsert(
@@ -117,7 +95,7 @@ class GradeController extends Controller
                     'created_at'=> now()
                 ]
             );                                
-            return response()->json('success');  // Edit 6/26        
+            return $this->success(); 
     } 
 
 }
@@ -146,7 +124,7 @@ class GradeController extends Controller
                 array_push($subjects, $subject);
             }
             
-            return response()->json($subjects);
+            return $this->res($subjects);
         }
     }
 
@@ -162,6 +140,6 @@ class GradeController extends Controller
         ->where('student_grade.student_id',1)
         ->get();
 
-return response()->json($student_grades);
+         return $this->res($student_grades);
     }
 }

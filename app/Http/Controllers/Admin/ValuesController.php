@@ -56,7 +56,7 @@ class ValuesController extends Controller
  
                  if($check_value):
  
-                     return $this->err();
+                    return $this->danger();
  
                  endif;
  
@@ -67,7 +67,7 @@ class ValuesController extends Controller
  
              endforeach;
              
-             return $this->res();
+             return $this->success();
  
         }
     }
@@ -90,7 +90,7 @@ class ValuesController extends Controller
 
             $this->log_activity($description,'assigned','description to values', $values->title);
 
-            return $this->res();
+            return $this->success();
         }
     }
 
@@ -114,7 +114,7 @@ class ValuesController extends Controller
             $this->log_activity($value,'updated','Values',$value->title);
 
 
-            return $this->res();
+            return $this->success();
         }
     }
 
@@ -125,7 +125,7 @@ class ValuesController extends Controller
             $this->log_activity($description,'deleted','Description', $description->description);
 
             $description->delete();
-            return $this->res();
+            return $this->success();
         }
     }
 
@@ -137,7 +137,7 @@ class ValuesController extends Controller
 
             $value->delete();
 
-            return $this->res();
+            return $this->success();
         }
     }
 }

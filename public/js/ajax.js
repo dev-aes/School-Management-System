@@ -2402,13 +2402,12 @@ $(document).on('keypress', '#v_values', function(e) {
         
         $.ajax({
             method: 'POST',
-            url: route('teacher.teacher_assign_values_to_student'),
+            url: route('teacher.assign_values_to_student'),
             dataType:'json',
             data:
             {
                 student_id:student_id,
                 adviser_id:adviser_id,
-                // values_id:values_id,
                 description_id:description_id,
                 values:values,
                 quarter:quarter
@@ -2428,6 +2427,7 @@ $(document).on('keypress', '#v_values', function(e) {
             },
             error: err => {
                 res(err);
+               
             }
         })
     }
@@ -3791,6 +3791,7 @@ function createStudent() {
 
 // edit
  function editStudent(id) {
+     
     $.ajax({
         url: route('student.edit', id),
         dataType:'json',
@@ -6520,7 +6521,7 @@ function AdminDashBoardDisplayUser()
                 output2 += `
                             <div class='border-start border-3 border-secondary'>
                                 <p class="m-0 ps-2">${exploded[0]} - <span class='text-success'> ${exploded[1]} </success>  </p>
-                                <p class='ps-2'> ${activity.created_at} </p>
+                                <p class='ps-2'> ${format_date(activity.created_at)} </p>
                             </div>`;
         
             });

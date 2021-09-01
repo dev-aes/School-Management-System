@@ -141,7 +141,7 @@ class ParentPaymentController extends Controller
 
         $this->log_activity($latest_pending_payment,$remarks,'Payment Request from parent', $parent->name);
 
-        return response()->json('success');
+        return $this->success();
 
     }
 
@@ -169,7 +169,7 @@ class ParentPaymentController extends Controller
 
             $this->log_activity($parent_payment,$remark,'Payment Request from parent', $parent->name);
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 

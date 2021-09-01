@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SchoolRequest;
 use Illuminate\Support\Facades\Storage;
 
 class SchoolController extends Controller
@@ -25,33 +26,18 @@ class SchoolController extends Controller
         return view('school.index');
     }
 
-    public function store()
+    public function store(SchoolRequest $request)
     {
-        $data = request()->validate([
-            'school_name' => 'required|alpha_spaces',
-            'depEd_no' => 'required|string',
-            'city' => 'required|alpha',
-            'province' => 'required|alpha_spaces',
-            'country' => 'required|alpha',
-            'address' => 'required|string',
-            'contact' => 'required|int',
-            'email' => 'required|email',
-            'facebook'=> 'required|string',
-            'website'=>'required|string',
-            'school_logo'=>'image'
-        ]);
-
+        $data = $request->validate();
 
         if(request()->ajax()) {
             // check if the request has an image
             if(request()->hasFile('school_logo')) {
                 $data['school_logo'] = request('school_logo')->getClientOriginalName(); // get only the original file_name 
                 request('school_logo')->storeAs('uploads/school', $data['school_logo'], 'public' );  // params: fileFolder , fileName , filePath
-                School::create($data);
 
-                return;
+                School::create($data);
             }
-           //return response()->json(School::create($data));
         }
 
     
@@ -60,33 +46,19 @@ class SchoolController extends Controller
     public function show(School $school) 
     {
         if(request()->ajax()) {
-            return response()->json($school);
+            return $this->res($school);
         }
     }
 
     public function edit(School $school) {
         if(request()->ajax()) {
-            return response()->json($school);
+            return $this->res($school);
         }
     }
-
-    public function update(School $school) 
+ 
+    public function update(School $school, SchoolRequest $request) 
     {
-        $data = request()->validate([
-            'months_no' => 'required|integer|max:12',
-            'date_started' => 'required',
-            'school_name' => 'required|alpha_spaces',
-            'depEd_no' => 'required|string',
-            'city' => 'required|alpha',
-            'province' => 'required|alpha_spaces',
-            'country' => 'required|alpha',
-            'address' => 'required|string',
-            'contact' => 'required|string|max:11',
-            'email' => 'required|email',
-            'facebook'=> 'required|string',
-            'website'=>'required|string',
-            'school_logo'=>'image'
-        ]);
+        $data = $request->validate();
 
 
         if(request()->ajax()) {
@@ -98,13 +70,16 @@ class SchoolController extends Controller
                 request('school_logo')->storeAs('uploads/school', $data['school_logo'], 'public' );  // params: fileFolder , fileName , filePath
 
                 DB::table('grade_levels')->update(['months_no' => $data['months_no'] ]);
+                $school->update($data);
 
-                return response()->json($school->update($data));
+              
             }
             else {
 
                 DB::table('grade_levels')->update(['months_no' => $data['months_no'] ]);
-                return response()->json($school->update($data));
+                $school->update($data);
+
+                return $this->success();
             }
         }   
     }
@@ -113,6 +88,7 @@ class SchoolController extends Controller
     {
         if(request()->ajax()) {
             $school->delete();
+            return $this->success();
         }
     }
 

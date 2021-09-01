@@ -52,7 +52,7 @@ class RoleController extends Controller
             endforeach;
 
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -60,7 +60,7 @@ class RoleController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($role);
+            return $this->res($role);
         }
     }
 
@@ -72,7 +72,7 @@ class RoleController extends Controller
 
             $role->update($data);
 
-            return $this->res();
+           return $this->success();
         }
     }
 
@@ -82,7 +82,7 @@ class RoleController extends Controller
         {
             $role->delete();
 
-            return $this->res();
+           return $this->success();
         }
     }
 }

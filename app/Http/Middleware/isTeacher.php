@@ -16,7 +16,7 @@ class isTeacher
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!$request->user()->hasRole('teacher')) {
+        if(!$request->user()->hasRole('teacher') || $request->user()->hasRole('admin')) {
             abort(404);
         }
         return $next($request);

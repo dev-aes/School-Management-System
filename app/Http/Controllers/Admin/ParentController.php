@@ -7,6 +7,7 @@ use App\Models\ParentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ParentRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class ParentController extends Controller
@@ -29,25 +30,19 @@ class ParentController extends Controller
         return view('parent.index');
     }
 
-    public function store()
+    public function store(ParentRequest $request)
     {
         if(request()->ajax())
         {
-            $data = request()->validate([
-                'name' => 'required|alpha_spaces',
-                'email'=> 'required|email',
-                'contact' => 'required',
-                'facebook' => 'required'
-            ]);
+            $data = $request->validate();
 
            $parent = ParentModel::create($data);
 
            $this->log_activity($parent, 'created', 'Guardian', $parent->name);
 
 
-            return response()->json('success');
+            return $this->success();
 
-            //return response()->json(request()->all());
         }
     }
 
@@ -67,7 +62,7 @@ class ParentController extends Controller
 
                                                  
 
-            return response()->json([$parent, $parent_student_section  ]); // parent, parent's student's section
+            return $this->res([$parent, $parent_student_section  ]); // parent, parent's student's section
         }
     }
 
@@ -75,25 +70,20 @@ class ParentController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($parent);
+            return $this->res($parent);
         }
     }
 
-    public function update(ParentModel $parent)
+    public function update(ParentModel $parent, ParentRequest $request)
     {
         if(request()->ajax())
         {
-            $data = request()->validate([
-                'name' => 'required|alpha_spaces',
-                'email'=> 'required|email',
-                'contact' => 'required',
-                'facebook' => 'required'
-            ]);
+            $data = $request->validate();
 
             $parent->update($data);
             $this->log_activity($parent, 'updated', 'Guardian', $parent->name);
 
-            return response()->json('success');
+               return $this->success();
         }
     }
 
@@ -103,7 +93,7 @@ class ParentController extends Controller
 
         $this->log_activity($parent, 'deleted', 'Guardian', $parent->name);
 
-        return response()->json('success');
+           return $this->success();
     }
 
     public function parent_display_student()
@@ -150,6 +140,6 @@ class ParentController extends Controller
 
         // $parent_student->delete();
 
-        return response()->json('success');
+           return $this->success();
     }
 }

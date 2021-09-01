@@ -44,7 +44,7 @@ class UserController extends Controller
             $teachers = Teacher::all();
 
 
-            return response()->json([ $students,$roles,$parents,$teachers]);
+            return $this->res([ $students,$roles,$parents,$teachers]);
         }
     }
 
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($student); // display student info by student_id 
+            return $this->res($student); // display student info by student_id 
         }
     }
 
@@ -60,7 +60,7 @@ class UserController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($parent); // display parent info by parent_id 
+            return $this->res($parent); // display parent info by parent_id 
         }
     }
 
@@ -68,7 +68,7 @@ class UserController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($teacher); // display teacher info by teacher_id 
+            return $this->res($teacher); // display teacher info by teacher_id 
         }
     }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
             
             if($user)
             {
-                return response()->json('error');
+                return $this->danger();
             }
 
                 //Admin
@@ -105,7 +105,7 @@ class UserController extends Controller
                         ]);
                         
                         $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
-                        return response()->json('success');
+                        return $this->success();
                 }
 
                 // Student
@@ -128,7 +128,7 @@ class UserController extends Controller
                         ]);
                         
                         $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
-                        return response()->json('success');
+                        return $this->success();
                 }
 
                 // Parent
@@ -178,7 +178,7 @@ class UserController extends Controller
                          ]);
 
                          $this->log_activity($user_role,'created','User',$user_role->first_name." ".$user_role->last_name);
-                         return response()->json('success');
+                         return $this->success();
                  }
                  
                  
@@ -189,7 +189,7 @@ class UserController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($user);
+            return $this->res($user);
         }
     }
 
@@ -203,7 +203,7 @@ class UserController extends Controller
 
             $this->log_activity($user,'updated','User',$user->first_name." ".$user->last_name);
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -217,28 +217,8 @@ class UserController extends Controller
 
             $user->delete();
 
-            return response()->json('success');
+            return $this->success();
 
-        }
-    }
-
-    public function isOnline(User $user)
-    {
-        if(request()->ajax())
-        {
-            if(request('status') == 'online')
-            {
-                return response()->json('OL');
-                // $user->update(['status' => 1]);
-                // return;
-            }
-            if(request('status') == 'offline')
-            {
-                return response()->json('OF');
-
-                // $user->update(['status' => 0]);
-                // return;
-            }
         }
     }
 }

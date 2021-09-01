@@ -7,6 +7,7 @@ use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FeeRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class FeeController extends Controller
@@ -34,24 +35,17 @@ class FeeController extends Controller
         if(request()->ajax()) {
 
             
-            return response()->json(GradeLevel::all()); // display all grade levels in fee form
+            return $this->res(GradeLevel::all()); // display all grade levels in fee form
         }
     }
 
-    public function store()
+    public function store(FeeRequest $request)
     {
         if(request()->ajax()) {
-            $data = request()->validate([
-                'grade_level_id' => 'required',
-                'fee_description' => 'required|array',
-                'fee_description .*' => 'required|string',
-                'fee_amount' => 'required|array',
-                'fee_amount .*' => 'required|float',
 
-            ]);
+            $data = $request->validated();
 
-           // return response()->json($data)
-
+        
             foreach (array_combine(request('fee_description'), request('fee_amount')) as $description => $amount):
             
                   $fee = DB::table('fees')
@@ -73,11 +67,11 @@ class FeeController extends Controller
                         }
                         else 
                         {
-                            return response()->json('error');
+                            return $this->error();
                         }
             endforeach;
             
-            return response()->json('success');
+            return $this->success();
 
         }
     }
@@ -88,15 +82,7 @@ class FeeController extends Controller
            $sub_fees = Fee::where('grade_level_id', $gradeLevel->id)->get();
            $total_fee = DB::select("Select sum(amount) as total FROM fees WHERE grade_level_id = $gradeLevel->id");
 
-           return response()->json([$sub_fees, $total_fee]);
-        }
-    }
-
-    public function show(Fee $fee)
-    {
-        if(request()->ajax())
-        {
-            return response()->json('This is from show');
+           return $this->res([$sub_fees, $total_fee]);
         }
     }
 
@@ -107,7 +93,7 @@ class FeeController extends Controller
             DB::update("UPDATE grade_levels SET total_amount = total_amount - $fee->amount WHERE id = $fee->grade_level_id");
             $fee->delete();
 
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -115,7 +101,7 @@ class FeeController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($id);
+            return $this->res($id);
         }
     }
 

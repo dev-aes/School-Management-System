@@ -11,6 +11,7 @@ use App\Models\PaymentMode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentRequest;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\Calculation\Financial\CashFlow\Constant\Periodic\Payments;
 use Yajra\DataTables\Facades\DataTables;
@@ -75,7 +76,7 @@ class PaymentController extends Controller
                                                 ->orderBy('status','ASC')
                                                 ->get();
             $payment_modes = PaymentMode::where('status', 'active')->get();
-            return response()->json([$student_fee_id_with_student_name, $payment_modes]);
+            return $this->res([$student_fee_id_with_student_name, $payment_modes]);
         }
     }
 
@@ -107,42 +108,34 @@ class PaymentController extends Controller
         if(is_null($student_balance->total_balance))
         {
             $sb = DB::select("SELECT total_fee as total_balance FROM student_fee WHERE id = $id");
-            return response()->json($sb);
+            return $this->res($sb);
         }
         else if($student_balance->total_balance == 0) 
         {
-             return response()->json([$student_balance , $payment_ledger]);
+             return $this->res([$student_balance , $payment_ledger]);
         }
 
         else if(is_null($monthly_payment->amount))
         {
             $sb = DB::select("SELECT total_fee as total_balance FROM student_fee WHERE id = $id");
-            return response()->json($sb);
+            return $this->res($sb);
         }
         
         else
         {
-            return response()->json([$student_balance, $payment_ledger, $monthly_payment ]);
+            return $this->res([$student_balance, $payment_ledger, $monthly_payment ]);
         }
 
     }
 
-    public function store()
+    public function store(PaymentRequest $request)
     {
         if(request()->ajax())
         {
        
            $transaction_no = mt_rand(123456,999999); // generate a transaction no.
 
-            $data = request()->validate([
-                'student_fee_id' => 'required',
-                'amount' => 'required|int|min:50',
-                'remarks' => 'required',
-                'official_receipt' => 'required|unique:payments',
-                'payment_type' => 'required',
-                'payment_mode_id' => 'required',
-                'user_id' => 'required'  
-            ]);
+            $data = $request->validate();
 
             $data['transaction_no'] = $transaction_no;
             $data['created_at'] = Carbon::now();
@@ -176,7 +169,7 @@ class PaymentController extends Controller
                     // check if the student has already have a downpayment 
                         if($check_if_student_fee_id_has_dp->has_downpayment == 1)
                         {
-                            return response()->json('error');
+                            return $this->danger();
                         }
                         else
                         {
@@ -242,7 +235,7 @@ class PaymentController extends Controller
     
                              }
     
-                             return response()->json('success');
+                             return $this->success();
                         }
                         
                 } //TODO MONTHLY PAYMENT
@@ -254,7 +247,7 @@ class PaymentController extends Controller
     
                     if(!$check_if_payment_has_dp->has_downpayment)
                     {
-                        return response()->json('no downpayment');
+                        return $this->res('no downpayment');
                     }
                     // get the monthly payment by student_fee_id
                     $get_the_monthly_payment_or_balance = DB::table('payment_ledger')
@@ -287,7 +280,7 @@ class PaymentController extends Controller
                                                      'created_at' => Carbon::now()
                                                      ]);
     
-                        return response()->json('success');
+                        return $this->success();
                     }
     
                     // check if the delivered amount is less than to the student's monthly payment / balance  do something ..
@@ -337,7 +330,7 @@ class PaymentController extends Controller
                                     balance = balance + $get_the_change->total_change 
                                     WHERE id = $new_payment_ledger_record->id");
                         
-                        return response()->json('success');
+                        return $this->success();
     
                     }
                     
@@ -428,7 +421,7 @@ class PaymentController extends Controller
                                                                 SET
                                                                 balance = balance - $change
                                                                 WHERE id = $next_payment_ledger_record->id");
-                          return response()->json('success');
+                          return $this->success();
                     }
                 }
             }
@@ -484,7 +477,7 @@ class PaymentController extends Controller
             $paymentsTotal['total_balance'] = $total_balance;
 
 
-          return response()->json([$selected_payment, $student, $fee, $paymentsTotal, $total_fee]);
+          return $this->res([$selected_payment, $student, $fee, $paymentsTotal, $total_fee]);
 
 
         }
@@ -503,20 +496,13 @@ class PaymentController extends Controller
                        ->where('student_fee.id', $payment->student_fee_id )
                        ->first();
 
-            return response()->json([$payment, $student]);
+            return $this->res([$payment, $student]);
         }
     }
 
-    public function update(Payment $payment)
+    public function update(Payment $payment, PaymentRequest $request)
     {
-        $data = request()->validate([
-            'student_fee_id' => 'required',
-            'amount' => 'required',
-            'remarks' => 'required',
-            'official_receipt' => 'required',
-            'payment_type' => 'required',
-            'payment_mode_id' => 'required'
-            ]);
+        $data = $request->validate();
 
         $data['updated_at'] = Carbon::now(); // date
         $data['discounted_percentage'] = request('discounted_percentage'); // ex 50 % / 0.5
@@ -544,7 +530,7 @@ class PaymentController extends Controller
                           'monthly_payment' => $monthly_fee->monthly_payment, 
                           ]);
   
-               return response()->json('success');
+               return $this->success();
             }
 
             if($data['payment_type'] == 'mo')
@@ -632,7 +618,7 @@ class PaymentController extends Controller
                                                     balance = balance + $change 
                                                     WHERE id = $new_payment_ledger_record->id");
 
-                       return response()->json('success');
+                       return $this->success();
 
                 }
 
@@ -751,7 +737,7 @@ class PaymentController extends Controller
                                                             balance = balance - $change
                                                             WHERE id = $next_payment_ledger_record->id");
 
-                    return response()->json('success');
+                        return $this->success();
                 }
 
                 if($data['amount'] == $get_monthly_payment->balance)
@@ -810,7 +796,7 @@ class PaymentController extends Controller
                                                  'created_at' => Carbon::now()
                                                  ]);
 
-                    return response()->json('success');
+                                                 return $this->success();
                 }
             }
         }
@@ -855,7 +841,7 @@ class PaymentController extends Controller
                 // after updating and deleting of records ; delete payment record ( Monthly Payment )
                 $payment->delete();
 
-                return response()->json('success');
+                return $this->success();
             }
 
             if($payment->payment_type == 'mo')
@@ -918,13 +904,13 @@ class PaymentController extends Controller
 
 
 
-                return response()->json('success');
+                return $this->success();
 
             }
         }
         else
         {
-            return $this->err();
+            return $this->danger();
         }
     }
 }

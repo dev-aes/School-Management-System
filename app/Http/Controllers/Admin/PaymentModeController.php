@@ -43,7 +43,7 @@ class PaymentModeController extends Controller
             PaymentMode::create($data);
 
          
-            return response()->json('success');
+            return $this->success();
         }
     }
 
@@ -51,7 +51,7 @@ class PaymentModeController extends Controller
     {
         if(request()->ajax())
         {
-            return response()->json($payment_mode);
+            return $this->res($payment_mode);
         }
     }
 
@@ -64,7 +64,7 @@ class PaymentModeController extends Controller
                                     'account_number' => request('account_number'),
                                     'status' => request('status')
                                 ]);
-            return response()->json('success');
+             return $this->success();
         }
     }
 
@@ -73,7 +73,7 @@ class PaymentModeController extends Controller
         if(request()->ajax())
         {
             $payment_mode->delete();
-            return response()->json('success');
+            return $this->success();
         }
     }
 }

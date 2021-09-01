@@ -26,7 +26,7 @@ class TeacherController extends Controller
                                 ->get(); // get teacher's designated sections 
 
             
-            return response()->json($section_teacher);
+            return $this->res($section_teacher);
 
         }
 
@@ -40,7 +40,7 @@ class TeacherController extends Controller
             //$students = Section::with('student')->where('id', $section->id)->first();
             $students = StudentFeeController::getStudentHasDownpayment();
 
-            return response()->json($students);
+            return $this->res($students);
         }
     }
 
@@ -95,7 +95,7 @@ class TeacherController extends Controller
                 $teacher = auth()->user()->teacher_id;
                 
                 
-                return response()->json([$section_with_grade_level, $student,$grades, $teacher, $core_values]);
+                return $this->res([$section_with_grade_level, $student,$grades, $teacher, $core_values]);
             }
     }
 
@@ -214,7 +214,7 @@ class TeacherController extends Controller
                             ]
                         );                                
            
-            return $this->res();
+                        return $this->success();
 
         }
     }
@@ -230,7 +230,7 @@ class TeacherController extends Controller
                  $teacher_form_data['teacher_avatar'] = request('teacher_avatar')->getClientOriginalName(); // get only the original file_name 
                   request('teacher_avatar')->storeAs('uploads/teacher',$teacher_form_data['teacher_avatar'] , 'public' );  // params: fileFolder , fileName , filePath
                   $teacher->update(['teacher_avatar' => $teacher_form_data['teacher_avatar']]);
-                  return response()->json('success');
+                  return $this->success();
             }
         
         }
@@ -245,7 +245,7 @@ class TeacherController extends Controller
                                 ->where('id', $id)
                                 ->update(['is_approve' => $default ]);
 
-                                return $this->res();
+                                return $this->success();
 
         }
     }
@@ -255,6 +255,7 @@ class TeacherController extends Controller
 
     public function teacher_assign_values_to_student()
     {
+
         if(request()->ajax())
         {
 
@@ -302,7 +303,7 @@ class TeacherController extends Controller
                 ]
             );
 
-           return $this->res();
+           return $this->success();
         }
     }
 }

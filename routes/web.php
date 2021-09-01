@@ -286,6 +286,8 @@ Route::middleware(['auth','registrar'])->group(function() {
 
     Route::delete('/admin/home/parent/deleteStudent/{parent}/{student}', [ParentController::class, 'parent_destroy_student'])->name('parent.parent_destroy_student');
 
+    Route::post('/admin/teacher/store_values', [TeacherController::class, 'teacher_assign_values_to_student'])->name('teacher.assign_values_to_student');
+
 
     // IMPORTABLES [students, subjects , teachers]
     Route::post('/admin/student/importStudent', [StudentController::class, 'import'])->name('student.import');
